@@ -10,6 +10,7 @@ ActiveSupport::Inflector.inflections(:en) do |inflect|
 #   inflect.uncountable %w( fish sheep )
 
   inflect.plural 'dossier_entreprise', 'dossiers_entreprises'
+  inflect.plural 'personne_morale', 'personnes_morales'
 end
 
 # These inflection rules are supported but not enabled by default:

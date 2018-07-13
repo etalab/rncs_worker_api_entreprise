@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_07_13_135604) do
+ActiveRecord::Schema.define(version: 2018_07_13_142448) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -37,4 +37,25 @@ ActiveRecord::Schema.define(version: 2018_07_13_135604) do
     t.index ["numero_gestion"], name: "index_dossiers_entreprises_on_numero_gestion"
   end
 
+  create_table "personnes_morales", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "denomination"
+    t.string "sigle"
+    t.string "forme_juridique"
+    t.string "associe_unique"
+    t.string "activite_principale"
+    t.string "type_capital"
+    t.float "capital"
+    t.float "capital_actuel"
+    t.string "devise"
+    t.string "date_cloture"
+    t.date "date_cloture_exeptionnelle"
+    t.string "economie_sociale_solidaire"
+    t.integer "duree_pm"
+    t.uuid "dossier_entreprise_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["dossier_entreprise_id"], name: "index_personnes_morales_on_dossier_entreprise_id"
+  end
+
+  add_foreign_key "personnes_morales", "dossiers_entreprises", column: "dossier_entreprise_id"
 end
