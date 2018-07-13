@@ -1,0 +1,2 @@
+class DossierEntreprise < ApplicationRecord
+end

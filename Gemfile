@@ -33,6 +33,7 @@ group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
   gem 'spring-commands-rspec'
   gem 'rspec-rails'
+  gem 'shoulda-matchers'
   gem 'guard-rspec'
   gem 'rb-fsevent' if `uname` =~ /Darwin/ # For OS/X only, waits for file changes from the Mac OS/X FSEvents API instead of polling the disk for changes.
 end
