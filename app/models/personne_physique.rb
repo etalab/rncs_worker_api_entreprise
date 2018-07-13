@@ -1,0 +1,3 @@
+class PersonnePhysique < ApplicationRecord
+
+end

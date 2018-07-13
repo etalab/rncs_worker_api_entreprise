@@ -11,6 +11,7 @@ ActiveSupport::Inflector.inflections(:en) do |inflect|
 
   inflect.plural 'dossier_entreprise', 'dossiers_entreprises'
   inflect.plural 'personne_morale', 'personnes_morales'
+  inflect.plural 'personne_physique', 'personnes_physiques'
 end
 
 # These inflection rules are supported but not enabled by default:
