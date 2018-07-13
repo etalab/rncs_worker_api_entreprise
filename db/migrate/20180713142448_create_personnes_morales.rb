@@ -14,6 +14,8 @@ class CreatePersonnesMorales < ActiveRecord::Migration[5.2]
       t.date :date_cloture_exeptionnelle
       t.string :economie_sociale_solidaire
       t.integer :duree_pm
+      t.string :libelle_derniere_modification
+      t.date :date_derniere_modification
       t.belongs_to :dossier_entreprise, type: :uuid, foreign_key: true
 
       t.timestamps

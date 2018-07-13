@@ -51,6 +51,8 @@ ActiveRecord::Schema.define(version: 2018_07_13_142448) do
     t.date "date_cloture_exeptionnelle"
     t.string "economie_sociale_solidaire"
     t.integer "duree_pm"
+    t.string "libelle_derniere_modification"
+    t.date "date_derniere_modification"
     t.uuid "dossier_entreprise_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

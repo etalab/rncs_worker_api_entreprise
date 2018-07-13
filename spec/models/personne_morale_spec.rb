@@ -15,6 +15,8 @@ describe PersonneMorale do
   it { is_expected.to have_db_column(:date_cloture_exeptionnelle).of_type(:date) }
   it { is_expected.to have_db_column(:economie_sociale_solidaire).of_type(:string) }
   it { is_expected.to have_db_column(:duree_pm).of_type(:integer) }
+  it { is_expected.to have_db_column(:date_derniere_modification).of_type(:date) }
+  it { is_expected.to have_db_column(:libelle_derniere_modification).of_type(:string) }
   it { is_expected.to have_db_column(:created_at).of_type(:datetime) }
   it { is_expected.to have_db_column(:updated_at).of_type(:datetime) }
 
