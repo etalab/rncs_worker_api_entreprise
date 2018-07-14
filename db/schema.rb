@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_07_14_133109) do
+ActiveRecord::Schema.define(version: 2018_07_14_134442) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -86,6 +86,19 @@ ActiveRecord::Schema.define(version: 2018_07_14_133109) do
     t.string "ville_naissance"
     t.string "pays_naissance"
     t.string "nationalite"
+    t.string "date_derniere_modification"
+    t.string "libelle_derniere_modification"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "observations", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "id_observation"
+    t.string "numero"
+    t.string "date_ajout"
+    t.string "date_suppression"
+    t.text "texte"
+    t.string "etat"
     t.string "date_derniere_modification"
     t.string "libelle_derniere_modification"
     t.datetime "created_at", null: false
