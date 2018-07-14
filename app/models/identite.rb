@@ -1,0 +1,3 @@
+class Identite < ApplicationRecord
+
+end
