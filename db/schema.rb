@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_07_14_130104) do
+ActiveRecord::Schema.define(version: 2018_07_14_131502) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -49,6 +49,32 @@ ActiveRecord::Schema.define(version: 2018_07_14_130104) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["numero_gestion"], name: "index_dossiers_entreprises_on_numero_gestion"
+  end
+
+  create_table "etablissements", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "type"
+    t.string "siege_pm"
+    t.string "rcs_registre"
+    t.string "domiciliataire_nom"
+    t.string "domiciliataire_siren"
+    t.string "domiciliataire_greffe"
+    t.string "domiciliataire_complement"
+    t.string "siege_domicile_representant"
+    t.string "nom_commercial"
+    t.string "enseigne"
+    t.string "activite_ambulante"
+    t.string "activite_saisonniere"
+    t.string "activite_non_sedentaire"
+    t.string "date_debut_activite"
+    t.string "activite"
+    t.string "origine_fonds"
+    t.string "origine_fonds_info"
+    t.string "type_exploitation"
+    t.string "id_etablissement"
+    t.string "date_derniere_modification"
+    t.string "libelle_derniere_modification"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "identites", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
