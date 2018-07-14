@@ -1,6 +1,7 @@
 require 'rails_helper'
 
 describe Identite do
+  it { is_expected.to have_db_column(:id).of_type(:uuid) }
   it { is_expected.to have_db_column(:nom_patronyme).of_type(:string) }
   it { is_expected.to have_db_column(:nom_usage).of_type(:string) }
   it { is_expected.to have_db_column(:pseudonyme).of_type(:string) }

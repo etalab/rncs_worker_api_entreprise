@@ -1,0 +1,3 @@
+class Adresse < ApplicationRecord
+
+end

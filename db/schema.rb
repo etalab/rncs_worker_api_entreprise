@@ -10,11 +10,25 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_07_14_125407) do
+ActiveRecord::Schema.define(version: 2018_07_14_130104) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
+
+  create_table "adresses", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "ligne_1"
+    t.string "ligne_2"
+    t.string "ligne_3"
+    t.string "code_postal"
+    t.string "ville"
+    t.string "commune"
+    t.string "pays"
+    t.string "date_derniere_modification"
+    t.string "libelle_derniere_modification"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "dossiers_entreprises", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "code_greffe"
