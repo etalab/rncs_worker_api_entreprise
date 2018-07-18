@@ -10,6 +10,7 @@ describe Identite do
   it { is_expected.to have_db_column(:ville_naissance).of_type(:string) }
   it { is_expected.to have_db_column(:pays_naissance).of_type(:string) }
   it { is_expected.to have_db_column(:nationalite).of_type(:string) }
+  it { is_expected.to have_db_column(:type).of_type(:string) }
 
   # Associations
   it { is_expected.to belong_to(:identifiable) }

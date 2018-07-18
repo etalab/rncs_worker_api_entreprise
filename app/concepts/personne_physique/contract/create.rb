@@ -11,6 +11,12 @@ class PersonnePhysique
       property :auto_entrepreneur
       property :conjoint_collaborateur_date_fin
 
+      property :identite, form: Identite::Contract::Create, populate_if_empty: Identite
+      property :conjoint_collaborateur_identite, form: Identite::Contract::Create, populate_if_empty: ConjointCollaborateurIdentite
+
+      property :adresse, form: Adresse::Contract::Create, populate_if_empty: Adresse
+      property :dap_adresse, form: Adresse::Contract::Create, populate_if_empty: DAPAdresse
+
       validation do
         required(:entreprise_id).filled
       end

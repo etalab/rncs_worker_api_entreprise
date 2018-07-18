@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_07_18_185254) do
+ActiveRecord::Schema.define(version: 2018_07_18_224619) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -22,7 +22,7 @@ ActiveRecord::Schema.define(version: 2018_07_18_185254) do
     t.string "ligne_3"
     t.string "code_postal"
     t.string "ville"
-    t.string "commune"
+    t.string "code_commune"
     t.string "pays"
     t.string "date_derniere_modification"
     t.string "libelle_derniere_modification"
@@ -30,6 +30,7 @@ ActiveRecord::Schema.define(version: 2018_07_18_185254) do
     t.datetime "updated_at", null: false
     t.string "addressable_type"
     t.uuid "addressable_id"
+    t.string "type"
     t.index ["addressable_type", "addressable_id"], name: "index_adresses_on_addressable_type_and_addressable_id"
   end
 
@@ -97,6 +98,7 @@ ActiveRecord::Schema.define(version: 2018_07_18_185254) do
     t.datetime "updated_at", null: false
     t.string "identifiable_type"
     t.uuid "identifiable_id"
+    t.string "type"
     t.index ["identifiable_type", "identifiable_id"], name: "index_identites_on_identifiable_type_and_identifiable_id"
   end
 

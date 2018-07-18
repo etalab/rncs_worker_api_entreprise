@@ -35,11 +35,14 @@ module DataSource
             if extract.success?
               stock_file_list = order_stock_list(extract[:extracted_files])
 
-              test = stock_file_list.first
-              test_filename = test[:filename]
-              store_runner = test[:file_mapper]
-              store = store_runner.call(file_path: test_filename) unless ['actes', 'comptes_annuels'].include?(test[:label])
+              stock_file_list.map do |file|
+                filename = file[:filename]
+                store_runner = file[:file_mapper]
+                store = store_runner.call(file_path: filename) unless ['actes', 'comptes_annuels'].include?(file[:label])
+              end
             end
+
+            `rm -rf #{zip_path.chomp('.zip')}`
           end
 
           def order_stock_list(filename_list)
@@ -59,28 +62,28 @@ module DataSource
 
           def file_mapper_for(file_label)
             case file_label
-              when 'PM'
-                DataSource::File::PM::Operation::Store
+            when 'PM'
+              DataSource::File::PM::Operation::Store
 
-              when 'PP'
-                DataSource::File::PP::Operation::Store
+            when 'PP'
+              DataSource::File::PP::Operation::Store
 
-              when 'rep'
-                DataSource::File::Rep::Operation::Store
+            when 'rep'
+              DataSource::File::Rep::Operation::Store
 
-              when 'ets'
-                DataSource::File::Ets::Operation::Store
+            when 'ets'
+              DataSource::File::Ets::Operation::Store
 
-              when 'obs'
-                DataSource::File::Obs::Operation::Store
+            when 'obs'
+              DataSource::File::Obs::Operation::Store
 
-              when 'actes'
-                # DataSource::File::Actes::Operation::Store
+            when 'actes'
+              # DataSource::File::Actes::Operation::Store
 
-              when 'comptes_annuels'
-                # DataSource::File::ComptesAnnuels::Operation::Store
+            when 'comptes_annuels'
+              # DataSource::File::ComptesAnnuels::Operation::Store
 
-              else
+            else
             end
           end
         end

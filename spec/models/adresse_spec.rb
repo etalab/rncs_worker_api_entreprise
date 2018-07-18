@@ -7,8 +7,9 @@ describe Adresse do
   it { is_expected.to have_db_column(:ligne_3).of_type(:string) }
   it { is_expected.to have_db_column(:code_postal).of_type(:string) }
   it { is_expected.to have_db_column(:ville).of_type(:string) }
-  it { is_expected.to have_db_column(:commune).of_type(:string) }
+  it { is_expected.to have_db_column(:code_commune).of_type(:string) }
   it { is_expected.to have_db_column(:pays).of_type(:string) }
+  it { is_expected.to have_db_column(:type).of_type(:string) }
 
   # Associations
   it { is_expected.to belong_to(:addressable) }
