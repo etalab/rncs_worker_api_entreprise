@@ -25,6 +25,12 @@ gem 'puma', '~> 3.11'
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.1.0', require: false
 
+gem 'smarter_csv'
+
+gem 'trailblazer', '~> 2.1.0.rc1'
+gem 'trailblazer-rails'
+gem 'dry-validation', '~> 0.11.1'
+
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin AJAX possible
 # gem 'rack-cors'
 
@@ -35,6 +41,7 @@ group :development, :test do
   gem 'rspec-rails'
   gem 'shoulda-matchers'
   gem 'guard-rspec'
+  gem 'pry'
   gem 'rb-fsevent' if `uname` =~ /Darwin/ # For OS/X only, waits for file changes from the Mac OS/X FSEvents API instead of polling the disk for changes.
 end
 
