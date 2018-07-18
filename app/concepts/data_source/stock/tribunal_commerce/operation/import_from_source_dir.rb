@@ -35,9 +35,10 @@ module DataSource
             if extract.success?
               stock_file_list = order_stock_list(extract[:extracted_files])
 
-              test_filename = stock_file_list.first[:filename]
-              store_runner = stock_file_list.first[:file_mapper]
-              store = store_runner.call(file_path: test_filename)
+              test = stock_file_list.first
+              test_filename = test[:filename]
+              store_runner = test[:file_mapper]
+              store = store_runner.call(file_path: test_filename) unless ['actes', 'comptes_annuels'].include?(test[:label])
             end
           end
 
@@ -68,7 +69,7 @@ module DataSource
                 DataSource::File::Rep::Operation::Store
 
               when 'ets'
-                # DataSource::File::Ets::Operation::Store
+                DataSource::File::Ets::Operation::Store
 
               when 'obs'
                 # DataSource::File::Obs::Operation::Store

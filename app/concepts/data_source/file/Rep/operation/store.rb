@@ -12,6 +12,7 @@ module DataSource
 
           def rework_keys(ctx, data:, **)
             data.map! do |e|
+              e[:type_representant] = e.delete(:type)
               e[:siren_pm] = e.delete(:siren)
               e[:siren] = e.delete(:siren_entreprise)
               e[:nom_patronyme] = e.delete(:nom_patronymique)
