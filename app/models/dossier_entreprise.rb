@@ -1,2 +1,0 @@
-class DossierEntreprise < ApplicationRecord
-end

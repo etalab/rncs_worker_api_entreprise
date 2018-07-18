@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe DossierEntreprise do
+describe Entreprise do
   it { is_expected.to have_db_column(:id).of_type(:uuid) }
   it { is_expected.to have_db_column(:code_greffe).of_type(:string) }
   it { is_expected.to have_db_column(:nom_greffe).of_type(:string) }
@@ -15,10 +15,15 @@ describe DossierEntreprise do
   it { is_expected.to have_db_column(:date_debut_activite).of_type(:string) }
   it { is_expected.to have_db_column(:date_debut_premiere_activite).of_type(:string) }
   it { is_expected.to have_db_column(:date_cessation_activite).of_type(:string) }
+
+  # Associations
+  #it { is_expected.to have_one(:personne_morale) }
+  #it { is_expected.to have_one(:personne_physique) }
+  #it { is_expected.to have_many(:representants) }
+  #it { is_expected.to have_many(:observations) }
+
   it { is_expected.to have_db_column(:date_derniere_modification).of_type(:string) }
   it { is_expected.to have_db_column(:libelle_derniere_modification).of_type(:string) }
   it { is_expected.to have_db_column(:created_at).of_type(:datetime) }
   it { is_expected.to have_db_column(:updated_at).of_type(:datetime) }
-
-  # it is expected to have one entite_juridique (PP ou PM)
 end

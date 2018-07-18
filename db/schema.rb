@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_07_18_075442) do
+ActiveRecord::Schema.define(version: 2018_07_18_100827) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -30,7 +30,7 @@ ActiveRecord::Schema.define(version: 2018_07_18_075442) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "dossiers_entreprises", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "entreprises", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "code_greffe"
     t.string "nom_greffe"
     t.string "numero_gestion"
@@ -48,7 +48,7 @@ ActiveRecord::Schema.define(version: 2018_07_18_075442) do
     t.string "libelle_derniere_modification"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["numero_gestion"], name: "index_dossiers_entreprises_on_numero_gestion"
+    t.index ["numero_gestion"], name: "index_entreprises_on_numero_gestion"
   end
 
   create_table "etablissements", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -121,10 +121,10 @@ ActiveRecord::Schema.define(version: 2018_07_18_075442) do
     t.string "duree_pm"
     t.string "libelle_derniere_modification"
     t.string "date_derniere_modification"
-    t.uuid "dossier_entreprise_id"
+    t.uuid "entreprise_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["dossier_entreprise_id"], name: "index_personnes_morales_on_dossier_entreprise_id"
+    t.index ["entreprise_id"], name: "index_personnes_morales_on_entreprise_id"
   end
 
   create_table "personnes_physiques", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -166,5 +166,5 @@ ActiveRecord::Schema.define(version: 2018_07_18_075442) do
     t.datetime "updated_at", null: false
   end
 
-  add_foreign_key "personnes_morales", "dossiers_entreprises", column: "dossier_entreprise_id"
+  add_foreign_key "personnes_morales", "entreprises"
 end
