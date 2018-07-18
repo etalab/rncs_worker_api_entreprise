@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_07_14_134442) do
+ActiveRecord::Schema.define(version: 2018_07_18_075442) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -36,15 +36,15 @@ ActiveRecord::Schema.define(version: 2018_07_14_134442) do
     t.string "numero_gestion"
     t.string "siren"
     t.string "type_inscription"
-    t.date "date_immatriculation"
-    t.date "date_premiere_immatriculation"
-    t.date "date_radiation"
-    t.date "date_transfert"
+    t.string "date_immatriculation"
+    t.string "date_premiere_immatriculation"
+    t.string "date_radiation"
+    t.string "date_transfert"
     t.string "sans_activite"
-    t.date "date_debut_activite"
-    t.date "date_debut_premiere_activite"
-    t.date "date_cessation_activite"
-    t.date "date_derniere_modification"
+    t.string "date_debut_activite"
+    t.string "date_debut_premiere_activite"
+    t.string "date_cessation_activite"
+    t.string "date_derniere_modification"
     t.string "libelle_derniere_modification"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -112,15 +112,15 @@ ActiveRecord::Schema.define(version: 2018_07_14_134442) do
     t.string "associe_unique"
     t.string "activite_principale"
     t.string "type_capital"
-    t.float "capital"
-    t.float "capital_actuel"
+    t.string "capital"
+    t.string "capital_actuel"
     t.string "devise"
     t.string "date_cloture"
-    t.date "date_cloture_exeptionnelle"
+    t.string "date_cloture_exeptionnelle"
     t.string "economie_sociale_solidaire"
-    t.integer "duree_pm"
+    t.string "duree_pm"
     t.string "libelle_derniere_modification"
-    t.date "date_derniere_modification"
+    t.string "date_derniere_modification"
     t.uuid "dossier_entreprise_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -135,8 +135,8 @@ ActiveRecord::Schema.define(version: 2018_07_14_134442) do
     t.string "dap_date_cloture"
     t.string "eirl"
     t.string "auto_entrepreneur"
-    t.date "conjoint_collaborateur_date_fin"
-    t.date "date_derniere_modification"
+    t.string "conjoint_collaborateur_date_fin"
+    t.string "date_derniere_modification"
     t.string "libelle_derniere_modification"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -152,6 +152,16 @@ ActiveRecord::Schema.define(version: 2018_07_14_134442) do
     t.string "id_representant"
     t.string "date_derniere_modification"
     t.string "libelle_derniere_modification"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "stocks", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "type"
+    t.string "year"
+    t.string "month"
+    t.string "day"
+    t.string "files_path"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

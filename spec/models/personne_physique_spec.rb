@@ -14,8 +14,8 @@ describe PersonnePhysique do
   it { is_expected.to have_db_column(:dap_date_cloture).of_type(:string) }
   it { is_expected.to have_db_column(:eirl).of_type(:string) }
   it { is_expected.to have_db_column(:auto_entrepreneur).of_type(:string) }
-  it { is_expected.to have_db_column(:conjoint_collaborateur_date_fin).of_type(:date) }
-  it { is_expected.to have_db_column(:date_derniere_modification).of_type(:date) }
+  it { is_expected.to have_db_column(:conjoint_collaborateur_date_fin).of_type(:string) }
+  it { is_expected.to have_db_column(:date_derniere_modification).of_type(:string) }
   it { is_expected.to have_db_column(:libelle_derniere_modification).of_type(:string) }
   it { is_expected.to have_db_column(:created_at).of_type(:datetime) }
   it { is_expected.to have_db_column(:updated_at).of_type(:datetime) }

@@ -1,0 +1,2 @@
+class StockTribunalCommerce < Stock
+end
