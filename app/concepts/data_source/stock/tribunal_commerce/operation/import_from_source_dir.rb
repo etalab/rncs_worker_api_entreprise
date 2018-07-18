@@ -36,7 +36,8 @@ module DataSource
               stock_file_list = order_stock_list(extract[:extracted_files])
 
               test_filename = stock_file_list.first[:filename]
-              loading_from_source = DataSource::File::PM::Operation::Store.call(file_path: test_filename)
+              store_runner = stock_file_list.first[:file_mapper]
+              store = store_runner.call(file_path: test_filename)
             end
           end
 
@@ -44,14 +45,42 @@ module DataSource
             ordered_list = filename_list.map do |filename|
               if match = filename.match(/\A.+\/(.+)\/\1_(\d+)_(.+)\.csv\Z/)
                 _, num_stock, label = match.captures
+                file_mapper = file_mapper_for(label)
 
-                { filename: filename, run_priority: num_stock, label: label }
+                { filename: filename, run_priority: num_stock, label: label, file_mapper: file_mapper }
               else
                 # TODO manage errors
               end
             end
 
             ordered_list.sort_by { |a| a[:run_priority].to_i }
+          end
+
+          def file_mapper_for(file_label)
+            case file_label
+              when 'PM'
+                DataSource::File::PM::Operation::Store
+
+              when 'PP'
+                DataSource::File::PP::Operation::Store
+
+              when 'rep'
+                # DataSource::File::Rep::Operation::Store
+
+              when 'ets'
+                # DataSource::File::Ets::Operation::Store
+
+              when 'obs'
+                # DataSource::File::Obs::Operation::Store
+
+              when 'actes'
+                # DataSource::File::Actes::Operation::Store
+
+              when 'comptes_annuels'
+                # DataSource::File::ComptesAnnuels::Operation::Store
+
+              else
+            end
           end
         end
       end

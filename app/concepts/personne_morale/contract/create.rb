@@ -1,7 +1,7 @@
 class PersonneMorale
   module Contract
     class Create < Reform::Form
-      property :dossier_entreprise_id
+      property :entreprise_id
       property :denomination
       property :sigle
       property :forme_juridique
@@ -19,7 +19,7 @@ class PersonneMorale
       property :libelle_derniere_modification
 
       validation do
-        required(:dossier_entreprise_id).filled
+        required(:entreprise_id).filled
       end
     end
   end
