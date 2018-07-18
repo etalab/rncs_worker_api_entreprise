@@ -72,7 +72,7 @@ module DataSource
                 DataSource::File::Ets::Operation::Store
 
               when 'obs'
-                # DataSource::File::Obs::Operation::Store
+                DataSource::File::Obs::Operation::Store
 
               when 'actes'
                 # DataSource::File::Actes::Operation::Store
