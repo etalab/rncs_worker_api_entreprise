@@ -1,0 +1,3 @@
+class DAPAdresse < Adresse
+
+end

@@ -9,6 +9,10 @@ describe Adresse do
   it { is_expected.to have_db_column(:ville).of_type(:string) }
   it { is_expected.to have_db_column(:commune).of_type(:string) }
   it { is_expected.to have_db_column(:pays).of_type(:string) }
+
+  # Associations
+  it { is_expected.to belong_to(:addressable) }
+
   it { is_expected.to have_db_column(:date_derniere_modification).of_type(:string) }
   it { is_expected.to have_db_column(:libelle_derniere_modification).of_type(:string) }
   it { is_expected.to have_db_column(:created_at).of_type(:datetime) }

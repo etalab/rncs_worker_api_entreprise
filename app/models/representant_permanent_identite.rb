@@ -1,0 +1,3 @@
+class RepresentantPermanentIdentite < Identite
+
+end

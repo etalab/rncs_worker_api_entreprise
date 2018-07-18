@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 describe Etablissement do
-  # it is expected to have one adresse
   it { is_expected.to have_db_column(:id).of_type(:uuid) }
   it { is_expected.to have_db_column(:type).of_type(:string) }
   it { is_expected.to have_db_column(:siege_pm).of_type(:string) }
@@ -22,6 +21,11 @@ describe Etablissement do
   it { is_expected.to have_db_column(:origine_fonds_info).of_type(:string) }
   it { is_expected.to have_db_column(:type_exploitation).of_type(:string) }
   it { is_expected.to have_db_column(:id_etablissement).of_type(:string) } # siret ?
+
+  # Associations
+  it { is_expected.to belong_to(:entreprise) }
+  it { is_expected.to have_one(:adresse) }
+
   it { is_expected.to have_db_column(:date_derniere_modification).of_type(:string) }
   it { is_expected.to have_db_column(:libelle_derniere_modification).of_type(:string) }
   it { is_expected.to have_db_column(:created_at).of_type(:datetime) }

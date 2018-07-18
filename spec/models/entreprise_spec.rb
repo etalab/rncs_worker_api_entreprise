@@ -17,10 +17,10 @@ describe Entreprise do
   it { is_expected.to have_db_column(:date_cessation_activite).of_type(:string) }
 
   # Associations
-  #it { is_expected.to have_one(:personne_morale) }
-  #it { is_expected.to have_one(:personne_physique) }
-  #it { is_expected.to have_many(:representants) }
-  #it { is_expected.to have_many(:observations) }
+  it { is_expected.to have_one(:personne_morale) }
+  it { is_expected.to have_one(:personne_physique) }
+  it { is_expected.to have_many(:representants) }
+  it { is_expected.to have_many(:observations) }
 
   it { is_expected.to have_db_column(:date_derniere_modification).of_type(:string) }
   it { is_expected.to have_db_column(:libelle_derniere_modification).of_type(:string) }

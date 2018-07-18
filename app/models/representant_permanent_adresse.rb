@@ -1,0 +1,3 @@
+class RepresentantPermanentAdresse < Adresse
+
+end

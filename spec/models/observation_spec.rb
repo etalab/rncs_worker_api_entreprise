@@ -9,6 +9,9 @@ describe Observation do
   it { is_expected.to have_db_column(:texte).of_type(:text) }
   it { is_expected.to have_db_column(:etat).of_type(:string) }
 
+  # Associations
+  it { is_expected.to belong_to(:entreprise) }
+
   it { is_expected.to have_db_column(:date_derniere_modification).of_type(:string) }
   it { is_expected.to have_db_column(:libelle_derniere_modification).of_type(:string) }
   it { is_expected.to have_db_column(:created_at).of_type(:datetime) }
