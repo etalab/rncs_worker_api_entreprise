@@ -10,6 +10,10 @@ class PersonnePhysique
       property :eirl
       property :auto_entrepreneur
       property :conjoint_collaborateur_date_fin
+
+      validation do
+        required(:entreprise_id).filled
+      end
     end
   end
 end

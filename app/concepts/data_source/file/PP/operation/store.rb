@@ -6,7 +6,6 @@ module DataSource
           include DataSource::File::Helper
 
           step :csv_to_hash
-          # step ->(ctx, **) { binding.pry }
           step :rework_keys
           step :insert_into_database
 

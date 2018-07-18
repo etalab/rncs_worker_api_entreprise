@@ -65,7 +65,7 @@ module DataSource
                 DataSource::File::PP::Operation::Store
 
               when 'rep'
-                # DataSource::File::Rep::Operation::Store
+                DataSource::File::Rep::Operation::Store
 
               when 'ets'
                 # DataSource::File::Ets::Operation::Store
