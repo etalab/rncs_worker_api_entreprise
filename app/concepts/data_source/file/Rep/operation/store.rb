@@ -8,6 +8,7 @@ module DataSource
           step :rename_csv_headers
           step :csv_to_hash
           step :rework_keys
+          step :deserialize_params
           step :insert_into_database
 
           def rework_keys(ctx, data:, **)
@@ -39,6 +40,56 @@ module DataSource
 
           def rename_csv_headers(ctx, file_path:, **)
             `sed -i -e '1s/Nom_Greffe;Numero_Gestion;Siren;Type;/Nom_Greffe;Numero_Gestion;Siren_Entreprise;Type;/' #{file_path}`
+          end
+
+          def deserialize_params(ctx, data:, **)
+            data.map! do |e|
+              nested_identite = e[:identite] = {}
+              nested_identite[:nom_patronyme] = e.delete(:nom_patronyme)
+              nested_identite[:nom_usage] = e.delete(:nom_usage)
+              nested_identite[:pseudonyme] = e.delete(:pseudonyme)
+              nested_identite[:prenoms] = e.delete(:prenoms)
+              nested_identite[:date_naissance] = e.delete(:date_naissance)
+              nested_identite[:ville_naissance] = e.delete(:ville_naissance)
+              nested_identite[:pays_naissance] = e.delete(:pays_naissance)
+              nested_identite[:nationalite] = e.delete(:nationalite)
+
+              nested_identite = e[:representant_permanent_identite] = {}
+              nested_identite[:nom_patronyme] = e.delete(:rep_perm_nom)
+              nested_identite[:nom_usage] = e.delete(:rep_perm_nom_usage)
+              nested_identite[:pseudonyme] = e.delete(:rep_perm_pseudo)
+              nested_identite[:prenoms] = e.delete(:rep_perm_prenoms)
+              nested_identite[:date_naissance] = e.delete(:rep_perm_date_naissance)
+              nested_identite[:ville_naissance] = e.delete(:rep_perm_ville_naissance)
+              nested_identite[:pays_naissance] = e.delete(:rep_perm_pays_naissance)
+              nested_identite[:nationalite] = e.delete(:rep_perm_nationalite)
+
+              nested_identite = e[:conjoint_collaborateur_identite] = {}
+              nested_identite[:nom_patronyme] = e.delete(:conjoint_collab_nom_patronym)
+              nested_identite[:nom_usage] = e.delete(:conjoint_collab_nom_usage)
+              nested_identite[:pseudonyme] = e.delete(:conjoint_collab_pseudo)
+              nested_identite[:prenoms] = e.delete(:conjoint_collab_prenoms)
+
+              nested_adresse = e[:adresse] = {}
+              nested_adresse[:ligne_1] = e.delete(:adresse_ligne1)
+              nested_adresse[:ligne_2] = e.delete(:adresse_ligne2)
+              nested_adresse[:ligne_3] = e.delete(:adresse_ligne3)
+              nested_adresse[:code_postal] = e.delete(:code_postal)
+              nested_adresse[:ville] = e.delete(:ville)
+              nested_adresse[:code_commune] = e.delete(:commune)
+              nested_adresse[:pays] = e.delete(:pays)
+
+              nested_adresse = e[:representant_permanent_adresse] = {}
+              nested_adresse[:ligne_1] = e.delete(:rep_perm_adr_ligne1)
+              nested_adresse[:ligne_2] = e.delete(:rep_perm_adr_ligne2)
+              nested_adresse[:ligne_3] = e.delete(:rep_perm_adr_ligne3)
+              nested_adresse[:code_postal] = e.delete(:rep_perm_code_postal)
+              nested_adresse[:ville] = e.delete(:rep_perm_ville)
+              nested_adresse[:code_commune] = e.delete(:rep_perm_code_commune)
+              nested_adresse[:pays] = e.delete(:rep_perm_pays)
+
+              e
+            end
           end
         end
       end
