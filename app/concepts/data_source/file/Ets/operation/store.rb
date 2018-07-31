@@ -7,6 +7,7 @@ module DataSource
 
           step :csv_to_hash
           step :rework_keys
+          step :deserialize_params
           step :insert_into_database
 
 
@@ -23,6 +24,21 @@ module DataSource
               e[:activite] = e.delete(:activité)
               e[:date_derniere_modification] = e.delete(:date_greffe)
               e[:libelle_derniere_modification] = e.delete(:libelle_evt)
+
+              e
+            end
+          end
+
+          def deserialize_params(ctx, data:, **)
+            data.map! do |e|
+              nested_adresse = e[:adresse] = {}
+              nested_adresse[:ligne_1] = e.delete(:adresse_ligne1)
+              nested_adresse[:ligne_2] = e.delete(:adresse_ligne2)
+              nested_adresse[:ligne_3] = e.delete(:adresse_ligne3)
+              nested_adresse[:code_postal] = e.delete(:code_postal)
+              nested_adresse[:ville] = e.delete(:ville)
+              nested_adresse[:code_commune] = e.delete(:commune)
+              nested_adresse[:pays] = e.delete(:pays)
 
               e
             end

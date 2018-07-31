@@ -23,6 +23,8 @@ class Etablissement
       property :date_derniere_modification
       property :libelle_derniere_modification
 
+      property :adresse, form: Adresse::Contract::Create, populate_if_empty: Adresse
+
       validation do
         required(:entreprise_id).filled
       end
