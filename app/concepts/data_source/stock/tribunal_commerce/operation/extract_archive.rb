@@ -11,6 +11,7 @@ module DataSource
             dest_path = "#{Rails.root}/tmp/#{archive_name}"
 
             `unzip #{archive_path} -d #{dest_path}`
+            ctx[:stock_dir] = dest_path
             ctx[:extracted_files] = Dir.glob("#{dest_path}/*.csv")
           end
 

@@ -40,9 +40,8 @@ module DataSource
                 store_runner = file[:file_mapper]
                 store = store_runner.call(file_path: filename) unless ['actes', 'comptes_annuels'].include?(file[:label])
               end
+              FileUtils.rm_rf(extract[:stock_dir])
             end
-
-            `rm -rf #{zip_path.chomp('.zip')}`
           end
 
           def order_stock_list(filename_list)
