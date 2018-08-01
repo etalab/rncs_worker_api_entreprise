@@ -17,6 +17,10 @@ class Stock < ApplicationRecord
 
   def newer?
     last_loaded_stock = self.class.current
-    date <=> last_loaded_stock.date
+    if last_loaded_stock.nil?
+      true
+    else
+      date <=> last_loaded_stock.date
+    end
   end
 end
