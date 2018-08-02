@@ -12,6 +12,10 @@
 # the additional setup, and require it from the spec files that actually need
 # it.
 #
+
+# Require spec helpers
+Dir[Rails.root.join("spec/helper/*.rb")].each { |f| require f }
+
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 RSpec.configure do |config|
   # rspec-expectations config goes here. You can use an alternate
@@ -93,4 +97,6 @@ RSpec.configure do |config|
   # as the one that triggered the failure.
   Kernel.srand config.seed
 =end
+
+  config.include DataSourceHelper
 end
