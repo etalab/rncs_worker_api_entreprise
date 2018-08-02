@@ -16,6 +16,10 @@ class Entreprise
       property :date_cessation_activite
       property :date_derniere_modification
       property :libelle_derniere_modification
+
+      validation do
+        required(:siren).filled
+      end
     end
   end
 end
