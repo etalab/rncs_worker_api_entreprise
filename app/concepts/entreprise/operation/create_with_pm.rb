@@ -1,8 +1,8 @@
 class Entreprise
   module Operation
-    class Create < Trailblazer::Operation
+    class CreateWithPM < Trailblazer::Operation
       step Model(Entreprise, :new)
-      step Trailblazer::Operation::Contract::Build(constant: Entreprise::Contract::Create)
+      step Trailblazer::Operation::Contract::Build(constant: Entreprise::Contract::CreateWithPM)
       step Trailblazer::Operation::Contract::Validate()
       step Trailblazer::Operation::Contract::Persist()
     end
