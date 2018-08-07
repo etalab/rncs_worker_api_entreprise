@@ -42,4 +42,9 @@ module DataSourceHelper
     data = deserialize_data_from(file_label)
     data[0]
   end
+
+  def first_line_raw_data_for(file_label)
+    raw_data = extract_raw_data(file_label)
+    raw_data[0]
+  end
 end
