@@ -3,7 +3,7 @@ module DataSource
     module PM
       module Operation
         class Store < Trailblazer::Operation
-          pass ->(ctx, raw_data:, **) do
+          step ->(ctx, raw_data:, **) do
             errors_count = 0
             raw_data.each do |row|
               create_entreprise_with_pm = Entreprise::Operation::CreateWithPM.call(params: row)
@@ -12,9 +12,8 @@ module DataSource
             end
 
             ctx[:import_errors_count] = errors_count
+            errors_count == 0
           end
-
-          step ->(ctx, import_errors_count:, raw_data:, **) { import_errors_count < raw_data.count }
         end
       end
     end

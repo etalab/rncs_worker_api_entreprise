@@ -65,8 +65,8 @@ describe DataSource::File::PM::Operation::Store do
       expect(import_errors_count).to eq(2)
     end
 
-    it 'is successful' do
-      expect(subject).to be_success
+    it 'is failure' do
+      expect(subject).to be_failure
     end
 
     it 'logs'
