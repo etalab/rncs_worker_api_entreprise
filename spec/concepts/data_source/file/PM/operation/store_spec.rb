@@ -41,7 +41,6 @@ describe DataSource::File::PM::Operation::Store do
 
   it 'delegates records creation' do
     expect_full_import_success
-    binding.pry
     subject
   end
 

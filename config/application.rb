@@ -33,6 +33,7 @@ module RncsWorkerApiEntreprise
     config.api_only = true
 
     config.reform.validations = :dry
+    config.trailblazer.use_loader = false
 
     config.generators do |g|
         g.orm :active_record, primary_key_type: :uuid
