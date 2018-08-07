@@ -36,8 +36,12 @@ describe DataSource::File::PM::Operation::Store do
 
   let(:data) { deserialize_data_from(:pm_stock_file) }
   let(:import_errors_count) { subject[:import_errors_count] }
-  let(:end_event) { subject.event.to_h[:semantic] }
-  subject { described_class.call(raw_data: data) }
+
+  class OperationContainer < Trailblazer::Operation
+    step DataSource::File::PM::Operation::Store
+  end
+
+  subject { OperationContainer.call(raw_data: data) }
 
   it 'delegates records creation' do
     expect_full_import_success

@@ -13,7 +13,7 @@ module DataSource
 
           step :csv_to_hash
           step Nested(PM::Operation::Deserialize)
-          step Nested(PM::Operation::Store)
+          step PM::Operation::Store
         end
       end
     end
