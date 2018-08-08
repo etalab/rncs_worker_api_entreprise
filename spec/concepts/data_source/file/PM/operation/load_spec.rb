@@ -25,8 +25,32 @@ describe DataSource::File::PM::Operation::Load do
     end
 
     context 'when the file is valid' do
-      # TODO Dunno how to test nested operations call yet
-      it 'calls the store operation'
+      # TODO test deserialization
+
+      it 'calls the store operation' do
+        expect(DataSource::File::PM::Operation::Store).to receive(:call)
+        subject
+      end
+
+      context 'when storing operation fails' do
+        before { allow(DataSource::File::PM::Operation::Store).to receive(:call).and_return(false) }
+
+        it 'is failure' do
+          expect(subject).to be_failure
+        end
+
+        it 'logs'
+      end
+
+      context 'when storing operation is successful' do
+        before { allow(DataSource::File::PM::Operation::Store).to receive(:call).and_return(true) }
+
+        it 'is success' do
+          expect(subject).to be_success
+        end
+
+        it 'logs'
+      end
     end
   end
 end
