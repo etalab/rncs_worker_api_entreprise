@@ -36,12 +36,13 @@ describe DataSource::File::PM::Operation::Store do
 
   let(:data) { deserialize_data_from(:pm_stock_file) }
   let(:import_errors_count) { subject[:import_errors_count] }
-
-  class OperationContainer < Trailblazer::Operation
-    step DataSource::File::PM::Operation::Store
+  let(:operation_container) do
+    Class.new(Trailblazer::Operation) do
+      step DataSource::File::PM::Operation::Store
+    end
   end
 
-  subject { OperationContainer.call(raw_data: data) }
+  subject { operation_container.call(raw_data: data) }
 
   it 'delegates records creation' do
     expect_full_import_success
