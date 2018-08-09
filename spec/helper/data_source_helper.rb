@@ -12,12 +12,21 @@ module DataSourceHelper
       pm_stock_file: {
         path: Rails.root.join('spec/data_source_example/tc/stock/2017/05/04/csv_files_example/0101_S1_20170504_1_PM.csv'),
         deserializer: DataSource::File::PM::Operation::Deserialize
+      },
+
+      tc_stock_unit: {
+        path: Rails.root.join('spec', 'data_source_example', 'tc', 'stock', '2017', '05', '04', '2401_S1_20170504.zip'),
+        name: '2401_S1_20170504'
       }
     }
   end
 
   def path_for(file_label)
-    labels.fetch(file_label)[:path]
+    labels.fetch(file_label)[:path].to_s
+  end
+
+  def name_for(file_label)
+    labels.fetch(file_label)[:name].to_s
   end
 
   def deserializer_for(file_label)
