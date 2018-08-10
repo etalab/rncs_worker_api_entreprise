@@ -19,8 +19,8 @@ describe DataSource::Stock::TribunalCommerce::Unit::Operation::MapFileLoader do
     end
   end
 
-  subject { task_container.call(stock_list: mapper_params) }
-  let(:result) { subject[:stock_list] }
+  subject { task_container.call(stock_files: mapper_params) }
+  let(:result) { subject[:stock_files] }
 
   context 'when hash in params has a valid :label' do
     it { is_expected.to be_success }
@@ -40,8 +40,8 @@ describe DataSource::Stock::TribunalCommerce::Unit::Operation::MapFileLoader do
       end
 
       subject do
-        result = task_container.call(stock_list: mapper_params)
-        result[:stock_list]
+        result = task_container.call(stock_files: mapper_params)
+        result[:stock_files]
       end
 
       it_behaves_like 'map loader', 'PM', DataSource::File::PM::Operation::Load

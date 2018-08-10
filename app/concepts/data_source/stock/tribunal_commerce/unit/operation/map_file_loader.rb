@@ -7,9 +7,9 @@ module DataSource
             class MapError < StandardError; end
 
             class << self
-              def call(ctx, stock_list:, **)
+              def call(ctx, stock_files:, **)
                 begin
-                  stock_list.each do |file_param|
+                  stock_files.each do |file_param|
                     if file_param[:label].nil?
                       raise MapError, 'Incomming params does not have :label key'
                     else

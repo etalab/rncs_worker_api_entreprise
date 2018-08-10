@@ -16,13 +16,13 @@ describe DataSource::Stock::TribunalCommerce::Unit::Operation::OrderFiles do
     end
   end
 
-  subject { task_container.call(stock_list: params) }
+  subject { task_container.call(stock_files: params) }
 
   context 'when :run_order is present in hash params' do
     it { is_expected.to be_success }
 
     it 'orders by :run_order' do
-      result = subject[:stock_list]
+      result = subject[:stock_files]
       ordered_list = [
         { random_key: 'random data', run_order: 1 },
         { random_key: 'random data', run_order: 4 },
