@@ -5,7 +5,7 @@ module DataSource
         class Load < Trailblazer::Operation
           step Nested(RetrieveLastStock)
           step ->(ctx, stock:, **) { stock.newer? }
-          step Nested(ImportFromSourceDir)
+          step Nested(PrepareImport)
         end
       end
     end
