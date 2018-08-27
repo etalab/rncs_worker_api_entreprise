@@ -6,6 +6,7 @@ module DataSource
           step Nested(RetrieveLastStock)
           step ->(ctx, stock:, **) { stock.newer? }
           step Nested(PrepareImport)
+          step Import
         end
       end
     end
