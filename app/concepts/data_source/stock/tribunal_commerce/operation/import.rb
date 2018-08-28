@@ -7,6 +7,7 @@ module DataSource
             def call(ctx, import_args:, **)
               errors = []
               import_args.each do |stock_unit_args|
+                # TODO pass entire `stock_unit_args` to the stock unit load operation
                 import_stock_unit = DataSource::Stock::TribunalCommerce::Unit::Operation::Load.call(stock_unit_path: stock_unit_args[:path])
 
                 if import_stock_unit.failure?
