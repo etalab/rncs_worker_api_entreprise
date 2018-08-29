@@ -1,7 +1,6 @@
 class PersonnePhysique
   module Contract
     class Create < Reform::Form
-      property :entreprise_id
       property :activite_forain
       property :dap
       property :dap_denomination
@@ -16,10 +15,6 @@ class PersonnePhysique
 
       property :adresse, form: Adresse::Contract::Create, populate_if_empty: Adresse
       property :dap_adresse, form: Adresse::Contract::Create, populate_if_empty: DAPAdresse
-
-      validation do
-        required(:entreprise_id).filled
-      end
     end
   end
 end

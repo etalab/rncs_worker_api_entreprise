@@ -31,6 +31,7 @@ module DataSource
 
                 # TODO add loader when implemented
                 when 'PP'
+                  DataSource::File::PP::Operation::Load
                 when 'rep'
                 when 'ets'
                 when 'obs'

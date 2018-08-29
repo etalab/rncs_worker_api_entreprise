@@ -15,6 +15,7 @@ ActiveSupport::Inflector.inflections(:en) do |inflect|
 
   inflect.acronym 'DAP'
   inflect.acronym 'PM'
+  inflect.acronym 'PP'
 end
 
 # These inflection rules are supported but not enabled by default:
