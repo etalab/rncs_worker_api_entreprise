@@ -33,6 +33,7 @@ module DataSource
                 when 'PP'
                   DataSource::File::PP::Operation::Load
                 when 'rep'
+                  DataSource::File::Rep::Operation::Load
                 when 'ets'
                 when 'obs'
                 when 'actes'
