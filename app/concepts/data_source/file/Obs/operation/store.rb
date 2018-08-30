@@ -2,25 +2,19 @@ module DataSource
   module File
     module Obs
       module Operation
-        class Store < Trailblazer::Operation
-          include DataSource::File::Helper
+        class Store
+          class << self
+            def call(ctx, raw_data:, **)
+              errors_count = 0
+              raw_data.each do |row|
+                create_observation = Observation::Operation::Create.call(params: row)
 
-          step :csv_to_hash
-          step :rework_keys
-          step :insert_into_database
+                errors_count += 1 if create_observation.failure?
+                # TODO deal with errors when form validations are setup
+              end
 
-          def rework_keys(ctx, data:, **)
-            data.map! do |e|
-              e[:numero] = e.delete(:numéro_observation)
-              e[:date_derniere_modification] = e.delete(:date_greffe)
-
-              e
-            end
-          end
-
-          def insert_into_database(ctx, data:, **)
-            data.each do |row|
-              create_observation = Observation::Operation::Create.call(params: row)
+              ctx[:import_errors_count] = errors_count
+              errors_count == 0
             end
           end
         end

@@ -37,6 +37,7 @@ module DataSource
                 when 'ets'
                   DataSource::File::Ets::Operation::Load
                 when 'obs'
+                  DataSource::File::Obs::Operation::Load
                 when 'actes'
                 when 'comptes_annuels'
 
