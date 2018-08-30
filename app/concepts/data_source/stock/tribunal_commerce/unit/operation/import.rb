@@ -10,7 +10,7 @@ module DataSource
                 stock_files.each do |file|
                   file_loader = file[:loader]
 
-                  unless file_loader.nil? # TODO remove when all file loader are implemented
+                  unless ['actes', 'comptes_annuels'].include?(file[:label])
                     import = file_loader.call(file_path: file[:path])
 
                     if import.failure?
