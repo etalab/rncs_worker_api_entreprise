@@ -25,6 +25,7 @@ module DataSource
                     stock_number: stock_number,
                     run_order: run_order,
                     label: label,
+                    name: filename.chomp('.csv'),
                   }
                 else
                   # TODO manage errors

@@ -5,6 +5,8 @@ module DataSource
         class Load < Trailblazer::Operation
           include DataSource::File::Helper
 
+          step ->(ctx, name:, **) { ctx[:logger] = Logger.new("log/tc_stock/#{name}.log") }
+
           step ->(ctx, file_path: nil, **) { !file_path.nil? }
           fail ->(ctx, **) { ctx[:errors] = 'No file path given' }, fail_fast: true
 
