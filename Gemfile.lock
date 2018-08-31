@@ -280,7 +280,6 @@ DEPENDENCIES
   pry
   puma (~> 3.11)
   rails (~> 5.2.0)
-  rb-fsevent
   redis (~> 4.0.2)
   rspec-rails
   shoulda-matchers
