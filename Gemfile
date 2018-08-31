@@ -25,6 +25,8 @@ gem 'puma', '~> 3.11'
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.1.0', require: false
 
+gem 'sidekiq'
+
 gem 'smarter_csv'
 
 gem 'trailblazer', '~> 2.1.0.rc1'

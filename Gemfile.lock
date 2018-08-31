@@ -49,6 +49,7 @@ GEM
     byebug (10.0.2)
     coderay (1.1.2)
     concurrent-ruby (1.0.5)
+    connection_pool (2.2.2)
     crass (1.0.4)
     declarative (0.0.10)
     declarative-builder (0.1.0)
@@ -142,6 +143,8 @@ GEM
       method_source (~> 0.9.0)
     puma (3.11.4)
     rack (2.0.5)
+    rack-protection (2.0.3)
+      rack
     rack-test (1.0.0)
       rack (>= 1.0, < 3)
     rails (5.2.0)
@@ -172,6 +175,7 @@ GEM
     rb-fsevent (0.10.3)
     rb-inotify (0.9.10)
       ffi (>= 0.5.0, < 2)
+    redis (4.0.2)
     reform (2.2.4)
       disposable (>= 0.4.1)
       representable (>= 2.4.0, < 3.1.0)
@@ -207,6 +211,10 @@ GEM
     shellany (0.0.1)
     shoulda-matchers (3.1.2)
       activesupport (>= 4.0.0)
+    sidekiq (5.2.1)
+      connection_pool (~> 2.2, >= 2.2.2)
+      rack-protection (>= 1.5.0)
+      redis (>= 3.3.5, < 5)
     smarter_csv (1.2.3)
     spring (2.0.2)
       activesupport (>= 4.2)
@@ -268,6 +276,7 @@ DEPENDENCIES
   rb-fsevent
   rspec-rails
   shoulda-matchers
+  sidekiq
   smarter_csv
   spring
   spring-commands-rspec
@@ -280,4 +289,4 @@ RUBY VERSION
    ruby 2.5.1p57
 
 BUNDLED WITH
-   1.16.2
+   1.16.3
