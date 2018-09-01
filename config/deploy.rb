@@ -51,6 +51,7 @@ set :shared_dirs, fetch(:shared_dirs, []).push(
 set :shared_files, fetch(:shared_files, []).push(
   'config/database.yml',
   "config/environments/#{ENV['to']}.rb",
+  'config/rncs_sources.yml'
   'config/master.key'
 )
 

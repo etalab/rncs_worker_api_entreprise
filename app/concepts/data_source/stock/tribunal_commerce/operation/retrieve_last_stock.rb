@@ -3,7 +3,7 @@ module DataSource
     module TribunalCommerce
       module Operation
         class RetrieveLastStock < Trailblazer::Operation
-          RNCSSourceDir = '/Users/alexandre/Professional/temp_imr/IMR_Donnees_Saisies/IMR_Donnees_Saisies/tc/stock/'
+          RNCSSourceDir = File.join(Rails.configuration.rncs_sources['path'], 'tc', 'stock')
 
           step :fetch_stocks
           fail ->(ctx, **) { ctx[:errors] = "No stock found into #{RNCSSourceDir}" }, fail_fast: true
@@ -15,14 +15,15 @@ module DataSource
 
 
           def fetch_stocks(ctx, **)
-            stocks_paths = Dir.glob("#{RNCSSourceDir}*/*/*")
+            # Stocks are located in subfolders following the 'AAAA/MM/DD' pattern
+            stocks_paths_pattern = File.join(RNCSSourceDir, '*', '*', '*')
+            stocks_paths = Dir.glob(stocks_paths_pattern)
             ctx[:stock_path_list] = stocks_paths unless stocks_paths.empty?
           end
 
-          # Stocks are located in subfolders following the 'AAAA/MM/DD' pattern
           def deserialize(ctx, stock_path_list:, **)
             stock_list = stock_path_list.map do |path|
-              if match = path.match(/\A#{RNCSSourceDir}(.{4})\/(.{2})\/(.{2})\Z/)
+              if match = path.match(/\A#{RNCSSourceDir}\/(.{4})\/(.{2})\/(.{2})\Z/)
                 year, month, day = match.captures
                 StockTribunalCommerce.new(year: year, month: month, day: day, files_path: path)
               else
