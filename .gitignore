@@ -11,8 +11,14 @@
 
 # Ignore all logfiles and tempfiles.
 /log/*
-/tmp/*
 !/log/.keep
+
+# Keep track of log/tc_stock folder only
+!/log/tc_stock
+/log/tc_stock/*
+!/log/tc_stock/.keep
+
+/tmp/*
 !/tmp/.keep
 
 # Ignore uploaded files in development
