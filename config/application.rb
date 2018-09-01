@@ -35,7 +35,6 @@ module RncsWorkerApiEntreprise
     config.active_job.queue_adapter = :sidekiq
 
     config.reform.validations = :dry
-    config.trailblazer.use_loader = false
 
     config.generators do |g|
         g.orm :active_record, primary_key_type: :uuid
