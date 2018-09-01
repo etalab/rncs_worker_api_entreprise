@@ -12,7 +12,8 @@ module DataSourceHelper
       pm_stock_file: {
         path: Rails.root.join('spec/data_source_example/tc/stock/2017/05/04/csv_files_example/0101_S1_20170504_1_PM.csv'),
         deserializer: DataSource::File::PM::Operation::Deserialize,
-        loader: DataSource::File::PM::Operation::Load
+        loader: DataSource::File::PM::Operation::Load,
+        name: '0101_S1_20170504_1_PM'
       },
 
       tc_stock_unit: {

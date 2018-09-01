@@ -45,10 +45,10 @@ describe DataSource::Stock::TribunalCommerce::Unit::Operation::MapFileLoader do
       end
 
       it_behaves_like 'map loader', 'PM', DataSource::File::PM::Operation::Load
-      it_behaves_like 'map loader', 'PP', nil
-      it_behaves_like 'map loader', 'rep', nil
-      it_behaves_like 'map loader', 'ets', nil
-      it_behaves_like 'map loader', 'obs', nil
+      it_behaves_like 'map loader', 'PP', DataSource::File::PP::Operation::Load
+      it_behaves_like 'map loader', 'rep', DataSource::File::Rep::Operation::Load
+      it_behaves_like 'map loader', 'ets', DataSource::File::Ets::Operation::Load
+      it_behaves_like 'map loader', 'obs', DataSource::File::Obs::Operation::Load
       it_behaves_like 'map loader', 'actes', nil
       it_behaves_like 'map loader', 'comptes_annuels', nil
     end

@@ -1,8 +1,9 @@
 require 'rails_helper'
 
 describe DataSource::File::PM::Operation::Load do
-  let(:file_path) { path_for(:pm_stock_file)}
-  subject { described_class.call(file_path: file_path) }
+  let(:file_path) { path_for(:pm_stock_file) }
+  let(:file_name) { name_for(:pm_stock_file) }
+  subject { described_class.call(file_path: file_path, name: file_name) }
   let(:errors) { subject[:errors] }
 
   describe ':file_path argument' do
