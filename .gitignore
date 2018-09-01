@@ -22,3 +22,5 @@
 
 # Ignore master key for decrypting credentials and more.
 /config/master.key
+
+app/concepts/data_source/file
