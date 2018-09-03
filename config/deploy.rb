@@ -43,6 +43,7 @@ set :forward_agent, true     # SSH forward_agent.
 set :shared_dirs, fetch(:shared_dirs, []).push(
   'bin',
   'log',
+  'log/tc_stock',
   'tmp/pids',
   'tmp/sockets',
   'tmp/cache',
@@ -52,6 +53,7 @@ set :shared_files, fetch(:shared_files, []).push(
   'config/database.yml',
   "config/environments/#{ENV['to']}.rb",
   'config/rncs_sources.yml',
+  'config/sidekiq.yml',
   'config/master.key'
 )
 
@@ -90,6 +92,7 @@ task :deploy do
       in_path(fetch(:current_path)) do
         command %{mkdir -p tmp/}
         command %{touch tmp/restart.txt}
+        invoke :sidekiq
         invoke :passenger
       end
     end
@@ -97,6 +100,11 @@ task :deploy do
 
   # you can use `run :local` to run tasks on local machine before of after the deploy scripts
   # run(:local){ say 'done' }
+end
+
+task :sidekiq do
+  comment 'Restarting Sidekiq (reloads code)'.green
+  command %(sudo systemctl restart sidekiq_rncs_api_#{ENV['to']})
 end
 
 task :passenger do
