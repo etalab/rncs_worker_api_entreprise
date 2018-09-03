@@ -18,8 +18,9 @@ module DataSource
 
 
           def rename_csv_headers(ctx, file_path:, **)
-            # TODO see if it works with non OSX platform : see https://stackoverflow.com/questions/5171901/sed-command-find-and-replace-in-file-and-overwrite-file-doesnt-work-it-empties
-            `sed -i '' '1s/Nom_Greffe;Numero_Gestion;Siren;Type;/Nom_Greffe;Numero_Gestion;Siren_Entreprise;Type;/' #{file_path}`
+            # for sed portability on different OS : see https://stackoverflow.com/questions/5171901/sed-command-find-and-replace-in-file-and-overwrite-file-doesnt-work-it-empties
+            tmp_file = file_path + '.tmp'
+            `sed -e '1s/Nom_Greffe;Numero_Gestion;Siren;Type;/Nom_Greffe;Numero_Gestion;Siren_Entreprise;Type;/' #{file_path} > #{tmp_file} && mv #{tmp_file} #{file_path}`
           end
         end
       end
