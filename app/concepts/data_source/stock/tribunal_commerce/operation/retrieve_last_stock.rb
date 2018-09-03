@@ -9,7 +9,7 @@ module DataSource
 
           step :fetch_stocks
           step :deserialize
-          fail ->(ctx, stocks_folder:, **) { ctx[:error] = "No stock found inside #{stocks_folder}. Ensure the folder exists with a valid subfolder structure." }, fail_fast: true
+          fail ->(ctx, stocks_folder:, **) { ctx[:error] = "No stock found inside #{stocks_folder}. Ensure the folder exists with a valid subfolder structure." }
 
           step :most_recent_stock
 
