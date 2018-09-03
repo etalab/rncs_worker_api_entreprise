@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_07_18_224619) do
+ActiveRecord::Schema.define(version: 2018_09_03_112047) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -172,6 +172,17 @@ ActiveRecord::Schema.define(version: 2018_07_18_224619) do
     t.index ["entreprise_id"], name: "index_representants_on_entreprise_id"
   end
 
+  create_table "stock_units", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "code_greffe"
+    t.integer "number"
+    t.string "name"
+    t.string "status"
+    t.uuid "stock_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["stock_id"], name: "index_stock_units_on_stock_id"
+  end
+
   create_table "stocks", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "type"
     t.string "year"
@@ -187,4 +198,5 @@ ActiveRecord::Schema.define(version: 2018_07_18_224619) do
   add_foreign_key "personnes_morales", "entreprises"
   add_foreign_key "personnes_physiques", "entreprises"
   add_foreign_key "representants", "entreprises"
+  add_foreign_key "stock_units", "stocks"
 end

@@ -1,4 +1,6 @@
 class Stock < ApplicationRecord
+  has_many :stock_units
+
   class << self
     def first_load?
       self.count == 0
