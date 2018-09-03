@@ -43,7 +43,6 @@ set :forward_agent, true     # SSH forward_agent.
 set :shared_dirs, fetch(:shared_dirs, []).push(
   'bin',
   'log',
-  'log/tc_stock',
   'tmp/pids',
   'tmp/sockets',
   'tmp/cache',
@@ -73,6 +72,9 @@ end
 # All paths in `shared_dirs` and `shared_paths` will be created on their own.
 task :setup do
   # command %{rbenv install 2.3.0 --skip-existing}
+
+  # add tc_stock log subfolder
+  command %(mkdir -p "#{fetch(:deploy_to)}/shared/log/tc_stock")
 end
 
 desc "Deploys the current version to the server."
