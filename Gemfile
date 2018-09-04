@@ -28,6 +28,7 @@ gem 'bootsnap', '>= 1.1.0', require: false
 gem 'sidekiq', '~> 5.2.1'
 
 gem 'smarter_csv', '~> 1.2.3'
+gem 'activerecord-import'
 
 gem 'trailblazer', '~> 2.1.0.rc1'
 gem 'trailblazer-rails'

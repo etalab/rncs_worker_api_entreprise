@@ -1,3 +1,4 @@
+# TODO delete this helper when no more stock files uses this (see PM Import operation)
 module DataSource
   module File
     module Helper
