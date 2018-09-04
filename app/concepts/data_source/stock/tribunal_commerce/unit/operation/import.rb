@@ -11,7 +11,11 @@ module DataSource
                   file_loader = file[:loader]
 
                   unless ['actes', 'comptes_annuels'].include?(file[:label])
-                    import = file_loader.call(file_path: file[:path], name: file[:name])
+                    import = file_loader.call({
+                      file_path: file[:path],
+                      code_greffe: file[:code_greffe],
+                      name: file[:name]
+                    })
 
                     if import.failure?
                       errors.push "Errors encountered on import : #{file[:path]}."

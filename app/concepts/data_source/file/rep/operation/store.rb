@@ -4,11 +4,12 @@ module DataSource
       module Operation
         class Store
           class << self
-            def call(ctx, raw_data:, **)
+            # TODO pass siren_in_db: to the store through the ctx object
+            def call(ctx, raw_data:, siren_in_db:, **)
               errors_count = 0
               validated_models = []
               raw_data.each do |row|
-                build_representant = Representant::Operation::Create.call(params: row)
+                build_representant = Representant::Operation::Create.call(params: row, siren_in_db: siren_in_db)
 
                 if build_representant.success?
                   validated_models.push(build_representant[:model])

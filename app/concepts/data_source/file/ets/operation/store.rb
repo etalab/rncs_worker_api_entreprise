@@ -4,11 +4,11 @@ module DataSource
       module Operation
         class Store
           class << self
-            def call(ctx, raw_data:, **)
+            def call(ctx, raw_data:, siren_in_db:, **)
               errors_count = 0
               validated_models = []
               raw_data.each do |row|
-                build_etablissement = Etablissement::Operation::Create.call(params: row)
+                build_etablissement = Etablissement::Operation::Create.call(params: row, siren_in_db: siren_in_db)
 
                 if build_etablissement.success?
                   validated_models.push(build_etablissement[:model])

@@ -4,9 +4,9 @@ class Entreprise
       step :find
 
 
-      def find(ctx, params:, **)
-        entreprise = Entreprise.find_by(siren: params[:siren])
-        params[:entreprise_id] = entreprise.id
+      def find(ctx, params:, siren_in_db:, **)
+        _, entreprise_id = siren_in_db.assoc(params[:siren].to_s)
+        params[:entreprise_id] = entreprise_id
       end
     end
   end

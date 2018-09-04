@@ -21,7 +21,9 @@ module DataSource
                   code_greffe, stock_number, date, run_order, label = match.captures
 
                   {
-                    code_greffe: code_greffe,
+                    # some code_greffe start with "0" in filename but not in database
+                    # remove the first "0" character in such cases
+                    code_greffe: code_greffe.to_i.to_s,
                     stock_number: stock_number,
                     run_order: run_order,
                     label: label,
