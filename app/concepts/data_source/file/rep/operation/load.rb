@@ -12,9 +12,7 @@ module DataSource
           fail ->(ctx, file_path:, **) { ctx[:errors] = "File '#{file_path}' does not exist." }, fail_fast: true
 
           step :rename_csv_headers # two headers 'siren' for the same csv ...
-          step :csv_to_hash
-          step Nested(Rep::Operation::Deserialize)
-          step Rep::Operation::Store
+          step Rep::Operation::Import
 
 
           def rename_csv_headers(ctx, file_path:, **)
