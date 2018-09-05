@@ -32,7 +32,16 @@ module RncsWorkerApiEntreprise
     # Skip views, helpers and assets when generating a new resource.
     config.api_only = true
 
+    config.time_zone = 'Paris'
+
     config.active_job.queue_adapter = :sidekiq
+
+    # TODO watch out about this !
+    # Stock units are run concurently, but independant from each other, so we
+    # shouldn't have any issue with concurrent updates.
+    # It may improves import speed though. I keep this until I have a better
+    # knowledge of the data quality. Uncomment when ready
+    # config.active_record.lock_optimistically = false
 
     config.reform.validations = :dry
 
