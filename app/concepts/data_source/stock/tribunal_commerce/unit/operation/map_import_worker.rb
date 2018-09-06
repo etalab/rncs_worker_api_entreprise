@@ -3,7 +3,7 @@ module DataSource
     module TribunalCommerce
       module Unit
         module Operation
-          class MapFileLoader
+          class MapImportWorker
             class MapError < StandardError; end
 
             class << self
@@ -13,7 +13,7 @@ module DataSource
                     if file_param[:label].nil?
                       raise MapError, 'Incomming params does not have :label key'
                     else
-                      file_param[:import_worker] = fetch_loader(file_param[:label])
+                      file_param[:import_worker] = fetch_import_worker(file_param[:label])
                     end
                   end
 
@@ -24,7 +24,7 @@ module DataSource
 
               private
 
-              def fetch_loader(file_label)
+              def fetch_import_worker(file_label)
                 case file_label
                 when 'PM'
                   DataSource::File::PM::Operation::BatchImport

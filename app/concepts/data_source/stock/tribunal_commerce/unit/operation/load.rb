@@ -8,7 +8,7 @@ module DataSource
             step Nested(ZIP::Operation::Extract) # Rename the operation into Unit::Operation::Extract
             step ->(ctx, extracted_files:, **) { ctx[:raw_stock_files] = extracted_files } # TODO NOT
             step ReadFilesMetadata
-            step MapFileLoader
+            step MapImportWorker
             step OrderFiles
             # TODO delete records from database where code_greffe
             # try to wrap it into a transaction
