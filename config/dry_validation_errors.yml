@@ -1,0 +1,3 @@
+en:
+  errors:
+    file?: 'File %{file_path} does not exist or is no regular file'

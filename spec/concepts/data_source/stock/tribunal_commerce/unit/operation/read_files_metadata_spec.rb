@@ -23,7 +23,7 @@ describe DataSource::Stock::TribunalCommerce::Unit::Operation::ReadFilesMetadata
       subject {result[:stock_files].first}
 
       it 'has code_greffe' do
-        expect(subject[:code_greffe]).to eq('0101')
+        expect(subject[:code_greffe]).to eq('101')
       end
 
       it 'has stock_number' do

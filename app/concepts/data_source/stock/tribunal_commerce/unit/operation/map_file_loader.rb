@@ -13,7 +13,7 @@ module DataSource
                     if file_param[:label].nil?
                       raise MapError, 'Incomming params does not have :label key'
                     else
-                      file_param[:loader] = fetch_loader(file_param[:label])
+                      file_param[:import_worker] = fetch_loader(file_param[:label])
                     end
                   end
 
@@ -27,17 +27,17 @@ module DataSource
               def fetch_loader(file_label)
                 case file_label
                 when 'PM'
-                  DataSource::File::PM::Operation::Load
+                  DataSource::File::PM::Operation::BatchImport
 
                 # TODO add loader when implemented
                 when 'PP'
-                  DataSource::File::PP::Operation::Load
+                  DataSource::File::PP::Operation::BatchImport
                 when 'rep'
-                  DataSource::File::Rep::Operation::Load
+                  DataSource::File::Rep::Operation::BatchImport
                 when 'ets'
-                  DataSource::File::Ets::Operation::Load
+                  DataSource::File::Ets::Operation::BatchImport
                 when 'obs'
-                  DataSource::File::Obs::Operation::Load
+                  DataSource::File::Obs::Operation::BatchImport
                 when 'actes'
                 when 'comptes_annuels'
 

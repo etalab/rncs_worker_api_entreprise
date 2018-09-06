@@ -8,11 +8,10 @@ module DataSource
               def call(ctx, stock_files:, **)
                 errors = []
                 stock_files.each do |file|
-                  file_loader = file[:loader]
-
                   unless ['actes', 'comptes_annuels'].include?(file[:label])
-                    import = file_loader.call({
+                    import = DataSource::File::Operation::Load.call(params: {
                       file_path: file[:path],
+                      import_worker: file[:import_worker],
                       code_greffe: file[:code_greffe],
                       name: file[:name]
                     })
