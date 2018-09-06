@@ -11,6 +11,7 @@ module DataSource
                   unless ['actes', 'comptes_annuels'].include?(file[:label])
                     import = DataSource::File::Operation::Load.call(params: {
                       file_path: file[:path],
+                      file_label: file[:label],
                       import_worker: file[:import_worker],
                       code_greffe: file[:code_greffe],
                       name: file[:name]
