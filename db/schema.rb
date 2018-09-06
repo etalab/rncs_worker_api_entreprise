@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_09_03_112047) do
+ActiveRecord::Schema.define(version: 2018_09_06_190015) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -52,7 +52,6 @@ ActiveRecord::Schema.define(version: 2018_09_03_112047) do
     t.string "libelle_derniere_modification"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["numero_gestion"], name: "index_entreprises_on_numero_gestion"
   end
 
   create_table "etablissements", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -80,7 +79,6 @@ ActiveRecord::Schema.define(version: 2018_09_03_112047) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.uuid "entreprise_id"
-    t.index ["entreprise_id"], name: "index_etablissements_on_entreprise_id"
   end
 
   create_table "identites", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -114,7 +112,6 @@ ActiveRecord::Schema.define(version: 2018_09_03_112047) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.uuid "entreprise_id"
-    t.index ["entreprise_id"], name: "index_observations_on_entreprise_id"
   end
 
   create_table "personnes_morales", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -136,7 +133,6 @@ ActiveRecord::Schema.define(version: 2018_09_03_112047) do
     t.uuid "entreprise_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["entreprise_id"], name: "index_personnes_morales_on_entreprise_id"
   end
 
   create_table "personnes_physiques", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -153,7 +149,6 @@ ActiveRecord::Schema.define(version: 2018_09_03_112047) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.uuid "entreprise_id"
-    t.index ["entreprise_id"], name: "index_personnes_physiques_on_entreprise_id"
   end
 
   create_table "representants", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -169,7 +164,6 @@ ActiveRecord::Schema.define(version: 2018_09_03_112047) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.uuid "entreprise_id"
-    t.index ["entreprise_id"], name: "index_representants_on_entreprise_id"
   end
 
   create_table "stock_units", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -193,10 +187,5 @@ ActiveRecord::Schema.define(version: 2018_09_03_112047) do
     t.datetime "updated_at", null: false
   end
 
-  add_foreign_key "etablissements", "entreprises"
-  add_foreign_key "observations", "entreprises"
-  add_foreign_key "personnes_morales", "entreprises"
-  add_foreign_key "personnes_physiques", "entreprises"
-  add_foreign_key "representants", "entreprises"
   add_foreign_key "stock_units", "stocks"
 end
