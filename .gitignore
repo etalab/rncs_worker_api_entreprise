@@ -21,6 +21,9 @@
 /tmp/*
 !/tmp/.keep
 
+# To stock local dumps
+/dumps/*
+!/dumps/.keep
 # Ignore uploaded files in development
 /storage/*
 

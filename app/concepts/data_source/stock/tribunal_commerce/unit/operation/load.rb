@@ -12,6 +12,7 @@ module DataSource
             step OrderFiles
             # TODO delete records from database where code_greffe
             # try to wrap it into a transaction
+            step ResetDatabase
             step Import
             step ->(ctx, dest_directory:, **) { FileUtils.rm_rf(dest_directory) }
           end
