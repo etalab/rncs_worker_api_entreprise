@@ -2,7 +2,7 @@ module DataSource
   module File
     module Operation
       class Load < Trailblazer::Operation
-        step Contract::Validate(constant: DataSource::File::Contract::Load)
+        step Trailblazer::Operation::Contract::Validate(constant: DataSource::File::Contract::Load)
 
         step ->(ctx, params:, **) do
           ctx[:file_name] = params[:file_path].split('/').last.chomp('.csv')

@@ -106,7 +106,9 @@ end
 
 task :sidekiq do
   comment 'Restarting Sidekiq (reloads code)'.green
-  command %(sudo systemctl restart sidekiq_rncs_api_#{ENV['to']})
+  command %(sudo systemctl restart sidekiq_rncs_api_#{ENV['to']}_1)
+  command %(sudo systemctl restart sidekiq_rncs_api_#{ENV['to']}_2)
+  command %(sudo systemctl restart sidekiq_rncs_api_#{ENV['to']}_3)
 end
 
 task :passenger do
