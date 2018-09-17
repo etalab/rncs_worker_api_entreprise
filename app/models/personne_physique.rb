@@ -1,7 +1,3 @@
 class PersonnePhysique < ApplicationRecord
-  belongs_to :entreprise
-  has_one :identite, as: :identifiable
-  has_one :adresse, as: :addressable
-  has_one :dap_adresse, as: :addressable
-  has_one :conjoint_collaborateur_identite, as: :identifiable
+  belongs_to :dossier_entreprise
 end

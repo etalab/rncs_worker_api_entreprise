@@ -1,3 +1,3 @@
 class Observation < ApplicationRecord
-  belongs_to :entreprise
+  belongs_to :dossier_entreprise
 end

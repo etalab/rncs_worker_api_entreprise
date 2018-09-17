@@ -10,31 +10,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_09_06_190015) do
+ActiveRecord::Schema.define(version: 2018_09_13_160511) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
 
-  create_table "adresses", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.string "ligne_1"
-    t.string "ligne_2"
-    t.string "ligne_3"
-    t.string "code_postal"
-    t.string "ville"
-    t.string "code_commune"
-    t.string "pays"
-    t.string "date_derniere_modification"
-    t.string "libelle_derniere_modification"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.string "addressable_type"
-    t.uuid "addressable_id"
-    t.string "type"
-    t.index ["addressable_type", "addressable_id"], name: "index_adresses_on_addressable_type_and_addressable_id"
-  end
-
-  create_table "entreprises", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "dossiers_entreprises", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "code_greffe"
     t.string "nom_greffe"
     t.string "numero_gestion"
@@ -78,26 +60,14 @@ ActiveRecord::Schema.define(version: 2018_09_06_190015) do
     t.string "libelle_derniere_modification"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.uuid "entreprise_id"
-  end
-
-  create_table "identites", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.string "nom_patronyme"
-    t.string "nom_usage"
-    t.string "pseudonyme"
-    t.string "prenoms"
-    t.string "date_naissance"
-    t.string "ville_naissance"
-    t.string "pays_naissance"
-    t.string "nationalite"
-    t.string "date_derniere_modification"
-    t.string "libelle_derniere_modification"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.string "identifiable_type"
-    t.uuid "identifiable_id"
-    t.string "type"
-    t.index ["identifiable_type", "identifiable_id"], name: "index_identites_on_identifiable_type_and_identifiable_id"
+    t.uuid "dossier_entreprise_id"
+    t.string "adresse_ligne_1"
+    t.string "adresse_ligne_2"
+    t.string "adresse_ligne_3"
+    t.string "adresse_code_postal"
+    t.string "adresse_ville"
+    t.string "adresse_code_commune"
+    t.string "adresse_pays"
   end
 
   create_table "observations", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -111,7 +81,7 @@ ActiveRecord::Schema.define(version: 2018_09_06_190015) do
     t.string "libelle_derniere_modification"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.uuid "entreprise_id"
+    t.uuid "dossier_entreprise_id"
   end
 
   create_table "personnes_morales", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -130,7 +100,7 @@ ActiveRecord::Schema.define(version: 2018_09_06_190015) do
     t.string "duree_pm"
     t.string "libelle_derniere_modification"
     t.string "date_derniere_modification"
-    t.uuid "entreprise_id"
+    t.uuid "dossier_entreprise_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -148,7 +118,33 @@ ActiveRecord::Schema.define(version: 2018_09_06_190015) do
     t.string "libelle_derniere_modification"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.uuid "entreprise_id"
+    t.uuid "dossier_entreprise_id"
+    t.string "nom_patronyme"
+    t.string "nom_usage"
+    t.string "pseudonyme"
+    t.string "prenoms"
+    t.string "date_naissance"
+    t.string "ville_naissance"
+    t.string "pays_naissance"
+    t.string "nationalite"
+    t.string "conjoint_collab_nom_patronyme"
+    t.string "conjoint_collab_nom_usage"
+    t.string "conjoint_collab_pseudonyme"
+    t.string "conjoint_collab_prenoms"
+    t.string "adresse_ligne_1"
+    t.string "adresse_ligne_2"
+    t.string "adresse_ligne_3"
+    t.string "adresse_code_postal"
+    t.string "adresse_ville"
+    t.string "adresse_code_commune"
+    t.string "adresse_pays"
+    t.string "dap_adresse_ligne_1"
+    t.string "dap_adresse_ligne_2"
+    t.string "dap_adresse_ligne_3"
+    t.string "dap_adresse_code_postal"
+    t.string "dap_adresse_ville"
+    t.string "dap_adresse_code_commune"
+    t.string "dap_adresse_pays"
   end
 
   create_table "representants", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -163,7 +159,41 @@ ActiveRecord::Schema.define(version: 2018_09_06_190015) do
     t.string "libelle_derniere_modification"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.uuid "entreprise_id"
+    t.uuid "dossier_entreprise_id"
+    t.string "adresse_ligne_1"
+    t.string "adresse_ligne_2"
+    t.string "adresse_ligne_3"
+    t.string "adresse_code_postal"
+    t.string "adresse_ville"
+    t.string "adresse_code_commune"
+    t.string "adresse_pays"
+    t.string "representant_permanent_adresse_ligne_1"
+    t.string "representant_permanent_adresse_ligne_2"
+    t.string "representant_permanent_adresse_ligne_3"
+    t.string "representant_permanent_adresse_code_postal"
+    t.string "representant_permanent_adresse_ville"
+    t.string "representant_permanent_adresse_code_commune"
+    t.string "representant_permanent_adresse_pays"
+    t.string "nom_patronyme"
+    t.string "nom_usage"
+    t.string "pseudonyme"
+    t.string "prenoms"
+    t.string "date_naissance"
+    t.string "ville_naissance"
+    t.string "pays_naissance"
+    t.string "nationalite"
+    t.string "representant_permanent_nom_patronyme"
+    t.string "representant_permanent_nom_usage"
+    t.string "representant_permanent_pseudonyme"
+    t.string "representant_permanent_prenoms"
+    t.string "representant_permanent_date_naissance"
+    t.string "representant_permanent_ville_naissance"
+    t.string "representant_permanent_pays_naissance"
+    t.string "representant_permanent_nationalite"
+    t.string "conjoint_collaborateur_nom_patronyme"
+    t.string "conjoint_collaborateur_nom_usage"
+    t.string "conjoint_collaborateur_pseudonyme"
+    t.string "conjoint_collaborateur_prenoms"
   end
 
   create_table "stock_units", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|

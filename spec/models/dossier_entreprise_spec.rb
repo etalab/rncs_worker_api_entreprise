@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe Entreprise do
+describe DossierEntreprise do
   it { is_expected.to have_db_column(:id).of_type(:uuid) }
   it { is_expected.to have_db_column(:code_greffe).of_type(:string) }
   it { is_expected.to have_db_column(:nom_greffe).of_type(:string) }
@@ -21,9 +21,8 @@ describe Entreprise do
   it { is_expected.to have_one(:personne_physique) }
   it { is_expected.to have_many(:representants) }
   it { is_expected.to have_many(:observations) }
+  it { is_expected.to have_many(:etablissements) }
 
-  it { is_expected.to have_db_column(:date_derniere_modification).of_type(:string) }
-  it { is_expected.to have_db_column(:libelle_derniere_modification).of_type(:string) }
-  it { is_expected.to have_db_column(:created_at).of_type(:datetime) }
-  it { is_expected.to have_db_column(:updated_at).of_type(:datetime) }
+  it_behaves_like 'event date and label'
+  it_behaves_like 'rails timestamps'
 end

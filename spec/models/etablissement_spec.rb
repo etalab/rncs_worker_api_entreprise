@@ -22,12 +22,18 @@ describe Etablissement do
   it { is_expected.to have_db_column(:type_exploitation).of_type(:string) }
   it { is_expected.to have_db_column(:id_etablissement).of_type(:string) } # siret ?
 
-  # Associations
-  it { is_expected.to belong_to(:entreprise) }
-  it { is_expected.to have_one(:adresse) }
+  # Etablissement's adresse
+  it { is_expected.to have_db_column(:adresse_ligne_1).of_type(:string) }
+  it { is_expected.to have_db_column(:adresse_ligne_2).of_type(:string) }
+  it { is_expected.to have_db_column(:adresse_ligne_3).of_type(:string) }
+  it { is_expected.to have_db_column(:adresse_code_postal).of_type(:string) }
+  it { is_expected.to have_db_column(:adresse_ville).of_type(:string) }
+  it { is_expected.to have_db_column(:adresse_code_commune).of_type(:string) }
+  it { is_expected.to have_db_column(:adresse_pays).of_type(:string) }
 
-  it { is_expected.to have_db_column(:date_derniere_modification).of_type(:string) }
-  it { is_expected.to have_db_column(:libelle_derniere_modification).of_type(:string) }
-  it { is_expected.to have_db_column(:created_at).of_type(:datetime) }
-  it { is_expected.to have_db_column(:updated_at).of_type(:datetime) }
+  # Associations
+  it { is_expected.to belong_to(:dossier_entreprise) }
+
+  it_behaves_like 'event date and label'
+  it_behaves_like 'rails timestamps'
 end

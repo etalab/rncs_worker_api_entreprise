@@ -10,10 +10,8 @@ describe Observation do
   it { is_expected.to have_db_column(:etat).of_type(:string) }
 
   # Associations
-  it { is_expected.to belong_to(:entreprise) }
+  it { is_expected.to belong_to(:dossier_entreprise) }
 
-  it { is_expected.to have_db_column(:date_derniere_modification).of_type(:string) }
-  it { is_expected.to have_db_column(:libelle_derniere_modification).of_type(:string) }
-  it { is_expected.to have_db_column(:created_at).of_type(:datetime) }
-  it { is_expected.to have_db_column(:updated_at).of_type(:datetime) }
+  it_behaves_like 'event date and label'
+  it_behaves_like 'rails timestamps'
 end

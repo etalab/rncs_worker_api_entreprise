@@ -1,3 +1,0 @@
-class ConjointCollaborateurIdentite < Identite
-
-end
