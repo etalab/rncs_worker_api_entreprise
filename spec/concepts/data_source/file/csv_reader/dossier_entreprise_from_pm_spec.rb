@@ -38,6 +38,7 @@ describe DataSource::File::CSVReader do
     its(:size) { is_expected.to eq(15) }
   end
 
+  # TODO move generic tests into a csv_reader_spec.rb file
   context 'when values are string numbers it keeps leading zeros' do
     its([:code_greffe]) { is_expected.to eq('0888') }
     its([:siren]) { is_expected.to eq('051607251') }
