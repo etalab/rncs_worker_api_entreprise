@@ -48,6 +48,7 @@ describe PersonnePhysique do
   # Associations
   it { is_expected.to belong_to(:dossier_entreprise) }
 
-  it_behaves_like 'event date and label'
-  it_behaves_like 'rails timestamps'
+  it_behaves_like 'having event date and label'
+  it_behaves_like 'having rails timestamps'
+  it_behaves_like 'having dossier greffe id'
 end

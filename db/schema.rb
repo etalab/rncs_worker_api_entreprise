@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_09_13_160511) do
+ActiveRecord::Schema.define(version: 2018_09_20_153901) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -68,6 +68,9 @@ ActiveRecord::Schema.define(version: 2018_09_13_160511) do
     t.string "adresse_ville"
     t.string "adresse_code_commune"
     t.string "adresse_pays"
+    t.string "code_greffe"
+    t.string "numero_gestion"
+    t.string "siren"
   end
 
   create_table "observations", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -82,6 +85,9 @@ ActiveRecord::Schema.define(version: 2018_09_13_160511) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.uuid "dossier_entreprise_id"
+    t.string "code_greffe"
+    t.string "numero_gestion"
+    t.string "siren"
   end
 
   create_table "personnes_morales", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -103,6 +109,9 @@ ActiveRecord::Schema.define(version: 2018_09_13_160511) do
     t.uuid "dossier_entreprise_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "code_greffe"
+    t.string "numero_gestion"
+    t.string "siren"
   end
 
   create_table "personnes_physiques", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -145,6 +154,9 @@ ActiveRecord::Schema.define(version: 2018_09_13_160511) do
     t.string "dap_adresse_ville"
     t.string "dap_adresse_code_commune"
     t.string "dap_adresse_pays"
+    t.string "code_greffe"
+    t.string "numero_gestion"
+    t.string "siren"
   end
 
   create_table "representants", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -194,6 +206,9 @@ ActiveRecord::Schema.define(version: 2018_09_13_160511) do
     t.string "conjoint_collaborateur_nom_usage"
     t.string "conjoint_collaborateur_pseudonyme"
     t.string "conjoint_collaborateur_prenoms"
+    t.string "code_greffe"
+    t.string "numero_gestion"
+    t.string "siren"
   end
 
   create_table "stock_units", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
