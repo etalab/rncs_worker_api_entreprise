@@ -4,6 +4,9 @@ module DataSource
       module Unit
         module Operation
           class Import
+
+            # TODO Make this an operation with a task for each file for more clarity
+
             class << self
               def call(ctx, stock_files:, **)
                 errors = []

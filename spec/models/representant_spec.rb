@@ -7,7 +7,7 @@ describe Representant do
   it { is_expected.to have_db_column(:siren_pm).of_type(:string) }
   it { is_expected.to have_db_column(:type_representant).of_type(:string) }
   it { is_expected.to have_db_column(:qualite).of_type(:string) }
-  it { is_expected.to have_db_column(:conjoint_collaborateur_date_fin).of_type(:string) }
+  it { is_expected.to have_db_column(:conjoint_collab_date_fin).of_type(:string) }
   it { is_expected.to have_db_column(:id_representant).of_type(:string) }
 
   # Representant's adresse
@@ -49,10 +49,10 @@ describe Representant do
   it { is_expected.to have_db_column(:representant_permanent_nationalite).of_type(:string) }
 
   # Conjoint collaborateur's identite
-  it { is_expected.to have_db_column(:conjoint_collaborateur_nom_patronyme).of_type(:string) }
-  it { is_expected.to have_db_column(:conjoint_collaborateur_nom_usage).of_type(:string) }
-  it { is_expected.to have_db_column(:conjoint_collaborateur_pseudonyme).of_type(:string) }
-  it { is_expected.to have_db_column(:conjoint_collaborateur_prenoms).of_type(:string) }
+  it { is_expected.to have_db_column(:conjoint_collab_nom_patronyme).of_type(:string) }
+  it { is_expected.to have_db_column(:conjoint_collab_nom_usage).of_type(:string) }
+  it { is_expected.to have_db_column(:conjoint_collab_pseudonyme).of_type(:string) }
+  it { is_expected.to have_db_column(:conjoint_collab_prenoms).of_type(:string) }
 
   # Associations
   it { is_expected.to belong_to(:dossier_entreprise) }

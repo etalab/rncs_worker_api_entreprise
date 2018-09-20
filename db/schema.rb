@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_09_20_153901) do
+ActiveRecord::Schema.define(version: 2018_09_20_181009) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -122,7 +122,7 @@ ActiveRecord::Schema.define(version: 2018_09_20_153901) do
     t.string "dap_date_cloture"
     t.string "eirl"
     t.string "auto_entrepreneur"
-    t.string "conjoint_collaborateur_date_fin"
+    t.string "conjoint_collab_date_fin"
     t.string "date_derniere_modification"
     t.string "libelle_derniere_modification"
     t.datetime "created_at", null: false
@@ -165,7 +165,7 @@ ActiveRecord::Schema.define(version: 2018_09_20_153901) do
     t.string "siren_pm"
     t.string "type_representant"
     t.string "qualite"
-    t.string "conjoint_collaborateur_date_fin"
+    t.string "conjoint_collab_date_fin"
     t.string "id_representant"
     t.string "date_derniere_modification"
     t.string "libelle_derniere_modification"
@@ -202,10 +202,10 @@ ActiveRecord::Schema.define(version: 2018_09_20_153901) do
     t.string "representant_permanent_ville_naissance"
     t.string "representant_permanent_pays_naissance"
     t.string "representant_permanent_nationalite"
-    t.string "conjoint_collaborateur_nom_patronyme"
-    t.string "conjoint_collaborateur_nom_usage"
-    t.string "conjoint_collaborateur_pseudonyme"
-    t.string "conjoint_collaborateur_prenoms"
+    t.string "conjoint_collab_nom_patronyme"
+    t.string "conjoint_collab_nom_usage"
+    t.string "conjoint_collab_pseudonyme"
+    t.string "conjoint_collab_prenoms"
     t.string "code_greffe"
     t.string "numero_gestion"
     t.string "siren"

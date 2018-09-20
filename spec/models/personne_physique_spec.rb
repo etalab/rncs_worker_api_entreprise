@@ -9,7 +9,7 @@ describe PersonnePhysique do
   it { is_expected.to have_db_column(:dap_date_cloture).of_type(:string) }
   it { is_expected.to have_db_column(:eirl).of_type(:string) }
   it { is_expected.to have_db_column(:auto_entrepreneur).of_type(:string) }
-  it { is_expected.to have_db_column(:conjoint_collaborateur_date_fin).of_type(:string) }
+  it { is_expected.to have_db_column(:conjoint_collab_date_fin).of_type(:string) }
 
   # PersonnePhysique's identite
   it { is_expected.to have_db_column(:nom_patronyme).of_type(:string) }
