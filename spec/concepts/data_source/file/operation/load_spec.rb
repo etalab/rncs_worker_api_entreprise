@@ -35,39 +35,25 @@ describe DataSource::File::Operation::Load do
     end
   end
 
-  context 'when given file is valid' do
-    let(:created_log_file) { Rails.root.join('log', 'tc_stock', 'real_file.log').to_s }
-
-    # Still looking for a way to stub different tasks
-    # Import tasks should not be called in unit specs
-    after { FileUtils.rm_rf(created_log_file) }
-    before { allow(DataSource::File::Operation::Import).to receive(:call).and_return(true) }
-
-    describe 'logger setup' do
-      its([:logger]) { is_expected.to be_an_instance_of Logger }
-
-      it 'creates a log file named after the file to import' do
-        subject
-        expect(File.file?(created_log_file)).to eq(true)
+  describe 'import' do
+    let(:random_worker) do
+      Class.new do
+        def self.call(*args); end
       end
-
-      it 'logs the begining of the file import' do
-        expect_any_instance_of(Logger).to receive(:info).with('Start file import...')
-        subject
-      end
-
-      # TODO Stub or extract the logger the right way to be able to test log actions like this
-      # its([:logger]) { is_expected.to receive(:info).with('Start import...') }
+    end
+    let(:op_params) do
+      {
+        file_path: 'spec/data_source_example/real_file.csv',
+        import_worker: random_worker
+      }
     end
 
-    describe 'import' do
-      it 'delegates to DataSource::File::Operation::Import' do
-        expect(DataSource::File::Operation::Import).to receive(:call)
-        # TODO look at trailblaizer internals for the .call method signature
-        # and then test the call arguments
+    subject { described_class.call(params: op_params) }
 
-        subject
-      end
+    # TODO expect the right arguments
+    it 'delegates the import to the given operation in params' do
+      expect(random_worker).to receive(:call)
+      subject
     end
   end
 end

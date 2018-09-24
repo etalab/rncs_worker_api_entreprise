@@ -27,17 +27,16 @@ module DataSource
               def fetch_import_worker(file_label)
                 case file_label
                 when 'PM'
-                  DataSource::File::PM::Operation::BatchImport
+                  DataSource::File::PM::Operation::Import
 
-                # TODO add loader when implemented
                 when 'PP'
-                  DataSource::File::PP::Operation::BatchImport
+                  DataSource::File::PP::Operation::Import
                 when 'rep'
-                  DataSource::File::Rep::Operation::BatchImport
+                  DataSource::File::Rep::Operation::Import
                 when 'ets'
-                  DataSource::File::Ets::Operation::BatchImport
+                  DataSource::File::Ets::Operation::Import
                 when 'obs'
-                  DataSource::File::Obs::Operation::BatchImport
+                  DataSource::File::Obs::Operation::Import
                 when 'actes'
                 when 'comptes_annuels'
 
