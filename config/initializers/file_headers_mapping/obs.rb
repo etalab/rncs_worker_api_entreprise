@@ -9,5 +9,5 @@ OBS_HEADER_MAPPING = {
   'Date_Suppression' => :date_suppression,
   'Texte' => :texte,
   'Date_Greffe' => :date_derniere_modification,
-  'Etat' => :etat,
+  'Etat ' => :etat, # FU
 }
