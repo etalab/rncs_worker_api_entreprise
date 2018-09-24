@@ -1,4 +1,4 @@
-class Entreprise
+module Entreprise
   module Operation
     class RetrieveFromSiren < Trailblazer::Operation
       step :find

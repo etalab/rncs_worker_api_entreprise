@@ -1,4 +1,4 @@
-class Entreprise
+module Entreprise
   module Operation
     class CreateWithPP < Trailblazer::Operation
       step Model(DossierEntreprise, :new)
