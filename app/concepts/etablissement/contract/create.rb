@@ -24,15 +24,6 @@ class Etablissement
       property :id_etablissement
       property :date_derniere_modification
       property :libelle_derniere_modification
-
-      property :adresse,
-        form: Adresse::Contract::Create,
-        populate_if_empty: Adresse,
-        skip_if: :skip_adresse? # Do not validate or save empty adresse
-
-      validation do
-        required(:entreprise_id).filled
-      end
     end
   end
 end
