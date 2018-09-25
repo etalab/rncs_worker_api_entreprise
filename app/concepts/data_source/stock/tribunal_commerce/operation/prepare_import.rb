@@ -10,6 +10,7 @@ module DataSource
           fail ->(ctx, **) { ctx[:error] = 'Unexpected stock unit filename : parse failure' }
 
           step :order_units_import
+          step :drop_db_index
 
 
           def fetch_stock_units(ctx, stock:, **)
@@ -35,6 +36,11 @@ module DataSource
 
           def order_units_import(ctx, import_args:, **)
             import_args.sort_by! { |e| [e[:code_greffe], e[:unit_number]] }
+          end
+
+          def drop_db_index(ctx, **)
+            sql = 'DROP INDEX IF EXISTS index_dossier_entreprise_enregistrement_id'
+            ActiveRecord::Base.connection.execute(sql)
           end
         end
       end
