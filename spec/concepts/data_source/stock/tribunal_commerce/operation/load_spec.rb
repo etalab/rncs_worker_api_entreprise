@@ -48,7 +48,22 @@ describe DataSource::Stock::TribunalCommerce::Operation::Load do
     end
   end
 
-  context 'when stocks found are older and already imported' do
-    it 'is failure'
+  context 'when stocks found are older than the last one imported' do
+    let(:example_stock_folder) { Rails.root.join('spec', 'fixtures', 'tc', 'stock') }
+    before { create(:stock_tribunal_commerce, year: '2018', month: '10', day: '13') }
+
+    it { is_expected.to be_failure }
+
+    it 'creates no job for stock unit import' do
+      expect { subject }.to_not have_enqueued_job(ImportTcStockUnitJob)
+    end
+
+    it 'does not save a new stock' do
+      expect { subject }.to_not change(StockTribunalCommerce, :count)
+    end
+  end
+
+  context 'when last stock saved in DB is not completed' do
+    it 'does not do anything'
   end
 end

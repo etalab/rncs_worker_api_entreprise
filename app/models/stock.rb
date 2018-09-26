@@ -7,7 +7,8 @@ class Stock < ApplicationRecord
     end
 
     def current
-      self.last
+      collection = self.order(year: :desc, month: :desc, day: :desc).limit(1)
+      collection.first
     end
   end
 
@@ -22,7 +23,8 @@ class Stock < ApplicationRecord
     if last_loaded_stock.nil?
       true
     else
-      date <=> last_loaded_stock.date
+      compare = date <=> last_loaded_stock.date
+      compare == 1
     end
   end
 
