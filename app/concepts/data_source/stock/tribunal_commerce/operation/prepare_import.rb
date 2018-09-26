@@ -3,13 +3,13 @@ module DataSource
     module TribunalCommerce
       module Operation
         class PrepareImport < Trailblazer::Operation
+          class DeserializeError < StandardError; end
+
           step :fetch_stock_units
-          fail ->(ctx, **) { ctx[:error] = 'No stock units found' }, fail_fast: true
+          fail ->(ctx, stock:, **) { ctx[:error] = "No stock units found in #{stock.files_path}." }, fail_fast: true
 
           step :deserialize_stock_units
-          fail ->(ctx, **) { ctx[:error] = 'Unexpected stock unit filename : parse failure' }
-
-          step :drop_db_index
+          fail ->(ctx, stock:, **) { ctx[:error] = "Unexpected filenames in #{stock.files_path}." }
 
 
           def fetch_stock_units(ctx, stock:, **)
@@ -18,27 +18,26 @@ module DataSource
           end
 
           def deserialize_stock_units(ctx, stock:, stock_units_path:, **)
-            stock_units = stock_units_path.map do |unit_path|
-              if match = unit_path.match(/\A#{stock.files_path}\/(\d{4})_S(\d)_\d{8}\.zip\Z/)
-                code_greffe, unit_number = match.captures
+            begin
+              stock_units = stock_units_path.map do |unit_path|
+                if match = unit_path.match(/\A#{stock.files_path}\/(\d{4})_S(\d)_\d{8}\.zip\Z/)
+                  code_greffe, unit_number = match.captures
 
-                stock.stock_units.create(
-                  code_greffe: code_greffe,
-                  number: unit_number,
-                  file_path: unit_path,
-                  status: 'PENDING'
-                )
-              else
-                # TODO deal with errors
+                  stock.stock_units.create(
+                    code_greffe: code_greffe,
+                    number: unit_number,
+                    file_path: unit_path,
+                    status: 'PENDING'
+                  )
+                else
+                  raise DeserializeError
+                end
               end
+              ctx[:stock_units] = stock_units
+
+            rescue DeserializeError
+              false
             end
-
-            ctx[:import_args] = stock_units
-          end
-
-          def drop_db_index(ctx, **)
-            sql = 'DROP INDEX IF EXISTS index_dossier_entreprise_enregistrement_id'
-            ActiveRecord::Base.connection.execute(sql)
           end
         end
       end

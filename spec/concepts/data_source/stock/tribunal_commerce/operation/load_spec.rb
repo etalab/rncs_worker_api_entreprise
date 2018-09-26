@@ -1,5 +1,6 @@
 require 'rails_helper'
 
+# TODO log step or errors in environment.log file
 describe DataSource::Stock::TribunalCommerce::Operation::Load do
   subject { described_class.call(stocks_folder: example_stock_folder) }
   let(:new_stock) { subject[:stock] }
@@ -13,7 +14,10 @@ describe DataSource::Stock::TribunalCommerce::Operation::Load do
 
     it { is_expected.to be_success }
 
+    it 'drops db indexes'
+
     it 'creates a job to import each stock unit' do
+      # TODO ? pass stock_unit model global id to the job
       stock_unit_ids = new_stock.stock_units.pluck(:id)
 
       stock_unit_ids.each do |id|
