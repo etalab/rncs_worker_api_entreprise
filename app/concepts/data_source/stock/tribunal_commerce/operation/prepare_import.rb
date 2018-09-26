@@ -6,10 +6,9 @@ module DataSource
           step :fetch_stock_units
           fail ->(ctx, **) { ctx[:error] = 'No stock units found' }, fail_fast: true
 
-          step :deserialize_units_path
+          step :deserialize_stock_units
           fail ->(ctx, **) { ctx[:error] = 'Unexpected stock unit filename : parse failure' }
 
-          step :order_units_import
           step :drop_db_index
 
 
@@ -18,24 +17,23 @@ module DataSource
             !ctx[:stock_units_path].empty?
           end
 
-          def deserialize_units_path(ctx, stock:, stock_units_path:, **)
-            import_args = stock_units_path.map do |unit_path|
+          def deserialize_stock_units(ctx, stock:, stock_units_path:, **)
+            stock_units = stock_units_path.map do |unit_path|
               if match = unit_path.match(/\A#{stock.files_path}\/(\d{4})_S(\d)_\d{8}\.zip\Z/)
                 code_greffe, unit_number = match.captures
-                unit_name = unit_path.split('/').last.chomp('.zip')
 
-                { code_greffe: code_greffe, unit_number: unit_number, path: unit_path, name: unit_name }
-
+                stock.stock_units.create(
+                  code_greffe: code_greffe,
+                  number: unit_number,
+                  file_path: unit_path,
+                  status: 'PENDING'
+                )
               else
                 # TODO deal with errors
               end
             end
 
-            ctx[:import_args] = import_args
-          end
-
-          def order_units_import(ctx, import_args:, **)
-            import_args.sort_by! { |e| [e[:code_greffe], e[:unit_number]] }
+            ctx[:import_args] = stock_units
           end
 
           def drop_db_index(ctx, **)

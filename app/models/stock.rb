@@ -25,4 +25,9 @@ class Stock < ApplicationRecord
       date <=> last_loaded_stock.date
     end
   end
+
+  # TODO make it a calculated value based on associated stock units status
+  def status
+    'PENDING'
+  end
 end
