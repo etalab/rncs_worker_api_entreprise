@@ -7,37 +7,18 @@ module DataSource
             class << self
               def call(ctx, code_greffe:, **)
                 # Be careful to drop rows related to the corresponding greffe only
-                code_greffe = code_greffe.to_i.to_s
 
-                Observation
-                  .where(code_greffe: code_greffe)
-                  .unscope(:order)
-                  .delete_all
-
-                Representant
-                  .where(code_greffe: code_greffe)
-                  .unscope(:order)
-                  .delete_all
-
-                Etablissement
-                  .where(code_greffe: code_greffe)
-                  .unscope(:order)
-                  .delete_all
-
-                PersonneMorale
-                  .where(code_greffe: code_greffe)
-                  .unscope(:order)
-                  .delete_all
-
-                PersonnePhysique
-                  .where(code_greffe: code_greffe)
-                  .unscope(:order)
-                  .delete_all
-
-                DossierEntreprise
-                  .where(code_greffe: code_greffe)
-                  .unscope(:order)
-                  .delete_all
+                [
+                  "DELETE FROM dossiers_entreprises WHERE code_greffe = '#{code_greffe}';",
+                  "DELETE FROM personnes_morales WHERE code_greffe = '#{code_greffe}';",
+                  "DELETE FROM personnes_physiques WHERE code_greffe = '#{code_greffe}';",
+                  "DELETE FROM representants WHERE code_greffe = '#{code_greffe}';",
+                  "DELETE FROM etablissements WHERE code_greffe = '#{code_greffe}';",
+                  "DELETE FROM observations WHERE code_greffe = '#{code_greffe}';",
+                ]
+                  .each do |sql|
+                  ActiveRecord::Base.connection.execute(sql)
+                end
 
                 true
                 # TODO wrap into a transaction and deal with ActiveRecord errors

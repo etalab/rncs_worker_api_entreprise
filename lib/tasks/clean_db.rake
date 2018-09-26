@@ -1,8 +1,12 @@
 task clean_db: :environment do
-  Etablissement.delete_all
-  Representant.delete_all
-  PersonnePhysique.delete_all
-  PersonneMorale.delete_all
-  Observation.delete_all
-  DossierEntreprise.delete_all
+  sql = <<-ENDSQL
+  TRUNCATE dossiers_entreprises,
+  personnes_morales,
+  personnes_physiques,
+  representants,
+  etablissements,
+  observations
+  ENDSQL
+
+  ActiveRecord::Base.connection.execute(sql)
 end
