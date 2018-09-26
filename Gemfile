@@ -46,6 +46,7 @@ group :development, :test do
   gem 'rspec-its'
   gem 'shoulda-matchers'
   gem 'guard-rspec'
+  gem 'factory_bot_rails'
   gem 'pry'
 end
 
