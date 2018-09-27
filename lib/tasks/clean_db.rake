@@ -5,7 +5,9 @@ task clean_db: :environment do
   personnes_physiques,
   representants,
   etablissements,
-  observations
+  observations,
+  stocks,
+  stock_units;
   ENDSQL
 
   ActiveRecord::Base.connection.execute(sql)
