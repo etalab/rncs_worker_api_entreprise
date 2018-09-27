@@ -30,6 +30,23 @@ class Stock < ApplicationRecord
 
   # TODO make it a calculated value based on associated stock units status
   def status
-    'PENDING'
+    child_status = stock_units_status
+
+    if child_status.all? { |status| status == 'PENDING' }
+      return 'PENDING'
+
+    elsif child_status.all? { |status| status == 'COMPLETED' }
+      return 'COMPLETED'
+
+    elsif child_status.any? { |status| status == 'LOADING' }
+      return 'LOADING'
+
+    elsif child_status.any? { |status| status == 'ERROR' }
+      return 'ERROR'
+    end
+  end
+
+  def stock_units_status
+    self.stock_units.pluck(:status)
   end
 end

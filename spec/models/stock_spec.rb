@@ -53,4 +53,32 @@ describe Stock do
       it { is_expected.to eq(true) }
     end
   end
+
+  describe '#status' do
+    subject { create(stock_param) }
+
+    context 'when all stock units children are pending' do
+      let(:stock_param) { :stock_with_pending_units }
+
+      its(:status) { is_expected.to eq('PENDING') }
+    end
+
+    context 'when at least one stock unit child is loading' do
+      let(:stock_param) { :stock_with_one_loading_unit }
+
+      its(:status) { is_expected.to eq('LOADING') }
+    end
+
+    context 'when at least one stock unit child ended in error ' do
+      let(:stock_param) { :stock_with_one_error_unit }
+
+      its(:status) { is_expected.to eq('ERROR') }
+    end
+
+    context 'when all stock units children are completed' do
+      let(:stock_param) { :stock_with_completed_units }
+
+      its(:status) { is_expected.to eq('COMPLETED') }
+    end
+  end
 end
