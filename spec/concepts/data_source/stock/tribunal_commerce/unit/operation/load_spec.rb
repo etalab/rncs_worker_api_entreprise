@@ -1,14 +1,14 @@
 require 'rails_helper'
 
 describe DataSource::Stock::TribunalCommerce::Unit::Operation::Load do
-  it 'calls unzip operation'
+  # it 'calls unzip operation'
 
-  let(:unit_example) { path_for(:tc_stock_unit) }
+  # let(:unit_example) { path_for(:tc_stock_unit) }
 
-  after do
-    dest_dir = name_for(:tc_stock_unit)
-    FileUtils.rm_rf(Rails.root.join('tmp', dest_dir))
-  end
+  # after do
+  #   dest_dir = name_for(:tc_stock_unit)
+  #   FileUtils.rm_rf(Rails.root.join('tmp', dest_dir))
+  # end
 
   # TODO create a real csv test suite with valid associations between records
   #describe 'extracted archive content' do
