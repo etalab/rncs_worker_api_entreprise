@@ -3,9 +3,15 @@ module DataSource
     module TribunalCommerce
       module Operation
         class PostImport < Trailblazer::Operation
+          step :import_completed?
           step :create_db_indexes
           step :fill_in_foreign_keys
 
+
+          def import_completed?(ctx, stock_unit:, **)
+            overall_import = stock_unit.stock
+            overall_import.status == 'COMPLETED'
+          end
 
           def create_db_indexes(ctx, **)
             sql = 'CREATE INDEX IF NOT EXISTS index_dossier_entreprise_enregistrement_id ON dossiers_entreprises (code_greffe, numero_gestion, siren);'

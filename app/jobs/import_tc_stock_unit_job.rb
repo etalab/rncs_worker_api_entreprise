@@ -13,6 +13,8 @@ class ImportTcStockUnitJob < ApplicationJob
 
       if import_unit.success?
         stock_unit.update(status: 'COMPLETED')
+        DataSource::Stock::TribunalCommerce::Operation::PostImport
+          .call(stock_unit: stock_unit)
       else
         stock_unit.update(status: 'ERROR')
       end
