@@ -1,0 +1,3 @@
+class DaylyUpdateTribunalCommerce < DaylyUpdate
+
+end
