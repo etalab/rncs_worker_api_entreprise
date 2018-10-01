@@ -8,31 +8,31 @@ FactoryBot.define do
 
   factory :stock_tribunal_commerce, parent: :stock, class: StockTribunalCommerce do
     type { 'StockTribunalCommerce' }
-  end
 
-  factory :stock_with_pending_units, class: Stock do
-    after(:create) do |stock|
-      create_list(:stock_unit, 3, status: 'PENDING', stock: stock)
+    factory :stock_with_pending_units, class: Stock do
+      after(:create) do |stock|
+        create_list(:stock_unit, 3, status: 'PENDING', stock: stock)
+      end
     end
-  end
 
-  factory :stock_with_one_loading_unit, class: Stock do
-    after(:create) do |stock|
-      create_list(:stock_unit, 3, status: 'PENDING', stock: stock)
-      create(:stock_unit, status: 'LOADING', stock: stock)
+    factory :stock_with_one_loading_unit, class: Stock do
+      after(:create) do |stock|
+        create_list(:stock_unit, 3, status: 'PENDING', stock: stock)
+        create(:stock_unit, status: 'LOADING', stock: stock)
+      end
     end
-  end
 
-  factory :stock_with_one_error_unit, class: Stock do
-    after(:create) do |stock|
-      create_list(:stock_unit, 3, status: 'PENDING', stock: stock)
-      create(:stock_unit, status: 'ERROR', stock: stock)
+    factory :stock_with_one_error_unit, class: Stock do
+      after(:create) do |stock|
+        create_list(:stock_unit, 3, status: 'PENDING', stock: stock)
+        create(:stock_unit, status: 'ERROR', stock: stock)
+      end
     end
-  end
 
-  factory :stock_with_completed_units, class: Stock do
-    after(:create) do |stock|
-      create_list(:stock_unit, 3, status: 'COMPLETED', stock: stock)
+    factory :stock_with_completed_units, class: Stock do
+      after(:create) do |stock|
+        create_list(:stock_unit, 3, status: 'COMPLETED', stock: stock)
+      end
     end
   end
 end

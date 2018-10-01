@@ -54,6 +54,16 @@ describe Stock do
     end
   end
 
+  describe '#date' do
+    subject { create(:stock, year: '2018', month: '05', day: '24') }
+
+    it 'returns the corresponding Date object' do
+      stock_date = Date.new(2018, 5, 24)
+
+      expect(subject.date).to eq(stock_date)
+    end
+  end
+
   describe '#status' do
     subject { create(stock_param) }
 
