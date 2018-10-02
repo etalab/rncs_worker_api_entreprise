@@ -15,7 +15,7 @@ describe Stock do
   end
 
   describe '.current' do
-    it 'returns the oldest stock' do
+    it 'returns the most recent imported stock' do
       recent_stock = create(:stock, year: '2018', month: '03', day: '21')
       create(:stock, year: '2016', month: '08', day: '13')
 
