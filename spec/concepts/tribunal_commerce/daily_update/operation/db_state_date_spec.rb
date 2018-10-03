@@ -1,12 +1,12 @@
 require 'rails_helper'
 
-describe TribunalCommerce::DaylyUpdate::Operation::DBStateDate do
+describe TribunalCommerce::DailyUpdate::Operation::DBStateDate do
   subject { described_class.call }
 
-  context 'when the last dayly update is completed' do
+  context 'when the last daily update is completed' do
     before do
-      create(:dayly_update_with_completed_units, year: '2012', month: '03', day: '13')
-      create(:dayly_update_with_completed_units, year: '2015', month: '09', day: '27')
+      create(:daily_update_with_completed_units, year: '2012', month: '03', day: '13')
+      create(:daily_update_with_completed_units, year: '2015', month: '09', day: '27')
     end
 
     it { is_expected.to be_success }
@@ -16,15 +16,15 @@ describe TribunalCommerce::DaylyUpdate::Operation::DBStateDate do
     end
   end
 
-  context 'when the last dayly update is not completed' do
-    before { create(:dayly_update_with_one_loading_unit) }
+  context 'when the last daily update is not completed' do
+    before { create(:daily_update_with_one_loading_unit) }
 
     it { is_expected.to be_failure }
 
     its([:error]) { is_expected.to eq('The current update is still running. Abort...') }
   end
 
-  context 'when no dayly updates have been run yet' do
+  context 'when no daily updates have been run yet' do
     context 'when a stock has been imported already' do
       before do
         create(:stock_with_completed_units, year: '2012', month: '03', day: '13')
@@ -47,7 +47,7 @@ describe TribunalCommerce::DaylyUpdate::Operation::DBStateDate do
         end
 
         it { is_expected.to be_failure }
-        its([:error]) { is_expected.to eq('Current stock import is still running, please import dayly updates when its done.') }
+        its([:error]) { is_expected.to eq('Current stock import is still running, please import daily updates when its done.') }
       end
     end
 

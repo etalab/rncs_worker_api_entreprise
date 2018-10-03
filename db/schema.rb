@@ -10,24 +10,24 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_10_02_175135) do
+ActiveRecord::Schema.define(version: 2018_10_03_103718) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
 
-  create_table "dayly_update_units", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "daily_update_units", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "code_greffe"
     t.integer "num_transmission"
     t.string "files_path"
     t.string "status"
-    t.uuid "dayly_update_id"
+    t.uuid "daily_update_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["dayly_update_id"], name: "index_dayly_update_units_on_dayly_update_id"
+    t.index ["daily_update_id"], name: "index_daily_update_units_on_daily_update_id"
   end
 
-  create_table "dayly_updates", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "daily_updates", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "type"
     t.string "year"
     t.string "month"
@@ -253,6 +253,6 @@ ActiveRecord::Schema.define(version: 2018_10_02_175135) do
     t.datetime "updated_at", null: false
   end
 
-  add_foreign_key "dayly_update_units", "dayly_updates"
+  add_foreign_key "daily_update_units", "daily_updates"
   add_foreign_key "stock_units", "stocks"
 end
