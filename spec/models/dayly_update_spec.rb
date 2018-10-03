@@ -33,4 +33,32 @@ describe DaylyUpdate do
       it { is_expected.to eq(nil) }
     end
   end
+
+  describe '#status' do
+    subject { create(dayly_update_param) }
+
+    context 'when all units children are pending' do
+      let(:dayly_update_param) { :dayly_update_with_pending_units }
+
+      its(:status) { is_expected.to eq('PENDING') }
+    end
+
+    context 'when at least one unit child is loading' do
+      let(:dayly_update_param) { :dayly_update_with_one_loading_unit }
+
+      its(:status) { is_expected.to eq('LOADING') }
+    end
+
+    context 'when at least one unit child ended in error ' do
+      let(:dayly_update_param) { :dayly_update_with_one_error_unit }
+
+      its(:status) { is_expected.to eq('ERROR') }
+    end
+
+    context 'when all units children are completed' do
+      let(:dayly_update_param) { :dayly_update_with_completed_units }
+
+      its(:status) { is_expected.to eq('COMPLETED') }
+    end
+  end
 end
