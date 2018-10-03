@@ -1,5 +1,5 @@
-class DaylyUpdate < ApplicationRecord
-  has_many :dayly_update_units
+class DailyUpdate < ApplicationRecord
+  has_many :daily_update_units
 
   def self.current
     collection = self.order(year: :desc, month: :desc, day: :desc).limit(1)
@@ -12,7 +12,7 @@ class DaylyUpdate < ApplicationRecord
   end
 
   def status
-    child_status = dayly_update_units_status
+    child_status = daily_update_units_status
 
     if child_status.all? { |status| status == 'PENDING' }
       return 'PENDING'
@@ -28,7 +28,7 @@ class DaylyUpdate < ApplicationRecord
     end
   end
 
-  def dayly_update_units_status
-    self.dayly_update_units.pluck(:status)
+  def daily_update_units_status
+    self.daily_update_units.pluck(:status)
   end
 end

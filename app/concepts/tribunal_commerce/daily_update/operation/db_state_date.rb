@@ -1,29 +1,29 @@
 module TribunalCommerce
-  module DaylyUpdate
+  module DailyUpdate
     module Operation
       class DBStateDate < Trailblazer::Operation
-        step :current_dayly_update, Output(:failure) => Track(:no_dayly_updates)
-        step :dayly_update_completed?
+        step :current_daily_update, Output(:failure) => Track(:no_daily_updates)
+        step :daily_update_completed?
         fail :log_incomplete_update, fail_fast: true
-        step :raw_dayly_update_date
+        step :raw_daily_update_date
 
-        step :current_stock, magnetic_to: [:no_dayly_updates], Output(:success) => Track(:no_dayly_updates)
+        step :current_stock, magnetic_to: [:no_daily_updates], Output(:success) => Track(:no_daily_updates)
         fail :log_empty_db, fail_fast: true
-        step :stock_completed?, magnetic_to: [:no_dayly_updates], Output(:success) => Track(:no_dayly_updates)
+        step :stock_completed?, magnetic_to: [:no_daily_updates], Output(:success) => Track(:no_daily_updates)
         fail :log_incomplete_stock, fail_fast: true
-        step :raw_stock_date, magnetic_to: [:no_dayly_updates], Output(:success) => 'End.success'
+        step :raw_stock_date, magnetic_to: [:no_daily_updates], Output(:success) => 'End.success'
 
 
-        def current_dayly_update(ctx, **)
-          ctx[:current_dayly_update] = DaylyUpdateTribunalCommerce.current
+        def current_daily_update(ctx, **)
+          ctx[:current_daily_update] = DailyUpdateTribunalCommerce.current
         end
 
-        def dayly_update_completed?(ctx, current_dayly_update:, **)
-          current_dayly_update.status == 'COMPLETED'
+        def daily_update_completed?(ctx, current_daily_update:, **)
+          current_daily_update.status == 'COMPLETED'
         end
 
-        def raw_dayly_update_date(ctx, current_dayly_update:, **)
-          ctx[:raw_date] = current_dayly_update.date
+        def raw_daily_update_date(ctx, current_daily_update:, **)
+          ctx[:raw_date] = current_daily_update.date
         end
 
         def current_stock(ctx, **)
@@ -43,7 +43,7 @@ module TribunalCommerce
         end
 
         def log_incomplete_stock(ctx, **)
-          ctx[:error] = 'Current stock import is still running, please import dayly updates when its done.'
+          ctx[:error] = 'Current stock import is still running, please import daily updates when its done.'
         end
 
         def log_incomplete_update(ctx, **)

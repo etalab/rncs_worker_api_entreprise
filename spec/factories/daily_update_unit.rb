@@ -1,5 +1,5 @@
 FactoryBot.define do
-  factory :dayly_update_unit do
+  factory :daily_update_unit do
     code_greffe { '0123' }
     num_transmission { 1 }
     files_path { '/temp' }
