@@ -34,6 +34,14 @@ describe DaylyUpdate do
     end
   end
 
+  describe '#date' do
+    subject { create(:dayly_update, year: '2018', month: '05', day: '24') }
+
+    it 'returns the corresponding Date object' do
+      expect(subject.date).to eq(Date.new(2018, 5, 24))
+    end
+  end
+
   describe '#status' do
     subject { create(dayly_update_param) }
 

@@ -4,13 +4,24 @@ describe TribunalCommerce::DaylyUpdate::Operation::DBStateDate do
   subject { described_class.call }
 
   context 'when the last dayly update is completed' do
-    it 'is success'
-    it 'returns the last imported update time'
+    before do
+      create(:dayly_update_with_completed_units, year: '2012', month: '03', day: '13')
+      create(:dayly_update_with_completed_units, year: '2015', month: '09', day: '27')
+    end
+
+    it { is_expected.to be_success }
+
+    it 'returns the last imported update time' do
+      expect(subject[:raw_date]).to eq(Date.new(2015, 9, 27))
+    end
   end
 
   context 'when the last dayly update is not completed' do
-    it 'fails'
-    it 'specifies an error message'
+    before { create(:dayly_update_with_one_loading_unit) }
+
+    it { is_expected.to be_failure }
+
+    its([:error]) { is_expected.to eq('The current update is still running. Abort...') }
   end
 
   context 'when no dayly updates have been run yet' do

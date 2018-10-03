@@ -6,6 +6,11 @@ class DaylyUpdate < ApplicationRecord
     collection.first
   end
 
+  def date
+    string_date = [year, month, day].join('/')
+    Date.parse(string_date)
+  end
+
   def status
     child_status = dayly_update_units_status
 
