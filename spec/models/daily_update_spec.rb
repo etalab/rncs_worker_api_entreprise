@@ -42,8 +42,36 @@ describe DailyUpdate do
     end
   end
 
+  describe '#newer?' do
+    subject { build(:daily_update, year: '2017', month: '09', day: '11') }
+
+    it 'is true when given date is older' do
+      older_date = Date.new(2017, 6, 23)
+
+      expect(subject.newer?(older_date)).to eq(true)
+    end
+
+    it 'is false when given date equals record\'s date' do
+      same_date = subject.date
+
+      expect(subject.newer?(same_date)).to eq(false)
+    end
+
+    it 'is false when given date is more recent' do
+      newer_date = Date.new(2018, 2, 18)
+
+      expect(subject.newer?(newer_date)).to eq(false)
+    end
+  end
+
   describe '#status' do
     subject { create(daily_update_param) }
+
+    context 'when there are no childs yet' do
+      let(:daily_update_param) { :daily_update_tribunal_commerce }
+
+      its(:status) { is_expected.to eq('PENDING') }
+    end
 
     context 'when all units children are pending' do
       let(:daily_update_param) { :daily_update_with_pending_units }

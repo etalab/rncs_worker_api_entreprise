@@ -6,14 +6,14 @@ describe DataSource::Stock::TribunalCommerce::Operation::RetrieveLastStock do
     subject { described_class.call(stocks_folder: source_path)}
 
     context 'when no stocks are found in sources directory' do
-      let(:source_path) { Rails.root.join('spec', 'data_source_example', 'no_stock_here') }
+      let(:source_path) { Rails.root.join('spec', 'fixtures', 'tc', 'no_stocks_here', 'got_you') }
 
       it { is_expected.to be_failure }
       its([:error]) { is_expected.to eq("No stock found inside #{source_path}. Ensure the folder exists with a valid subfolder structure.") }
     end
 
     context 'when folder structure for stocks is unexpected' do
-      let(:source_path) { Rails.root.join('spec', 'data_source_example', 'invalid_stock_structure') }
+      let(:source_path) { Rails.root.join('spec', 'fixtures', 'tc', 'no_stocks_here') }
 
       it { is_expected.to be_failure }
       its([:error]) { is_expected.to eq("No stock found inside #{source_path}. Ensure the folder exists with a valid subfolder structure.") }
@@ -40,13 +40,13 @@ describe DataSource::Stock::TribunalCommerce::Operation::RetrieveLastStock do
         expect(stock).to_not be_persisted
       end
 
-      # There are three available stocks for specs inside specs/data_source_example/tc/stock :
-      # ['2016/08/23', '2017/01/02', '2017/05/04']
+      # There are three available stocks for specs inside specs/fixtures/tc/stock :
+      # ['2016/09/28', '2017/01/28', '2017/11/08']
       it 'is the latest available' do
         pending 'path to sources as changed to spec/fixtures ; fix in incomming PR'
         stock_date = [stock.year, stock.month, stock.day].join('/')
 
-        expect(stock_date).to eq('2017/05/04')
+        expect(stock_date).to eq('2017/11/08')
       end
     end
   end
