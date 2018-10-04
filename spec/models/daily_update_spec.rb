@@ -8,6 +8,7 @@ describe DailyUpdate do
     it { is_expected.to have_db_column(:month).of_type(:string) }
     it { is_expected.to have_db_column(:day).of_type(:string) }
     it { is_expected.to have_db_column(:files_path).of_type(:string) }
+    it { is_expected.to have_db_column(:proceeded).of_type(:boolean) }
     it { is_expected.to have_db_column(:created_at).of_type(:datetime) }
     it { is_expected.to have_db_column(:updated_at).of_type(:datetime) }
 
@@ -31,6 +32,22 @@ describe DailyUpdate do
 
     context 'when no daily updates have been imported' do
       it { is_expected.to eq(nil) }
+    end
+  end
+
+  describe '.queued_updates?' do
+    subject { described_class.queued_updates? }
+
+    it 'is true when daily updates are waiting to be proceed' do
+      create(:daily_update, proceeded: false)
+
+      expect(subject).to eq(true)
+    end
+
+    it 'is false when all known updates have been run already' do
+      create(:daily_update, proceeded: true)
+
+      expect(subject).to eq(false)
     end
   end
 

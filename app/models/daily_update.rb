@@ -1,9 +1,16 @@
 class DailyUpdate < ApplicationRecord
   has_many :daily_update_units
 
-  def self.current
-    collection = self.order(year: :desc, month: :desc, day: :desc).limit(1)
-    collection.first
+  class << self
+    def current
+      collection = self.order(year: :desc, month: :desc, day: :desc).limit(1)
+      collection.first
+    end
+
+    def queued_updates?
+      collection = self.where(proceeded: false)
+      !collection.empty?
+    end
   end
 
   def date
