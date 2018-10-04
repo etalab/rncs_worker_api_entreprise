@@ -2,6 +2,8 @@ module TribunalCommerce
   module DailyUpdate
     module Operation
       class DBStateDate < Trailblazer::Operation
+        step :queued_updates?
+        fail :log_updates_waiting_for_import, fail_fast: true
         step :current_daily_update, Output(:failure) => Track(:no_daily_updates)
         step :daily_update_completed?
         fail :log_incomplete_update, fail_fast: true
@@ -13,6 +15,9 @@ module TribunalCommerce
         fail :log_incomplete_stock, fail_fast: true
         step :raw_stock_date, magnetic_to: [:no_daily_updates], Output(:success) => 'End.success'
 
+        def queued_updates?(ctx, **)
+          !DailyUpdateTribunalCommerce.queued_updates?
+        end
 
         def current_daily_update(ctx, **)
           ctx[:current_daily_update] = DailyUpdateTribunalCommerce.current
@@ -48,6 +53,10 @@ module TribunalCommerce
 
         def log_incomplete_update(ctx, **)
           ctx[:error] = 'The current update is still running. Abort...'
+        end
+
+        def log_updates_waiting_for_import(ctx, **)
+          ctx[:error] = 'Pending daily updates found in database. Aborting... Please import remaining updates first.'
         end
       end
     end

@@ -15,6 +15,7 @@ module TribunalCommerce
         end
 
         def save_handled_updates(ctx, daily_updates:, **)
+          daily_updates.each { |e| e.proceeded = false }
           daily_updates.each(&:save)
         end
 

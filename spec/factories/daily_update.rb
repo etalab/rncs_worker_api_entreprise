@@ -4,6 +4,7 @@ FactoryBot.define do
     month { '04' }
     day { '21' }
     files_path { '/not/here' }
+    proceeded { true }
 
     factory :daily_update_tribunal_commerce, parent: :daily_update, class: DailyUpdateTribunalCommerce do
       type { 'DailyUpdateTribunalCommerce' }

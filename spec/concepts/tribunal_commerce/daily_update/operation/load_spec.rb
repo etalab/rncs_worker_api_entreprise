@@ -24,9 +24,16 @@ describe TribunalCommerce::DailyUpdate::Operation::Load do
       describe 'handled updates' do
         let(:handled_updates) { subject[:daily_updates] }
 
-        it 'saves updates as pending' do
+        example 'are saved' do
           expect(handled_updates).to all(be_persisted)
+        end
+
+        example 'have "PENDING" status' do
           expect(handled_updates).to all(have_attributes(status: 'PENDING'))
+        end
+
+        example 'are not proceeded yet' do
+          expect(handled_updates).to all(have_attributes(proceeded: false))
         end
 
         it 'keeps latter updates only' do
