@@ -21,12 +21,12 @@ describe DataSource::Stock::TribunalCommerce::Operation::PrepareImport do
   end
 
   # 3 greffe's stock example inside this repo :
-  # spec/fixtures/tc/stock/2016/09/28
-  # ├── 1234_S1_20160928.zip
-  # ├── 3141_S1_20160928.zip
-  # └── 0666_S1_20160928.zip
+  # spec/fixtures/tc/stock/2017/11/08
+  # ├── 1234_S1_20171108.zip
+  # ├── 3141_S1_20171108.zip
+  # └── 0666_S1_20171108.zip
   context 'when stock units are found' do
-    let(:path_param) { Rails.root.join('spec', 'fixtures', 'tc', 'stock', '2016', '09', '28') }
+    let(:path_param) { Rails.root.join('spec', 'fixtures', 'tc', 'stock', '2017', '11', '08') }
 
     it 'saves each greffe\'s stock unit in db' do
       expect { subject }.to change(StockUnit, :count).by(3)
@@ -53,7 +53,7 @@ describe DataSource::Stock::TribunalCommerce::Operation::PrepareImport do
         subject
         unit = StockUnit.where(code_greffe: '1234').first
 
-        expect(unit.file_path).to end_with('spec/fixtures/tc/stock/2016/09/28/1234_S1_20160928.zip')
+        expect(unit.file_path).to end_with('spec/fixtures/tc/stock/2017/11/08/1234_S1_20171108.zip')
       end
 
       it 'has a "pending" status' do

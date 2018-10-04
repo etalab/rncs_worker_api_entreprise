@@ -11,6 +11,10 @@ class DailyUpdate < ApplicationRecord
     Date.parse(string_date)
   end
 
+  def newer?(telltale_date)
+    self.date > telltale_date
+  end
+
   def status
     child_status = daily_update_units_status
 
@@ -25,6 +29,9 @@ class DailyUpdate < ApplicationRecord
 
     elsif child_status.any? { |status| status == 'ERROR' }
       return 'ERROR'
+
+    elsif child_status.empty?
+      return 'PENDING'
     end
   end
 

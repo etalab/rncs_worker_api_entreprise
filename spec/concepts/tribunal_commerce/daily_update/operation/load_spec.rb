@@ -12,22 +12,59 @@ describe TribunalCommerce::DailyUpdate::Operation::Load do
   #         ├── 13
   #         ├── 14
   #         └── 18
-  context 'when DBStateDate does not fail' do
-    before { create(:daily_update_with_completed_units, year: '2018', month: '04', day: '10') }
+  context 'when DBStateDate returns the timestamp of DB state' do
+    before { create(:daily_update_with_completed_units, db_timestamp) }
     subject { described_class.call }
 
-    it { is_expected.to be_success }
+    context 'with new updates available in pipe' do
+      let(:db_timestamp) { { year: '2018', month: '04', day: '10' } }
 
-    it 'creates a DailyUpdate record for each new updates found in repo'
-    it 'ignores older updates'
-    it 'calls import'
+      it { is_expected.to be_success }
 
-    context 'when no daily updates are found in the repo' do
-      it 'is failure'
-      it 'logs'
+      describe 'handled updates' do
+        let(:handled_updates) { subject[:daily_updates] }
+
+        it 'saves updates as pending' do
+          expect(handled_updates).to all(be_persisted)
+          expect(handled_updates).to all(have_attributes(status: 'PENDING'))
+        end
+
+        it 'keeps latter updates only' do
+          expect(handled_updates).to include(
+            an_object_having_attributes(year: '2018', month: '04', day: '11'),
+            an_object_having_attributes(year: '2018', month: '04', day: '12'),
+            an_object_having_attributes(year: '2018', month: '04', day: '13'),
+            an_object_having_attributes(year: '2018', month: '04', day: '14'),
+            an_object_having_attributes(year: '2018', month: '04', day: '18'),
+          )
+        end
+
+        it 'ignores older updates' do
+          expect(handled_updates).to_not include(
+            an_object_having_attributes(year: '2018', month: '04', day: '09'),
+            an_object_having_attributes(year: '2018', month: '04', day: '10'),
+          )
+        end
+      end
+
+      it 'calls import'
+    end
+
+    context 'with no daily updates available in pipe' do
+      let(:db_timestamp) { { year: '2018', month: '04', day: '19' } }
+
+      it { is_expected.to be_failure }
+
+      it 'logs there are no updates to run' do
+        expect(Rails.logger).to receive(:info)
+          .with('No daily updates available after `2018-04-19`. Nothing to import.')
+
+        subject
+      end
     end
 
     describe 'available options' do
+      # TODO use TimeCop
       describe 'delay:' do
         it 'runs only updates older than the number of days provided'
         it 'defaults to 0'
