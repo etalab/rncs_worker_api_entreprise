@@ -39,6 +39,9 @@ class DailyUpdate < ApplicationRecord
 
     elsif child_status.any? { |status| status == 'ERROR' }
       return 'ERROR'
+
+    elsif child_status.empty?
+      return 'PENDING'
     end
   end
 
