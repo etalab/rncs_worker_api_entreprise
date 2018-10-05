@@ -2,7 +2,13 @@ module TribunalCommerce
   module DailyUpdate
     module Operation
       class Load < Trailblazer::Operation
+        extend ClassDependencies
+
+        self[:logger] = Rails.logger
+
+        pass ->(ctx, logger:, **) { logger.info('Fetching new daily updates to import...') }
         step Nested(DBStateDate)
+        step ->(ctx, logger:, raw_date:, **) { logger.info("The database is sync until the date #{raw_date}.") }
         step Nested(FetchInPipe)
         step :ignores_older_updates
         fail :no_updates_to_import
@@ -19,8 +25,8 @@ module TribunalCommerce
           daily_updates.each(&:save)
         end
 
-        def no_updates_to_import(ctx, raw_date:, **)
-          Rails.logger.info("No daily updates available after `#{raw_date}`. Nothing to import.")
+        def no_updates_to_import(ctx, raw_date:, logger:, **)
+          logger.info("No daily updates available after `#{raw_date}`. Nothing to import.")
         end
       end
     end
