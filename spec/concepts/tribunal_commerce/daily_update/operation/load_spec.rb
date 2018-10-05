@@ -1,7 +1,25 @@
 require 'rails_helper'
 
 describe TribunalCommerce::DailyUpdate::Operation::Load do
-  # Folder structure for the tests
+  let(:logger) { object_double(Rails.logger, info: true).as_null_object }
+  let(:op_params) { { logger: logger } }
+  subject { described_class.call(op_params) }
+
+  describe 'logger:' do
+    it 'defaults to Rails.logger' do
+      op_params.delete(:logger)
+
+      expect(subject[:logger]).to eq(Rails.logger)
+    end
+  end
+
+  it 'logs' do
+    expect(logger).to receive(:info)
+      .with('Fetching new daily updates to import...')
+    subject
+  end
+
+  # Folder structure for happy path spec
   # spec/fixtures/tc/flux
   # └── 2018
   #     └── 04
@@ -14,12 +32,17 @@ describe TribunalCommerce::DailyUpdate::Operation::Load do
   #         └── 18
   context 'when DBStateDate returns the timestamp of DB state' do
     before { create(:daily_update_with_completed_units, db_timestamp) }
-    subject { described_class.call }
 
     context 'with new updates available in pipe' do
       let(:db_timestamp) { { year: '2018', month: '04', day: '10' } }
 
       it { is_expected.to be_success }
+
+      it 'logs' do
+        expect(logger).to receive(:info)
+          .with('The database is sync until the date 2018-04-10.')
+        subject
+      end
 
       describe 'handled updates' do
         let(:handled_updates) { subject[:daily_updates] }
@@ -46,6 +69,8 @@ describe TribunalCommerce::DailyUpdate::Operation::Load do
           )
         end
 
+        it 'logs new updates have been found'
+
         it 'ignores older updates' do
           expect(handled_updates).to_not include(
             an_object_having_attributes(year: '2018', month: '04', day: '09'),
@@ -63,7 +88,7 @@ describe TribunalCommerce::DailyUpdate::Operation::Load do
       it { is_expected.to be_failure }
 
       it 'logs there are no updates to run' do
-        expect(Rails.logger).to receive(:info)
+        expect(logger).to receive(:info)
           .with('No daily updates available after `2018-04-19`. Nothing to import.')
 
         subject
