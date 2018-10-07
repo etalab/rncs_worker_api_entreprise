@@ -24,7 +24,7 @@ describe DataSource::Stock::TribunalCommerce::Operation::RetrieveLastStock do
   context 'when stocks are found' do
     subject { described_class.call }
 
-    stock_folder_path = File.join(Rails.configuration.rncs_sources['path'], 'tc', 'stock')
+    stock_folder_path = File.join(Rails.application.config_for(:rncs_sources)['path'], 'tc', 'stock')
 
     its([:stocks_folder]) { is_expected.to eq stock_folder_path }
     it { is_expected.to be_success }
