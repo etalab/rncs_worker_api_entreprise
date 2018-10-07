@@ -48,7 +48,5 @@ module RncsWorkerApiEntreprise
     config.generators do |g|
         g.orm :active_record, primary_key_type: :uuid
     end
-
-    config.rncs_sources = config_for(:rncs_sources)
   end
 end

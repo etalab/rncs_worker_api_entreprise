@@ -5,7 +5,7 @@ module DataSource
         class RetrieveLastStock < Trailblazer::Operation
           extend ClassDependencies
 
-          self[:stocks_folder] = ::File.join(Rails.configuration.rncs_sources['path'], 'tc', 'stock')
+          self[:stocks_folder] = ::File.join(Rails.application.config_for(:rncs_sources)['path'], 'tc', 'stock')
 
           step :fetch_stocks
           step :deserialize

@@ -18,7 +18,7 @@ module DataSource
       def default_options
         {
           col_sep: ';',
-          chunk_size: Rails.configuration.rncs_sources['import_batch_size'],
+          chunk_size: Rails.application.config_for(:rncs_sources)['import_batch_size'],
           remove_empty_hashes: false,
           hash_transformations: :none,
           header_transformations: [:none]
