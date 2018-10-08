@@ -22,21 +22,21 @@ describe TribunalCommerce::DailyUpdate::Task::FetchUnits do
     describe 'its daily update units' do
       let(:units) { subject[:daily_update_units] }
 
-      example 'are persisted' do
+      they 'are persisted' do
         expect(units).to all(be_persisted)
       end
 
-      example 'are in "PENDING" status' do
+      they 'are in "PENDING" status' do
         expect(units).to all(have_attributes(status: 'PENDING'))
       end
 
-      example 'have the correct code greffe' do
+      they 'have the correct code greffe' do
         units_code = units.pluck(:code_greffe)
 
         expect(units_code).to contain_exactly('0110', '1237', '9402')
       end
 
-      example 'have the correct files path' do
+      they 'have the correct files path' do
         units_path = units.pluck(:files_path)
 
         expect(units_path).to contain_exactly(

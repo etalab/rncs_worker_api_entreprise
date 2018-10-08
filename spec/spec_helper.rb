@@ -62,6 +62,9 @@ RSpec.configure do |config|
   #     --seed 1234
   config.order = :random
 
+  # Create an 'it' alias for specs on collection
+  config.alias_example_to :they
+
 # The settings below are suggested to provide a good initial experience
 # with RSpec, but feel free to customize to your heart's content.
 =begin

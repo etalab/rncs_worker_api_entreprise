@@ -47,7 +47,7 @@ describe TribunalCommerce::DailyUpdate::Operation::Load do
       describe 'handled updates' do
         let(:handled_updates) { subject[:daily_updates] }
 
-        example 'are saved' do
+        they 'are saved' do
           expect(handled_updates).to all(be_persisted)
         end
 
@@ -55,7 +55,7 @@ describe TribunalCommerce::DailyUpdate::Operation::Load do
           expect(handled_updates).to all(have_attributes(status: 'QUEUED'))
         end
 
-        example 'are not proceeded yet' do
+        they 'are not proceeded yet' do
           expect(handled_updates).to all(have_attributes(proceeded: false))
         end
 
