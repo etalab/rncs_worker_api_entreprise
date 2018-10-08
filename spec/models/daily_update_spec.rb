@@ -52,6 +52,25 @@ describe DailyUpdate do
     end
   end
 
+  describe '.next_in_queue' do
+    subject { described_class.next_in_queue }
+
+    context 'with queued updates' do
+      it 'returns the first one not proceeded' do
+      create(:daily_update_tribunal_commerce, year: '2017', month: '10', day: '25', proceeded: false)
+      create(:daily_update_tribunal_commerce, year: '2017', month: '10', day: '27', proceeded: false)
+
+      expect(subject.date).to eq(Date.new(2017, 10, 25))
+      end
+    end
+
+    context 'when queue is empty' do
+      it 'returns nil' do
+        expect(subject).to be_nil
+      end
+    end
+  end
+
   describe '#date' do
     subject { create(:daily_update, year: '2018', month: '05', day: '24') }
 

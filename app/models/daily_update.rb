@@ -11,6 +11,11 @@ class DailyUpdate < ApplicationRecord
       collection = self.where(proceeded: false)
       !collection.empty?
     end
+
+    def next_in_queue
+      collection = self.where(proceeded: false).order(year: :asc, month: :asc, day: :asc).limit(1)
+      collection.first
+    end
   end
 
   def date
