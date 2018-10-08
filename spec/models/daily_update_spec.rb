@@ -20,11 +20,12 @@ describe DailyUpdate do
 
     context 'when daily updates have been imported already' do
       before do
-        create(:daily_update, year: '2015', month: '08', day: '23')
-        create(:daily_update, year: '2008', month: '10', day: '04')
+        create(:daily_update, year: '2015', month: '09', day: '12', proceeded: false)
+        create(:daily_update, year: '2015', month: '08', day: '23', proceeded: true)
+        create(:daily_update, year: '2008', month: '10', day: '04', proceeded: true)
       end
 
-      it 'returns the last one in date' do
+      it 'returns the last one which has been proceed already' do
         daily_update = described_class.where(year: '2015', month: '08', day: '23').first
         expect(subject).to eq(daily_update)
       end

@@ -3,7 +3,7 @@ class DailyUpdate < ApplicationRecord
 
   class << self
     def current
-      collection = self.order(year: :desc, month: :desc, day: :desc).limit(1)
+      collection = self.where(proceeded: true).order(year: :desc, month: :desc, day: :desc).limit(1)
       collection.first
     end
 
