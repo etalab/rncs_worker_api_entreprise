@@ -59,6 +59,12 @@ describe TribunalCommerce::DailyUpdate::Operation::Load do
           expect(handled_updates).to all(have_attributes(proceeded: false))
         end
 
+        # Here daily updates are just queued for import
+        # Their associated units will be created right before the import itself
+        example 'have no associated units yet' do
+          expect(handled_updates).to all(have_attributes(daily_update_units: []))
+        end
+
         it 'keeps latter updates only' do
           expect(handled_updates).to include(
             an_object_having_attributes(year: '2018', month: '04', day: '11'),
