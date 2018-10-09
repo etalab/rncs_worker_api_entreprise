@@ -40,7 +40,7 @@ GEM
       activemodel (= 5.2.1)
       activesupport (= 5.2.1)
       arel (>= 9.0)
-    activerecord-import (0.25.0)
+    activerecord-import (0.26.0)
       activerecord (>= 3.2)
     activestorage (5.2.1)
       actionpack (= 5.2.1)
@@ -150,7 +150,7 @@ GEM
     msgpack (1.2.4)
     nenv (0.3.0)
     nio4r (2.3.1)
-    nokogiri (1.8.4)
+    nokogiri (1.8.5)
       mini_portile2 (~> 2.3.0)
     notiffany (0.1.1)
       nenv (~> 0.1)
@@ -315,4 +315,4 @@ RUBY VERSION
    ruby 2.5.1p57
 
 BUNDLED WITH
-   1.16.5
+   1.16.6
