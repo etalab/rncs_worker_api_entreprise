@@ -15,7 +15,7 @@ describe Stock do
   end
 
   describe '.current' do
-    it 'returns the oldest stock' do
+    it 'returns the most recent imported stock' do
       recent_stock = create(:stock, year: '2018', month: '03', day: '21')
       create(:stock, year: '2016', month: '08', day: '13')
 
@@ -51,6 +51,16 @@ describe Stock do
       before { create(:stock, year: '2016', month: '06', day: '15') }
 
       it { is_expected.to eq(true) }
+    end
+  end
+
+  describe '#date' do
+    subject { create(:stock, year: '2018', month: '05', day: '24') }
+
+    it 'returns the corresponding Date object' do
+      stock_date = Date.new(2018, 5, 24)
+
+      expect(subject.date).to eq(stock_date)
     end
   end
 
