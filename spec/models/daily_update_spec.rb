@@ -87,7 +87,7 @@ describe DailyUpdate do
     context 'when there are no childs yet' do
       let(:daily_update_param) { :daily_update_tribunal_commerce }
 
-      its(:status) { is_expected.to eq('PENDING') }
+      its(:status) { is_expected.to eq('QUEUED') }
     end
 
     context 'when all units children are pending' do

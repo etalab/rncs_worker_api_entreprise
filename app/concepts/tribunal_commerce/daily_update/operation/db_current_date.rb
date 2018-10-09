@@ -1,25 +1,25 @@
 module TribunalCommerce
   module DailyUpdate
     module Operation
-      class DBStateDate < Trailblazer::Operation
+      class DBCurrentDate < Trailblazer::Operation
         step :queued_updates?
         fail :log_updates_waiting_for_import, fail_fast: true
-        step :current_daily_update, Output(:failure) => Track(:no_daily_updates)
+        step :latest_daily_update_imported, Output(:failure) => Track(:no_daily_updates_yet)
         step :daily_update_completed?
         fail :log_incomplete_update, fail_fast: true
         step :raw_daily_update_date
 
-        step :current_stock, magnetic_to: [:no_daily_updates], Output(:success) => Track(:no_daily_updates)
+        step :current_stock, magnetic_to: [:no_daily_updates_yet], Output(:success) => Track(:no_daily_updates_yet)
         fail :log_empty_db, fail_fast: true
-        step :stock_completed?, magnetic_to: [:no_daily_updates], Output(:success) => Track(:no_daily_updates)
+        step :stock_completed?, magnetic_to: [:no_daily_updates_yet], Output(:success) => Track(:no_daily_updates_yet)
         fail :log_incomplete_stock, fail_fast: true
-        step :raw_stock_date, magnetic_to: [:no_daily_updates], Output(:success) => 'End.success'
+        step :raw_stock_date, magnetic_to: [:no_daily_updates_yet], Output(:success) => 'End.success'
 
         def queued_updates?(ctx, **)
           !DailyUpdateTribunalCommerce.queued_updates?
         end
 
-        def current_daily_update(ctx, **)
+        def latest_daily_update_imported(ctx, **)
           ctx[:current_daily_update] = DailyUpdateTribunalCommerce.current
         end
 
@@ -28,7 +28,7 @@ module TribunalCommerce
         end
 
         def raw_daily_update_date(ctx, current_daily_update:, **)
-          ctx[:raw_date] = current_daily_update.date
+          ctx[:db_current_date] = current_daily_update.date
         end
 
         def current_stock(ctx, **)
@@ -40,7 +40,7 @@ module TribunalCommerce
         end
 
         def raw_stock_date(ctx, current_stock:, **)
-          ctx[:raw_date] = current_stock.date
+          ctx[:db_current_date] = current_stock.date
         end
 
         def log_empty_db(ctx, **)

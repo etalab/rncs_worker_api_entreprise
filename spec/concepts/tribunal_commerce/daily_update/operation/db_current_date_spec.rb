@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe TribunalCommerce::DailyUpdate::Operation::DBStateDate do
+describe TribunalCommerce::DailyUpdate::Operation::DBCurrentDate do
   subject { described_class.call }
 
   context 'when daily updates are waiting for import' do
@@ -19,8 +19,8 @@ describe TribunalCommerce::DailyUpdate::Operation::DBStateDate do
 
       it { is_expected.to be_success }
 
-      it 'returns the last imported update time' do
-        expect(subject[:raw_date]).to eq(Date.new(2015, 9, 27))
+      it 'returns the date of the last daily update imported' do
+        expect(subject[:db_current_date]).to eq(Date.new(2015, 9, 27))
       end
     end
 
@@ -44,7 +44,7 @@ describe TribunalCommerce::DailyUpdate::Operation::DBStateDate do
         it 'returns the last stock date' do
           date_from_last_stock = Date.new(2012, 3, 13)
 
-          expect(subject[:raw_date]).to eq(date_from_last_stock)
+          expect(subject[:db_current_date]).to eq(date_from_last_stock)
         end
 
         context 'when the stock is not completed' do

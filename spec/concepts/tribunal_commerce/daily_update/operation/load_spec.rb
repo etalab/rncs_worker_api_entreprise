@@ -51,8 +51,8 @@ describe TribunalCommerce::DailyUpdate::Operation::Load do
           expect(handled_updates).to all(be_persisted)
         end
 
-        example 'have "PENDING" status' do
-          expect(handled_updates).to all(have_attributes(status: 'PENDING'))
+        example 'have "QUEUED" status' do
+          expect(handled_updates).to all(have_attributes(status: 'QUEUED'))
         end
 
         example 'are not proceeded yet' do

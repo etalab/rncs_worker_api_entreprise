@@ -25,7 +25,10 @@ class DailyUpdate < ApplicationRecord
   def status
     child_status = daily_update_units_status
 
-    if child_status.all? { |status| status == 'PENDING' }
+    if child_status.empty?
+      return 'QUEUED'
+
+    elsif child_status.all? { |status| status == 'PENDING' }
       return 'PENDING'
 
     elsif child_status.all? { |status| status == 'COMPLETED' }
@@ -36,9 +39,6 @@ class DailyUpdate < ApplicationRecord
 
     elsif child_status.any? { |status| status == 'ERROR' }
       return 'ERROR'
-
-    elsif child_status.empty?
-      return 'PENDING'
     end
   end
 
