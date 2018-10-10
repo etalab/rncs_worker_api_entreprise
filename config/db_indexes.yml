@@ -1,0 +1,41 @@
+default: &default
+  dossiers_entreprises:
+    - siren
+    - [code_greffe, numero_gestion]
+
+  personnes_morales:
+    - siren
+    - [code_greffe, numero_gestion]
+    - dossiers_entreprises_id
+
+  personnes_physiques:
+    - siren
+    - [code_greffe, numero_gestion]
+    - dossiers_entreprises_id
+
+  representants:
+    - siren
+    - [code_greffe, numero_gestion]
+    - dossiers_entreprises_id
+
+  etablissements:
+    - siren
+    - [code_greffe, numero_gestion]
+    - dossiers_entreprises_id
+
+  observations:
+    - siren
+    - [code_greffe, numero_gestion]
+    - dossiers_entreprises_id
+
+development:
+  <<: *default
+
+test:
+  <<: *default
+
+sandbox:
+  <<: *default
+
+prodution:
+  <<: *default
