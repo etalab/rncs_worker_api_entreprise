@@ -6,27 +6,27 @@ default: &default
   personnes_morales:
     - siren
     - [code_greffe, numero_gestion]
-    - dossiers_entreprises_id
+    - dossier_entreprise_id
 
   personnes_physiques:
     - siren
     - [code_greffe, numero_gestion]
-    - dossiers_entreprises_id
+    - dossier_entreprise_id
 
   representants:
     - siren
     - [code_greffe, numero_gestion]
-    - dossiers_entreprises_id
+    - dossier_entreprise_id
 
   etablissements:
     - siren
     - [code_greffe, numero_gestion]
-    - dossiers_entreprises_id
+    - dossier_entreprise_id
 
   observations:
     - siren
     - [code_greffe, numero_gestion]
-    - dossiers_entreprises_id
+    - dossier_entreprise_id
 
 development:
   <<: *default
