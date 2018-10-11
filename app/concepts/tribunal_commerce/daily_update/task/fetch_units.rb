@@ -24,6 +24,8 @@ module TribunalCommerce
               )
             end
           end
+          # TODO no point to share units within the context object :
+          # the associated daily update is already shared
           ctx[:daily_update_units] = daily_update_units
         end
       end
