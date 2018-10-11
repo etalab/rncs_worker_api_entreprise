@@ -3,6 +3,8 @@ module DataSource
     module TribunalCommerce
       module Operation
         class PostImport < Trailblazer::Operation
+          include TrailblazerHelper::DBIndexes
+
           step :import_completed?
           step :create_db_indexes
           step :fill_in_foreign_keys
@@ -14,8 +16,7 @@ module DataSource
           end
 
           def create_db_indexes(ctx, **)
-            sql = 'CREATE INDEX IF NOT EXISTS index_dossier_entreprise_enregistrement_id ON dossiers_entreprises (code_greffe, numero_gestion, siren);'
-            ActiveRecord::Base.connection.execute(sql)
+            create_queries.each { |query| ActiveRecord::Base.connection.execute(query) }
           end
 
           def fill_in_foreign_keys(ctx, **)

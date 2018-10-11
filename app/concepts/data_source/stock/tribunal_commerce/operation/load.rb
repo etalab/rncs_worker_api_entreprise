@@ -3,6 +3,8 @@ module DataSource
     module TribunalCommerce
       module Operation
         class Load < Trailblazer::Operation
+          include TrailblazerHelper::DBIndexes
+
           step Nested(RetrieveLastStock)
           step ->(ctx, stock:, **) { stock.newer? }
           step ->(ctx, stock:, **) { stock.save }
@@ -12,8 +14,7 @@ module DataSource
 
 
           def drop_db_index(ctx, **)
-            sql = 'DROP INDEX IF EXISTS index_dossier_entreprise_enregistrement_id'
-            ActiveRecord::Base.connection.execute(sql)
+            drop_queries.each { |query| ActiveRecord::Base.connection.execute(query) }
           end
         end
       end
