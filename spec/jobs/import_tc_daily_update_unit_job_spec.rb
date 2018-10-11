@@ -1,6 +1,7 @@
 require 'rails_helper'
 
 describe ImportTcDailyUpdateUnitJob do
+  let(:result_class) { Trailblazer::Operation::Railway::Result }
   let(:unit) { create(:daily_update_unit, status: 'PENDING') }
   subject { described_class.perform_now(unit.id) }
 
@@ -12,7 +13,7 @@ describe ImportTcDailyUpdateUnitJob do
   end
 
   context 'when the unit import is successful' do
-    let(:operation_result) { double("Operation Result", success?: true) }
+    let(:operation_result) { instance_double(result_class, success?: true) }
 
     it 'sets the unit\'s status to "COMPLETED"' do
       subject
@@ -30,7 +31,7 @@ describe ImportTcDailyUpdateUnitJob do
   end
 
   context 'when the unit import fails' do
-    let(:operation_result) { double("Operation Result", success?: false) }
+    let(:operation_result) { instance_double(result_class, success?: false) }
 
     it 'sets the unit\'s status to "ERROR"' do
       subject
