@@ -15,8 +15,14 @@ describe ImportTcDailyUpdateUnitJob do
   context 'when the unit import is successful' do
     let(:operation_result) { instance_double(result_class, success?: true) }
 
-    it 'sets the unit\'s status to "COMPLETED"' do
+    before do
       mock_unit_load_operation(operation_result)
+      expect(TribunalCommerce::DailyUpdateUnit::Operation::PostImport)
+        .to receive(:call)
+        .with({ daily_update_unit: unit })
+    end
+
+    it 'sets the unit\'s status to "COMPLETED"' do
       subject
       unit.reload
 
@@ -24,10 +30,6 @@ describe ImportTcDailyUpdateUnitJob do
     end
 
     it 'calls PostImport' do
-      mock_unit_load_operation(operation_result)
-      expect(TribunalCommerce::DailyUpdateUnit::Operation::PostImport)
-        .to receive(:call)
-
       subject
     end
   end

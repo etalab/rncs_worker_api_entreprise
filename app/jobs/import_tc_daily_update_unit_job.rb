@@ -18,7 +18,8 @@ class ImportTcDailyUpdateUnitJob < ApplicationJob
     # Checking the import result a second time outside the transaction
     # so the 'ERROR' status is persisted into DB and not rollback to 'PENDING'
     if import.success?
-      TribunalCommerce::DailyUpdateUnit::Operation::PostImport.call
+      TribunalCommerce::DailyUpdateUnit::Operation::PostImport
+        .call(daily_update_unit: unit)
     else
       unit.update(status: 'ERROR')
     end
