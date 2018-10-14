@@ -65,6 +65,8 @@ RSpec.configure do |config|
   # Create an 'it' alias for specs on collection
   config.alias_example_to :they
 
+  config.default_formatter = config.files_to_run.one? ? 'doc' : 'progress'
+
 # The settings below are suggested to provide a good initial experience
 # with RSpec, but feel free to customize to your heart's content.
 =begin
