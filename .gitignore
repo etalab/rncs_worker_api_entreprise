@@ -34,3 +34,6 @@
 
 # TODO create an init_project task to create this file template in dev env
 /config/rncs_sources.yml
+
+# Ignore dumps
+*.dump
