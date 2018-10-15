@@ -4,9 +4,10 @@ class ImportTcDailyUpdateUnitJob < ApplicationJob
   def perform(daily_update_id)
     import = nil
     unit = DailyUpdateUnit.find(daily_update_id)
+    logger = unit.logger_for_import
     ActiveRecord::Base.transaction do
       import = TribunalCommerce::DailyUpdateUnit::Operation::Load
-        .call(daily_update_unit: unit)
+        .call(daily_update_unit: unit, logger: logger)
 
       if import.success?
         unit.update(status: 'COMPLETED')

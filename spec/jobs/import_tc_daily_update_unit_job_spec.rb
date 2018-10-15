@@ -3,7 +3,18 @@ require 'rails_helper'
 describe ImportTcDailyUpdateUnitJob do
   let(:result_class) { Trailblazer::Operation::Railway::Result }
   let(:unit) { create(:daily_update_unit, status: 'PENDING') }
+  let(:import_logger) { instance_double(Logger) }
   subject { described_class.perform_now(unit.id) }
+
+  before do
+    # Here we are mocking the specific logger created for the daily
+    # update unit import. We can then ensure than this returned logger is
+    # given to TribunalCommerce::DailyUpdateUnit::Operation::Load.call
+    # as you can see inside `mock_unit_load_operation` method definition
+    allow_any_instance_of(DailyUpdateUnit)
+      .to receive(:logger_for_import)
+      .and_return(import_logger)
+  end
 
   context 'when the unit import is successful' do
     let(:operation_result) { instance_double(result_class, success?: true) }
@@ -57,7 +68,7 @@ describe ImportTcDailyUpdateUnitJob do
   def mock_unit_load_operation(result)
     expect(TribunalCommerce::DailyUpdateUnit::Operation::Load)
       .to receive(:call)
-      .with({ daily_update_unit: unit })
+      .with({ daily_update_unit: unit, logger: import_logger })
       .and_return(result)
   end
 end
