@@ -41,6 +41,7 @@ describe ImportTcDailyUpdateUnitJob do
       expect(TribunalCommerce::DailyUpdateUnit::Operation::Load)
         .to receive(:call)
         .and_wrap_original do |original_method, *args|
+          # Write into DB as if the operation did
           create(:daily_update_unit, status: 'GHOST')
           operation_result
         end
