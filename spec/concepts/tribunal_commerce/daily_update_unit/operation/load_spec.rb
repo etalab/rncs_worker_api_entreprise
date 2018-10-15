@@ -1,8 +1,9 @@
 require 'rails_helper'
 
 describe TribunalCommerce::DailyUpdateUnit::Operation::Load do
+  let(:logger) { instance_double(Logger).as_null_object }
   let(:unit) { create(:daily_update_unit, files_path: fixture_path) }
-  subject { described_class.call(daily_update_unit: unit) }
+  subject { described_class.call(daily_update_unit: unit, logger: logger) }
 
   # spec/fixtures/tc/flux/2018/04/09/0110
   # ├── 21
@@ -35,10 +36,39 @@ describe TribunalCommerce::DailyUpdateUnit::Operation::Load do
       subject
     end
 
-    it 'logs when transmission\'s import starts'
+    it 'logs when transmission\'s import starts' do
+      expect(logger).to receive(:info)
+        .with(a_string_starting_with('Starting to import transmission number '))
+        .exactly(4).times
+
+      subject
+    end
 
     context 'when a transmission\'s import is complete' do
-      it 'logs'
+      before do
+        transmission_result = instance_double(
+          Trailblazer::Operation::Railway::Result,
+          success?: true,
+          failure?: false
+        )
+
+        [21, 22, 23, 24].each do |nb|
+          expect(TribunalCommerce::DailyUpdateUnit::Operation::ImportTransmission)
+            .to receive(:call)
+            .with(files_path: a_string_ending_with("/#{nb}"))
+            .and_return(transmission_result)
+
+        end
+      end
+
+      it 'logs' do
+        expect(logger).to receive(:info).with('Import of transmission number 21 is complete !')
+        expect(logger).to receive(:info).with('Import of transmission number 22 is complete !')
+        expect(logger).to receive(:info).with('Import of transmission number 23 is complete !')
+        expect(logger).to receive(:info).with('Import of transmission number 24 is complete !')
+
+        subject
+      end
     end
 
     context 'when one transmission fails to import' do
@@ -56,7 +86,12 @@ describe TribunalCommerce::DailyUpdateUnit::Operation::Load do
 
       it { is_expected.to be_failure }
 
-      it 'logs'
+      it 'logs' do
+        expect(logger).to receive(:error)
+          .with('An error occured while importing transmission number 21. Aborting daily update unit import...')
+
+        subject
+      end
 
       it 'cancels import of the following transmissions' do
         ensure_import_is_cancel_for_transmission(22)
@@ -70,7 +105,12 @@ describe TribunalCommerce::DailyUpdateUnit::Operation::Load do
     context 'when each transmission is fully imported' do
       it { is_expected.to be_success }
 
-      it 'logs'
+      it 'logs' do
+        expect(logger).to receive(:info)
+          .with("Each transmission has been successfuly imported. The daily update is a success for greffe #{unit.code_greffe} !")
+
+        subject
+      end
     end
   end
 
