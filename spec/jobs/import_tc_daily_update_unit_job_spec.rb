@@ -5,13 +5,6 @@ describe ImportTcDailyUpdateUnitJob do
   let(:unit) { create(:daily_update_unit, status: 'PENDING') }
   subject { described_class.perform_now(unit.id) }
 
-  def mock_unit_load_operation(result)
-    expect(TribunalCommerce::DailyUpdateUnit::Operation::Load)
-      .to receive(:call)
-      .with({ daily_update_unit: unit })
-      .and_return(result)
-  end
-
   context 'when the unit import is successful' do
     let(:operation_result) { instance_double(result_class, success?: true) }
 
@@ -41,10 +34,10 @@ describe ImportTcDailyUpdateUnitJob do
       expect(TribunalCommerce::DailyUpdateUnit::Operation::Load)
         .to receive(:call)
         .and_wrap_original do |original_method, *args|
-          # Write into DB as if the operation did
-          create(:daily_update_unit, status: 'GHOST')
-          operation_result
-        end
+        # Write into DB as if the operation did
+        create(:daily_update_unit, status: 'GHOST')
+        operation_result
+      end
 
       subject
 
@@ -59,5 +52,12 @@ describe ImportTcDailyUpdateUnitJob do
 
       expect(unit.status).to eq('ERROR')
     end
+  end
+
+  def mock_unit_load_operation(result)
+    expect(TribunalCommerce::DailyUpdateUnit::Operation::Load)
+      .to receive(:call)
+      .with({ daily_update_unit: unit })
+      .and_return(result)
   end
 end
