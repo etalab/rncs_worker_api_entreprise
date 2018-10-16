@@ -30,3 +30,8 @@ Run `bundle install`
 
 `rails db:migrate`
 `rails db:migrate RAILS_ENV=test`
+
+
+## Data
+
+* Capital social de la forme euros.cents (cents peut etre en mono ou duo digits) ou alors vide
