@@ -21,8 +21,8 @@ require 'rspec/rails'
 # Require spec helpers
 Dir[Rails.root.join("spec/helper/*.rb")].each { |f| require f }
 
-# Require shared examples
-Dir[Rails.root.join('spec', 'support', 'shared_examples', '*.rb')].sort.each { |f| require f }
+# Require shared examples and support files
+Dir[Rails.root.join('spec', 'support', '**', '*.rb')].sort.each { |f| require f }
 
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 RSpec.configure do |config|
