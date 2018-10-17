@@ -26,7 +26,7 @@ module TribunalCommerce
             transmission_number = transmission_path.split('/').last
             logger.info("Starting to import transmission number #{transmission_number}...")
             import = TribunalCommerce::DailyUpdateUnit::Operation::ImportTransmission
-              .call(files_path: transmission_path)
+              .call(files_path: transmission_path, logger: logger)
 
             if import.success?
               logger.info("Import of transmission number #{transmission_number} is complete !")
