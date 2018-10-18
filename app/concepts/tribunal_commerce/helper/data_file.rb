@@ -30,10 +30,11 @@ module TribunalCommerce
       end
 
       def map_import_worker(files_args)
-        files_args.map! do |file_arg|
+        result = files_args.map do |file_arg|
           file_arg[:import_worker] = fetch_worker_for(file_arg[:label])
           file_arg
         end
+        result
       end
 
       private

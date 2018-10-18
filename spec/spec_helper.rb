@@ -67,6 +67,12 @@ RSpec.configure do |config|
 
   config.default_formatter = config.files_to_run.one? ? 'doc' : 'progress'
 
+  # Hide gems backtrace on failure
+  config.filter_gems_from_backtrace 'spring',
+    'trailblazer-activity',
+    'trailblazer-context',
+    'trailblazer-operation'
+
 # The settings below are suggested to provide a good initial experience
 # with RSpec, but feel free to customize to your heart's content.
 =begin
