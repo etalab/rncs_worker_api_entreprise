@@ -36,7 +36,7 @@ describe TribunalCommerce::DailyUpdateUnit::Operation::ImportTransmission, :trb 
           allow_any_instance_of(TribunalCommerce::Helper::DataFile)
             .to receive(:map_import_worker)
             .and_return([{ import_worker: mocked_worker, path: 'file path' }])
-          expect(mocked_worker).to receive(:call).with(file_path: 'file path')
+          expect(mocked_worker).to receive(:call).with(file_path: 'file path', type_import: :flux)
 
           subject
         end

@@ -1,11 +1,4 @@
 module DataSourceHelper
-  # TODO Refactor this by extracting the call to SmarterCSV
-  class CSVExtractor < Trailblazer::Operation
-    include DataSource::File::Helper
-
-    step :csv_to_hash
-  end
-
   # TODO externalize this configuration
   def labels
     @labels ||= {

@@ -7,7 +7,7 @@ module DataSource
         pass :rename_csv_headers # two headers 'siren' for the rep csv ...
 
         step ->(ctx, params:, **) do
-          import_file = params[:import_worker].call(file_path: params[:file_path])
+          import_file = params[:import_worker].call(file_path: params[:file_path], type_import: :stock)
         end
 
 

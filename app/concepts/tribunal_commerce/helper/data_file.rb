@@ -39,9 +39,6 @@ module TribunalCommerce
 
       private
 
-      def capture_metadata(filename)
-      end
-
       def flux_filename_regex
         /\A(\d{4})_(\d{1,})_(\d{8})_(\d{6})_(\d{1,2})_(.+)\.csv\Z/
       end

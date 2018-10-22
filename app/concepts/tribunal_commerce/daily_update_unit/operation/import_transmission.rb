@@ -36,7 +36,7 @@ module TribunalCommerce
 
             unless ['actes', 'comptes_annuels'].include?(label)
               logger.info("Starting import of file #{filename}...")
-              file_import = import_worker.call(file_path: arg[:path])
+              file_import = import_worker.call(file_path: arg[:path], type_import: :flux)
 
               if file_import.success?
                 logger.info("Import of file #{filename} is complete")
