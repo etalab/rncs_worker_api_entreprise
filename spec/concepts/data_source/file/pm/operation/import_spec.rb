@@ -43,7 +43,10 @@ describe DataSource::File::PM::Operation::Import, :trb do
       end
 
       it 'calls PM::Operation::AddPersonneMorale for each line' do
-        expect(DataSource::File::PM::Operation::AddPersonneMorale).to receive(:call).exactly(5).times
+        expect(DataSource::File::PM::Operation::AddPersonneMorale)
+          .to receive(:call)
+          .with(data: Hash)
+          .exactly(5).times
 
         subject
       end
