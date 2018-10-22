@@ -3,13 +3,18 @@ class DailyUpdate < ApplicationRecord
 
   class << self
     def current
-      collection = self.order(year: :desc, month: :desc, day: :desc).limit(1)
+      collection = self.where(proceeded: true).order(year: :desc, month: :desc, day: :desc).limit(1)
       collection.first
     end
 
     def queued_updates?
       collection = self.where(proceeded: false)
       !collection.empty?
+    end
+
+    def next_in_queue
+      collection = self.where(proceeded: false).order(year: :asc, month: :asc, day: :asc).limit(1)
+      collection.first
     end
   end
 
@@ -39,6 +44,9 @@ class DailyUpdate < ApplicationRecord
 
     elsif child_status.any? { |status| status == 'ERROR' }
       return 'ERROR'
+
+    elsif child_status.empty?
+      return 'PENDING'
     end
   end
 

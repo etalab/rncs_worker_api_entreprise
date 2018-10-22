@@ -48,6 +48,7 @@ group :development, :test do
   gem 'guard-rspec'
   gem 'factory_bot_rails'
   gem 'pry'
+  gem 'timecop'
 end
 
 group :development do

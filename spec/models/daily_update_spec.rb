@@ -20,11 +20,12 @@ describe DailyUpdate do
 
     context 'when daily updates have been imported already' do
       before do
-        create(:daily_update, year: '2015', month: '08', day: '23')
-        create(:daily_update, year: '2008', month: '10', day: '04')
+        create(:daily_update, year: '2015', month: '09', day: '12', proceeded: false)
+        create(:daily_update, year: '2015', month: '08', day: '23', proceeded: true)
+        create(:daily_update, year: '2008', month: '10', day: '04', proceeded: true)
       end
 
-      it 'returns the last one in date' do
+      it 'returns the last one which has been proceed already' do
         daily_update = described_class.where(year: '2015', month: '08', day: '23').first
         expect(subject).to eq(daily_update)
       end
@@ -48,6 +49,25 @@ describe DailyUpdate do
       create(:daily_update, proceeded: true)
 
       expect(subject).to eq(false)
+    end
+  end
+
+  describe '.next_in_queue' do
+    subject { described_class.next_in_queue }
+
+    context 'with queued updates' do
+      it 'returns the first one not proceeded' do
+      create(:daily_update_tribunal_commerce, year: '2017', month: '10', day: '25', proceeded: false)
+      create(:daily_update_tribunal_commerce, year: '2017', month: '10', day: '27', proceeded: false)
+
+      expect(subject.date).to eq(Date.new(2017, 10, 25))
+      end
+    end
+
+    context 'when queue is empty' do
+      it 'returns nil' do
+        expect(subject).to be_nil
+      end
     end
   end
 
