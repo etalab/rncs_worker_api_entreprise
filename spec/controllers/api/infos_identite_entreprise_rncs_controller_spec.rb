@@ -16,11 +16,11 @@ describe API::InfosIdentiteEntrepriseRNCSController, type: :controller do
 
 
   context 'valid siren' do
+    before { create :entreprise_simple, siren: siren }
     let(:siren) { valid_siren }
 
-    it 'returns 200' do # Small value here ...
-      pending('it should work with factories')
-      #expect(subject.status).to eq(200)
+    it 'returns 200' do
+      expect(subject.status).to eq(200)
     end
 
   end

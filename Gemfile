@@ -35,6 +35,8 @@ gem 'trailblazer', '~> 2.1.0.rc1'
 gem 'trailblazer-rails'
 gem 'dry-validation', '~> 0.11.1'
 
+gem 'prawn'
+
 # ELK bridge
 gem 'logstasher'
 
@@ -42,6 +44,7 @@ gem 'logstasher'
 gem 'rack-cors', require: 'rack/cors'
 
 group :development, :test do
+  gem 'awesome_print'
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
   gem 'spring-commands-rspec'
@@ -50,8 +53,11 @@ group :development, :test do
   gem 'shoulda-matchers'
   gem 'guard-rspec'
   gem 'factory_bot_rails'
+  gem 'pdf-inspector'
   gem 'pry'
+  gem 'pry-byebug'
   gem 'timecop'
+  gem 'mimemagic'
 end
 
 group :development do

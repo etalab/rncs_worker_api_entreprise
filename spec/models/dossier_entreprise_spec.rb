@@ -23,4 +23,20 @@ describe DossierEntreprise do
   it_behaves_like 'having event date and label'
   it_behaves_like 'having dossier greffe id'
   it_behaves_like 'having rails timestamps'
+
+  describe 'helper methods' do
+    context 'with an entreprise complexe' do
+      subject { create :entreprise_complexe }
+
+      its(:etablissement_principal) { is_expected.not_to be_nil }
+      its('etablissement_principal.type_etablissement') { is_expected.to eq 'PRI' }
+    end
+
+    context 'with an entreprise without siege social' do
+      subject { create :entreprise_without_siege_social }
+
+      its(:etablissement_principal) { is_expected.not_to be_nil }
+      its('etablissement_principal.type_etablissement') { is_expected.not_to eq 'PRI' } # random
+    end
+  end
 end

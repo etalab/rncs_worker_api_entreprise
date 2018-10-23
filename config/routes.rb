@@ -5,5 +5,6 @@ Rails.application.routes.draw do
 
   namespace :api do
     get 'infos_identite_entreprise_rncs/:siren' => '/api/infos_identite_entreprise_rncs#show'
+    get 'pdf/:siren' => '/api/pdf#show'
   end
 end

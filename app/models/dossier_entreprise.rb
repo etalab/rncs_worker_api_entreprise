@@ -4,4 +4,8 @@ class DossierEntreprise < ApplicationRecord
   has_many :representants
   has_many :etablissements
   has_many :observations
+
+  def etablissement_principal
+    etablissements.find_by(type_etablissement: 'PRI') || etablissements.first
+  end
 end
