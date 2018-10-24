@@ -9,7 +9,7 @@ FactoryBot.define do
     date_derniere_modification { '2018-01-01' }
     libelle_derniere_modification { 'Création' }
 
-    factory :auto_entrepreneur do
+    factory :dossier_auto_entrepreneur do
       siren { '123456789' }
       nom_greffe { 'Greffe AE' }
 
@@ -20,7 +20,7 @@ FactoryBot.define do
       end
     end
 
-    factory :entreprise_simple do
+    factory :dossier_entreprise_simple do
       siren { '111111111' }
       nom_greffe { 'Greffe entreprise simple' }
 
@@ -31,7 +31,7 @@ FactoryBot.define do
       end
     end
 
-    factory :entreprise_complexe do
+    factory :dossier_entreprise_pm_many_reps do
       siren { '222222222' }
       nom_greffe { 'Greffe entreprise complexe' }
 
@@ -45,9 +45,9 @@ FactoryBot.define do
       end
     end
 
-    factory :entreprise_without_siege_social do
+    factory :dossier_entreprise_without_etab_principal do
       after :create do |dossier|
-        create_list :etablissement, 4, dossier_entreprise: dossier
+        create_list :etablissement, 4, dossier_entreprise: dossier, type_etablissement: 'SEC'
       end
     end
   end

@@ -25,18 +25,20 @@ describe DossierEntreprise do
   it_behaves_like 'having rails timestamps'
 
   describe 'helper methods' do
-    context 'with an entreprise complexe' do
-      subject { create :entreprise_complexe }
+    context 'with an entreprise PM with many representants' do
+      subject { create :dossier_entreprise_pm_many_reps }
 
       its(:etablissement_principal) { is_expected.not_to be_nil }
       its('etablissement_principal.type_etablissement') { is_expected.to eq 'PRI' }
     end
 
-    context 'with an entreprise without siege social' do
-      subject { create :entreprise_without_siege_social }
+    context 'with an entreprise without etablissement principal' do
+      subject { create :dossier_entreprise_without_siege_social }
 
-      its(:etablissement_principal) { is_expected.not_to be_nil }
-      its('etablissement_principal.type_etablissement') { is_expected.not_to eq 'PRI' } # random
+      it 'still return something if it has at least one etablissement' do
+        expect(subject.etablissement_principal).not_to be_nil
+        expect(subject.etablissement_principal.type_etablissement).not_to eq 'PRI'
+      end
     end
   end
 end

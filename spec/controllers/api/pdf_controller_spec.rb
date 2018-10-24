@@ -18,7 +18,7 @@ describe API::PdfController, type: :controller do
   end
 
   describe 'valid siren' do
-    before { create :entreprise_simple, siren: siren }
+    before { create :dossier_entreprise_simple, siren: siren }
 
     let(:siren) { valid_siren }
 

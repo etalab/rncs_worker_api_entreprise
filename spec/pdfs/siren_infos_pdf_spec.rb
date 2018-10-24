@@ -8,7 +8,7 @@ describe SirenInfosPdf do
   before { Timecop.freeze(Time.local(2018, 10, 22)) }
 
   describe 'Auto-entrepreneur' do
-    let(:dossier) { create :auto_entrepreneur }
+    let(:dossier) { create :dossier_auto_entrepreneur }
 
     # Greffe
     it { is_expected.to include('Greffe AE (code greffe: 1234)') }
@@ -28,7 +28,7 @@ describe SirenInfosPdf do
   end
 
   describe 'Entreprise simple' do
-    let(:dossier) { create :entreprise_simple }
+    let(:dossier) { create :dossier_entreprise_simple }
 
     # Greffe
     it { is_expected.to include('Greffe entreprise simple (code greffe: 1234)') }
@@ -50,8 +50,8 @@ describe SirenInfosPdf do
     it { is_expected.to include('Adresse:  rue des Peupliers Zone Industrielle Sud 34000 Montpellier') }
   end
 
-  describe 'Entreprise complexe' do
-    let(:dossier) { create :entreprise_complexe }
+  describe 'Dossier entreprise PM with many representants' do
+    let(:dossier) { create :dossier_entreprise_pm_many_reps }
 
     # Greffe
     it { is_expected.to include('Greffe entreprise complexe (code greffe: 1234)') }

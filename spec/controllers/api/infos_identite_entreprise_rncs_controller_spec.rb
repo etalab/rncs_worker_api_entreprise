@@ -16,7 +16,7 @@ describe API::InfosIdentiteEntrepriseRNCSController, type: :controller do
 
 
   context 'valid siren' do
-    before { create :entreprise_simple, siren: siren }
+    before { create :dossier_entreprise_simple, siren: siren }
     let(:siren) { valid_siren }
 
     it 'returns 200' do
