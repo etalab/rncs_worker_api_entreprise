@@ -1,11 +1,10 @@
 module DataSource
   module File
     class CSVReader
-      def initialize(file, mapping, filter_nil_values:false, **)
+      def initialize(file, mapping)
         @file = file
         @options = default_options
         add_mapping_to_options(mapping)
-        remove_nil_values if filter_nil_values
       end
 
       def proceed
@@ -20,18 +19,13 @@ module DataSource
         {
           col_sep: ';',
           chunk_size: Rails.configuration.rncs_sources['import_batch_size'],
-          remove_empty_hashes: false,
-          hash_transformations: [:none],
+          hash_transformations: [:none, :remove_blank_values],
           header_transformations: [:none]
         }
       end
 
       def add_mapping_to_options(mapping)
         @options[:header_transformations].push({ key_mapping: mapping })
-      end
-
-      def remove_nil_values
-        @options[:hash_transformations].push(:remove_blank_values)
       end
     end
   end

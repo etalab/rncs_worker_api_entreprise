@@ -58,6 +58,7 @@ group :development, :test do
   gem 'pry-byebug'
   gem 'timecop'
   gem 'mimemagic'
+  gem 'unindent'
 end
 
 group :development do

@@ -13,7 +13,9 @@ describe DataSource::File::CSVReader do
     raw_data.first
   end
 
-  shared_examples 'header keys transformations' do
+  shared_examples 'valid parsing' do
+    its(:size) { is_expected.to eq(15) }
+
     it { is_expected.to have_key(:code_greffe) }
     it { is_expected.to have_key(:nom_greffe) }
     it { is_expected.to have_key(:numero_gestion) }
@@ -35,28 +37,15 @@ describe DataSource::File::CSVReader do
     let(:csv_file) { fixtures_path.join('pm.csv') }
     let(:header_mapping) { DOSSIER_ENTREPRISE_FROM_PM_HEADER_MAPPING }
 
-    it_behaves_like 'header keys transformations'
-
-    # fields in previous specs only
-    its(:size) { is_expected.to eq(15) }
+    it_behaves_like 'valid parsing'
   end
 
   context 'when read from pp file' do
     let(:csv_file) { fixtures_path.join('pp.csv') }
     let(:header_mapping) { DOSSIER_ENTREPRISE_FROM_PP_HEADER_MAPPING }
 
-    it_behaves_like 'header keys transformations'
-
-    # fields in previous specs only
-    its(:size) { is_expected.to eq(15) }
+    it_behaves_like 'valid parsing'
   end
 
-  # TODO move generic tests into a csv_reader_spec.rb file
-  context 'when values are string numbers it keeps leading zeros' do
-    let(:csv_file) { fixtures_path.join('pm.csv') }
-    let(:header_mapping) { DOSSIER_ENTREPRISE_FROM_PM_HEADER_MAPPING }
-
-    its([:code_greffe]) { is_expected.to eq('0888') }
-    its([:siren]) { is_expected.to eq('051607251') }
-  end
+  # TODO add specs for specficic fields validation
 end

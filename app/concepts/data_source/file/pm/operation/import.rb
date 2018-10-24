@@ -37,7 +37,6 @@ module DataSource
             csv_reader = File::CSVReader.new(
               file_path,
               PM_HEADER_MAPPING,
-              filter_nil_values: true
             )
 
             csv_reader.proceed do |lines|
