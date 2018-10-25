@@ -1,6 +1,23 @@
 module DataSource
   module File
     class CSVReader
+      def self.bulk_processing(file, header_mapping)
+        reader = new(file, header_mapping)
+        reader.proceed do |batch|
+          yield(batch)
+        end
+      end
+
+      def self.line_processing(file, header_mapping)
+        reader = new(file, header_mapping)
+        reader.proceed do |batch|
+          batch.each do |line|
+            yield(line)
+          end
+        end
+      end
+
+
       def initialize(file, mapping)
         @file = file
         @options = default_options

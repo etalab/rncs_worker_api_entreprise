@@ -1,15 +1,33 @@
 require 'rails_helper'
 
-describe DataSource::File::PP::Operation::Import do
-  let(:file_path) { Rails.root.join('spec', 'fixtures', 'pp.csv') }
+describe DataSource::File::PP::Operation::Import, :trb do
+  file = Rails.root.join('spec', 'fixtures', 'pp.csv')
 
-  subject { described_class.call(file_path: file_path) }
+  subject { described_class.call(file_path: file, type_import: type_import) }
 
-  it 'saves DossierEntreprise records' do
-    expect{ subject }.to change(DossierEntreprise, :count).by(5)
+  context 'when type_import: :stock' do
+    let(:type_import) { :stock }
+
+    it_behaves_like 'bulk import', DossierEntreprise, file, DOSSIER_ENTREPRISE_FROM_PP_HEADER_MAPPING
+
+    it_behaves_like 'bulk import', PersonnePhysique, file, PP_HEADER_MAPPING
+
+    it { is_expected.to be_success }
   end
 
-  it 'saves PersonnePhysique records' do
-    expect{ subject }.to change(PersonnePhysique, :count).by(5)
+  context 'when type_import: :flux' do
+    let(:type_import) { :flux }
+
+    subject { described_class.call(file_path: file, type_import: type_import) }
+
+    it_behaves_like 'bulk import', DossierEntreprise, file, DOSSIER_ENTREPRISE_FROM_PP_HEADER_MAPPING
+
+    it_behaves_like 'line import', DataSource::File::PP::Operation::AddPersonnePhysique, file, PP_HEADER_MAPPING
+
+    it { is_expected.to be_success }
+  end
+
+  context 'when :type_import is unknown' do
+    it_behaves_like 'invalid import type'
   end
 end
