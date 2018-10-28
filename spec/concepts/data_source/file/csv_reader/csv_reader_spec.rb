@@ -1,12 +1,71 @@
 require 'rails_helper'
 
 describe DataSource::File::CSVReader do
-  describe '.bulk_processing' do
+  describe do
+    let(:example_file) { Rails.root.join('spec/fixtures/csv_reader_spec.csv') }
+    let(:example_mapping) do
+      {
+        'Data A' => :data_a,
+        'Data B' => :data_b,
+      }
+    end
 
-  end
+    before do
+      file = File.new(example_file, 'w+')
+      content = <<-CSV
+      Data A;Data B
+      A1;B1
+      A2;B2
+      A3;B3
+      A4;B4
+      A5;B5
+      CSV
+      file.write(content.unindent)
+      file.close
+    end
 
-  describe '.line_processing' do
+    after { FileUtils.rm_rf(example_file) }
 
+    describe '.bulk_processing' do
+      specify 'batch size is configured in config/rncs_sources.yml' do
+        reader = described_class.new(example_file, example_mapping)
+        options = reader.instance_variable_get(:@options)
+
+        expect(options[:chunk_size])
+          .to eq(Rails.configuration.rncs_sources['import_batch_size'])
+      end
+
+      it 'reads the file by batch' do
+        expect do |block_checker|
+          described_class.bulk_processing(example_file, example_mapping, &block_checker)
+        end
+          .to yield_successive_args(
+          [
+            { data_a: 'A1', data_b: 'B1' },
+            { data_a: 'A2', data_b: 'B2' },
+            { data_a: 'A3', data_b: 'B3' }
+          ],
+          [
+            { data_a: 'A4', data_b: 'B4' },
+            { data_a: 'A5', data_b: 'B5' }
+          ])
+      end
+    end
+
+    describe '.line_processing' do
+      it 'reads line by line' do
+        expect do |block_checker|
+          described_class.line_processing(example_file, example_mapping, &block_checker)
+        end
+          .to yield_successive_args(
+            { data_a: 'A1', data_b: 'B1' },
+            { data_a: 'A2', data_b: 'B2' },
+            { data_a: 'A3', data_b: 'B3' },
+            { data_a: 'A4', data_b: 'B4' },
+            { data_a: 'A5', data_b: 'B5' },
+          )
+      end
+    end
   end
 
   describe '#proceed' do
@@ -35,11 +94,11 @@ describe DataSource::File::CSVReader do
 
     let(:read_file) do
       reader = described_class.new(example_file, example_mapping)
-      lines = nil
+      lines = []
       reader.proceed do |batch|
-        lines = batch
+        lines.push(batch)
       end
-      lines
+      lines.flatten
     end
 
     def fetch_line(nb)
