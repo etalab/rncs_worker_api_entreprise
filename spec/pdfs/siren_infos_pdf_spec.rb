@@ -81,7 +81,7 @@ describe SirenInfosPdf do
     end
   end
 
-  describe 'all fields are nil' do
+  describe 'all fields are nil but PDF generated' do
     let(:dossier) { DossierEntreprise.new.tap(&:save) }
 
     before { Etablissement.new(dossier_entreprise: dossier).tap(&:save) }
@@ -89,12 +89,14 @@ describe SirenInfosPdf do
     context 'with PP' do
       before { PersonnePhysique.new(dossier_entreprise: dossier).tap(&:save) }
 
+      # check PDF size instead of checking ALL nil values
       its(:size) { is_expected.to eq 11 }
     end
 
     context 'with PM' do
       before { PersonneMorale.new(dossier_entreprise: dossier).tap(&:save) }
 
+      # check PDF size instead of checking ALL nil values
       its(:size) { is_expected.to eq 14 }
     end
   end
