@@ -32,7 +32,7 @@ module DataSource
 
           def line_import_personnes_morale(ctx, file_path:, file_reader:, **)
             file_reader.line_processing(file_path, PM_HEADER_MAPPING) do |line|
-              line_import = PM::Operation::AddPersonneMorale.call(data: line)
+              line_import = PersonneMorale::Operation::Create.call(data: line)
 
               return false if line_import.failure?
             end

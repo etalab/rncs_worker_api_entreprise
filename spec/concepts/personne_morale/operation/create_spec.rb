@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe DataSource::File::PM::Operation::AddPersonneMorale do
+describe PersonneMorale::Operation::Create do
   subject { described_class.call(data: pm_data) }
 
   context 'when the related dossier entreprise exists' do

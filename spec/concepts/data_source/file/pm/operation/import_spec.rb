@@ -21,13 +21,13 @@ describe DataSource::File::PM::Operation::Import, :trb do
     it_behaves_like 'bulk import', DossierEntreprise, file, DOSSIER_ENTREPRISE_FROM_PM_HEADER_MAPPING
 
     it_behaves_like 'line import',
-      DataSource::File::PM::Operation::AddPersonneMorale,
+      PersonneMorale::Operation::Create,
       PersonneMorale,
       file,
       PM_HEADER_MAPPING
 
     it 'is success' do
-      allow(DataSource::File::PM::Operation::AddPersonneMorale)
+      allow(PersonneMorale::Operation::Create)
         .to receive(:call)
         .and_return(trb_result_success)
 
