@@ -18,11 +18,13 @@ describe DataSource::File::PP::Operation::Import, :trb do
   context 'when type_import: :flux' do
     let(:type_import) { :flux }
 
-    subject { described_class.call(file_path: file, type_import: type_import) }
-
     it_behaves_like 'bulk import', DossierEntreprise, file, DOSSIER_ENTREPRISE_FROM_PP_HEADER_MAPPING
 
-    it_behaves_like 'line import', DataSource::File::PP::Operation::AddPersonnePhysique, file, PP_HEADER_MAPPING
+    it_behaves_like 'line import',
+      DataSource::File::PP::Operation::AddPersonnePhysique,
+      PersonnePhysique,
+      file,
+      PP_HEADER_MAPPING
 
     it { is_expected.to be_success }
   end

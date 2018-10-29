@@ -12,7 +12,7 @@ module DataSource
 
           step :import_dossiers_entreprise
           step ->(ctx, type_import:, **) { type_import == :stock }
-          fail :line_import_personnes_physiques, Output(:success) => 'End.success'
+            fail :line_import_personnes_physiques, Output(:success) => 'End.success'
           step :import_personnes_physique
 
 
