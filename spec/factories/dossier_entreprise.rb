@@ -9,12 +9,12 @@ FactoryBot.define do
     date_derniere_modification { '2018-01-01' }
     libelle_derniere_modification { 'Création' }
 
-    factory :dossier_auto_entrepreneur do
+    factory :dossier_auto_entrepreneur, aliases: [:dossier_entreprise_siege_and_principal] do
       siren { '123456789' }
       nom_greffe { 'Greffe AE' }
 
       after :create do |dossier|
-        create :siege_social, dossier_entreprise: dossier
+        create :siege_social_and_principal, dossier_entreprise: dossier
         create :personne_physique, dossier_entreprise: dossier
         create :president_pp, dossier_entreprise: dossier
       end
@@ -25,7 +25,7 @@ FactoryBot.define do
       nom_greffe { 'Greffe entreprise simple' }
 
       after :create do |dossier|
-        create :siege_social, dossier_entreprise: dossier
+        create :siege_social_and_principal, dossier_entreprise: dossier
         create :personne_morale, dossier_entreprise: dossier
         create :president_pm, dossier_entreprise: dossier
       end
@@ -37,8 +37,11 @@ FactoryBot.define do
 
       after :create do |dossier|
         create :siege_social, dossier_entreprise: dossier
+        create :etablissement_principal, dossier_entreprise: dossier
         create_list :etablissement, 5, dossier_entreprise: dossier
+
         create :personne_morale, dossier_entreprise: dossier
+
         create :president_pm, dossier_entreprise: dossier
         create_list :representant_pm, 3, dossier_entreprise: dossier
         create_list :representant_pp, 3, dossier_entreprise: dossier

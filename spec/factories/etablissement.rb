@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :etablissement do
-    type_etablissement { %w[SEC SEP SIE].sample  }
+    type_etablissement { 'SEC' }
     siege_pm { 'France' }
     rcs_registre { 'Pointe à Pitre' }
     activite_ambulante { 'non' }
@@ -23,7 +23,15 @@ FactoryBot.define do
     siren { '000000000' }
 
     factory :siege_social do
+      type_etablissement { 'SIE' }
+    end
+
+    factory :etablissement_principal do
       type_etablissement { 'PRI' }
+    end
+
+    factory :siege_social_and_principal do
+      type_etablissement { 'SEP' }
     end
   end
 end

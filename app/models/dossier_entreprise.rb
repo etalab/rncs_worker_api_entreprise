@@ -6,6 +6,6 @@ class DossierEntreprise < ApplicationRecord
   has_many :observations
 
   def etablissement_principal
-    etablissements.find_by(type_etablissement: 'PRI') || etablissements.first
+    etablissements.find_by(type_etablissement: 'PRI') || etablissements.find_by(type_etablissement: 'SEP')
   end
 end
