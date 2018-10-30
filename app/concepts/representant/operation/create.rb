@@ -18,7 +18,7 @@ class Representant
       end
 
       def dossier_not_found(ctx, data:, **)
-        ctx[:error] = "The dossier (code_greffe: #{data[:code_greffe]}, numero_gestion: #{data[:numero_gestion]}) is not found. The representant cannot be save"
+        ctx[:error] = "The dossier (code_greffe: #{data[:code_greffe]}, numero_gestion: #{data[:numero_gestion]}) is not found. Aborting..."
       end
     end
   end
