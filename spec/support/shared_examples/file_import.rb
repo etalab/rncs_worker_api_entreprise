@@ -27,17 +27,9 @@ shared_examples 'bulk import' do |model, file, header_mapping|
 
     result
   end
-
-  # TODO issue about unit (mock and stubs doubles used) and integration tests
-  #it "saves #{model} records" do
-  #  pending 'will pass when line import operations are all implemented'
-  #  # integration test here, no stub
-  #  expect { described_class.call(file_path: file, type_import: type_import) }
-  #    .to change(model, :count).by(5)
-  #end
 end
 
-shared_examples 'line import' do |line_processor, model, file, header_mapping|
+shared_examples 'line import' do |line_processor, file, header_mapping|
   let(:csv_reader) { class_double(DataSource::File::CSVReader).as_null_object }
 
   subject { described_class.call(file_path: file, type_import: type_import, file_reader: csv_reader) }
@@ -61,12 +53,7 @@ shared_examples 'line import' do |line_processor, model, file, header_mapping|
     expect(line_processor).to have_received(:call).with(data: 'second line').ordered
   end
 
-  # TODO same as above, not sure about keeping those tests in shared examples
-  #it 'saves the records' do
-  #  pending 'integration test : will pass when PM::Operation::AddPersonnePhysique is implemented'
-  #  expect { subject }.to change(model, :count).by(5)
-  #end
-
+  # TODO move this outside the shared example : operation success depends on the overall file import
   it { is_expected.to be_success }
 
   context "when #{line_processor} returns a warning message" do

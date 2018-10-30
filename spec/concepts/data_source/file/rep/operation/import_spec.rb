@@ -18,7 +18,6 @@ describe DataSource::File::Rep::Operation::Import, :trb do
 
     it_behaves_like 'line import',
       Representant::Operation::Create,
-      Representant,
       file,
       REP_HEADER_MAPPING
 

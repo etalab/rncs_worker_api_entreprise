@@ -18,7 +18,6 @@ describe DataSource::File::Ets::Operation::Import, :trb do
 
     it_behaves_like 'line import',
       Etablissement::Operation::Create,
-      Etablissement,
       file,
       ETS_HEADER_MAPPING
 

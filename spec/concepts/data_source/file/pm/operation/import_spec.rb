@@ -22,7 +22,6 @@ describe DataSource::File::PM::Operation::Import, :trb do
 
     it_behaves_like 'line import',
       PersonneMorale::Operation::Create,
-      PersonneMorale,
       file,
       PM_HEADER_MAPPING
 

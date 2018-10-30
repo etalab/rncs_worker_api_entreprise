@@ -18,7 +18,6 @@ describe DataSource::File::Obs::Operation::Import, :trb do
 
     it_behaves_like 'line import',
       Observation::Operation::Create,
-      Etablissement,
       file,
       OBS_HEADER_MAPPING
 

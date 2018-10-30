@@ -22,7 +22,6 @@ describe DataSource::File::PP::Operation::Import, :trb do
 
     it_behaves_like 'line import',
       PersonnePhysique::Operation::Create,
-      PersonnePhysique,
       file,
       PP_HEADER_MAPPING
 
