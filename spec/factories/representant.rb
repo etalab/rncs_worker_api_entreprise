@@ -19,7 +19,6 @@ FactoryBot.define do
       adresse_pays { 'FRANCE' }
       code_greffe { '9898' }
       numero_gestion { '2012B01234' }
-      siren { '000000000' }
 
       factory :president_pm do
         qualite { 'Président' }
@@ -46,7 +45,6 @@ FactoryBot.define do
       nationalite { 'Française' }
       code_greffe { '5555' }
       numero_gestion { '2016B00123' }
-      siren { '000000000' }
 
       factory :president_pp do
         qualite { 'Président' }

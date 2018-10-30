@@ -17,6 +17,5 @@ FactoryBot.define do
     date_derniere_modification { '1967-03-27' }
     code_greffe { '3232' }
     numero_gestion { '1967D00987' }
-    siren { '000000000' }
   end
 end

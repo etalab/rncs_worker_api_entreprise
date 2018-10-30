@@ -1,17 +1,21 @@
 class SirenInfosPdf < Prawn::Document
   def initialize(dossier_entreprise)
-    @dossier = dossier_entreprise
-
     super(top_margin: 30)
 
-    setup_utf8_font
+    @dossier = dossier_entreprise
 
-    header_section
-    identite_section
-    representants_section
+    setup_utf8_font
+    build_pdf
   end
 
   private
+
+  def build_pdf
+    header_section
+    identite_section
+    representants_section
+    etablissement_principal_section
+  end
 
   def setup_utf8_font
     font_path = "public/fonts/Source_Sans_Pro"
@@ -47,6 +51,21 @@ class SirenInfosPdf < Prawn::Document
     end
   end
 
+  def section_identite_pm
+    text "Dénomination: #{pm&.denomination}"
+    text "Forme juridique: #{pm&.forme_juridique}"
+    text "Capital: #{pm&.capital} #{pm&.devise}"
+    text "Adresse: #{adresse_siege_social}"
+    text "Durée: #{duree_pm}"
+    text "Date de clôture: #{pm&.date_cloture}"
+  end
+
+  def section_identite_pp
+    text "Dénomination: #{pp&.nom_patronyme} #{pp&.prenoms}"
+    text "Date et lieu de naissance: #{pp&.date_naissance} #{pp&.ville_naissance}"
+    text "Adresse du siège: #{adresse_pp}"
+  end
+
   def representants_section
     move_down 20
     text 'Représentants', style: :bold
@@ -65,23 +84,16 @@ class SirenInfosPdf < Prawn::Document
     end
   end
 
+  def etablissement_principal_section
+    move_down 20
+    text 'Renseignements sur l\'établissement principal', style: :bold
+    text "Adresse: #{adresse_etablissement_principal}"
+    text "Date début d'activité: #{@dossier.etablissement_principal&.date_debut_activite}"
+    text "Type d'exploitation: #{@dossier.etablissement_principal&.type_exploitation}"
+  end
+
   def personne_morale?
     !pm.nil?
-  end
-
-  def section_identite_pm
-    text "Dénomination: #{pm.denomination}"
-    text "Forme juridique: #{pm.forme_juridique}"
-    text "Capital: #{pm.capital} #{pm.devise}"
-    text "Adresse: #{adresse_etablissement_principal}"
-    text "Durée: #{duree_pm}"
-    text "Date de clôture: #{pm.date_cloture}"
-  end
-
-  def section_identite_pp
-    text "Dénomination: #{pp.nom_patronyme} #{pp.prenoms}"
-    text "Date et lieu de naissance: #{pp.date_naissance} #{pp.ville_naissance}"
-    text "Adresse du siège: #{adresse_pp}"
   end
 
   def pretty_siren(siren)
@@ -109,25 +121,31 @@ class SirenInfosPdf < Prawn::Document
     text "Forme juridique: #{rep.forme_juridique}"
   end
 
-  def adresse_etablissement_principal
+  def adresse_siege_social
     [
-      @dossier.etablissement_principal.adresse_ligne_1,
-      @dossier.etablissement_principal.adresse_ligne_2,
-      @dossier.etablissement_principal.adresse_ligne_3,
-      @dossier.etablissement_principal.adresse_code_postal,
-      @dossier.etablissement_principal.adresse_ville
+      @dossier.siege_social&.adresse_ligne_1,
+      @dossier.siege_social&.adresse_ligne_2,
+      @dossier.siege_social&.adresse_ligne_3,
+      @dossier.siege_social&.adresse_code_postal,
+      @dossier.siege_social&.adresse_ville
     ].compact.join(' ')
   end
 
-  def activite_principale
-    @dossier.etablissement_principal.activite
+  def adresse_etablissement_principal
+    [
+      @dossier.etablissement_principal&.adresse_ligne_1,
+      @dossier.etablissement_principal&.adresse_ligne_2,
+      @dossier.etablissement_principal&.adresse_ligne_3,
+      @dossier.etablissement_principal&.adresse_code_postal,
+      @dossier.etablissement_principal&.adresse_ville
+    ].compact.join(' ')
   end
 
   def adresse_pp
     [
-      pp.adresse_ligne_1,
-      pp.adresse_ligne_2,
-      pp.adresse_ligne_3
+      pp&.adresse_ligne_1,
+      pp&.adresse_ligne_2,
+      pp&.adresse_ligne_3
     ].compact.join(' ')
   end
 

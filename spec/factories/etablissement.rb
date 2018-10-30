@@ -20,7 +20,6 @@ FactoryBot.define do
     adresse_pays { 'France' }
     code_greffe { '9876' }
     numero_gestion { '1998B00777' }
-    siren { '000000000' }
 
     factory :siege_social do
       type_etablissement { 'SIE' }

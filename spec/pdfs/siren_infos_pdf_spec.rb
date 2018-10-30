@@ -25,6 +25,11 @@ describe SirenInfosPdf do
     it { is_expected.to include('Date et lieu de naissance: 1907-05-22 Etterbeek') }
     it { is_expected.to include('Nationalité: Française') }
     it { is_expected.to include('Adresse: 15 rue de Rivoli 75001 Paris') }
+    # Etablissement Principal
+    it { is_expected.to include('Renseignements sur l\'établissement principal') }
+    it { is_expected.to include('Adresse: Rue des cocotiers 97114 Trois-Rivières') }
+    it { is_expected.to include('Date début d\'activité: 1992-07-09') }
+    it { is_expected.to include('Type d\'exploitation: Divers') }
   end
 
   describe 'Entreprise simple' do
@@ -48,6 +53,11 @@ describe SirenInfosPdf do
     it { is_expected.to include('SIREN: 333 444 555') }
     it { is_expected.to include('Forme juridique: Société par actions simplifiée') }
     it { is_expected.to include('Adresse:  rue des Peupliers Zone Industrielle Sud 34000 Montpellier') }
+    # Etablissement Principal
+    it { is_expected.to include('Renseignements sur l\'établissement principal') }
+    it { is_expected.to include('Adresse: Rue des cocotiers 97114 Trois-Rivières') }
+    it { is_expected.to include('Date début d\'activité: 1992-07-09') }
+    it { is_expected.to include('Type d\'exploitation: Divers') }
   end
 
   describe 'Dossier entreprise PM with many representants' do
@@ -75,10 +85,16 @@ describe SirenInfosPdf do
     ## Autres
     it 'has more représentants' do
       nb_rep = dossier.representants.size
-      _, reps = subject.split('Représentants')
+      _, pdf_end = subject.split('Représentants')
+      reps, _ = pdf_end.split('Renseignements sur l\'établissement principal')
 
       expect(reps.size).to eq(nb_rep*5)
     end
+    # Etablissement Principal
+    it { is_expected.to include('Renseignements sur l\'établissement principal') }
+    it { is_expected.to include('Adresse: Rue des cocotiers 97114 Trois-Rivières') }
+    it { is_expected.to include('Date début d\'activité: 1992-07-09') }
+    it { is_expected.to include('Type d\'exploitation: Divers') }
   end
 
   describe 'all fields are nil but PDF generated' do
@@ -90,14 +106,28 @@ describe SirenInfosPdf do
       before { PersonnePhysique.new(dossier_entreprise: dossier).tap(&:save) }
 
       # check PDF size instead of checking ALL nil values
-      its(:size) { is_expected.to eq 11 }
+      its(:size) { is_expected.to eq 15 }
     end
 
     context 'with PM' do
       before { PersonneMorale.new(dossier_entreprise: dossier).tap(&:save) }
 
       # check PDF size instead of checking ALL nil values
-      its(:size) { is_expected.to eq 14 }
+      its(:size) { is_expected.to eq 18 }
+    end
+
+    describe 'entreprise without etablissement principal' do
+      before { create :siege_social, dossier_entreprise: dossier }
+
+      # check PDF size instead of checking ALL nil values
+      its(:size) { is_expected.to eq 15 }
+    end
+
+    describe 'entreprise without siege social' do
+      before { create :etablissement_principal, dossier_entreprise: dossier }
+
+      # check PDF size instead of checking ALL nil values
+      its(:size) { is_expected.to eq 15 }
     end
   end
 end

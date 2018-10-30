@@ -12,7 +12,7 @@ class API::PdfController< ApplicationController
   private
 
   def pdf
-    SirenInfosPdf.new(dossier_principal)
+    @pdf ||= SirenInfosPdf.new(dossier_principal)
   end
 
   def siren

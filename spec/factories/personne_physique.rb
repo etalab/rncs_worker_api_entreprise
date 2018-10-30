@@ -17,6 +17,5 @@ FactoryBot.define do
     adresse_pays { 'FRANCE' }
     code_greffe { '5678' }
     numero_gestion { '1988A00543' }
-    siren { '000000000' }
   end
 end
