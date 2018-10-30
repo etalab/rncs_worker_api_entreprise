@@ -26,7 +26,12 @@ describe DataSource::File::PP::Operation::Import, :trb do
       file,
       PP_HEADER_MAPPING
 
-    it { is_expected.to be_success }
+    it 'is success if each line import is successfull' do
+      allow(PersonnePhysique::Operation::Create)
+        .to receive(:call).and_return(trb_result_success)
+
+      expect(subject).to be_success
+    end
   end
 
   context 'when :type_import is unknown' do
