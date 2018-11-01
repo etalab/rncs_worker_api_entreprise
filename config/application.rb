@@ -25,7 +25,7 @@ module RncsWorkerApiEntreprise
     config.middleware.insert_before 0, Rack::Cors do
       allow do
         origins '*'
-        resource '/api/infos_identite_entreprise_rncs/*', headers: :any, methods: [:get]
+        resource '/infos_identite_entreprise/*', headers: :any, methods: [:get]
       end
     end
 

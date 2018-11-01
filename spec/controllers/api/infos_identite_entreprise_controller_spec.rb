@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe API::InfosIdentiteEntrepriseRNCSController, type: :controller do
+describe API::InfosIdentiteEntrepriseController, type: :controller do
 
   subject do
     get :show, params: { siren: siren }

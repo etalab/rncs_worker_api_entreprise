@@ -1,4 +1,4 @@
-class API::InfosIdentiteEntrepriseRNCSController< ApplicationController
+class API::InfosIdentiteEntrepriseController< ApplicationController
   def show
     render json: {}, status: 400 and return unless Siren.new(siren).valid?
     render json: {}, status: 404 and return if aucun_dossier

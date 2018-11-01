@@ -3,8 +3,10 @@ Rails.application.routes.draw do
   require 'sidekiq/web'
   mount Sidekiq::Web => '/sidekiq'
 
+  # TODO To be refactor (coming soon)
   namespace :api do
-    get 'infos_identite_entreprise_rncs/:siren' => '/api/infos_identite_entreprise_rncs#show'
     get 'pdf/:siren' => '/api/pdf#show'
   end
+
+  get 'infos_identite_entreprise/:siren', to: 'api/infos_identite_entreprise#show'
 end
