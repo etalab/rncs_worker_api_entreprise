@@ -10,91 +10,109 @@ describe SirenInfosPdf do
   describe 'Auto-entrepreneur' do
     let(:dossier) { create :dossier_auto_entrepreneur }
 
-    # Greffe
-    it { is_expected.to include('Greffe AE (code greffe: 1234)') }
-    it { is_expected.to include('Numéro de gestion: 1968A00666') }
-    # Identité PP
-    it { is_expected.to include('SIREN: 123 456 789') }
-    it { is_expected.to include('Date d\'immatriculation: 1968-05-02') }
-    it { is_expected.to include('Dénomination: DUPONT François Philippe') }
-    it { is_expected.to include('Date et lieu de naissance: 1970-01-05 Marseille') }
-    it { is_expected.to include('Adresse du siège: 1 AVENUE DES CHAMPS ELYSEES BEL HOTEL') }
-    # Représentant
-    it { is_expected.to include('Qualité: Président') }
-    it { is_expected.to include('Nom prénoms: DUPONT Georges Rémi') }
-    it { is_expected.to include('Date et lieu de naissance: 1907-05-22 Etterbeek') }
-    it { is_expected.to include('Nationalité: Française') }
-    it { is_expected.to include('Adresse: 15 rue de Rivoli 75001 Paris') }
-    # Etablissement Principal
-    it { is_expected.to include('Renseignements sur l\'établissement principal') }
-    it { is_expected.to include('Adresse: Rue des cocotiers 97114 Trois-Rivières') }
-    it { is_expected.to include('Date début d\'activité: 1992-07-09') }
-    it { is_expected.to include('Type d\'exploitation: Divers') }
+    let(:expected_data) do
+      [
+        'Greffe AE (code greffe: 1234)',
+        'Numéro de gestion: 1968A00666',
+        'Informations d\'identité d\'entreprise',
+        'En date du 22 October 2018',
+        'Identité de l\'entreprise',
+        'SIREN: 123 456 789',
+        'Date d\'immatriculation: 1968-05-02',
+        'Dénomination: DUPONT François Philippe',
+        'Date et lieu de naissance: 1970-01-05 Marseille',
+        'Adresse du siège: 1 AVENUE DES CHAMPS ELYSEES BEL HOTEL',
+        'Représentants',
+        'Qualité: Président',
+        'Nom prénoms: DUPONT Georges Rémi',
+        'Date et lieu de naissance: 1907-05-22 Etterbeek',
+        'Nationalité: Française',
+        'Adresse: 15 rue de Rivoli 75001 Paris',
+        'Renseignements sur l\'établissement principal',
+        'Adresse: Rue des cocotiers 97114 Trois-Rivières',
+        'Date début d\'activité: 1992-07-09',
+        'Type d\'exploitation: Divers'
+      ]
+    end
+
+    it { is_expected.to include(*expected_data) }
+    its(:size) { is_expected.to eq expected_data.size }
   end
 
   describe 'Entreprise simple' do
     let(:dossier) { create :dossier_entreprise_simple }
 
-    # Greffe
-    it { is_expected.to include('Greffe entreprise simple (code greffe: 1234)') }
-    it { is_expected.to include('Numéro de gestion: 1968A00666') }
-    # Identité PM
-    it { is_expected.to include('SIREN: 111 111 111') }
-    it { is_expected.to include('Date d\'immatriculation: 1968-05-02') }
-    it { is_expected.to include('Dénomination: Willy Wonka Candies Factory') }
-    it { is_expected.to include('Forme juridique: Société de bonbons à responsabilité limitée') }
-    it { is_expected.to include('Capital: 1000.0 Euros') }
-    it { is_expected.to include('Adresse: Rue des cocotiers 97114 Trois-Rivières') }
-    it { is_expected.to include('Durée: 22/10/2117') }
-    it { is_expected.to include('Date de clôture: 31 Décembre') }
-    # Représentant
-    it { is_expected.to include('Qualité: Président') }
-    it { is_expected.to include('Dénomination: Grosse Entreprise de Télécom') }
-    it { is_expected.to include('SIREN: 333 444 555') }
-    it { is_expected.to include('Forme juridique: Société par actions simplifiée') }
-    it { is_expected.to include('Adresse:  rue des Peupliers Zone Industrielle Sud 34000 Montpellier') }
-    # Etablissement Principal
-    it { is_expected.to include('Renseignements sur l\'établissement principal') }
-    it { is_expected.to include('Adresse: Rue des cocotiers 97114 Trois-Rivières') }
-    it { is_expected.to include('Date début d\'activité: 1992-07-09') }
-    it { is_expected.to include('Type d\'exploitation: Divers') }
+    let(:expected_data) do
+      [
+        'Greffe entreprise simple (code greffe: 1234)',
+        'Numéro de gestion: 1968A00666',
+        'Informations d\'identité d\'entreprise',
+        'En date du 22 October 2018',
+        'Identité de l\'entreprise',
+        'SIREN: 111 111 111',
+        'Date d\'immatriculation: 1968-05-02',
+        'Dénomination: Willy Wonka Candies Factory',
+        'Forme juridique: Société de bonbons à responsabilité limitée',
+        'Capital: 1000.0 Euros',
+        'Adresse: Rue des cocotiers 97114 Trois-Rivières',
+        'Durée: 22/10/2117',
+        'Date de clôture: 31 Décembre',
+        'Représentants',
+        'Qualité: Président',
+        'Dénomination: Grosse Entreprise de Télécom',
+        'SIREN: 333 444 555',
+        'Forme juridique: Société par actions simplifiée',
+        'Adresse:  rue des Peupliers Zone Industrielle Sud 34000 Montpellier',
+        'Renseignements sur l\'établissement principal',
+        'Adresse: Rue des cocotiers 97114 Trois-Rivières',
+        'Date début d\'activité: 1992-07-09',
+        'Type d\'exploitation: Divers'
+      ]
+    end
+
+    it { is_expected.to include(*expected_data) }
+    its(:size) { is_expected.to eq expected_data.size }
   end
 
   describe 'Dossier entreprise PM with many representants' do
     let(:dossier) { create :dossier_entreprise_pm_many_reps }
 
-    # Greffe
-    it { is_expected.to include('Greffe entreprise complexe (code greffe: 1234)') }
-    it { is_expected.to include('Numéro de gestion: 1968A00666') }
-    # Identité PM
-    it { is_expected.to include('SIREN: 222 222 222') }
-    it { is_expected.to include('Date d\'immatriculation: 1968-05-02') }
-    it { is_expected.to include('Dénomination: Willy Wonka Candies Factory') }
-    it { is_expected.to include('Forme juridique: Société de bonbons à responsabilité limitée') }
-    it { is_expected.to include('Capital: 1000.0 Euros') }
-    it { is_expected.to include('Adresse: Rue des cocotiers 97114 Trois-Rivières') }
-    it { is_expected.to include('Durée: 22/10/2117') }
-    it { is_expected.to include('Date de clôture: 31 Décembre') }
-    # Représentant*S*
-    ## Président
-    it { is_expected.to include('Qualité: Président') }
-    it { is_expected.to include('Dénomination: Grosse Entreprise de Télécom') }
-    it { is_expected.to include('SIREN: 333 444 555') }
-    it { is_expected.to include('Forme juridique: Société par actions simplifiée') }
-    it { is_expected.to include('Adresse:  rue des Peupliers Zone Industrielle Sud 34000 Montpellier') }
-    ## Autres
-    it 'has more représentants' do
-      nb_rep = dossier.representants.size
-      _, pdf_end = subject.split('Représentants')
-      reps, _ = pdf_end.split('Renseignements sur l\'établissement principal')
-
-      expect(reps.size).to eq(nb_rep*5)
+    let(:expected_data_begining) do
+      [
+        'Greffe entreprise complexe (code greffe: 1234)',
+        'Numéro de gestion: 1968A00666',
+        'Informations d\'identité d\'entreprise',
+        'En date du 22 October 2018',
+        'Identité de l\'entreprise',
+        'SIREN: 222 222 222',
+        'Date d\'immatriculation: 1968-05-02',
+        'Dénomination: Willy Wonka Candies Factory',
+        'Forme juridique: Société de bonbons à responsabilité limitée',
+        'Capital: 1000.0 Euros',
+        'Adresse: Rue des cocotiers 97114 Trois-Rivières',
+        'Durée: 22/10/2117',
+        'Date de clôture: 31 Décembre',
+        'Représentants',
+        'Qualité: Président',
+        'Dénomination: Grosse Entreprise de Télécom',
+        'SIREN: 333 444 555',
+        'Forme juridique: Société par actions simplifiée',
+        'Adresse:  rue des Peupliers Zone Industrielle Sud 34000 Montpellier',
+      ]
     end
-    # Etablissement Principal
-    it { is_expected.to include('Renseignements sur l\'établissement principal') }
-    it { is_expected.to include('Adresse: Rue des cocotiers 97114 Trois-Rivières') }
-    it { is_expected.to include('Date début d\'activité: 1992-07-09') }
-    it { is_expected.to include('Type d\'exploitation: Divers') }
+
+    let(:expected_data_end) do
+      [
+       'Renseignements sur l\'établissement principal',
+        'Adresse: Rue des cocotiers 97114 Trois-Rivières',
+        'Date début d\'activité: 1992-07-09',
+        'Type d\'exploitation: Divers'
+      ]
+    end
+
+    it { is_expected.to start_with(*expected_data_begining) }
+    it { is_expected.to end_with(*expected_data_end) }
+    its(:size) { is_expected.to be >  (expected_data_begining.size + expected_data_end.size) }
   end
 
   describe 'all fields are nil but PDF generated' do

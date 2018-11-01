@@ -55,7 +55,7 @@ class SirenInfosPdf < Prawn::Document
     text "Dénomination: #{pm&.denomination}"
     text "Forme juridique: #{pm&.forme_juridique}"
     text "Capital: #{pm&.capital} #{pm&.devise}"
-    text "Adresse: #{adresse_siege_social}"
+    text "Adresse: #{adresse_etablissement_principal}"
     text "Durée: #{duree_pm}"
     text "Date de clôture: #{pm&.date_cloture}"
   end
@@ -119,16 +119,6 @@ class SirenInfosPdf < Prawn::Document
     text "Dénomination: #{rep.denomination}"
     text "SIREN: #{pretty_siren(rep.siren_pm)}"
     text "Forme juridique: #{rep.forme_juridique}"
-  end
-
-  def adresse_siege_social
-    [
-      @dossier.siege_social&.adresse_ligne_1,
-      @dossier.siege_social&.adresse_ligne_2,
-      @dossier.siege_social&.adresse_ligne_3,
-      @dossier.siege_social&.adresse_code_postal,
-      @dossier.siege_social&.adresse_ville
-    ].compact.join(' ')
   end
 
   def adresse_etablissement_principal

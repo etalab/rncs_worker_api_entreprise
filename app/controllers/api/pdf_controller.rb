@@ -3,6 +3,7 @@ class API::PdfController< ApplicationController
     render json: { errors: 'siren invalid' }, status: 400 and return unless Siren.new(siren).valid?
     render json: { errors: 'siren not found' }, status: 404 and return if aucun_dossier
     render json: { errors: 'data is corrupt or incomplete and cannot be served' }, status: 500 and return if cannot_serve
+    render json: { errors: 'aucun établissement principal trouvé sur l\'inscription principale' }, status: 500 and return if no_etab_principal_found
 
     send_data pdf.render,
               filename: "infos_#{siren}.pdf",
@@ -41,5 +42,9 @@ class API::PdfController< ApplicationController
 
   def trop_inscriptions_en_greffe_principal
     dossiers.where(type_inscription: 'P').count > 1
+  end
+
+  def no_etab_principal_found
+    dossier_principal.etablissement_principal.nil?
   end
 end
