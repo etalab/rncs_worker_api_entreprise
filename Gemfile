@@ -35,6 +35,9 @@ gem 'trailblazer', '~> 2.1.0.rc1'
 gem 'trailblazer-rails'
 gem 'dry-validation', '~> 0.11.1'
 
+# ELK bridge
+gem 'logstasher'
+
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin AJAX possible
 gem 'rack-cors', require: 'rack/cors'
 
