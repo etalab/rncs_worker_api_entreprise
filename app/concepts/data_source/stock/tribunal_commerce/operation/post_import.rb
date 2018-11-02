@@ -5,7 +5,7 @@ module DataSource
         class PostImport < Trailblazer::Operation
           include TrailblazerHelper::DBIndexes
 
-          step :import_completed?
+          # step :import_completed?
           step :create_db_indexes
           step :fill_in_foreign_keys
 
