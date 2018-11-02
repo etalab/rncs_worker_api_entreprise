@@ -42,6 +42,7 @@ module RncsWorkerApiEntreprise
     config.time_zone = 'Paris'
 
     config.active_job.queue_adapter = :sidekiq
+    config.active_job.queue_name_prefix = "rncs_worker_api_entreprise_#{Rails.env}"
 
     # TODO watch out about this !
     # Stock units are run concurently, but independant from each other, so we
