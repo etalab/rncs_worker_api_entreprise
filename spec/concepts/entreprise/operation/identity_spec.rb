@@ -81,7 +81,7 @@ describe Entreprise::Operation::Identity do
           create(:observation, dossier_entreprise: dossier, texte: 'control value 2')
           create(:observation, texte: 'ghost')
 
-          observations_list = entreprise_identity.fetch(:observations)
+          observations_list = entreprise_identity.fetch(:dossier_entreprise_greffe_principal).fetch(:observations)
 
           expect(observations_list).to contain_exactly(
             a_hash_including('texte' => 'control value 1'),
@@ -94,7 +94,7 @@ describe Entreprise::Operation::Identity do
           create(:representant, dossier_entreprise: dossier, qualite: 'control value 2')
           create(:representant, qualite: 'ghost')
 
-          representants_list = entreprise_identity.fetch(:representants)
+          representants_list = entreprise_identity.fetch(:dossier_entreprise_greffe_principal).fetch(:representants)
 
           expect(representants_list).to contain_exactly(
             a_hash_including('qualite' => 'control value 1'),
@@ -107,7 +107,7 @@ describe Entreprise::Operation::Identity do
           create(:etablissement, dossier_entreprise: dossier, activite: 'control value 2')
           create(:etablissement, activite: 'ghost')
 
-          etablissements_list = entreprise_identity.fetch(:etablissements)
+          etablissements_list = entreprise_identity.fetch(:dossier_entreprise_greffe_principal).fetch(:etablissements)
 
           expect(etablissements_list).to contain_exactly(
             a_hash_including('activite' => 'control value 1'),
@@ -118,14 +118,14 @@ describe Entreprise::Operation::Identity do
 
         it 'returns associated personne morale attributes' do
           create(:personne_morale, dossier_entreprise: dossier, capital: '42')
-          pm_fields = entreprise_identity.fetch(:personne_morale)
+          pm_fields = entreprise_identity.fetch(:dossier_entreprise_greffe_principal).fetch(:personne_morale)
 
           expect(pm_fields).to include('capital' => '42')
         end
 
         it 'returns associated personne physique attributes' do
           create(:personne_physique, dossier_entreprise: dossier, pseudonyme: 'xXxBrinduxXx')
-          pp_fields = entreprise_identity.fetch(:personne_physique)
+          pp_fields = entreprise_identity.fetch(:dossier_entreprise_greffe_principal).fetch(:personne_physique)
 
           expect(pp_fields).to include('pseudonyme' => 'xXxBrinduxXx')
         end
