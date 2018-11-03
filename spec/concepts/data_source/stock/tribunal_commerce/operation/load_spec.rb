@@ -22,7 +22,7 @@ describe DataSource::Stock::TribunalCommerce::Operation::Load do
 
       stock_unit_ids.each do |id|
         expect(ImportTcStockUnitJob)
-          .to have_been_enqueued.with(id).on_queue('tc_stock')
+          .to have_been_enqueued.with(id).on_queue("rncs_worker_api_entreprise_#{Rails.env}_tc_stock")
       end
     end
 

@@ -52,7 +52,7 @@ describe TribunalCommerce::DailyUpdate::Operation::Import do
         units_id = fetched_update.daily_update_units.pluck(:id)
         units_id.each do |id|
           expect(ImportTcDailyUpdateUnitJob)
-            .to have_been_enqueued.with(id).on_queue('tc_daily_update')
+            .to have_been_enqueued.with(id).on_queue("rncs_worker_api_entreprise_#{Rails.env}_tc_daily_update")
         end
       end
     end
