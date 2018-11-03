@@ -1,4 +1,4 @@
-shared_examples 'handling errors' do
+shared_examples 'handling siren errors' do
     context 'when siren is invalid' do
       let(:siren) { invalid_siren }
 

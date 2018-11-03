@@ -6,7 +6,7 @@ describe API::InfosIdentiteEntrepriseController, type: :controller do
       get :show, params: { siren: siren }
     end
 
-    it_behaves_like 'handling errors'
+    it_behaves_like 'handling siren errors'
 
     context 'valid siren' do
       before { create :dossier_entreprise_simple, siren: siren }
@@ -23,7 +23,7 @@ describe API::InfosIdentiteEntrepriseController, type: :controller do
       get :pdf, params: { siren: siren }
     end
 
-    it_behaves_like 'handling errors'
+    it_behaves_like 'handling siren errors'
 
     context 'valid siren' do
       before { create :dossier_entreprise_simple, siren: siren }
