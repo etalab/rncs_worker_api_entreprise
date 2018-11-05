@@ -148,4 +148,28 @@ describe SirenInfosPdf do
       its(:size) { is_expected.to eq 15 }
     end
   end
+
+  describe 'production issue' do
+    let(:dossier) { DossierEntreprise.new.tap(&:save) }
+
+    before do
+      create :representant, dossier_entreprise: dossier, type_representant: 'P. Physique', nom_patronyme: 'BUGGY', prenoms: 'spacing'
+    end
+
+    it { is_expected.to include('Nom prénoms: BUGGY spacing') }
+  end
+
+  context 'wrong expected values' do
+    subject(:pdf) { described_class.new dossier }
+    let(:dossier) { DossierEntreprise.new.tap(&:save) }
+
+    before do
+      create :representant, dossier_entreprise: dossier, type_representant: 'P. Banale'
+    end
+
+    it 'raises an error' do
+      expect(Rails.logger).to receive(:error).with('Unhandled type_representant')
+      pdf.render
+    end
+  end
 end

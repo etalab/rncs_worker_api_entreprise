@@ -74,13 +74,17 @@ class SirenInfosPdf < Prawn::Document
       text "Qualité: #{rep.qualite}"
 
       case rep.type_representant
-      when 'P.Physique'
+      when 'P.Physique', 'P. Physique' # TODO: stock file not supposed to have 'P. Physique'
         representant_pp rep
       when 'P. Morale'
         representant_pm rep
+      else
+        # TODO: Sentry/Raven !
+        Rails.logger.error 'Unhandled type_representant'
       end
 
       text "Adresse: #{adresse_representant(rep)}"
+      move_down 10
     end
   end
 
