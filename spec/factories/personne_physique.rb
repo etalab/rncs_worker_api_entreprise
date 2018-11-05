@@ -5,7 +5,7 @@ FactoryBot.define do
     eirl { 'Non' }
     date_derniere_modification { '2018-01-01' }
     libelle_derniere_modification { 'Création' }
-    nom_patronyme { 'DUPONT' }
+    nom_patronyme { 'dupont' }
     prenoms { 'François Philippe' }
     date_naissance { '1970-01-05' }
     ville_naissance { 'Marseille' }

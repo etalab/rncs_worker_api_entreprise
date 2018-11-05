@@ -39,7 +39,7 @@ FactoryBot.define do
       adresse_ville { 'Paris' }
       adresse_code_commune { '75056' }
       adresse_pays { 'FRANCE' }
-      nom_patronyme { 'DUPONT' }
+      nom_patronyme { 'dupont' }
       prenoms { 'Georges Rémi' }
       date_naissance { '1907-05-22' }
       ville_naissance { 'Etterbeek' }

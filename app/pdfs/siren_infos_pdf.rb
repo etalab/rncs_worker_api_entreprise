@@ -61,7 +61,7 @@ class SirenInfosPdf < Prawn::Document
   end
 
   def section_identite_pp
-    text "Dénomination: #{pp&.nom_patronyme} #{pp&.prenoms}"
+    text "Dénomination: #{pp&.nom_patronyme&.upcase} #{pp&.prenoms}"
     text "Date et lieu de naissance: #{pp&.date_naissance} #{pp&.ville_naissance}"
     text "Adresse du siège: #{adresse_pp}"
   end
@@ -114,7 +114,7 @@ class SirenInfosPdf < Prawn::Document
   end
 
   def representant_pp(rep)
-    text "Nom prénoms: #{rep.nom_patronyme} #{rep.prenoms}"
+    text "Nom prénoms: #{rep.nom_patronyme&.upcase} #{rep.prenoms}"
     text "Date et lieu de naissance: #{rep.date_naissance} #{rep.ville_naissance}"
     text "Nationalité: #{rep.nationalite}"
   end

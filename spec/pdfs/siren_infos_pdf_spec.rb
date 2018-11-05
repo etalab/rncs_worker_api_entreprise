@@ -153,7 +153,7 @@ describe SirenInfosPdf do
     let(:dossier) { DossierEntreprise.new.tap(&:save) }
 
     before do
-      create :representant, dossier_entreprise: dossier, type_representant: 'P. Physique', nom_patronyme: 'BUGGY', prenoms: 'spacing'
+      create :representant, dossier_entreprise: dossier, type_representant: 'P. Physique', nom_patronyme: 'buggy', prenoms: 'spacing'
     end
 
     it { is_expected.to include('Nom prénoms: BUGGY spacing') }
