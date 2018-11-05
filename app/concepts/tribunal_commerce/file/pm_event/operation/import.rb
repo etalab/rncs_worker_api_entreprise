@@ -11,20 +11,26 @@ module TribunalCommerce
           step :update_personnes_morales
 
 
-          def update_dossiers_entreprise(ctx, file_reader:, file_path:, **)
+          def update_dossiers_entreprise(ctx, file_reader:, file_path:, logger:, **)
             mapping = DOSSIER_ENTREPRISE_FROM_PM_HEADER_MAPPING
             file_reader.line_processing(file_path, mapping) do |line|
               dossier_update = DossierEntreprise::Operation::Update.call(data: line)
 
-              return false if dossier_update.failure?
+              if dossier_update.failure?
+                logger.error(dossier_update[:error])
+                return false
+              end
             end
           end
 
-          def update_personnes_morales(ctx, file_reader:, file_path:, **)
+          def update_personnes_morales(ctx, file_reader:, file_path:, logger:, **)
             file_reader.line_processing(file_path, PM_HEADER_MAPPING) do |line|
-              personne_morale_update = PersonneMorale::Operation::Update.call(data: line)
+              pm_update = PersonneMorale::Operation::Update.call(data: line)
 
-              return false if personne_morale_update.failure?
+              if pm_update.failure?
+                logger.error(pm_update[:error])
+                return false
+              end
             end
           end
         end

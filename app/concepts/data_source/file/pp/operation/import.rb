@@ -30,11 +30,14 @@ module DataSource
             end
           end
 
-          def line_import_personnes_physiques(ctx, file_path:, file_reader:, **)
+          def line_import_personnes_physiques(ctx, file_path:, file_reader:, logger:, **)
             file_reader.line_processing(file_path, PP_HEADER_MAPPING) do |line|
               line_import = PersonnePhysique::Operation::Create.call(data: line)
 
-              return false if line_import.failure?
+              if line_import.failure?
+                logger.error(line_import[:error])
+                return false
+              end
             end
           end
 

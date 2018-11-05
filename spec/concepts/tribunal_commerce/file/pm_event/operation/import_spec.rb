@@ -17,9 +17,10 @@ describe TribunalCommerce::File::PMEvent::Operation::Import, :trb do
     PM_HEADER_MAPPING
 
   it 'ends successfully when everything goes well' do
+    logger = double('logger')
     allow(DossierEntreprise::Operation::Update).to receive(:call).and_return(trb_result_success)
     allow(PersonneMorale::Operation::Update).to receive(:call).and_return(trb_result_success)
-    pm_event_file_import = described_class.call(file_path: file)
+    pm_event_file_import = described_class.call(file_path: file, logger: logger)
 
     expect(pm_event_file_import).to be_success
   end
