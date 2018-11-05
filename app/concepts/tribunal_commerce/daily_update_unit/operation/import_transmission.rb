@@ -13,7 +13,7 @@ module TribunalCommerce
 
         def fetch_files_from_folder(ctx, files_path:, **)
           ctx[:files_list] = fetch_from_folder(files_path)
-          !ctx[:files_list].empty?
+          ctx[:files_list].any?
         end
 
         def read_files_metadata(ctx, files_list:, **)

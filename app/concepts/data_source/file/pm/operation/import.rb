@@ -12,8 +12,8 @@ module DataSource
 
           step :mass_import_dossiers_entreprise
           step ->(ctx, type_import:, **) { type_import == :stock }
-            fail :line_import_personnes_morale, Output(:success) => 'End.success'
-          step :mass_import_personnes_morale
+            fail :line_import_personnes_morales, Output(:success) => 'End.success'
+          step :mass_import_personnes_morales
 
 
           def mass_import_dossiers_entreprise(ctx, file_path:, file_reader:, **)
@@ -23,14 +23,14 @@ module DataSource
             end
           end
 
-          def mass_import_personnes_morale(ctx, file_path:, file_reader:, **)
+          def mass_import_personnes_morales(ctx, file_path:, file_reader:, **)
             mapping = PM_HEADER_MAPPING
             file_reader.bulk_processing(file_path, mapping) do |batch|
               PersonneMorale.import(batch)
             end
           end
 
-          def line_import_personnes_morale(ctx, file_path:, file_reader:, **)
+          def line_import_personnes_morales(ctx, file_path:, file_reader:, **)
             file_reader.line_processing(file_path, PM_HEADER_MAPPING) do |line|
               line_import = PersonneMorale::Operation::Create.call(data: line)
 

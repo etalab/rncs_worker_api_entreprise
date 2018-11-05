@@ -11,18 +11,18 @@ module DataSource
             fail :invalid_type_import, fail_fast: true
 
           step ->(ctx, type_import:, **) { type_import == :stock }
-            fail :line_import_representant, Output(:success) => 'End.success'
-          step :mass_import_representant
+            fail :line_import, Output(:success) => 'End.success'
+          step :mass_import
 
 
-          def mass_import_representant(ctx, file_path:, file_reader:, **)
+          def mass_import(ctx, file_path:, file_reader:, **)
             mapping = REP_HEADER_MAPPING
             file_reader.bulk_processing(file_path, mapping) do |batch|
               Representant.import(batch)
             end
           end
 
-          def line_import_representant(ctx, file_path:, file_reader:, **)
+          def line_import(ctx, file_path:, file_reader:, **)
             file_reader.line_processing(file_path, REP_HEADER_MAPPING) do |line|
               line_import = Representant::Operation::Create.call(data: line)
 
