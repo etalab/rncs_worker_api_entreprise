@@ -173,23 +173,36 @@ describe SirenInfosPdf do
     let(:dossier) { DossierEntreprise.new.tap(&:save) }
 
     before do
-      create :representant, dossier_entreprise: dossier, type_representant: 'P. Physique', nom_patronyme: 'buggy', prenoms: 'spacing'
+      create :representant, dossier_entreprise: dossier, type_representant: 'Anything PhySique', nom_patronyme: 'buggy', prenoms: 'spacing'
     end
 
     it { is_expected.to include('Nom prénoms: BUGGY spacing') }
   end
 
-  context 'wrong expected values' do
+  context 'type_represetant: wrong expected values' do
     subject(:pdf) { described_class.new dossier }
     let(:dossier) { DossierEntreprise.new.tap(&:save) }
 
-    before do
-      create :representant, dossier_entreprise: dossier, type_representant: 'P. Banale'
+    context 'unhandled value' do
+      before do
+        create :representant, dossier_entreprise: dossier, type_representant: 'P. Banale'
+      end
+
+      it 'raises an error' do
+        expect(Rails.logger).to receive(:error).with('Unhandled type_representant')
+        pdf.render
+      end
     end
 
-    it 'raises an error' do
-      expect(Rails.logger).to receive(:error).with('Unhandled type_representant')
-      pdf.render
+    context 'nil value' do
+      before do
+        create :representant, dossier_entreprise: dossier, type_representant: nil
+      end
+
+      it 'raises an error' do
+        expect(Rails.logger).to receive(:error).with('Unhandled type_representant')
+        pdf.render
+      end
     end
   end
 end

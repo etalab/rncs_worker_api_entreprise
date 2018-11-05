@@ -74,10 +74,10 @@ class SirenInfosPdf < Prawn::Document
     @dossier.representants.each do |rep|
       text "Qualité: #{rep.qualite}"
 
-      case rep.type_representant
-      when 'P.Physique', 'P. Physique' # TODO: stock file not supposed to have 'P. Physique'
+      case rep.type_representant&.downcase
+      when /physique/
         representant_pp rep
-      when 'P. Morale'
+      when /morale/
         representant_pm rep
       else
         # TODO: Sentry/Raven !
