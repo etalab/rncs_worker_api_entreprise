@@ -15,7 +15,7 @@ describe SirenInfosPdf do
         'Greffe AE (code greffe: 1234)',
         'Numéro de gestion: 1968A00666',
         'Informations d\'identité d\'entreprise',
-        'En date du 22 October 2018',
+        'En date du 22 octobre 2018',
         'Identité de l\'entreprise',
         'SIREN: 123 456 789',
         'Date d\'immatriculation: 1968-05-02',
@@ -47,7 +47,7 @@ describe SirenInfosPdf do
         'Greffe entreprise simple (code greffe: 1234)',
         'Numéro de gestion: 1968A00666',
         'Informations d\'identité d\'entreprise',
-        'En date du 22 October 2018',
+        'En date du 22 octobre 2018',
         'Identité de l\'entreprise',
         'SIREN: 111 111 111',
         'Date d\'immatriculation: 1968-05-02',
@@ -66,7 +66,10 @@ describe SirenInfosPdf do
         'Renseignements sur l\'établissement principal',
         'Adresse: Rue des cocotiers 97114 Trois-Rivières',
         'Date début d\'activité: 1992-07-09',
-        'Type d\'exploitation: Divers'
+        'Type d\'exploitation: Divers',
+        'Observations',
+        'Mention n°4000A du 12/12/12',
+        'I can see you'
       ]
     end
 
@@ -82,7 +85,7 @@ describe SirenInfosPdf do
         'Greffe entreprise complexe (code greffe: 1234)',
         'Numéro de gestion: 1968A00666',
         'Informations d\'identité d\'entreprise',
-        'En date du 22 October 2018',
+        'En date du 22 octobre 2018',
         'Identité de l\'entreprise',
         'SIREN: 222 222 222',
         'Date d\'immatriculation: 1968-05-02',
@@ -103,7 +106,7 @@ describe SirenInfosPdf do
 
     let(:expected_data_end) do
       [
-       'Renseignements sur l\'établissement principal',
+        'Renseignements sur l\'établissement principal',
         'Adresse: Rue des cocotiers 97114 Trois-Rivières',
         'Date début d\'activité: 1992-07-09',
         'Type d\'exploitation: Divers'
@@ -113,6 +116,23 @@ describe SirenInfosPdf do
     it { is_expected.to start_with(*expected_data_begining) }
     it { is_expected.to end_with(*expected_data_end) }
     its(:size) { is_expected.to be >  (expected_data_begining.size + expected_data_end.size) }
+  end
+
+  describe 'with many observations' do
+    before { create_list :observation, 2, dossier_entreprise: dossier }
+
+    let(:dossier) { create :dossier_entreprise_simple }
+    let(:observations) do
+      [
+        'Observations',
+        'Mention n°4000A du 12/12/12',
+        'I can see you',
+        'Mention n°4000A du 12/12/12',
+        'I can see you'
+      ]
+    end
+
+    it { is_expected.to include(*observations) }
   end
 
   describe 'all fields are nil but PDF generated' do
@@ -146,6 +166,30 @@ describe SirenInfosPdf do
 
       # check PDF size instead of checking ALL nil values
       its(:size) { is_expected.to eq 15 }
+    end
+  end
+
+  context 'type_representant' do
+    subject(:pdf) { described_class.new dossier }
+
+    let(:dossier) { DossierEntreprise.new.tap(&:save) }
+
+    it 'matches anything like physique/morale' do
+      create :representant, dossier_entreprise: dossier, type_representant: 'Anything PhySique', nom_patronyme: 'buggy', prenoms: 'spacing'
+      pdf_strings = PDF::Inspector::Text.analyze(pdf.render).strings
+      expect(pdf_strings).to include('Nom prénoms: BUGGY spacing')
+    end
+
+    it 'raises an error when unhandled value' do
+      create :representant, dossier_entreprise: dossier, type_representant: 'P. Banale'
+      expect(Rails.logger).to receive(:error).with('Unhandled type_representant')
+      pdf.render
+    end
+
+    it 'raises an error with nil value' do
+      create :representant, dossier_entreprise: dossier, type_representant: nil
+      expect(Rails.logger).to receive(:error).with('Unhandled type_representant')
+      pdf.render
     end
   end
 end

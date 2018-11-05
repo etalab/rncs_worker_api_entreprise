@@ -40,6 +40,7 @@ module RncsWorkerApiEntreprise
     config.api_only = true
 
     config.time_zone = 'Paris'
+    config.i18n.default_locale = 'fr-FR'
 
     config.active_job.queue_adapter = :sidekiq
     config.active_job.queue_name_prefix = "rncs_worker_api_entreprise_#{Rails.env}"

@@ -15,6 +15,7 @@ class SirenInfosPdf < Prawn::Document
     identite_section
     representants_section
     etablissement_principal_section
+    observations_section if @dossier.observations.any?
   end
 
   def setup_utf8_font
@@ -35,7 +36,7 @@ class SirenInfosPdf < Prawn::Document
 
     move_down 20
     text 'Informations d\'identité d\'entreprise', align: :center, style: :bold, size: 14
-    text "En date du #{DateTime.now.strftime("%d %B %Y")}", style: :italic, align: :center
+    text "En date du #{today_locale}", style: :italic, align: :center
   end
 
   def identite_section
@@ -61,7 +62,7 @@ class SirenInfosPdf < Prawn::Document
   end
 
   def section_identite_pp
-    text "Dénomination: #{pp&.nom_patronyme} #{pp&.prenoms}"
+    text "Dénomination: #{pp&.nom_patronyme&.upcase} #{pp&.prenoms}"
     text "Date et lieu de naissance: #{pp&.date_naissance} #{pp&.ville_naissance}"
     text "Adresse du siège: #{adresse_pp}"
   end
@@ -70,17 +71,21 @@ class SirenInfosPdf < Prawn::Document
     move_down 20
     text 'Représentants', style: :bold
 
-    @dossier.representants.map do |rep|
+    @dossier.representants.each do |rep|
       text "Qualité: #{rep.qualite}"
 
-      case rep.type_representant
-      when 'P.Physique'
+      case rep.type_representant&.downcase
+      when /physique/
         representant_pp rep
-      when 'P. Morale'
+      when /morale/
         representant_pm rep
+      else
+        # TODO: Sentry/Raven !
+        Rails.logger.error 'Unhandled type_representant'
       end
 
       text "Adresse: #{adresse_representant(rep)}"
+      move_down 10
     end
   end
 
@@ -90,6 +95,17 @@ class SirenInfosPdf < Prawn::Document
     text "Adresse: #{adresse_etablissement_principal}"
     text "Date début d'activité: #{@dossier.etablissement_principal&.date_debut_activite}"
     text "Type d'exploitation: #{@dossier.etablissement_principal&.type_exploitation}"
+  end
+
+  def observations_section
+    move_down 20
+    text 'Observations', style: :bold
+
+    @dossier.observations.each do |obs|
+      text "Mention n°#{obs.numero} du #{obs.date_ajout}"
+      text "#{obs.texte}"
+      move_down 10
+    end
   end
 
   def personne_morale?
@@ -110,7 +126,7 @@ class SirenInfosPdf < Prawn::Document
   end
 
   def representant_pp(rep)
-    text "Nom prénoms: #{rep.nom_patronyme} #{rep.prenoms}"
+    text "Nom prénoms: #{rep.nom_patronyme&.upcase} #{rep.prenoms}"
     text "Date et lieu de naissance: #{rep.date_naissance} #{rep.ville_naissance}"
     text "Nationalité: #{rep.nationalite}"
   end
@@ -152,5 +168,9 @@ class SirenInfosPdf < Prawn::Document
       rep.adresse_code_postal,
       rep.adresse_ville
     ].compact.join(' ')
+  end
+
+  def today_locale
+    I18n.l DateTime.now, format: '%d %B %Y'
   end
 end
