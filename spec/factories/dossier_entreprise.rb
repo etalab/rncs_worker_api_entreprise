@@ -27,6 +27,7 @@ FactoryBot.define do
         create :siege_social_and_principal, dossier_entreprise: dossier, siren: dossier.siren
         create :personne_morale, dossier_entreprise: dossier, siren: dossier.siren
         create :president_pm, dossier_entreprise: dossier, siren: dossier.siren
+        create :observation, dossier_entreprise: dossier, siren: dossier.siren
       end
     end
 

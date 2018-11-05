@@ -15,6 +15,7 @@ class SirenInfosPdf < Prawn::Document
     identite_section
     representants_section
     etablissement_principal_section
+    observations_section if @dossier.observations.any?
   end
 
   def setup_utf8_font
@@ -70,7 +71,7 @@ class SirenInfosPdf < Prawn::Document
     move_down 20
     text 'Représentants', style: :bold
 
-    @dossier.representants.map do |rep|
+    @dossier.representants.each do |rep|
       text "Qualité: #{rep.qualite}"
 
       case rep.type_representant
@@ -94,6 +95,17 @@ class SirenInfosPdf < Prawn::Document
     text "Adresse: #{adresse_etablissement_principal}"
     text "Date début d'activité: #{@dossier.etablissement_principal&.date_debut_activite}"
     text "Type d'exploitation: #{@dossier.etablissement_principal&.type_exploitation}"
+  end
+
+  def observations_section
+    move_down 20
+    text 'Observations', style: :bold
+
+    @dossier.observations.each do |obs|
+      text "Mention n°#{obs.numero} du #{obs.date_ajout}"
+      text "#{obs.texte}"
+      move_down 10
+    end
   end
 
   def personne_morale?

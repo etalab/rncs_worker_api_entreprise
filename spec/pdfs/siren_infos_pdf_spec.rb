@@ -66,7 +66,10 @@ describe SirenInfosPdf do
         'Renseignements sur l\'établissement principal',
         'Adresse: Rue des cocotiers 97114 Trois-Rivières',
         'Date début d\'activité: 1992-07-09',
-        'Type d\'exploitation: Divers'
+        'Type d\'exploitation: Divers',
+        'Observations',
+        'Mention n°4000A du 12/12/12',
+        'I can see you'
       ]
     end
 
@@ -103,7 +106,7 @@ describe SirenInfosPdf do
 
     let(:expected_data_end) do
       [
-       'Renseignements sur l\'établissement principal',
+        'Renseignements sur l\'établissement principal',
         'Adresse: Rue des cocotiers 97114 Trois-Rivières',
         'Date début d\'activité: 1992-07-09',
         'Type d\'exploitation: Divers'
@@ -113,6 +116,23 @@ describe SirenInfosPdf do
     it { is_expected.to start_with(*expected_data_begining) }
     it { is_expected.to end_with(*expected_data_end) }
     its(:size) { is_expected.to be >  (expected_data_begining.size + expected_data_end.size) }
+  end
+
+  describe 'with many observations' do
+    before { create_list :observation, 2, dossier_entreprise: dossier }
+
+    let(:dossier) { create :dossier_entreprise_simple }
+    let(:observations) do
+      [
+        'Observations',
+        'Mention n°4000A du 12/12/12',
+        'I can see you',
+        'Mention n°4000A du 12/12/12',
+        'I can see you'
+      ]
+    end
+
+    it { is_expected.to include(*observations) }
   end
 
   describe 'all fields are nil but PDF generated' do
