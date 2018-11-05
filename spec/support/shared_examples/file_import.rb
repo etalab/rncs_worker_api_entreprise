@@ -30,6 +30,7 @@ shared_examples 'bulk import' do |model, file, header_mapping|
 end
 
 shared_examples 'line import' do |line_processor, file, header_mapping|
+  # TODO refactor and make mock and null object clearer
   let(:csv_reader) { class_double(DataSource::File::CSVReader).as_null_object }
 
   subject { described_class.call(file_path: file, type_import: type_import, file_reader: csv_reader) }
@@ -41,6 +42,7 @@ shared_examples 'line import' do |line_processor, file, header_mapping|
   end
 
   it "calls #{line_processor} for each processed lines" do
+    allow(csv_reader).to receive(:line_processing).and_return(true)
     allow(csv_reader).to receive(:line_processing)
       .with(file, header_mapping)
       .and_yield('first line')
@@ -52,9 +54,6 @@ shared_examples 'line import' do |line_processor, file, header_mapping|
     expect(line_processor).to have_received(:call).with(data: 'first line').ordered
     expect(line_processor).to have_received(:call).with(data: 'second line').ordered
   end
-
-  # TODO move this outside the shared example : operation success depends on the overall file import
-  it { is_expected.to be_success }
 
   context "when #{line_processor} returns a warning message" do
     it 'is success'
