@@ -35,7 +35,7 @@ class SirenInfosPdf < Prawn::Document
 
     move_down 20
     text 'Informations d\'identité d\'entreprise', align: :center, style: :bold, size: 14
-    text "En date du #{DateTime.now.strftime("%d %B %Y")}", style: :italic, align: :center
+    text "En date du #{today_locale}", style: :italic, align: :center
   end
 
   def identite_section
@@ -152,5 +152,9 @@ class SirenInfosPdf < Prawn::Document
       rep.adresse_code_postal,
       rep.adresse_ville
     ].compact.join(' ')
+  end
+
+  def today_locale
+    I18n.l DateTime.now, format: '%d %B %Y'
   end
 end
