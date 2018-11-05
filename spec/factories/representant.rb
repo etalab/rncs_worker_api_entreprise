@@ -1,5 +1,7 @@
 FactoryBot.define do
   factory :representant do
+    dossier_entreprise
+
     factory :representant_pm do
       type_representant { 'P. Morale' }
       forme_juridique { 'Société par actions simplifiée' }

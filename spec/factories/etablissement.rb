@@ -1,5 +1,6 @@
 FactoryBot.define do
   factory :etablissement do
+    dossier_entreprise
     type_etablissement { 'SEC' }
     siege_pm { 'France' }
     rcs_registre { 'Pointe à Pitre' }
