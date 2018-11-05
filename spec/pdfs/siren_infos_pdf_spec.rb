@@ -169,40 +169,27 @@ describe SirenInfosPdf do
     end
   end
 
-  describe 'production issue' do
-    let(:dossier) { DossierEntreprise.new.tap(&:save) }
-
-    before do
-      create :representant, dossier_entreprise: dossier, type_representant: 'Anything PhySique', nom_patronyme: 'buggy', prenoms: 'spacing'
-    end
-
-    it { is_expected.to include('Nom prénoms: BUGGY spacing') }
-  end
-
-  context 'type_represetant: wrong expected values' do
+  context 'type_representant' do
     subject(:pdf) { described_class.new dossier }
+
     let(:dossier) { DossierEntreprise.new.tap(&:save) }
 
-    context 'unhandled value' do
-      before do
-        create :representant, dossier_entreprise: dossier, type_representant: 'P. Banale'
-      end
-
-      it 'raises an error' do
-        expect(Rails.logger).to receive(:error).with('Unhandled type_representant')
-        pdf.render
-      end
+    it 'matches anything like physique/morale' do
+      create :representant, dossier_entreprise: dossier, type_representant: 'Anything PhySique', nom_patronyme: 'buggy', prenoms: 'spacing'
+      pdf_strings = PDF::Inspector::Text.analyze(pdf.render).strings
+      expect(pdf_strings).to include('Nom prénoms: BUGGY spacing')
     end
 
-    context 'nil value' do
-      before do
-        create :representant, dossier_entreprise: dossier, type_representant: nil
-      end
+    it 'raises an error when unhandled value' do
+      create :representant, dossier_entreprise: dossier, type_representant: 'P. Banale'
+      expect(Rails.logger).to receive(:error).with('Unhandled type_representant')
+      pdf.render
+    end
 
-      it 'raises an error' do
-        expect(Rails.logger).to receive(:error).with('Unhandled type_representant')
-        pdf.render
-      end
+    it 'raises an error with nil value' do
+      create :representant, dossier_entreprise: dossier, type_representant: nil
+      expect(Rails.logger).to receive(:error).with('Unhandled type_representant')
+      pdf.render
     end
   end
 end
