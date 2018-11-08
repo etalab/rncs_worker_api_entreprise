@@ -16,6 +16,14 @@ FactoryBot.define do
       end
     end
 
+    factory :dossier_entreprise_with_pp do
+      siren { '123456789' }
+
+      after :create do |dossier|
+        create :personne_physique, dossier_entreprise: dossier, siren: dossier.siren
+      end
+    end
+
     factory :dossier_auto_entrepreneur do
       siren { '123456789' }
       nom_greffe { 'Greffe AE' }
