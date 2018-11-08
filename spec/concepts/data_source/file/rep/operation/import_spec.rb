@@ -1,9 +1,10 @@
 require 'rails_helper'
 
 describe DataSource::File::Rep::Operation::Import, :trb do
+  let(:logger) { double('logger') }
   file = Rails.root.join('spec', 'fixtures', 'rep.csv')
 
-  subject { described_class.call(file_path: file, type_import: type_import) }
+  subject { described_class.call(file_path: file, type_import: type_import, logger: logger) }
 
   context 'when type_import: :stock' do
     let(:type_import) { :stock }
@@ -18,7 +19,6 @@ describe DataSource::File::Rep::Operation::Import, :trb do
 
     it_behaves_like 'line import',
       Representant::Operation::Create,
-      Representant,
       file,
       REP_HEADER_MAPPING
 

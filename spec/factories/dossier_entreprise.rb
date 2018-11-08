@@ -8,6 +8,14 @@ FactoryBot.define do
     date_derniere_modification { '2018-01-01' }
     libelle_derniere_modification { 'Création' }
 
+    factory :dossier_entreprise_with_pm do
+      siren { '123456789' }
+
+      after :create do |dossier|
+        create :personne_morale, dossier_entreprise: dossier, siren: dossier.siren
+      end
+    end
+
     factory :dossier_auto_entrepreneur do
       siren { '123456789' }
       nom_greffe { 'Greffe AE' }

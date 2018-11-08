@@ -1,11 +1,19 @@
 shared_examples 'bulk import' do |model, file, header_mapping|
+  let(:logger) { double('logger') }
   let(:csv_reader) do
     dbl = class_double(DataSource::File::CSVReader)
     dbl.as_null_object
   end
 
   # :type_import needs to be provided by the parent example group
-  let(:result) { described_class.call(file_path: file, type_import: type_import, file_reader: csv_reader) }
+  let(:result) do
+    described_class.call(
+      file_path: file,
+      type_import: type_import,
+      file_reader: csv_reader,
+      logger: logger
+    )
+  end
 
   it 'calls CSVReader for bulk_processing' do
     result
@@ -27,20 +35,21 @@ shared_examples 'bulk import' do |model, file, header_mapping|
 
     result
   end
-
-  # TODO issue about unit (mock and stubs doubles used) and integration tests
-  #it "saves #{model} records" do
-  #  pending 'will pass when line import operations are all implemented'
-  #  # integration test here, no stub
-  #  expect { described_class.call(file_path: file, type_import: type_import) }
-  #    .to change(model, :count).by(5)
-  #end
 end
 
-shared_examples 'line import' do |line_processor, model, file, header_mapping|
+shared_examples 'line import' do |line_processor, file, header_mapping|
+  # TODO refactor and make mock and null object clearer
   let(:csv_reader) { class_double(DataSource::File::CSVReader).as_null_object }
+  let(:logger) { instance_spy(Logger) }
 
-  subject { described_class.call(file_path: file, type_import: type_import, file_reader: csv_reader) }
+  subject do
+    described_class.call(
+      file_path: file,
+      type_import: type_import,
+      file_reader: csv_reader,
+      logger: logger,
+    )
+  end
 
   it 'calls the CSV reader for line processing' do
     subject
@@ -49,6 +58,7 @@ shared_examples 'line import' do |line_processor, model, file, header_mapping|
   end
 
   it "calls #{line_processor} for each processed lines" do
+    allow(csv_reader).to receive(:line_processing).and_return(true)
     allow(csv_reader).to receive(:line_processing)
       .with(file, header_mapping)
       .and_yield('first line')
@@ -61,31 +71,28 @@ shared_examples 'line import' do |line_processor, model, file, header_mapping|
     expect(line_processor).to have_received(:call).with(data: 'second line').ordered
   end
 
-  # TODO same as above, not sure about keeping those tests in shared examples
-  #it 'saves the records' do
-  #  pending 'integration test : will pass when PM::Operation::AddPersonnePhysique is implemented'
-  #  expect { subject }.to change(model, :count).by(5)
-  #end
-
-  it { is_expected.to be_success }
-
   context "when #{line_processor} returns a warning message" do
     it 'is success'
     it 'logs the warning message'
   end
 
-  context "when #{line_processor} fails at least once" do
+  context "when #{line_processor} fails at least once", :trb do
     before do
+      failure_context = { error: 'Much error' }
       allow(line_processor)
         .to receive(:call)
-        .and_return(trb_result_failure)
+        .and_return(trb_result_failure_with(failure_context))
     end
 
-    subject { described_class.call(file_path: file, type_import: type_import) }
+    subject { described_class.call(file_path: file, type_import: type_import, logger: logger) }
 
     it { is_expected.to be_failure }
 
-    it 'logs the error'
+    it 'logs the returned error' do
+      subject
+
+      expect(logger).to have_received(:error).with('Much error')
+    end
   end
 end
 
