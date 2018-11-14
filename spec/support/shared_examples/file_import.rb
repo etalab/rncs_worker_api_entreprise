@@ -51,19 +51,21 @@ shared_examples 'line import' do |line_processor, file, header_mapping|
     )
   end
 
-  it 'calls the CSV reader for line processing' do
-    subject
-
-    expect(csv_reader).to have_received(:line_processing).with(file, header_mapping)
-  end
-
-  it "calls #{line_processor} for each processed lines" do
+  before do
+    # This mock is mandatory because some tested classes sharing the behaviour
+    # of this example group calls CSVReader twice (PM_EVT for example : once to
+    # update DossierEntreprise and once to update PersonneMorale records)
+    # Yes this is a code smell, can be resolved by doing one model update at
+    # the time.
     allow(csv_reader).to receive(:line_processing).and_return(true)
+
     allow(csv_reader).to receive(:line_processing)
       .with(file, header_mapping)
       .and_yield('first line')
       .and_yield('second line')
+  end
 
+  it "calls #{line_processor} for each processed lines" do
     allow(line_processor).to receive(:call).and_return(trb_result_success)
     subject
 
