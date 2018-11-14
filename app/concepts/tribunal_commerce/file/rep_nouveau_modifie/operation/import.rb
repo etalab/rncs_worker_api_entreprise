@@ -18,6 +18,8 @@ module TribunalCommerce
               if update_or_create_rep.failure?
                 logger.error(update_or_create_rep[:error])
                 return false
+              else
+                logger.warn(update_or_create_rep[:warning]) unless update_or_create_rep[:warning].nil?
               end
             end
           end

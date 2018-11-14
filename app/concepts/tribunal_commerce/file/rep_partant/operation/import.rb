@@ -18,6 +18,8 @@ module TribunalCommerce
               if delete_rep.failure?
                 logger.error(delete_rep[:error])
                 return false
+              else
+                logger.warn(delete_rep[:warning]) unless delete_rep[:warning].nil?
               end
             end
           end

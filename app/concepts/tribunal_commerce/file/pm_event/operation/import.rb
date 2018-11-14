@@ -19,6 +19,8 @@ module TribunalCommerce
               if dossier_update.failure?
                 logger.error(dossier_update[:error])
                 return false
+              else
+                logger.warn(dossier_update[:warning]) unless dossier_update[:warning].nil?
               end
             end
           end
@@ -30,6 +32,8 @@ module TribunalCommerce
               if pm_update.failure?
                 logger.error(pm_update[:error])
                 return false
+              else
+                logger.warn(pm_update[:warning]) unless pm_update[:warning].nil?
               end
             end
           end

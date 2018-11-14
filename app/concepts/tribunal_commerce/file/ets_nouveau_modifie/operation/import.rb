@@ -18,6 +18,8 @@ module TribunalCommerce
               if update_or_create_ets.failure?
                 logger.error(update_or_create_ets[:error])
                 return false
+              else
+                logger.warn(update_or_create_ets[:warning]) unless update_or_create_ets[:warning].nil?
               end
             end
           end

@@ -18,6 +18,8 @@ module TribunalCommerce
               if delete_ets.failure?
                 logger.error(delete_ets[:error])
                 return false
+              else
+                logger.warn(delete_ets[:warning]) unless delete_ets[:warning].nil?
               end
             end
           end

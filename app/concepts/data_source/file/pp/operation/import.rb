@@ -37,6 +37,8 @@ module DataSource
               if line_import.failure?
                 logger.error(line_import[:error])
                 return false
+              else
+                logger.warn(line_import[:warning]) unless line_import[:warning].nil?
               end
             end
           end

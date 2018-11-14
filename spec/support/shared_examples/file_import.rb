@@ -73,9 +73,12 @@ shared_examples 'line import' do |line_processor, file, header_mapping|
     expect(line_processor).to have_received(:call).with(data: 'second line').ordered
   end
 
-  context "when #{line_processor} returns a warning message" do
-    it 'is success'
-    it 'logs the warning message'
+  it "logs warning messages returned by #{line_processor} if any" do
+    warning = { warning: 'This is a warning message !' }
+    allow(line_processor).to receive(:call).and_return(trb_result_success_with(warning))
+    subject
+
+    expect(logger).to have_received(:warn).with('This is a warning message !').twice
   end
 
   context "when #{line_processor} fails at least once", :trb do

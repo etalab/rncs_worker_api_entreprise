@@ -23,11 +23,13 @@ module TrailblazerHelper
     private
 
     def trb_result(success:, **)
-      instance_double(
+      dbl = instance_double(
         Trailblazer::Operation::Railway::Result,
         success?: success,
         failure?: !success
       )
+      allow(dbl).to receive(:[]).and_return(nil)
+      dbl
     end
   end
 end
