@@ -24,7 +24,7 @@ module DataSource
 
           def line_import(ctx, file_path:, file_reader:, logger:, **)
             file_reader.line_processing(file_path, OBS_HEADER_MAPPING) do |line|
-              line_import = Observation::Operation::Create.call(data: line)
+              line_import = Observation::Operation::UpdateOrCreate.call(data: line)
 
               if line_import.failure?
                 logger.error(line_import[:error])
