@@ -36,6 +36,7 @@ gem 'trailblazer-rails'
 gem 'dry-validation', '~> 0.11.1'
 
 gem 'prawn'
+gem 'sentry-raven'
 
 # ELK bridge
 gem 'logstasher'
