@@ -11,13 +11,19 @@ module TribunalCommerce
         step ->(ctx, logger:, db_current_date:, **) { logger.info("The database is sync until the date #{db_current_date}.") }
         step Nested(FetchInPipe)
         step :ignores_older_updates
-        fail :no_updates_to_import
+        step :limit_update_to_keep
+          fail :no_updates_to_import
         step :save_handled_updates
 
 
         def ignores_older_updates(ctx, daily_updates:, db_current_date:, **)
           daily_updates.keep_if { |update| update.newer?(db_current_date) }
-          !daily_updates.empty?
+        end
+
+        def limit_update_to_keep(ctx, daily_updates:, limit:nil, **)
+          daily_updates.sort_by! { |e| e.date.to_time.to_i }
+          ctx[:daily_updates] = daily_updates.first(limit) unless limit.nil?
+          ctx[:daily_updates].any?
         end
 
         def save_handled_updates(ctx, daily_updates:, **)
