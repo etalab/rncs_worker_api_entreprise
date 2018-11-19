@@ -37,6 +37,7 @@ module DataSource
         {
           col_sep: ';',
           chunk_size: Rails.configuration.rncs_sources['import_batch_size'],
+          force_simple_split: true,
           hash_transformations: [:none],
           header_transformations: [:none]
         }
