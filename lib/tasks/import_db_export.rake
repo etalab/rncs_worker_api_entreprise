@@ -1,6 +1,6 @@
 task import_db_export: :environment do
   class ImportCSVDump < Trailblazer::Operation
-    include TrailblazerHelper::DBIndexes
+    extend TrailblazerHelper::DBIndexes
 
     step ->(ctx, **) do
       drop_queries.each { |query| ActiveRecord::Base.connection.execute(query) }
