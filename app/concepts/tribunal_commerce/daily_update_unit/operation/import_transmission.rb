@@ -6,6 +6,7 @@ module TribunalCommerce
 
         step :fetch_files_from_folder
         step :read_files_metadata
+        step :rename_rep_files_headers
         step :retrieve_import_workers
         step :order_files_import
         step :import
@@ -18,6 +19,17 @@ module TribunalCommerce
 
         def read_files_metadata(ctx, files_list:, **)
           ctx[:files_args] = parse_flux_filename(files_list)
+        end
+
+        def rename_rep_files_headers(ctx, files_args:, **)
+          files_args.each do |arg|
+            if /rep/.match?(arg[:label])
+              # for sed portability on different OS : see https://stackoverflow.com/questions/5171901/sed-command-find-and-replace-in-file-and-overwrite-file-doesnt-work-it-empties
+              file_path = arg[:path]
+              tmp_file = file_path + '.tmp'
+              `sed -e '1s/Nom_Greffe;Numero_Gestion;Siren;Type;/Nom_Greffe;Numero_Gestion;Siren_Entreprise;Type;/' #{file_path} > #{tmp_file} && mv #{tmp_file} #{file_path}`
+            end
+          end
         end
 
         def retrieve_import_workers(ctx, files_args:, **)
