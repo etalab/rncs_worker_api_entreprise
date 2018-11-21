@@ -2,7 +2,7 @@ class Observation
   module Operation
     class UpdateOrCreate < Trailblazer::Operation
       step :find_dossier_entreprise
-        fail :dossier_not_found, fail_fast: true
+        fail :dossier_not_found, Output(:success) => 'End.success'
       step :retrieve_observation
         fail :create_observation, Output(:success) => 'End.success'
       step :update_observation
@@ -28,7 +28,7 @@ class Observation
       end
 
       def dossier_not_found(ctx, data:, **)
-        ctx[:error] = "The dossier (code_greffe: #{data[:code_greffe]}, numero_gestion: #{data[:numero_gestion]}) is not found. Aborting..."
+        ctx[:warning] = "The dossier (code_greffe: #{data[:code_greffe]}, numero_gestion: #{data[:numero_gestion]}) is not found. The observation with ID: #{data[:id_observation]} is not imported."
       end
     end
   end
