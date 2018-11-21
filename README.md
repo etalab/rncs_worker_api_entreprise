@@ -12,7 +12,7 @@ development:
 
 test:
   path: ./spec/fixtures
-  import_batch_size: 5
+  import_batch_size: 3
 ```
 
 ## Run bundler
