@@ -15,9 +15,9 @@ describe DataSource::File::CSVReader do
       content = <<-CSV
       Data A;Data B
       A1;B1
-      A2;B2
+      ;B2
       A3;B3
-      A4;B4
+      A4;
       A5;B5
       CSV
       file.write(content.unindent)
@@ -42,26 +42,26 @@ describe DataSource::File::CSVReader do
           .to yield_successive_args(
           [
             { data_a: 'A1', data_b: 'B1' },
-            { data_a: 'A2', data_b: 'B2' },
+            { data_a: nil, data_b: 'B2' },
             { data_a: 'A3', data_b: 'B3' }
           ],
           [
-            { data_a: 'A4', data_b: 'B4' },
+            { data_a: 'A4', data_b: nil },
             { data_a: 'A5', data_b: 'B5' }
           ])
       end
     end
 
     describe '.line_processing' do
-      it 'reads line by line' do
+      it 'reads line by line and filter nil values' do
         expect do |block_checker|
           described_class.line_processing(example_file, example_mapping, &block_checker)
         end
           .to yield_successive_args(
             { data_a: 'A1', data_b: 'B1' },
-            { data_a: 'A2', data_b: 'B2' },
+            { data_b: 'B2' },
             { data_a: 'A3', data_b: 'B3' },
-            { data_a: 'A4', data_b: 'B4' },
+            { data_a: 'A4' },
             { data_a: 'A5', data_b: 'B5' },
           )
       end
@@ -92,8 +92,8 @@ describe DataSource::File::CSVReader do
 
     after { FileUtils.rm_rf(example_file) }
 
-    let(:read_file) do
-      reader = described_class.new(example_file, example_mapping)
+    def read_file(keep_nil: false, **)
+      reader = described_class.new(example_file, example_mapping, keep_nil: keep_nil)
       lines = []
       reader.proceed do |batch|
         lines.push(batch)
@@ -115,12 +115,6 @@ describe DataSource::File::CSVReader do
       expect(line).to match({ maybe_empty: 'wow', never_empty: 'hey' })
     end
 
-    it 'ignores nil values from the CSV' do
-      line = fetch_line(1)
-
-      expect(line).to match({ never_empty: 'hello' })
-    end
-
     it 'reads numbers as string' do
       line = fetch_line(4)
 
@@ -132,6 +126,19 @@ describe DataSource::File::CSVReader do
       line = fetch_line(3)
 
       expect(line[:never_empty]).to eq('012')
+    end
+
+    it 'keeps nil values found in the CSV' do
+      line = fetch_line(1)
+
+      expect(line).to match({ never_empty: 'hello' })
+    end
+
+    it 'ignores nil values if specified' do
+      lines = read_file(keep_nil: true)
+      line = lines[0]
+
+      expect(line).to match({ maybe_empty: nil, never_empty: 'hello' })
     end
   end
 end

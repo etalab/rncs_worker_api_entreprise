@@ -18,12 +18,12 @@ describe DataSource::File::Obs::Operation::Import, :trb do
     let(:type_import) { :flux }
 
     it_behaves_like 'line import',
-      Observation::Operation::Create,
+      Observation::Operation::UpdateOrCreate,
       file,
       OBS_HEADER_MAPPING
 
     it 'is success' do
-      allow(Observation::Operation::Create)
+      allow(Observation::Operation::UpdateOrCreate)
         .to receive(:call)
         .and_return(trb_result_success)
 

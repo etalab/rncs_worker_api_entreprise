@@ -66,7 +66,7 @@ describe TribunalCommerce::DailyUpdate::Operation::Load do
         end
 
         it 'keeps latter updates only' do
-          expect(handled_updates).to include(
+          expect(handled_updates).to contain_exactly(
             an_object_having_attributes(year: '2018', month: '04', day: '11'),
             an_object_having_attributes(year: '2018', month: '04', day: '12'),
             an_object_having_attributes(year: '2018', month: '04', day: '13'),
@@ -109,8 +109,19 @@ describe TribunalCommerce::DailyUpdate::Operation::Load do
       end
 
       describe 'limit:' do
+        let(:db_timestamp) { { year: '2018', month: '04', day: '10' } }
+
         # default to no limit
-        it 'limits the number of update to import'
+        it 'limits the number of daily update to import' do
+          op_params[:limit] = 3
+          handled_updates = subject[:daily_updates]
+
+          expect(handled_updates).to contain_exactly(
+            an_object_having_attributes(year: '2018', month: '04', day: '11'),
+            an_object_having_attributes(year: '2018', month: '04', day: '12'),
+            an_object_having_attributes(year: '2018', month: '04', day: '13'),
+          )
+        end
       end
     end
   end
