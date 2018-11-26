@@ -2,7 +2,9 @@ class PersonneMorale
   module Operation
     class Update < Trailblazer::Operation
       step :find_dossier_entreprise
-        fail :dossier_not_found
+        fail :dossier_not_found, fail_fast: true
+      step :personne_morale_exists?
+        fail :create, Output(:success) => 'End.success'
       step :update
 
 
@@ -13,8 +15,16 @@ class PersonneMorale
         })
       end
 
+      def personne_morale_exists?(ctx, dossier:, **)
+        !dossier.personne_morale.nil?
+      end
+
       def update(ctx, dossier:, data:, **)
         dossier.personne_morale.update_attributes(data)
+      end
+
+      def create(ctx, dossier:, data:, **)
+        dossier.create_personne_morale(data)
       end
 
       def dossier_not_found(ctx, data:, **)
