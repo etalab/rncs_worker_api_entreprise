@@ -2,7 +2,7 @@ class Etablissement
   module Operation
     class NouveauModifie < Trailblazer::Operation
       step :find_dossier_entreprise
-        fail :dossier_not_found, fail_fast: true
+      fail :warn_dossier_not_found, Output(:success) => 'End.success'
       step :retrieve_etablissement
         fail :create_new_etablissement
         fail :warning_message, Output(:success) => 'End.success'
@@ -32,8 +32,8 @@ class Etablissement
         ctx[:warning] = "The etablissement (id_etablissement: #{data[:id_etablissement]}) was not found in dossier (code_greffe: #{data[:code_greffe]}, numero_gestion: #{data[:numero_gestion]}) for update. Created instead."
       end
 
-      def dossier_not_found(ctx, data:, **)
-        ctx[:error] = "The dossier (code_greffe: #{data[:code_greffe]}, numero_gestion: #{data[:numero_gestion]}) is not found. Aborting..."
+      def warn_dossier_not_found(ctx, data:, **)
+        ctx[:warning] = "The dossier (code_greffe: #{data[:code_greffe]}, numero_gestion: #{data[:numero_gestion]}) is not found. The etablissement (id_etablissement: #{data[:id_etablissement]}) is not imported."
       end
     end
   end

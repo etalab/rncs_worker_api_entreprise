@@ -1,10 +1,6 @@
 require 'rails_helper'
 
 describe Representant::Operation::NouveauModifie do
-  context 'when the related dossier is not found' do
-    it_behaves_like 'related dossier not found'
-  end
-
   let(:data) do
     {
       code_greffe: '1234',
@@ -62,5 +58,16 @@ describe Representant::Operation::NouveauModifie do
         expect(warning_msg).to eq('The representant (id_representant: 1, qualite: Président) was not found in dossier (code_greffe: 1234, numero_gestion: 1A2B3C). Representant created instead.')
       end
     end
+  end
+
+  # TODO https://github.com/etalab/rncs_worker_api_entreprise/issues/39
+  context 'when the related dossier is not found' do
+    it 'returns a warning message' do
+      warning_msg = subject[:warning]
+
+      expect(warning_msg).to eq("The dossier (code_greffe: #{data[:code_greffe]}, numero_gestion: #{data[:numero_gestion]}) is not found. The representant (id_representant: #{data[:id_representant]}, qualite: #{data[:qualite]}) is not imported.")
+    end
+
+    it { is_expected.to be_success }
   end
 end
