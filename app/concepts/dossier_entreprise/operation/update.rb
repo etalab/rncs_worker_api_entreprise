@@ -5,7 +5,10 @@ class DossierEntreprise
         fail :find_dossier_with_same_siren, Output(:success) => :create
       step :update, Output(:success) => 'End.success'
 
-      # TODO failing without Output(:success) => 'End.success'
+      # Because the previous step on the "right" track (:update) directly
+      # points to an end event (thanks to the Output(:success) => 'End.success'
+      # option) this step is not connected to the :success track so we need to
+      # explicitly set the end event
       step :create, id: :create, Output(:success) => 'End.success'
 
 
