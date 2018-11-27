@@ -34,7 +34,8 @@ describe DossierEntreprise::Operation::Update do
     end
 
     # TODO What to do when multiple dossiers are found for a given siren
-    context 'when a dossier already exists for the give siren' do
+    # TODO https://github.com/etalab/rncs_worker_api_entreprise/issues/41
+    context 'when a dossier already exists for the given siren' do
       before do
         create(
           :dossier_entreprise,
@@ -44,23 +45,23 @@ describe DossierEntreprise::Operation::Update do
         )
       end
 
-      it 'updates this dossier' do
-        subject
-        updated_dossier = DossierEntreprise.find_by(code_greffe: data[:code_greffe], siren: data[:siren])
+      #it 'creates a new dossier' do
+      #  all_dossiers_for_greffe = DossierEntreprise.where(code_greffe: data[:code_greffe])
 
-        expect(updated_dossier).to have_attributes(
-          numero_gestion: '1A2B3C',
-          date_immatriculation: 'hier',
-          date_transfert: 'demain',
-          sans_activite: 'OUI',
-          date_debut_activite: 'A PAS ACTIVITE'
-        )
+      #  expect { subject }.to change(all_dossiers_for_greffe, :count).by(1)
+      #end
+
+      it 'has now two differents dossiers for the same siren number' do
+        subject
+        all_dossiers_for_siren = DossierEntreprise.where(code_greffe: data[:code_greffe], siren: data[:siren])
+
+        expect(all_dossiers_for_siren.size).to eq(2)
       end
 
       it 'returns a warning message' do
         warning_msg = subject[:warning]
 
-        expect(warning_msg).to eq('Dossier (numero_gestion: 1A2B3C) not found for greffe 1234, but an existing dossier (numero_gestion: 123ZZZ) is found for siren 123456789 : updating this dossier instead.')
+        expect(warning_msg).to eq('Dossier (numero_gestion: 1A2B3C) not found for greffe 1234, but an existing dossier (numero_gestion: 123ZZZ) is found for siren 123456789 : a new dossier is created besides the existing one.')
       end
 
       it { is_expected.to be_success }
@@ -88,6 +89,12 @@ describe DossierEntreprise::Operation::Update do
         sans_activite: 'OUI',
         date_debut_activite: 'A PAS ACTIVITE'
       )
+    end
+
+    it 'does not return any warning message' do
+      warning_msg = subject[:warning]
+
+      expect(warning_msg).to be_nil
     end
   end
 end
