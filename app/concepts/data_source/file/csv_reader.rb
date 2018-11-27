@@ -34,9 +34,9 @@ module DataSource
 
       def default_options
         {
-          col_sep: ';',
+          col_sep: ',',
           chunk_size: Rails.configuration.rncs_sources['import_batch_size'],
-          hash_transformations: [:none, :remove_blank_values],
+          hash_transformations: [:none],
           header_transformations: [:none]
         }
       end
