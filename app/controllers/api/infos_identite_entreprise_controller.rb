@@ -14,8 +14,7 @@ class API::InfosIdentiteEntrepriseController< ApplicationController
     retrieve_identity = Entreprise::Operation::Identity.call(siren: siren)
 
     if retrieve_identity.success?
-      dossier_principal = retrieve_identity[:dossier_principal]
-      pdf = SirenInfosPdf.new(dossier_principal)
+      pdf = IdentiteEntreprisePdf.new retrieve_identity[:entreprise_identity]
       send_data(pdf.render, filename: "infos_#{siren}.pdf", type: 'application/pdf')
     else
       http_error = retrieve_identity[:http_error]
