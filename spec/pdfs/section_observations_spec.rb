@@ -21,11 +21,11 @@ describe SectionObservations do
     data = [
       'Observations',
       'Mention n°4000A du 2018-04-31',
-      'I can see you',
+      'This is a very long observation, so long that you could not imagine it before reading it.',
       'Mention n°4000A du 2010-02-04',
-      'I can see you',
+      'This is a very long observation, so long that you could not imagine it before reading it.',
       'Mention n°4000A du 2010-01-04',
-      'I can see you',
+      'This is a very long observation, so long that you could not imagine it before reading it.'
     ]
 
     expect(subject).to eq data

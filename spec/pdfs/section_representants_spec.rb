@@ -46,6 +46,13 @@ describe SectionRepresentants do
     expect(subject).to eq data
   end
 
+  it 'works with nil siren_pm' do
+    expect {
+      pdf.section_representants representants: [attributes_for(:representant_pm, siren_pm: nil)]
+    }.not_to raise_error
+
+  end
+
   context 'type_representant' do
     it 'matches anything like pHysiQue' do
       pdf.section_representants representants: [attributes_for(:representant_pp, type_representant: 'Truc pHysiquE.?')]

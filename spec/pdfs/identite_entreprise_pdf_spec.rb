@@ -65,9 +65,12 @@ describe IdentiteEntreprisePdf do
       'Type d\'exploitation',   'Divers',
       'Observations',
       'page 1/2', # TODO: observation title is on one page and observations are on the next one. how to keep them together ?
-      'Mention n°4000A du 2018-11-25', 'I can see you',
-      'Mention n°4000A du 2016-11-30', 'I can see you',
-      'Mention n°4000A du',            'I can see you',
+      'Mention n°4000A du 2018-11-25',
+      'This is a very long observation, so long that you could not imagine it before reading it.',
+      'Mention n°4000A du 2016-11-30',
+      'This is a very long observation, so long that you could not imagine it before reading it.',
+      'Mention n°4000A du',
+      'This is a very long observation, so long that you could not imagine it before reading it.',
       'page 2/2'
     ]
 
@@ -111,10 +114,13 @@ describe IdentiteEntreprisePdf do
       'Date début d\'activité',  '1992-07-09',
       'Type d\'exploitation',    'Divers',
       'Observations',
-      'Mention n°4000A du 2018-11-25', 'I can see you',
+      'Mention n°4000A du 2018-11-25',
+      'This is a very long observation, so long that you could not imagine it before reading it.',
       'page 1/2',
-      'Mention n°4000A du 2016-11-30', 'I can see you',
-      'Mention n°4000A du',            'I can see you',
+      'Mention n°4000A du 2016-11-30',
+      'This is a very long observation, so long that you could not imagine it before reading it.',
+      'Mention n°4000A du',
+      'This is a very long observation, so long that you could not imagine it before reading it.',
       'page 2/2'
     ]
 

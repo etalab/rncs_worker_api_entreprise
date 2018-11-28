@@ -22,7 +22,7 @@ module SectionObservations
       display_table_block [
         ["Mention n°#{obs[:numero]} du #{obs[:date_ajout]}", ''],
         [obs[:texte], '']
-      ]
+      ], 540
 
       move_down 10
     end

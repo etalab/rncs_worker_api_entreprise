@@ -10,14 +10,14 @@ module PdfHelper
 
   def pretty_siren(siren)
     # 111 111 111
-    siren.insert(6, ' ').insert(3, ' ')
+    siren&.insert(6, ' ')&.insert(3, ' ')
   end
 
   # /!\ there is no test that makes sure this works
   # only human made tests
-  def display_table_block(data)
+  def display_table_block(data, column_width=200)
     current_table = make_table data,
-      column_widths: { 0 => 200 },
+      column_widths: { 0 => column_width },
       cell_style: {
         :border_width => 0,
         :padding => [0, 0, 2, 0],
