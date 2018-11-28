@@ -68,10 +68,10 @@ describe Entreprise::Operation::Identity do
           dossier_attributes = entreprise_identity.fetch(:dossier_entreprise_greffe_principal)
 
           expect(dossier_attributes).to include(
-            'code_greffe' => 'code_test',
-            'numero_gestion' => 'numero_test',
-            'siren' => valid_siren,
-            'type_inscription' => 'P',
+            code_greffe: 'code_test',
+            numero_gestion: 'numero_test',
+            siren: valid_siren,
+            type_inscription: 'P',
             # Ensure other keys are returned as well ? Here or inside the controller's spec ?
           )
         end
@@ -84,8 +84,8 @@ describe Entreprise::Operation::Identity do
           observations_list = entreprise_identity.fetch(:dossier_entreprise_greffe_principal).fetch(:observations)
 
           expect(observations_list).to contain_exactly(
-            a_hash_including('texte' => 'control value 1'),
-            a_hash_including('texte' => 'control value 2'),
+            a_hash_including(texte: 'control value 1'),
+            a_hash_including(texte: 'control value 2'),
           )
         end
 
@@ -97,8 +97,8 @@ describe Entreprise::Operation::Identity do
           representants_list = entreprise_identity.fetch(:dossier_entreprise_greffe_principal).fetch(:representants)
 
           expect(representants_list).to contain_exactly(
-            a_hash_including('qualite' => 'control value 1'),
-            a_hash_including('qualite' => 'control value 2'),
+            a_hash_including(qualite: 'control value 1'),
+            a_hash_including(qualite: 'control value 2'),
           )
         end
 
@@ -110,9 +110,9 @@ describe Entreprise::Operation::Identity do
           etablissements_list = entreprise_identity.fetch(:dossier_entreprise_greffe_principal).fetch(:etablissements)
 
           expect(etablissements_list).to contain_exactly(
-            a_hash_including('activite' => 'control value 1'),
-            a_hash_including('activite' => 'control value 2'),
-            a_hash_including('enseigne' => 'do not forget me'), # created in before hook for happy path
+            a_hash_including(activite: 'control value 1'),
+            a_hash_including(activite: 'control value 2'),
+            a_hash_including(enseigne: 'do not forget me'), # created in before hook for happy path
           )
         end
 
@@ -120,15 +120,36 @@ describe Entreprise::Operation::Identity do
           create(:personne_morale, dossier_entreprise: dossier, capital: '42')
           pm_fields = entreprise_identity.fetch(:dossier_entreprise_greffe_principal).fetch(:personne_morale)
 
-          expect(pm_fields).to include('capital' => '42')
+          expect(pm_fields).to include(capital: '42')
         end
 
         it 'returns associated personne physique attributes' do
           create(:personne_physique, dossier_entreprise: dossier, pseudonyme: 'xXxBrinduxXx')
           pp_fields = entreprise_identity.fetch(:dossier_entreprise_greffe_principal).fetch(:personne_physique)
 
-          expect(pp_fields).to include('pseudonyme' => 'xXxBrinduxXx')
+          expect(pp_fields).to include(pseudonyme: 'xXxBrinduxXx')
         end
+
+        it 'returns etablissement principal' do
+          etablissement_principal = entreprise_identity.fetch(:dossier_entreprise_greffe_principal).fetch(:etablissement_principal)
+          expect(etablissement_principal).to include enseigne: 'do not forget me'
+        end
+      end
+    end
+
+    describe 'db_current_date' do
+      before { create :etablissement_principal, dossier_entreprise: dossier, enseigne: 'do not forget me' }
+
+      let(:dossier_attributes) { subject[:entreprise_identity][:dossier_entreprise_greffe_principal] }
+
+      pending 'returns db_current_date from last daily update' do
+        create :daily_update_with_completed_units
+        expect(dossier_attributes).to include db_current_date: '2016-04-21'
+      end
+
+      pending 'returns db_current_date from last stock import' do
+        create :stock_with_completed_units, year: '2018', month: '04', day: '10'
+        expect(dossier_attributes).to include db_current_date: '2018-04-10'
       end
     end
 
