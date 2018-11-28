@@ -7,5 +7,9 @@ FactoryBot.define do
     texte { 'I can see you' }
     etat { 'soeur' }
     dossier_entreprise
+
+    factory :random_observation do
+      date_ajout { Faker::Date.backward(300).to_s }
+    end
   end
 end

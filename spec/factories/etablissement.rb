@@ -1,5 +1,5 @@
 FactoryBot.define do
-  factory :etablissement do
+  factory :etablissement, aliases: [:etablissement_address_incomplete] do
     dossier_entreprise
     type_etablissement { 'SEC' }
     siege_pm { 'France' }
@@ -32,6 +32,11 @@ FactoryBot.define do
 
     factory :siege_social_and_principal do
       type_etablissement { 'SEP' }
+    end
+
+    factory :etablissement_address_complete do
+      adresse_ligne_1 { 'C\'est ici' }
+      adresse_ligne_3 { '(Rhumerie)' }
     end
   end
 end

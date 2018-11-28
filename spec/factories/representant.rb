@@ -2,17 +2,17 @@ FactoryBot.define do
   factory :representant do
     dossier_entreprise
 
-    factory :representant_pm do
+    factory :representant_pm, aliases: [:representant_pm_with_complete_address] do
       type_representant { 'P. Morale' }
       forme_juridique { 'Société par actions simplifiée' }
       denomination { 'Grosse Entreprise de Télécom' }
       siren_pm { '000000000' }
-      qualite { ['Représentant permanent', 'Directeur général', 'Contrôler des comptes'].sample  }
+      qualite { 'Contrôleur des comptes' }
       conjoint_collab_date_fin { '' }
       id_representant { rand(20) }
       date_derniere_modification { '2017-03-30' }
       libelle_derniere_modification { 'Nouveau dirigeant' }
-      adresse_ligne_1 { '' }
+      adresse_ligne_1 { '3 bis' }
       adresse_ligne_2 { 'rue des Peupliers' }
       adresse_ligne_3 { 'Zone Industrielle Sud' }
       adresse_code_postal { '34000' }
@@ -28,9 +28,9 @@ FactoryBot.define do
       end
     end
 
-    factory :representant_pp do
+    factory :representant_pp, aliases: [:representant_pp_with_incomplete_address] do
       type_representant { 'P.Physique' }
-      qualite { %w[Gérant Directeur Associé Administrateur Conseiller].sample }
+      qualite { 'Directeur Associé' }
       id_representant { rand(20) }
       date_derniere_modification { '2016-09-20' }
       libelle_derniere_modification { 'Nouveau dirigeant' }

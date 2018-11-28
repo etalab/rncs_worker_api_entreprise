@@ -40,10 +40,12 @@ FactoryBot.define do
       nom_greffe { 'Greffe entreprise simple' }
 
       after :create do |dossier|
-        create :siege_social_and_principal, dossier_entreprise: dossier, siren: dossier.siren
+        create :etablissement_principal, dossier_entreprise: dossier, siren: dossier.siren
         create :personne_morale, dossier_entreprise: dossier, siren: dossier.siren
         create :president_pm, dossier_entreprise: dossier, siren: dossier.siren
-        create :observation, dossier_entreprise: dossier, siren: dossier.siren
+        create :representant_pm, dossier_entreprise: dossier, siren: dossier.siren
+        create :representant_pp, dossier_entreprise: dossier, siren: dossier.siren
+        create_list :random_observation, 3, dossier_entreprise: dossier, siren: dossier.siren
       end
     end
 
@@ -61,6 +63,8 @@ FactoryBot.define do
         create :president_pm, dossier_entreprise: dossier, siren: dossier.siren
         create_list :representant_pm, 3, dossier_entreprise: dossier, siren: dossier.siren
         create_list :representant_pp, 3, dossier_entreprise: dossier, siren: dossier.siren
+
+        create_list :random_observation, 10, dossier_entreprise: dossier, siren: dossier.siren
       end
     end
 
