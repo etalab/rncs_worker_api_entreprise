@@ -21,5 +21,9 @@ FactoryBot.define do
     factory :personne_physique_adresse_complete do
       adresse_ligne_1 { 'Chez Bébert' }
     end
+
+    factory :personne_physique_etrangere do
+      adresse_pays { 'Bordurie' }
+    end
   end
 end

@@ -18,7 +18,7 @@ FactoryBot.define do
     adresse_code_postal { '97114' }
     adresse_ville { 'Trois-Rivières' }
     adresse_code_commune { 'Goyave' }
-    adresse_pays { 'France' }
+    adresse_pays { 'fRanCe' }
     code_greffe { '9876' }
     numero_gestion { '1998B00777' }
 
@@ -37,6 +37,10 @@ FactoryBot.define do
     factory :etablissement_address_complete do
       adresse_ligne_1 { 'C\'est ici' }
       adresse_ligne_3 { '(Rhumerie)' }
+    end
+
+    factory :etablissement_etranger do
+      adresse_pays { 'Syldavie' }
     end
   end
 end

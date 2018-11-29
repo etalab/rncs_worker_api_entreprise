@@ -16,8 +16,8 @@ module SectionIdentitePM
       ['Dénomination',                          "<b>#{personne_morale[:denomination]}</b>"],
       ['Forme juridique',                       personne_morale[:forme_juridique]],
       ['Capital',                               capital],
-      ['Adresse',                               adresse_etablissement_principal],
-      ['Activités principales',                   etablissement_principal[:activite]],
+      ['Adresse',                               build_adresse(@etablissement_principal)],
+      ['Activités principales',                 etablissement_principal[:activite]],
       ['Durée de la personne morale',           duree_pm],
       ['Date de clôture de l\'exercice social', @personne_morale[:date_cloture]]
     ]
@@ -38,16 +38,6 @@ module SectionIdentitePM
 
   def devise_capitalized
     @personne_morale[:devise].nil? ? '' : @personne_morale[:devise].capitalize
-  end
-
-  def adresse_etablissement_principal
-    [
-      @etablissement_principal[:adresse_ligne_1],
-      @etablissement_principal[:adresse_ligne_2],
-      @etablissement_principal[:adresse_ligne_3],
-      @etablissement_principal[:adresse_code_postal],
-      @etablissement_principal[:adresse_ville]
-    ].compact.join(' ')
   end
 
   def duree_pm

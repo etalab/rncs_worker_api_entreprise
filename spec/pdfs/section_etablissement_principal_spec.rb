@@ -31,4 +31,11 @@ describe SectionEtablissementPrincipal do
 
     expect(subject).to include 'Rue des cocotiers 97114 Trois-Rivières'
   end
+
+  it 'works with foreign address' do
+    params = { etablissement_principal: attributes_for(:etablissement_etranger) }
+    pdf.section_etablissement_principal params
+
+    expect(subject).to include 'Rue des cocotiers 97114 Trois-Rivières (Syldavie)'
+  end
 end

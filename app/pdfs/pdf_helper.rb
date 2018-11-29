@@ -28,4 +28,22 @@ module PdfHelper
       start_new_page if (cursor - current_table.height - real_margin_bottom).negative?
       current_table.draw
   end
+
+  def build_adresse(etablissement)
+    [
+      etablissement[:adresse_ligne_1],
+      etablissement[:adresse_ligne_2],
+      etablissement[:adresse_ligne_3],
+      etablissement[:adresse_code_postal],
+      etablissement[:adresse_ville],
+      build_pays(etablissement)
+    ].compact.join(' ')
+  end
+
+  def build_pays(etablissement)
+    return if etablissement[:adresse_pays].nil?
+    return if etablissement[:adresse_pays].downcase =~ /france/
+
+    "(#{etablissement[:adresse_pays]})"
+  end
 end

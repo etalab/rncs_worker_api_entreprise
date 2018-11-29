@@ -42,6 +42,16 @@ describe SectionIdentitePP do
     expect(subject).to include '1 AV FOCH BEL HOTEL 75008 PARIS'
   end
 
+  it 'works with foreign address' do
+    params = {
+      personne_physique: attributes_for(:personne_physique_etrangere, siren: siren),
+      date_immatriculation: '1939-08-10'
+    }
+    pdf.section_identite_pp params
+
+    expect(subject).to include '1 AV FOCH BEL HOTEL 75008 PARIS (Bordurie)'
+  end
+
   it 'works with nil nom' do
     params[:personne_physique][:nom_patronyme] = nil
     pdf.section_identite_pp params

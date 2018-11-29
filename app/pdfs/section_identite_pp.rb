@@ -13,7 +13,7 @@ module SectionIdentitePP
       ['Nom, prénoms',              nom_prenoms],
       ['Date et lieu de naissance', date_lieu_naissance],
       ['Nationalité',               @personne_physique[:nationalite]],
-      ['Domicile personnel',        adresse_pp]
+      ['Domicile personnel',        build_adresse(@personne_physique)]
     ]
   end
 
@@ -25,15 +25,5 @@ module SectionIdentitePP
 
   def date_lieu_naissance
     "#{@personne_physique[:date_naissance]} #{@personne_physique[:ville_naissance]}"
-  end
-
-  def adresse_pp
-    [
-      @personne_physique[:adresse_ligne_1],
-      @personne_physique[:adresse_ligne_2],
-      @personne_physique[:adresse_ligne_3],
-      @personne_physique[:adresse_code_postal],
-      @personne_physique[:adresse_ville]
-    ].compact.join(' ')
   end
 end
