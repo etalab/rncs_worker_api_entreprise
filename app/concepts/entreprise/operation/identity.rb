@@ -9,6 +9,7 @@ module Entreprise
         fail :no_exclusif_dossier_principal, fail_fast: true
       step :fetch_etablissement_principal
         fail :no_etablissement_principal
+      step :fetch_db_current_date
       step :fetch_identity_data
 
 
@@ -51,15 +52,25 @@ module Entreprise
         ctx[:http_error] = { code: 500, message: 'Aucun etablissement principal trouvé dans le dossier principal' }
       end
 
-      def fetch_identity_data(ctx, dossier_principal:, **)
+      # TODO: finish me
+      # pending due to no stock in production
+      def fetch_db_current_date(ctx, **)
+        db_date_operation = TribunalCommerce::DailyUpdate::Operation::DBCurrentDate.call
+        ctx[:db_current_date] = db_date_operation.success? ? db_date_operation[:db_current_date] : nil # <= cannot be nil
+        ctx[:db_current_date] = Date.parse('2018-11-26')
+      end
+
+      def fetch_identity_data(ctx, dossier_principal:, etablissement_principal:, db_current_date:, **)
         data = { dossier_entreprise_greffe_principal: dossier_principal.attributes }
         nested_data = data[:dossier_entreprise_greffe_principal]
+        nested_data[:db_current_date] = db_current_date.to_s
         nested_data[:observations]  = dossier_principal.observations.map(&:attributes)
         nested_data[:representants] = dossier_principal.representants.map(&:attributes)
         nested_data[:etablissements] = dossier_principal.etablissements.map(&:attributes)
+        nested_data[:etablissement_principal] = etablissement_principal.attributes
         nested_data[:personne_morale] = dossier_principal&.personne_morale&.attributes
         nested_data[:personne_physique] = dossier_principal&.personne_physique&.attributes
-        ctx[:entreprise_identity] = data
+        ctx[:entreprise_identity] = data.deep_symbolize_keys!
       end
     end
   end

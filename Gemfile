@@ -36,6 +36,7 @@ gem 'trailblazer-rails'
 gem 'dry-validation', '~> 0.11.1'
 
 gem 'prawn'
+gem 'prawn-table'
 gem 'sentry-raven'
 
 # ELK bridge
@@ -54,6 +55,7 @@ group :development, :test do
   gem 'shoulda-matchers'
   gem 'guard-rspec'
   gem 'factory_bot_rails'
+  gem 'faker'
   gem 'pdf-inspector'
   gem 'pry'
   gem 'pry-byebug'

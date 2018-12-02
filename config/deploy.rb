@@ -13,6 +13,7 @@ ENV['to'] ||= 'sandbox'
 #   repository   - Git repo to clone from. (needed by mina/git)
 #   branch       - Branch name to deploy. (needed by mina/git)
 
+set :commit, ENV['commit']
 set :application_name, 'rncs_api'
 set :domain, 'ns3107905.ip-54-37-87.eu'
 set :deploy_to, "/var/www/rncs_api_#{ENV['to']}"
