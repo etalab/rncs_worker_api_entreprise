@@ -35,3 +35,16 @@ Run `bundle install`
 ## Data
 
 * Capital social de la forme euros.cents (cents peut etre en mono ou duo digits) ou alors vide
+
+## Import des mises à jour quotidiennes
+
+### Tribunaux de Commerce
+
+#### Défaut d'encodage des fichiers CSV
+Seulement 2 fichiers de mises à jour quotidiennes (sur environ 1,5 millions de
+fichiers à ce jour) ne sont pas encodés en UTF-8 mais en ISO-8859-1. Afin de ne
+pas ajouter de complexité supplémentaire au script d'import, ces fichiers ont
+été ré-encodés au format UTF-8 manuellement :
+
+* IMR_Donnees_Saisies/tc/flux/2017/05/24/8401/5/8401_5_20170512_212823_11_obs.csv
+* IMR_Donnees_Saisies/tc/flux/2017/05/24/5601/5/5601_5_20170512_213441_11_obs.csv
