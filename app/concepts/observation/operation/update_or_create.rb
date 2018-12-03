@@ -20,11 +20,19 @@ class Observation
       end
 
       def update_observation(ctx, observation:, data:, **)
-        observation.update_attributes(data)
+        etat_obs = data[:etat]
+
+        unless etat_obs == 'Suppression'
+          observation.update_attributes(data)
+        else
+          observation.delete
+        end
       end
 
       def create_observation(ctx, dossier:, data:, **)
-        dossier.observations.create(data)
+        etat_obs = data[:etat]
+        dossier.observations.create(data) unless etat_obs == 'Suppression'
+        true
       end
 
       def dossier_not_found(ctx, data:, **)
