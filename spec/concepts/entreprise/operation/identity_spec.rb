@@ -142,12 +142,12 @@ describe Entreprise::Operation::Identity do
 
       let(:dossier_attributes) { subject[:entreprise_identity][:dossier_entreprise_greffe_principal] }
 
-      pending 'returns db_current_date from last daily update' do
+      it 'returns db_current_date from last daily update', pending: 'db_current_date is hardcored currently' do
         create :daily_update_with_completed_units
         expect(dossier_attributes).to include db_current_date: '2016-04-21'
       end
 
-      pending 'returns db_current_date from last stock import' do
+      it 'returns db_current_date from last stock import', pending: 'db_current_date is hardcored currently' do
         create :stock_with_completed_units, year: '2018', month: '04', day: '10'
         expect(dossier_attributes).to include db_current_date: '2018-04-10'
       end
