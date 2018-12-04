@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe Observation::Operation::UpdateOrCreate do
-  let(:obs_data) do
+  let(:data) do
     {
       code_greffe: '9001',
       numero_gestion: '2016A10937',
@@ -11,21 +11,21 @@ describe Observation::Operation::UpdateOrCreate do
     }
   end
 
-  subject { described_class.call(data: obs_data) }
+  subject { described_class.call(data: data) }
 
   context 'when associated dossier entreprise exists' do
     let(:dossier) do
       create(
         :dossier_entreprise,
-        code_greffe: obs_data[:code_greffe],
-        numero_gestion: obs_data[:numero_gestion],
+        code_greffe: data[:code_greffe],
+        numero_gestion: data[:numero_gestion],
       )
     end
 
     before { dossier }
 
     context 'when the observation exists in database' do
-      before { create(:observation, id_observation: obs_data[:id_observation], dossier_entreprise: dossier) }
+      before { create(:observation, id_observation: data[:id_observation], dossier_entreprise: dossier) }
 
       it 'is updated' do
         subject
@@ -50,7 +50,14 @@ describe Observation::Operation::UpdateOrCreate do
     end
   end
 
+  # TODO https://github.com/etalab/rncs_worker_api_entreprise/issues/35
   context 'when associated dossier entreprise is not found' do
-    it_behaves_like 'related dossier not found'
+    it 'returns a warning message' do
+      warning_msg = subject[:warning]
+
+      expect(warning_msg).to eq("The dossier (code_greffe: #{data[:code_greffe]}, numero_gestion: #{data[:numero_gestion]}) is not found. The observation with ID: #{data[:id_observation]} is not imported.")
+    end
+
+    it { is_expected.to be_success }
   end
 end

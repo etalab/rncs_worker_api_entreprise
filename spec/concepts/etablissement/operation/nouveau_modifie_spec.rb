@@ -1,10 +1,6 @@
 require 'rails_helper'
 
 describe Etablissement::Operation::NouveauModifie do
-  context 'when the related dossier is not found' do
-    it_behaves_like 'related dossier not found'
-  end
-
   let(:data) do
     {
       code_greffe: '1234',
@@ -59,5 +55,16 @@ describe Etablissement::Operation::NouveauModifie do
 
       it { is_expected.to be_success }
     end
+  end
+  #
+  # TODO https://github.com/etalab/rncs_worker_api_entreprise/issues/39
+  context 'when the related dossier is not found' do
+    it 'returns a warning message' do
+      warning_msg = subject[:warning]
+
+      expect(warning_msg).to eq("The dossier (code_greffe: #{data[:code_greffe]}, numero_gestion: #{data[:numero_gestion]}) is not found. The etablissement (id_etablissement: #{data[:id_etablissement]}) is not imported.")
+    end
+
+    it { is_expected.to be_success }
   end
 end
