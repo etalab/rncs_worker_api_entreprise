@@ -14,6 +14,6 @@ class DailyUpdateUnit < ApplicationRecord
   end
 
   def formated_current_time
-    Time.now.strftime('%Y_%m_%d__%H_%S_%M')
+    Time.now.strftime('%Y_%m_%d__%H_%M_%S')
   end
 end

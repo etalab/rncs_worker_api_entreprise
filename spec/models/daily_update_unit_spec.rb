@@ -29,7 +29,7 @@ describe DailyUpdateUnit do
       current_time = Time.now
       Timecop.freeze(current_time)
 
-      format_time = current_time.strftime('%Y_%m_%d__%H_%S_%M')
+      format_time = current_time.strftime('%Y_%m_%d__%H_%M_%S')
       expected_log_file = Rails.root.join("log/flux/20200729__5432__#{format_time}.log").to_s
       expect(Logger).to receive(:new).with(expected_log_file).and_return(mock_logger)
 
