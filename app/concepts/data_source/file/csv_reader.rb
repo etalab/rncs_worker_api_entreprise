@@ -39,7 +39,7 @@ module DataSource
           chunk_size: Rails.configuration.rncs_sources['import_batch_size'],
           force_simple_split: true,
           hash_transformations: [:none],
-          header_transformations: [:none]
+          header_transformations: [:none, harmonize_headers]
         }
       end
 
@@ -49,6 +49,20 @@ module DataSource
 
       def remove_blank_values
         @options[:hash_transformations].push(:remove_blank_values)
+      end
+
+      def harmonize_headers
+        Proc.new do |headers|
+          headers.map do |h|
+            h.yield_self { |it| it.downcase }
+             .yield_self { |it| it.strip }
+             .yield_self { |it| it.gsub(/\s|-/, '_') }
+             .yield_self { |it| it.gsub(/\./, '') }
+             .yield_self { |it| it.gsub('"', '') }
+             .yield_self { |it| I18n.transliterate(it) }
+             .yield_self { |it| it.to_sym }
+          end
+        end
       end
     end
   end
