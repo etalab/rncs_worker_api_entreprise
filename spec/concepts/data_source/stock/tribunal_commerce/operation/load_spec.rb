@@ -8,13 +8,27 @@ describe DataSource::Stock::TribunalCommerce::Operation::Load do
   context 'when a stock is available for import' do
     let(:example_stock_folder) { Rails.root.join('spec', 'fixtures', 'tc', 'stock') }
     before do
-      Stock.delete_all
+      StockTribunalCommerce.delete_all
       StockUnit.delete_all
     end
 
     it { is_expected.to be_success }
 
-    it 'drops db indexes'
+    it 'drops db indexes' do
+      expect_any_instance_of(ActiveRecord::ConnectionAdapters::PostgreSQLAdapter)
+        .to receive(:execute)
+        .exactly(expected_drop_query_count).times
+      subject
+    end
+
+    def expected_drop_query_count
+      indexes_table = Rails.application.config_for(:db_indexes)
+      indexes_count = indexes_table.inject(0) { |sum, array| sum + array[1].count }
+
+      others_operations_count = 8
+
+      indexes_count + others_operations_count
+    end
 
     it 'creates a job to import each stock unit' do
       # TODO ? pass stock_unit model global id to the job
@@ -54,7 +68,7 @@ describe DataSource::Stock::TribunalCommerce::Operation::Load do
 
   context 'when stocks found are older than the last one imported' do
     let(:example_stock_folder) { Rails.root.join('spec', 'fixtures', 'tc', 'stock') }
-    before { create(:stock_tribunal_commerce, year: '2018', month: '10', day: '13') }
+    before { create(:stock_tc, year: '2018', month: '10', day: '13') }
 
     it { is_expected.to be_failure }
 

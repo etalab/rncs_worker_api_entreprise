@@ -1,5 +1,5 @@
 class Stock < ApplicationRecord
-  has_many :stock_units
+  has_many :stock_units, dependent: :destroy
 
   class << self
     def first_load?
@@ -11,7 +11,6 @@ class Stock < ApplicationRecord
       collection.first
     end
   end
-
 
   def date
     string_date = [year, month, day].join('/')
@@ -28,7 +27,6 @@ class Stock < ApplicationRecord
     end
   end
 
-  # TODO make it a calculated value based on associated stock units status
   def status
     child_status = stock_units_status
 

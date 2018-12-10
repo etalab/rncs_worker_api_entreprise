@@ -4,5 +4,6 @@ FactoryBot.define do
     number { 1 }
     file_path { '/temp' }
     status { 'PENDING' }
+    stock
   end
 end

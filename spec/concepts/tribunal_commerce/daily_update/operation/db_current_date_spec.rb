@@ -35,8 +35,8 @@ describe TribunalCommerce::DailyUpdate::Operation::DBCurrentDate do
     context 'when no daily updates have been run yet' do
       context 'when a stock has been imported already' do
         before do
-          create(:stock_with_completed_units, year: '2012', month: '03', day: '13')
-          create(:stock_with_completed_units, year: '2009', month: '10', day: '17')
+          create(:stock_tc_with_completed_units, year: '2012', month: '03', day: '13')
+          create(:stock_tc_with_completed_units, year: '2009', month: '10', day: '17')
         end
 
         it { is_expected.to be_success }
