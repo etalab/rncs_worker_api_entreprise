@@ -2,11 +2,17 @@ module TribunalCommerce
   module DailyUpdateUnit
     module Operation
       class Load < Trailblazer::Operation
+        step :log_import_start
         step :fetch_transmissions
         step :order_transmissions
         step :import
         step :log_success
 
+
+        def log_import_start(ctx, logger:, daily_update_unit:, **)
+          daily_update_date = daily_update_unit.daily_update.date.to_s
+          logger.info("START IMPORT OF UPDATE #{daily_update_date}")
+        end
 
         def fetch_transmissions(ctx, daily_update_unit:, **)
           pattern = ::File.join(daily_update_unit.files_path, '*')
