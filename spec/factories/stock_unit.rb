@@ -5,5 +5,9 @@ FactoryBot.define do
     file_path { '/temp' }
     status { 'PENDING' }
     stock
+
+    factory :stock_unit_wildcard do
+      file_path { '/temp/test_*' }
+    end
   end
 end

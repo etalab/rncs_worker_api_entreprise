@@ -1,0 +1,2 @@
+class StockTribunalInstance < Stock
+end
