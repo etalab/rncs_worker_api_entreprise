@@ -40,6 +40,13 @@ Run `bundle install`
 
 ### Tribunaux de Commerce
 
+#### Droits d'accès aux fichiers
+Les fichiers CSV relatifs aux représentants étant modifiés avant import
+(renommage d'un des titres de colonne "Siren" en doublon) il faut s'assurer que
+les fichiers CSV sont accessibles en lecture et en écriture.
+
+`find flux -type f -exec chmod 644 {} +`
+
 #### Défaut d'encodage des fichiers CSV
 Seulement 2 fichiers de mises à jour quotidiennes (sur environ 1,5 millions de
 fichiers à ce jour) ne sont pas encodés en UTF-8 mais en ISO-8859-1. Afin de ne
