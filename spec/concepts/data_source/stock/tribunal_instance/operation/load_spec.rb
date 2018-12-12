@@ -75,17 +75,6 @@ describe DataSource::Stock::TribunalInstance::Operation::Load do
     end
   end
 
-  context 'when stock found is older than current stock' do
-    before { create :stock_titmc_with_pending_units, year: '2019' }
-
-    it_behaves_like 'failure that does nothing'
-
-    it 'logs "this stock is already loaded"' do
-      expect(logger).to receive(:error).with 'No stock newer than 2019/10/23 available'
-      subject
-    end
-  end
-
   context 'when no stock is found (RetrieveLastStock fails)' do
     before do
       params[:stocks_folder] = Rails.root.join('spec', 'fixtures', 'titmc', 'no_stocks_here')
