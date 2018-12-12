@@ -7,7 +7,12 @@ FactoryBot.define do
     stock
 
     factory :stock_unit_wildcard do
-      file_path { '/temp/test_*' }
+      file_path do
+          Rails.root.join(
+            'spec', 'fixtures', 'titmc', 'stock', '2018', '05', '05',
+            '9721_S1_20180505_lot*.zip'
+          ).to_s
+      end
     end
   end
 end

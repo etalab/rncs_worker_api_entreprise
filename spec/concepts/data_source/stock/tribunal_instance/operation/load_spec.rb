@@ -7,11 +7,6 @@ describe DataSource::Stock::TribunalInstance::Operation::Load do
   let(:params) { { logger: logger } }
 
   context 'logger:' do
-    it 'defaults to Rails.logger' do
-      params.delete :logger
-      expect(subject[:logger]).to eq Rails.logger
-    end
-
     it 'logs' do
       expect(logger).to receive(:info).with 'Checking last TITMC stock...'
       subject
