@@ -98,7 +98,7 @@ describe DataSource::Stock::TribunalInstance::Operation::Load do
   #    └─ 01
   #       └─ 01
   #          └─ it.is.a.trap
-  context 'when no stock unit found (PrepareImport fails)' do
+  context 'when no stock unit found (Prechecks fails)' do
     before do
       params[:stocks_folder] = Rails.root.join('spec', 'fixtures', 'titmc', 'empty_stocks')
     end
