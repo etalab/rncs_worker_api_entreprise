@@ -22,10 +22,10 @@ class Observation
       def update_observation(ctx, observation:, data:, **)
         etat_obs = data[:etat]
 
-        unless etat_obs == 'Suppression'
-          observation.update_attributes(data)
-        else
+        if etat_obs == 'Suppression'
           observation.delete
+        else
+          observation.update_attributes(data)
         end
       end
 
