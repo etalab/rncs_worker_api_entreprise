@@ -28,13 +28,12 @@ module DataSource
           end
 
           def log_current_stock(ctx, logger:, stock:, **)
-            logger.info "Current #{stock.type}: #{stock.year}-#{stock.month}-#{stock.day}"
+            logger.info "Current #{stock.type}: #{stock.date}"
           end
 
           def log_not_newer_stock(ctx, logger:, **)
             current_stock = StockTribunalInstance.current
-            current_stock_date = [current_stock.year, current_stock.month, current_stock.day].join '/'
-            logger.error "No stock newer than #{current_stock_date} available"
+            logger.error "No stock newer than #{current_stock.date} available"
           end
 
           def log_sub_operation_failure(ctx, logger:, error:, **)

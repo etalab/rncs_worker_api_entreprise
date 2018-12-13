@@ -18,12 +18,20 @@ describe DataSource::Stock::TribunalInstance::Operation::Load do
     end
   end
 
-  context 'when stock is found and not loaded yet' do
+  # Stock repository for tests :
+  # spec/fixtures/titmc/stock
+  # └─ 2018
+  #    └─ 05
+  #       └─ 05
+  #          ├─ 9721_S1_20180505_lot01.zip
+  #          ├─ 9721_S1_20180505_lot02.zip
+  #          └─ 9761_S1_20180505_lot01.zip
+  context 'when stock is found' do
     let(:stock_units) { subject[:stock_units] }
 
     it { is_expected.to be_success }
 
-    it 'enqueues 2 jobs' do
+    it 'enqueues a job for each greffe found in stock (2 jobs but 3 files)' do
       expect { subject }.to have_enqueued_job(ImportTitmcStockUnitJob)
         .twice
         .on_queue("rncs_worker_api_entreprise_#{Rails.env}_titmc_stock")
@@ -70,11 +78,13 @@ describe DataSource::Stock::TribunalInstance::Operation::Load do
     it_behaves_like 'failure that does nothing'
 
     it 'logs "this stock is already loaded"' do
-      expect(logger).to receive(:error).with 'No stock newer than 2018/05/05 available'
+      expect(logger).to receive(:error).with 'No stock newer than 2018-05-05 available'
       subject
     end
   end
 
+  # spec/fixtures/titmc/no_stocks_here
+  # └─ got_you
   context 'when no stock is found (RetrieveLastStock fails)' do
     before do
       params[:stocks_folder] = Rails.root.join('spec', 'fixtures', 'titmc', 'no_stocks_here')
@@ -88,6 +98,11 @@ describe DataSource::Stock::TribunalInstance::Operation::Load do
     end
   end
 
+  # spec/fixtures/titmc/empty_stocks
+  # └─ 2019
+  #    └─ 01
+  #       └─ 01
+  #          └─ it.is.a.trap
   context 'when no stock unit found (PrepareImport fails)' do
     before do
       params[:stocks_folder] = Rails.root.join('spec', 'fixtures', 'titmc', 'empty_stocks')

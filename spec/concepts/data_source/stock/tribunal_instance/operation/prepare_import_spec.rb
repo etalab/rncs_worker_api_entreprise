@@ -1,9 +1,9 @@
 require 'rails_helper'
 
 describe DataSource::Stock::TribunalInstance::Operation::PrepareImport do
-  subject { described_class.call(stock: stock_param) }
+  subject { described_class.call(stock: stock) }
 
-  let(:stock_param) { create(:stock_titmc, files_path: path_param) }
+  let(:stock) { create(:stock_titmc, files_path: path_param) }
 
   context 'when no zip files are found in stock path' do
     let(:path_param) { Rails.root.join('spec', 'fixtures', 'titmc', 'no_stocks_here') }
@@ -48,23 +48,26 @@ describe DataSource::Stock::TribunalInstance::Operation::PrepareImport do
     describe 'associated stock units' do
       it 'has valid code_greffe' do
         subject
-        created_units = StockUnit.where(code_greffe: '9721')
-          .or(StockUnit.where(code_greffe: '9761'))
+        created_units = stock.stock_units.where(code_greffe: '9721')
+          .or(stock.stock_units.where(code_greffe: '9761'))
 
-        expect(created_units.size).to eq(2)
+        expect(created_units).to contain_exactly(
+          an_object_having_attributes(code_greffe: '9721'),
+          an_object_having_attributes(code_greffe: '9761')
+        )
       end
 
       it 'knows its own path' do
         subject
-        unit = StockUnit.where(code_greffe: '9761').first
+        unit = stock.stock_units.where(code_greffe: '9761').first
 
         expect(unit.file_path)
           .to end_with 'spec/fixtures/titmc/stock/2018/05/05/9761_S1_20180505_lot*.zip'
       end
 
-      it 'has 2 files in its path' do
+      it 'has a wildcard matching 2 files' do
         subject
-        unit = StockUnit.where(code_greffe: '9721').first
+        unit = stock.stock_units.where(code_greffe: '9721').first
 
         expect(unit.file_path)
           .to end_with 'spec/fixtures/titmc/stock/2018/05/05/9721_S1_20180505_lot*.zip'
