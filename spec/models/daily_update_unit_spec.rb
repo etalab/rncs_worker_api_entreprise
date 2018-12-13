@@ -24,19 +24,20 @@ describe DailyUpdateUnit do
       expect(subject).to be_an_instance_of(Logger)
     end
 
-    it 'has a valid filename' do
+    it 'has a valid filename : <code_greffe>__<current_date>.log' do
       mock_logger = double(Logger)
       current_time = Time.now
       Timecop.freeze(current_time)
 
-      format_time = current_time.strftime('%Y_%m_%d__%H_%M_%S')
-      expected_log_file = Rails.root.join("log/flux/20200729__5432__#{format_time}.log").to_s
-      expect(Logger).to receive(:new).with(expected_log_file).and_return(mock_logger)
+      format_time = current_time.strftime('%Y_%m_%d')
+      expected_log_filename = Rails.root.join("log/flux/5432__#{format_time}.log").to_s
+      expect(Logger).to receive(:new).with(expected_log_filename).and_return(mock_logger)
 
       expect(subject).to eq(mock_logger)
       Timecop.return
     end
   end
 
+  # TODO not sure I need this since the logger is mocked
   after { FileUtils.rm_rf(Dir.glob(Rails.root.join('log/flux/*'))) }
 end

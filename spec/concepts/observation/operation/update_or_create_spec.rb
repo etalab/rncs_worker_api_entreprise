@@ -38,10 +38,24 @@ describe Observation::Operation::UpdateOrCreate do
         )
       end
 
+      it 'is deleted if etat: "Supression"' do
+        data[:etat] = 'Suppression'
+
+        expect { subject }.to change(dossier.observations, :count).by(-1)
+        expect(subject).to be_success
+      end
+
       it { is_expected.to be_success }
     end
 
     context 'when the observation does not exists' do
+      it 'does nothing if etat: "Suppression"' do
+        data[:etat] = 'Suppression'
+
+        expect { subject }.to_not change(dossier.observations, :count)
+        expect(subject).to be_success
+      end
+
       it 'is created for the related dossier' do
         expect { subject }.to change(dossier.observations, :count).by(1)
       end

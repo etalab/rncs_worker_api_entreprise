@@ -5,7 +5,8 @@ class ImportTcDailyUpdateUnitJob < ApplicationJob
     import = nil
     unit = DailyUpdateUnit.find(daily_update_id)
     logger = unit.logger_for_import
-    ActiveRecord::Base.transaction do
+
+    wrap_import_with_log_level(:fatal) do
       import = TribunalCommerce::DailyUpdateUnit::Operation::Load
         .call(daily_update_unit: unit, logger: logger)
 
@@ -24,5 +25,16 @@ class ImportTcDailyUpdateUnitJob < ApplicationJob
     else
       unit.update(status: 'ERROR')
     end
+  end
+
+  private
+
+  def wrap_import_with_log_level(log_level)
+    usual_log_level = ActiveRecord::Base.logger.level
+    ActiveRecord::Base.logger.level = log_level
+    ActiveRecord::Base.transaction do
+      yield
+    end
+    ActiveRecord::Base.logger.level = usual_log_level
   end
 end

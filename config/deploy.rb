@@ -15,7 +15,7 @@ ENV['to'] ||= 'sandbox'
 
 set :commit, ENV['commit']
 set :application_name, 'rncs_api'
-set :domain, 'ns3107905.ip-54-37-87.eu'
+set :domain, ENV['domain']
 set :deploy_to, "/var/www/rncs_api_#{ENV['to']}"
 set :rails_env, ENV['to']
 set :repository, 'git@github.com:etalab/rncs_worker_api_entreprise.git'

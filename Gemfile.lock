@@ -1,9 +1,9 @@
 GIT
-  remote: git@github.com:tilo/smarter_csv.git
-  revision: 862f409f18325373912c73c01b53bb37ebf547d1
-  branch: 2.0.0.pre2
+  remote: git@github.com:brindu/smarter_csv.git
+  revision: bd342219bf9bfed99b0d43e370404f247448bb01
+  branch: multiline_option
   specs:
-    smarter_csv (2.0.0.pre2)
+    smarter_csv (2.0.0.pre1)
 
 GEM
   remote: https://rubygems.org/
