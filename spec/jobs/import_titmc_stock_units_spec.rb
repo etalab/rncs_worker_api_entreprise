@@ -82,4 +82,41 @@ describe ImportTitmcStockUnitJob, :trb do
       subject
     end
   end
+
+  describe '[integration] Failure' do
+    let(:stock_unit) { create :stock_unit_wildcard, status: 'PENDING' }
+    let(:id) { stock_unit.id }
+
+    before do
+      allow(DataSource::Stock::TribunalInstance::Unit::Operation::LoadTransmission)
+        .to receive(:call)
+        .and_wrap_original {
+          # TODO: create something related to TITMC
+          create :stock_unit, status: 'GHOST'
+          trb_result_failure
+        }
+    end
+
+    it 'set status to ERROR' do
+      subject
+      stock_unit.reload
+
+      expect(stock_unit.status).to eq 'ERROR'
+    end
+
+    it 'rollbacks database' do
+      subject
+      ghost = StockUnit.where(status: 'GHOST')
+      expect(ghost).to be_empty
+    end
+
+    it 'operation has an error' do
+      expect(DataSource::Stock::TribunalInstance::Unit::Operation::Load)
+        .to receive(:call)
+        .with(stock_unit: stock_unit, logger: logger)
+        .and_return(trb_result_failure)
+
+      subject
+    end
+  end
 end
