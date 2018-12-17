@@ -65,7 +65,7 @@ describe Stock do
   end
 
   describe '#status' do
-    subject { create(stock_param) }
+    subject { create stock_param }
 
     context 'when all stock units children are pending' do
       let(:stock_param) { :stock_with_pending_units }

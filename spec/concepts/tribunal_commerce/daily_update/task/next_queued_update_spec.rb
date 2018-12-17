@@ -5,7 +5,7 @@ describe TribunalCommerce::DailyUpdate::Task::NextQueuedUpdate do
 
   context 'when no daily updates have been run yet' do
     context 'when a stock is successfuly imported' do
-      before { create(:stock_with_completed_units, year: '2017', month: '10', day: '23') }
+      before { create(:stock_tc_with_completed_units, year: '2017', month: '10', day: '23') }
 
       context 'with queued updates' do
         before do

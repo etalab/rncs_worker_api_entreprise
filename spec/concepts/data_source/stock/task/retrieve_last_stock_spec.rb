@@ -1,9 +1,11 @@
 require 'rails_helper'
 
-describe DataSource::Stock::TribunalCommerce::Operation::RetrieveLastStock do
+describe DataSource::Stock::Task::RetrieveLastStock do
+  class DummyStockClass < Stock; end
+
   context 'when no valid stocks are found' do
     # Override class dependency for specs purposes
-    subject { described_class.call(stocks_folder: source_path)}
+    subject { described_class.call(stocks_folder: source_path, stock_class: DummyStockClass)}
 
     context 'when no stocks are found in sources directory' do
       let(:source_path) { Rails.root.join('spec', 'fixtures', 'tc', 'no_stocks_here', 'got_you') }
@@ -22,9 +24,9 @@ describe DataSource::Stock::TribunalCommerce::Operation::RetrieveLastStock do
 
   # Inside the stocks folder, stocks are packaged inside a AAAA/MM/DD subfolder structures
   context 'when stocks are found' do
-    subject { described_class.call }
+    subject { described_class.call stocks_folder: stock_folder_path, stock_class: DummyStockClass }
 
-    stock_folder_path = File.join(Rails.configuration.rncs_sources['path'], 'tc', 'stock')
+    let(:stock_folder_path) { File.join(Rails.configuration.rncs_sources['path'], 'tc', 'stock') }
 
     its([:stocks_folder]) { is_expected.to eq stock_folder_path }
     it { is_expected.to be_success }
@@ -32,8 +34,8 @@ describe DataSource::Stock::TribunalCommerce::Operation::RetrieveLastStock do
     describe 'returned stock' do
       let(:stock) { subject[:stock] }
 
-      it 'is an instance of StockTribunalCommerce' do
-        expect(stock).to be_an_instance_of(StockTribunalCommerce)
+      it 'is an instance of DummyStockClass' do
+        expect(stock).to be_an_instance_of(DummyStockClass)
       end
 
       it 'is not saved into database' do

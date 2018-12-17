@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe DataSource::Stock::TribunalCommerce::Operation::PrepareImport do
-  let(:stock_param) { create(:stock_tribunal_commerce, files_path: path_param) }
+  let(:stock_param) { create(:stock_tc, files_path: path_param) }
   subject { described_class.call(stock: stock_param) }
 
   context 'when no zip files are found in stock path' do
@@ -10,6 +10,9 @@ describe DataSource::Stock::TribunalCommerce::Operation::PrepareImport do
     it { is_expected.to be_failure }
     its([:error]) { is_expected.to eq("No stock units found in #{path_param}.") }
     its([:stock_units]) { is_expected.to be_nil }
+    it 'does not persist any stock unit' do
+      expect { subject }.not_to change(StockUnit, :count)
+    end
   end
 
   context 'when file names do not match specified pattern' do
@@ -18,6 +21,9 @@ describe DataSource::Stock::TribunalCommerce::Operation::PrepareImport do
     it { is_expected.to be_failure }
     its([:error]) { is_expected.to eq("Unexpected filenames in #{path_param}.") }
     its([:stock_units]) { is_expected.to be_nil }
+    it 'does not persist any stock unit' do
+      expect { subject }.not_to change(StockUnit, :count)
+    end
   end
 
   # 3 greffe's stock example inside this repo :
@@ -32,12 +38,9 @@ describe DataSource::Stock::TribunalCommerce::Operation::PrepareImport do
       expect { subject }.to change(StockUnit, :count).by(3)
     end
 
-    it 'returns the stock units list' do
-      subject
-      created_units = StockUnit.all
-
-      expect(subject[:stock_units]).to eq(created_units)
-    end
+    its([:stock_units]) { are_expected.to eq StockUnit.all }
+    its([:stock_units]) { are_expected.to all(have_attributes(status: 'PENDING')) }
+    its([:stock_units]) { are_expected.to all(be_persisted) }
 
     describe 'associated stock units' do
       it 'has valid code_greffe' do
@@ -54,13 +57,6 @@ describe DataSource::Stock::TribunalCommerce::Operation::PrepareImport do
         unit = StockUnit.where(code_greffe: '1234').first
 
         expect(unit.file_path).to end_with('spec/fixtures/tc/stock/2017/11/08/1234_S1_20171108.zip')
-      end
-
-      it 'has a "pending" status' do
-        subject
-        units_status = StockUnit.pluck(:status)
-
-        expect(units_status).to all(eq('PENDING'))
       end
     end
   end

@@ -4,32 +4,44 @@ FactoryBot.define do
     month { '10' }
     day { '23' }
     files_path { '/not/here' }
-  end
 
-  factory :stock_tribunal_commerce, parent: :stock, class: StockTribunalCommerce do
-    type { 'StockTribunalCommerce' }
-
-    factory :stock_with_pending_units, class: Stock do
+    factory :stock_with_pending_units do
       after(:create) do |stock|
         create_list(:stock_unit, 3, status: 'PENDING', stock: stock)
       end
     end
 
-    factory :stock_with_one_loading_unit, class: Stock do
+    factory :stock_with_one_loading_unit do
       after(:create) do |stock|
         create_list(:stock_unit, 3, status: 'PENDING', stock: stock)
         create(:stock_unit, status: 'LOADING', stock: stock)
       end
     end
 
-    factory :stock_with_one_error_unit, class: Stock do
+    factory :stock_with_one_error_unit do
       after(:create) do |stock|
         create_list(:stock_unit, 3, status: 'PENDING', stock: stock)
         create(:stock_unit, status: 'ERROR', stock: stock)
       end
     end
 
-    factory :stock_with_completed_units, class: Stock do
+    factory :stock_with_completed_units do
+      after(:create) do |stock|
+        create_list(:stock_unit, 3, status: 'COMPLETED', stock: stock)
+      end
+    end
+  end
+
+  factory :stock_titmc, class: StockTribunalInstance do
+    factory :stock_titmc_with_pending_units do
+      after :create do |stock|
+        create_list(:stock_unit_wildcard, 3, status: 'PENDING', stock: stock)
+      end
+    end
+  end
+
+  factory :stock_tc, class: StockTribunalCommerce do
+    factory :stock_tc_with_completed_units do
       after(:create) do |stock|
         create_list(:stock_unit, 3, status: 'COMPLETED', stock: stock)
       end
