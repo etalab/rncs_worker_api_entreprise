@@ -1,0 +1,22 @@
+                 +---------------------+
+                 |LOADING DAILY UPDATES|
+                 +---------------------+
+
+
+
+ +-----------------+     Returns the date state of the database
+ | DB Current Date |     ie the last imported TC daily update
+ +---------+-------+     (or stock) date.
+           |
+           |
+           |
+           |
+           |
+           |
+           |
+           v             Retrieve newer daily updates available in
++----------+--------+    the file system and create a DailyUpdate
+|Fetch newer updates|    record or each daily update to import.
++-------------------+
+                         #<DailyUpdate status: 'QUEUED', proceeded: false>
+
