@@ -76,6 +76,8 @@ task :setup do
 
   # add tc_stock log subfolder
   command %(mkdir -p "#{fetch(:deploy_to)}/shared/log/tc_stock")
+  # add flux log subfolder
+  command %(mkdir -p "#{fetch(:deploy_to)}/shared/log/flux")
 end
 
 desc "Deploys the current version to the server."
