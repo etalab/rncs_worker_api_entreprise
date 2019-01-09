@@ -10,6 +10,8 @@ describe TribunalCommerce::DailyUpdate::Operation::DBCurrentDate do
     its([:error]) { is_expected.to eq('Pending daily updates found in database. Aborting... Please import remaining updates first.') }
   end
 
+  # TODO Deal with partial stocks
+  # Factories should be genric DailyUpdates
   context 'when every daily updates have been imported' do
     context 'when the last daily update is completed' do
       before do
@@ -31,40 +33,40 @@ describe TribunalCommerce::DailyUpdate::Operation::DBCurrentDate do
 
       its([:error]) { is_expected.to eq('The current update is still running. Abort...') }
     end
+  end
 
-    context 'when no daily updates have been run yet' do
-      context 'when a stock has been imported already' do
-        before do
-          create(:stock_tc_with_completed_units, year: '2012', month: '03', day: '13')
-          create(:stock_tc_with_completed_units, year: '2009', month: '10', day: '17')
-        end
-
-        it { is_expected.to be_success }
-
-        it 'returns the last stock date' do
-          date_from_last_stock = Date.new(2012, 3, 13)
-
-          expect(subject[:db_current_date]).to eq(date_from_last_stock)
-        end
-
-        context 'when the stock is not completed' do
-          before do
-            allow_any_instance_of(StockTribunalCommerce)
-              .to receive(:status)
-              .and_return('NOT COMPLETED')
-          end
-
-          it { is_expected.to be_failure }
-          its([:error]) { is_expected.to eq('Current stock import is still running, please import daily updates when its done.') }
-        end
+  context 'when no daily updates have been run yet' do
+    context 'when a stock has been imported already' do
+      before do
+        create(:stock_tc_with_completed_units, year: '2012', month: '03', day: '13')
+        create(:stock_tc_with_completed_units, year: '2009', month: '10', day: '17')
       end
 
-      context 'when no stock have been imported yet' do
-        it { is_expected.to be_failure }
+      it { is_expected.to be_success }
 
-        it 'specifies an error message' do
-          expect(subject[:error]).to eq('No stock loads into database. Please load last stock available first.')
+      it 'returns the last stock date' do
+        date_from_last_stock = Date.new(2012, 3, 13)
+
+        expect(subject[:db_current_date]).to eq(date_from_last_stock)
+      end
+
+      context 'when the stock is not completed' do
+        before do
+          allow_any_instance_of(StockTribunalCommerce)
+            .to receive(:status)
+            .and_return('NOT COMPLETED')
         end
+
+        it { is_expected.to be_failure }
+        its([:error]) { is_expected.to eq('Current stock import is still running, please import daily updates when its done.') }
+      end
+    end
+
+    context 'when no stock have been imported yet' do
+      it { is_expected.to be_failure }
+
+      it 'specifies an error message' do
+        expect(subject[:error]).to eq('No stock loads into database. Please load last stock available first.')
       end
     end
   end
