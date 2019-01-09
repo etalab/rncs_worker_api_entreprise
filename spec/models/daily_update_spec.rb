@@ -29,6 +29,23 @@ describe DailyUpdate do
         daily_update = described_class.where(year: '2015', month: '08', day: '23').first
         expect(subject).to eq(daily_update)
       end
+
+      context 'when the last imported update is a partial stock' do
+        it 'returns the partial stock' do
+          partial_stock = create(:daily_update, year: '2015', month: '08', day: '24', partial_stock: true, proceeded: true)
+
+          expect(subject).to eq(partial_stock)
+        end
+      end
+
+      context 'when both a daily update and a partial stock have been run the same day' do
+        it 'returns the daily update' do
+          create(:daily_update, year: '2015', month: '08', day: '23', partial_stock: true, proceeded: true)
+
+          expect(subject.date).to eq(Date.new(2015, 8, 23))
+          expect(subject).to_not be_a_partial_stock
+        end
+      end
     end
 
     context 'when no daily updates have been imported' do
@@ -57,10 +74,10 @@ describe DailyUpdate do
 
     context 'with queued updates' do
       it 'returns the first one not proceeded' do
-      create(:daily_update_tribunal_commerce, year: '2017', month: '10', day: '25', proceeded: false)
-      create(:daily_update_tribunal_commerce, year: '2017', month: '10', day: '27', proceeded: false)
+        create(:daily_update_tribunal_commerce, year: '2017', month: '10', day: '25', proceeded: false)
+        create(:daily_update_tribunal_commerce, year: '2017', month: '10', day: '27', proceeded: false)
 
-      expect(subject.date).to eq(Date.new(2017, 10, 25))
+        expect(subject.date).to eq(Date.new(2017, 10, 25))
       end
     end
 
