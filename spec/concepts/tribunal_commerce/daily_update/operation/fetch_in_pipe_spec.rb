@@ -42,6 +42,7 @@ describe TribunalCommerce::DailyUpdate::Operation::FetchInPipe do
       updates = subject[:daily_updates]
 
       expect(updates).to all(be_an_instance_of(DailyUpdateTribunalCommerce))
+      expect(updates).to all(have_attributes(partial_stock?: false))
       expect(updates.size).to eq(7)
     end
 
