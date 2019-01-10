@@ -13,7 +13,7 @@ class DailyUpdate < ApplicationRecord
     end
 
     def next_in_queue
-      collection = self.where(proceeded: false).order(year: :asc, month: :asc, day: :asc).limit(1)
+      collection = self.where(proceeded: false).order(year: :asc, month: :asc, day: :asc, partial_stock: :desc).limit(1)
       collection.first
     end
   end

@@ -81,6 +81,16 @@ describe DailyUpdate do
       end
     end
 
+    context 'with partial stock and daily update queued with the same date' do
+      it 'returns the partial stock prior to the daily update' do
+        create(:daily_update_tribunal_commerce, year: '2017', month: '10', day: '25', proceeded: false, partial_stock: false)
+        create(:daily_update_tribunal_commerce, year: '2017', month: '10', day: '25', proceeded: false, partial_stock: true)
+
+        expect(subject.date).to eq(Date.new(2017, 10, 25))
+        expect(subject).to be_a_partial_stock
+      end
+    end
+
     context 'when queue is empty' do
       it 'returns nil' do
         expect(subject).to be_nil
