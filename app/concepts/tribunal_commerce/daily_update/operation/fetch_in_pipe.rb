@@ -26,7 +26,8 @@ module TribunalCommerce
                 year: year,
                 month: month,
                 day: day,
-                files_path: update_path
+                files_path: update_path,
+                partial_stock: false
               )
             else
               return false

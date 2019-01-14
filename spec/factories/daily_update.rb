@@ -5,6 +5,7 @@ FactoryBot.define do
     day { '21' }
     files_path { '/not/here' }
     proceeded { true }
+    partial_stock { false }
 
     factory :daily_update_tribunal_commerce, parent: :daily_update, class: DailyUpdateTribunalCommerce do
       type { 'DailyUpdateTribunalCommerce' }

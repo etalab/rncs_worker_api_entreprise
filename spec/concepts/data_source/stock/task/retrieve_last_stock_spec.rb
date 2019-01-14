@@ -42,12 +42,12 @@ describe DataSource::Stock::Task::RetrieveLastStock do
         expect(stock).to_not be_persisted
       end
 
-      # There are three available stocks for specs inside specs/fixtures/tc/stock :
-      # ['2016/09/28', '2017/01/28', '2017/11/08']
+      # There are four available stocks for specs inside specs/fixtures/tc/stock :
+      # ['2016/09/28', '2017/01/28', '2017/11/08', '2018/04/12']
       it 'is the latest available' do
         stock_date = [stock.year, stock.month, stock.day].join('/')
 
-        expect(stock_date).to eq('2017/11/08')
+        expect(stock_date).to eq('2018/04/12')
       end
     end
   end

@@ -3,7 +3,7 @@ class DailyUpdate < ApplicationRecord
 
   class << self
     def current
-      collection = self.where(proceeded: true).order(year: :desc, month: :desc, day: :desc).limit(1)
+      collection = self.where(proceeded: true).order(year: :desc, month: :desc, day: :desc, partial_stock: :asc).limit(1)
       collection.first
     end
 
@@ -13,7 +13,7 @@ class DailyUpdate < ApplicationRecord
     end
 
     def next_in_queue
-      collection = self.where(proceeded: false).order(year: :asc, month: :asc, day: :asc).limit(1)
+      collection = self.where(proceeded: false).order(year: :asc, month: :asc, day: :asc, partial_stock: :desc).limit(1)
       collection.first
     end
   end

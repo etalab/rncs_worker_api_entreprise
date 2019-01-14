@@ -30,6 +30,19 @@ describe TribunalCommerce::DailyUpdate::Operation::Load do
   #         ├── 13
   #         ├── 14
   #         └── 18
+  # Partial stocks may be available as well
+  # spec/fixtures/tc/stock
+  # ├── 2016
+  # │   └── 09
+  # │       └── 28
+  # ├── 2017
+  # │   ├── 01
+  # │   │   └── 28
+  # │   └── 11
+  # │       └── 08
+  # └── 2018
+  #     └── 04
+  #         └── 12
   context 'when DBStateDate returns the timestamp of DB state' do
     before { create(:daily_update_with_completed_units, db_timestamp) }
 
@@ -68,7 +81,8 @@ describe TribunalCommerce::DailyUpdate::Operation::Load do
         it 'keeps latter updates only' do
           expect(handled_updates).to contain_exactly(
             an_object_having_attributes(year: '2018', month: '04', day: '11'),
-            an_object_having_attributes(year: '2018', month: '04', day: '12'),
+            an_object_having_attributes(year: '2018', month: '04', day: '12', partial_stock?: true),
+            an_object_having_attributes(year: '2018', month: '04', day: '12', partial_stock?: false),
             an_object_having_attributes(year: '2018', month: '04', day: '13'),
             an_object_having_attributes(year: '2018', month: '04', day: '14'),
             an_object_having_attributes(year: '2018', month: '04', day: '18'),
@@ -83,6 +97,14 @@ describe TribunalCommerce::DailyUpdate::Operation::Load do
             an_object_having_attributes(year: '2018', month: '04', day: '10'),
           )
         end
+
+        it 'ignores older partial stocks' do
+          expect(handled_updates).to_not include(
+            an_object_having_attributes(year: '2016', month: '09', day: '28'),
+            an_object_having_attributes(year: '2017', month: '01', day: '28'),
+            an_object_having_attributes(year: '2017', month: '11', day: '08'),
+          )
+        end
       end
 
       it 'calls import'
@@ -91,14 +113,40 @@ describe TribunalCommerce::DailyUpdate::Operation::Load do
     context 'with no daily updates available in pipe' do
       let(:db_timestamp) { { year: '2018', month: '04', day: '19' } }
 
-      it { is_expected.to be_failure }
+      context 'when no partial stocks are available' do
+        it { is_expected.to be_failure }
 
-      it 'logs there are no updates to run' do
-        expect(logger).to receive(:info)
-          .with('No daily updates available after `2018-04-19`. Nothing to import.')
+        it 'logs there are no updates to run' do
+          expect(logger).to receive(:info)
+            .with('No daily updates available after `2018-04-19`. Nothing to import.')
 
-        subject
+          subject
+        end
       end
+
+      context 'when partial stocks are available' do
+        before do
+          FileUtils.mkdir_p(Rails.root.join('spec', 'fixtures', 'tc', 'stock', '2018/04/20'))
+          FileUtils.mkdir_p(Rails.root.join('spec', 'fixtures', 'tc', 'stock', '2018/04/21'))
+        end
+
+        after do
+          FileUtils.rm_rf(Rails.root.join('spec', 'fixtures', 'tc', 'stock', '2018/04/20'))
+          FileUtils.rm_rf(Rails.root.join('spec', 'fixtures', 'tc', 'stock', '2018/04/21'))
+        end
+
+        it { is_expected.to be_success }
+
+        it 'returns the partial stocks' do
+          handled_updates = subject[:daily_updates]
+
+          expect(handled_updates).to contain_exactly(
+            an_object_having_attributes(year: '2018', month: '04', day: '20', partial_stock?: true, status: 'QUEUED', proceeded: false),
+            an_object_having_attributes(year: '2018', month: '04', day: '21', partial_stock?: true, status: 'QUEUED', proceeded: false),
+          )
+        end
+      end
+
     end
 
     describe 'available options' do
@@ -112,13 +160,15 @@ describe TribunalCommerce::DailyUpdate::Operation::Load do
         let(:db_timestamp) { { year: '2018', month: '04', day: '10' } }
 
         # default to no limit
+        # A partial stock with a daily update the same day count as one
         it 'limits the number of daily update to import' do
           op_params[:limit] = 3
           handled_updates = subject[:daily_updates]
 
           expect(handled_updates).to contain_exactly(
             an_object_having_attributes(year: '2018', month: '04', day: '11'),
-            an_object_having_attributes(year: '2018', month: '04', day: '12'),
+            an_object_having_attributes(year: '2018', month: '04', day: '12', partial_stock?: false),
+            an_object_having_attributes(year: '2018', month: '04', day: '12', partial_stock?: true),
             an_object_having_attributes(year: '2018', month: '04', day: '13'),
           )
         end
