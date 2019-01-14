@@ -3,8 +3,9 @@ class ImportTitmcStockUnitJob < ApplicationJob
 
   def perform(stock_unit_id, logger = nil)
     @stock_unit = StockUnit.find stock_unit_id
-    @logger = logger || @stock_unit.logger_for_import
+    @stock_unit.update(status: 'LOADING')
 
+    @logger = logger || @stock_unit.logger_for_import
 
     call_operation
   rescue ActiveRecord::RecordNotFound
