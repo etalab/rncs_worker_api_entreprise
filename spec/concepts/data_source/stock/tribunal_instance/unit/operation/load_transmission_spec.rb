@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe DataSource::Stock::TribunalInstance::Unit::Operation::LoadTransmission do
+describe DataSource::Stock::TribunalInstance::Unit::Operation::LoadTransmission, :trb do
   subject do
     described_class.call(
       code_greffe: '9712',
@@ -13,12 +13,19 @@ describe DataSource::Stock::TribunalInstance::Unit::Operation::LoadTransmission 
   let(:logger) { object_double(Rails.logger, info: true).as_null_object }
 
   context 'when zip exists' do
-    context 'when import is successful' do
-      let(:filename) { '9712_S1_20180505_lot02_modified.zip' }
+    let(:filename) { '9712_S1_20180505_lot02_modified.zip' }
 
+    context 'when import is successful' do
       it { is_expected.to be_success }
 
-      it 'persists some data'
+      it 'calls Import operation with success' do
+        expect(DataSource::Stock::TribunalInstance::Unit::Operation::Import)
+          .to receive(:call)
+          .and_return(trb_result_success)
+          .once
+
+        subject
+      end
 
       it 'deletes extract directory' do
         directory = Pathname(subject[:dest_directory])
@@ -26,27 +33,54 @@ describe DataSource::Stock::TribunalInstance::Unit::Operation::LoadTransmission 
       end
     end
 
-    context 'when Prechecks fails' do
-      let(:filename) { 'two_files.zip' }
+    context 'when Import fails' do
+      before do
+        allow(DataSource::Stock::TribunalInstance::Unit::Operation::Import)
+          .to receive(:call)
+          .and_return(trb_result_failure)
+      end
 
       it { is_expected.to be_failure }
-    end
 
-    context 'when Import fails' do
-      it 'is a failure'
+      it 'deletes extract directory' do
+        directory = Pathname(subject[:dest_directory])
+        expect(directory).not_to exist
+      end
     end
   end
 
-  context 'when ZIP contains too many files' do
+  context 'when ZIP contains multiple files' do
     let(:filename) { 'two_files.zip' }
 
-    it { is_expected.to be_failure }
+    before do
+      allow(DataSource::Stock::TribunalInstance::Unit::Operation::Import)
+        .to receive(:call)
+        .and_return(trb_result_success)
+    end
 
-    it 'logs an error' do
-      expect(logger)
-        .to receive(:error)
-        .with 'Zip file two_files.zip contains too many files (expected 1 got 2)'
+    it { is_expected.to be_success }
+
+    it 'calls Import twice with success' do
+      expect_import_success_with 'file_one.xml'
+      expect_import_success_with 'file_two.xml'
+
       subject
+    end
+
+    it 'calls Import exactly twice' do
+      expect(DataSource::Stock::TribunalInstance::Unit::Operation::Import)
+        .to receive(:call)
+        .and_return(trb_result_success)
+        .twice
+
+      subject
+    end
+
+    def expect_import_success_with(filename)
+      expect(DataSource::Stock::TribunalInstance::Unit::Operation::Import)
+        .to receive(:call)
+        .with(path: a_string_ending_with(filename))
+        .and_return(trb_result_success)
     end
   end
 
@@ -55,11 +89,11 @@ describe DataSource::Stock::TribunalInstance::Unit::Operation::LoadTransmission 
 
     it { is_expected.to be_failure }
 
-    it 'does not persists anything'
+    it 'does not call the import operation' do
+      expect(DataSource::Stock::TribunalInstance::Unit::Operation::Import)
+        .not_to receive(:call)
 
-    it 'deletes extract directory' do
-      directory = Pathname(subject[:dest_directory])
-      expect(directory).not_to exist
+      subject
     end
 
     it 'logs an error' do

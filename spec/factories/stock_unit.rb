@@ -6,7 +6,7 @@ FactoryBot.define do
     status { 'PENDING' }
     stock
 
-    factory :stock_unit_wildcard do
+    factory :stock_unit_titmc do
       code_greffe { '9721' }
       file_path do
         Rails.root.join(

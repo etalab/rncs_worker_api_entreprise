@@ -12,14 +12,14 @@ class StockUnit < ApplicationRecord
   end
 
   def log_filename
-    "#{stock_date}__#{code_greffe}__#{number}__#{formatted_datetime}.log"
+    "#{stock_date}__#{code_greffe}__#{number}__#{formatted_current_datetime}.log"
   end
 
   def stock_date
     [stock.year, stock.month, stock.day].join('')
   end
 
-  def formatted_datetime
+  def formatted_current_datetime
     Time.now.strftime('%Y_%m_%d__%H_%M_%S')
   end
 end

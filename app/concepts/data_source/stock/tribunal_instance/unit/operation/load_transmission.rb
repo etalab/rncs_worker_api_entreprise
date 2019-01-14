@@ -5,35 +5,46 @@ module DataSource
         module Operation
           class LoadTransmission < Trailblazer::Operation
 
+            pass :log_import_starts
             step Nested(ZIP::Operation::Extract)
-            fail :log_nested_error, fail_fast: true
-            step :check_file_count
-            fail :too_many_files, fail_fast: true
-            step ->(ctx, extracted_files:, **) { ctx[:extracted_file] = extracted_files.first }
+            fail :log_zip_error, fail_fast: true
             pass :log_zip_info
-            step Nested(Import)
-            fail :log_nested_error
+            step :import
+            fail :log_import_error
 
             # TODO: find a better solution ?
             step ->(ctx, dest_directory:, **) { FileUtils.rm_rf(dest_directory) }
             fail ->(ctx, dest_directory:, **) { FileUtils.rm_rf(dest_directory) }
 
-            def check_file_count(ctx, extracted_files:, **)
-              extracted_files.count == 1
+            def log_import_starts(ctx, path:, logger:, **)
+              logger.info "Starting import of transmission: #{path}"
             end
 
-            def too_many_files(ctx, logger:, path:, extracted_files:, **)
-              filename = Pathname.new(path).basename
-              file_count = extracted_files.count
-              logger.error "Zip file #{filename} contains too many files (expected 1 got #{file_count})"
-            end
-
-            def log_zip_info(ctx, logger:, extracted_file:, **)
-              logger.info "File extracted: #{extracted_file}"
-            end
-
-            def log_nested_error(ctx, logger:, **)
+            def log_zip_error(ctx, logger:, **)
               logger.error ctx[:error]
+            end
+
+            def log_zip_info(ctx, logger:, extracted_files:, **)
+              logger.info "Files extracted: #{extracted_files}"
+            end
+
+            def import(ctx, extracted_files:, logger:, **)
+              extracted_files.each do |extracted_file_path|
+                operation = Import.call(
+                  path: extracted_file_path
+                )
+
+                if operation.success?
+                  logger.info "Import of tramission #{extracted_file_path} is a success"
+                else
+                  ctx[:failed_operation] = operation
+                  return false
+                end
+              end
+            end
+
+            def log_import_error(ctx, failed_operation:, path:, logger:, **)
+              logger.error "File (#{failed_operation[:path]} from zip #{path}) import failed error: #{failed_operation[:error]}"
             end
           end
         end

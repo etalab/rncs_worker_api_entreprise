@@ -6,7 +6,7 @@ module DataSource
           class Load < Trailblazer::Operation
 
             pass :log_info_stock
-            step :set_transmissions
+            step :fetch_transmissions
             pass :log_info_stock_unit_files
             step ->(ctx, stock_unit:, **) { ctx[:code_greffe] = stock_unit.code_greffe }
             #step ResetDatabase # TODO when TITMC model is designed
@@ -15,10 +15,10 @@ module DataSource
             fail :log_transmission_failure
 
             def log_info_stock(ctx, logger:, stock_unit:, **)
-              logger.info "Stock #{stock_unit.stock.date}"
+              logger.info "Starting import of stock #{stock_unit.stock.date}"
             end
 
-            def set_transmissions(ctx, stock_unit:, **)
+            def fetch_transmissions(ctx, stock_unit:, **)
               ctx[:transmissions] = Dir.glob(stock_unit.file_path).sort
             end
 
@@ -27,7 +27,7 @@ module DataSource
                 Pathname.new(path).basename
               }.join(', ')
 
-              logger.info "Stock unit for Greffe:#{stock_unit.code_greffe} (#{filenames}) current status: #{stock_unit.status}"
+              logger.info "Stock unit for Greffe:#{stock_unit.code_greffe} (#{filenames})"
             end
 
             def log_reset_database_failure(ctx, logger:, **)

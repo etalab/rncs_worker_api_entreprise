@@ -3,7 +3,7 @@ require 'rails_helper'
 describe ImportTitmcStockUnitJob, :trb do
   subject { described_class.perform_now(id) }
 
-  let(:logger) { object_double(Rails.logger, info: true).as_null_object }
+  let(:logger) { instance_double(Logger).as_null_object }
 
   before do
     allow_any_instance_of(StockUnit)
@@ -12,7 +12,7 @@ describe ImportTitmcStockUnitJob, :trb do
   end
 
   context 'when stock unit is found' do
-    let(:stock_unit) { create :stock_unit_wildcard, status: 'PENDING' }
+    let(:stock_unit) { create :stock_unit_titmc, status: 'PENDING' }
     let(:id) { stock_unit.id }
 
     describe 'success' do
@@ -83,8 +83,8 @@ describe ImportTitmcStockUnitJob, :trb do
     end
   end
 
-  describe '[integration] Failure' do
-    let(:stock_unit) { create :stock_unit_wildcard, status: 'PENDING' }
+  describe 'when LoadTransmission fails' do
+    let(:stock_unit) { create :stock_unit_titmc, status: 'PENDING' }
     let(:id) { stock_unit.id }
 
     before do
@@ -110,7 +110,7 @@ describe ImportTitmcStockUnitJob, :trb do
       expect(ghost).to be_empty
     end
 
-    it 'operation has an error' do
+    it 'calls an operation that fails' do
       expect(DataSource::Stock::TribunalInstance::Unit::Operation::Load)
         .to receive(:call)
         .with(stock_unit: stock_unit, logger: logger)
