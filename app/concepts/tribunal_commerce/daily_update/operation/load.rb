@@ -11,14 +11,14 @@ module TribunalCommerce
         step ->(ctx, logger:, db_current_date:, **) { logger.info("The database is sync until the date #{db_current_date}.") }
         step Nested(FetchInPipe)
         step Nested(FetchPartialStocksInPipe)
-        step :merge_daily_updates_and_partial_stocks
+        step :append_partial_stocks_to_daily_updates
         step :ignores_older_updates
         step :limit_update_to_keep
           fail :no_updates_to_import
         step :save_handled_updates
 
 
-        def merge_daily_updates_and_partial_stocks(ctx, partial_stocks:, **)
+        def append_partial_stocks_to_daily_updates(ctx, partial_stocks:, **)
           ctx[:daily_updates].push(*partial_stocks)
         end
 
