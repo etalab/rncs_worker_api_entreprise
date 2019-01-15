@@ -54,10 +54,14 @@ describe DataSource::Stock::TribunalInstance::Unit::Operation::Load, :trb do
     it 'is a failure'
   end
 
-  describe '[integration] Success' do
+  describe 'Success', integration: true do
     let(:stock_unit) { create :stock_unit_titmc_with_valid_zip }
 
     it { is_expected.to be_success }
+
+    it 'persists some data', pending: 'no data persisted now' do
+      expect { subject }.to change(DossierEntreprise, :count)
+    end
 
     it 'does not log any error' do
       expect(logger).not_to receive(:error)

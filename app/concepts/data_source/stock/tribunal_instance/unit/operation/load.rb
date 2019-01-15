@@ -7,7 +7,6 @@ module DataSource
 
             pass :log_info_stock
             step :fetch_transmissions
-            pass :log_info_stock_unit_files
             step ->(ctx, stock_unit:, **) { ctx[:code_greffe] = stock_unit.code_greffe }
             #step ResetDatabase # TODO when TITMC model is designed
             fail :log_reset_database_failure
@@ -20,14 +19,6 @@ module DataSource
 
             def fetch_transmissions(ctx, stock_unit:, **)
               ctx[:transmissions] = Dir.glob(stock_unit.file_path).sort
-            end
-
-            def log_info_stock_unit_files(ctx, logger:, stock_unit:, transmissions:, **)
-              filenames = transmissions.map { |path|
-                Pathname.new(path).basename
-              }.join(', ')
-
-              logger.info "Stock unit for Greffe:#{stock_unit.code_greffe} (#{filenames})"
             end
 
             def log_reset_database_failure(ctx, logger:, **)
