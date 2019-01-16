@@ -1,5 +1,5 @@
 GIT
-  remote: git@github.com:brindu/smarter_csv.git
+  remote: https://github.com/brindu/smarter_csv.git
   revision: bd342219bf9bfed99b0d43e370404f247448bb01
   branch: multiline_option
   specs:
