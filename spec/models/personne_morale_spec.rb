@@ -12,7 +12,7 @@ describe PersonneMorale do
   it { is_expected.to have_db_column(:capital_actuel).of_type(:string) }
   it { is_expected.to have_db_column(:devise).of_type(:string) }
   it { is_expected.to have_db_column(:date_cloture).of_type(:string) }
-  it { is_expected.to have_db_column(:date_cloture_exeptionnelle).of_type(:string) }
+  it { is_expected.to have_db_column(:date_cloture_exceptionnelle).of_type(:string) }
   it { is_expected.to have_db_column(:economie_sociale_solidaire).of_type(:string) }
   it { is_expected.to have_db_column(:duree_pm).of_type(:string) }
 

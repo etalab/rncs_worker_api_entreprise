@@ -29,7 +29,7 @@ describe DataSource::File::CSVReader do
     it { is_expected.to have_key(:capital) }
     it { is_expected.to have_key(:date_cloture) }
     it { is_expected.to have_key(:devise) }
-    it { is_expected.to have_key(:date_cloture_exeptionnelle) }
+    it { is_expected.to have_key(:date_cloture_exceptionnelle) }
     it { is_expected.to have_key(:economie_sociale_solidaire) }
     it { is_expected.to have_key(:duree_pm) }
     it { is_expected.to have_key(:date_derniere_modification) }

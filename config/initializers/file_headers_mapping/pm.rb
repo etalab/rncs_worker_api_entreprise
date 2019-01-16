@@ -1,7 +1,7 @@
 PM_HEADER_MAPPING = {
   date_greffe: :date_derniere_modification,
   libelle_evt: :libelle_derniere_modification,
-  date_cloture_except: :date_cloture_exeptionnelle,
+  date_cloture_except: :date_cloture_exceptionnelle,
   nom_greffe: nil,
   date_1re_immatriculation: nil,
   date_debut_1re_activite: nil,

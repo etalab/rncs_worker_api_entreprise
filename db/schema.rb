@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_01_09_103637) do
+ActiveRecord::Schema.define(version: 2019_01_16_103811) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -124,7 +124,7 @@ ActiveRecord::Schema.define(version: 2019_01_09_103637) do
     t.string "capital_actuel"
     t.string "devise"
     t.string "date_cloture"
-    t.string "date_cloture_exeptionnelle"
+    t.string "date_cloture_exceptionnelle"
     t.string "economie_sociale_solidaire"
     t.string "duree_pm"
     t.string "libelle_derniere_modification"
