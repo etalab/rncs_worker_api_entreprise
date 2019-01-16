@@ -28,7 +28,7 @@ gem 'bootsnap', '>= 1.1.0', require: false
 gem 'sidekiq', '~> 5.2.1'
 
 # gem 'smarter_csv', '~> 1.2.3'
-gem 'smarter_csv', git: 'git@github.com:brindu/smarter_csv.git', branch: 'multiline_option'
+gem 'smarter_csv', git: 'https://github.com/brindu/smarter_csv.git', branch: 'multiline_option'
 gem 'activerecord-import'
 
 gem 'trailblazer', '~> 2.1.0.rc1'
