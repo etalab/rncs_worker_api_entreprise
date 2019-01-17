@@ -38,7 +38,7 @@ describe ImportTitmcStockUnitJob, :trb do
       end
     end
 
-    describe 'failure' do
+    describe 'when operation Load fails' do
       it 'rollbacks database' do
         allow(DataSource::Stock::TribunalInstance::Unit::Operation::Load)
           .to receive(:call)
@@ -79,43 +79,6 @@ describe ImportTitmcStockUnitJob, :trb do
 
     it 'logs an error' do
       expect(Rails.logger).to receive(:error).with "Couldn't find StockUnit with 'id'=1234"
-      subject
-    end
-  end
-
-  describe 'when LoadTransmission fails' do
-    let(:stock_unit) { create :stock_unit_titmc, status: 'PENDING' }
-    let(:id) { stock_unit.id }
-
-    before do
-      allow(DataSource::Stock::TribunalInstance::Unit::Operation::LoadTransmission)
-        .to receive(:call)
-        .and_wrap_original {
-          # TODO: create something related to TITMC
-          create :stock_unit, status: 'GHOST'
-          trb_result_failure
-        }
-    end
-
-    it 'set status to ERROR' do
-      subject
-      stock_unit.reload
-
-      expect(stock_unit.status).to eq 'ERROR'
-    end
-
-    it 'rollbacks database' do
-      subject
-      ghost = StockUnit.where(status: 'GHOST')
-      expect(ghost).to be_empty
-    end
-
-    it 'calls an operation that fails' do
-      expect(DataSource::Stock::TribunalInstance::Unit::Operation::Load)
-        .to receive(:call)
-        .with(stock_unit: stock_unit, logger: logger)
-        .and_return(trb_result_failure)
-
       subject
     end
   end
