@@ -6,8 +6,24 @@ FactoryBot.define do
     status { 'PENDING' }
     stock
 
-    factory :stock_unit_wildcard do
-      file_path { '/temp/test_*' }
+    factory :stock_unit_titmc do
+      code_greffe { '9721' }
+      file_path do
+        Rails.root.join(
+          'spec', 'fixtures', 'titmc', 'stock', '2018', '05', '05',
+          '9721_S1_20180505_lot*.zip'
+        ).to_s
+      end
+    end
+
+    factory :stock_unit_titmc_with_valid_zip do
+      code_greffe { '9712' }
+      file_path do
+        Rails.root.join(
+          'spec', 'fixtures', 'titmc', 'zip',
+          '9712_S1_20180505_lot02_modified.zip'
+        ).to_s
+      end
     end
   end
 end

@@ -1,8 +1,15 @@
 require 'colorize'
 
 namespace :sidekiq do
+  desc 'Display status for queues'
+  task status: :environment do
+    Sidekiq::Queue.all.each do |q|
+      puts "Queue: #{q.name.blue} has #{q.count.to_s.blue} jobs enqueued"
+    end
+  end
+
   desc 'clear Sidekiq queues, all or only one (ie: rake sidekiq:clear_queue[:titmc_stock])'
-  task :clear_queue, [:queue_name] => :environment do |t, args|
+  task :clear_queue, [:queue_name] => :environment do |_, args|
     case args[:queue_name]
     when nil
       display_help

@@ -17,6 +17,10 @@
 !/log/flux
 /log/flux/*
 !/log/flux/.keep
+# same for stock
+!/log/stock
+/log/stock/*
+!/log/stock/.keep
 
 /tmp/*
 !/tmp/.keep

@@ -5,7 +5,6 @@ module DataSource
         class Load < Trailblazer::Operation
           extend ClassDependencies
 
-          self[:logger] = Rails.logger
           self[:stocks_folder] = ::File.join(Rails.configuration.rncs_sources['path'], 'titmc', 'stock')
           self[:stock_class] = StockTribunalInstance
 

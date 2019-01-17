@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<fichier type="FULL" version="1.3" xmlns="fr:inpi:odrncs:serpentXML">
+  <grf cod="1234">
+    <societe num_gestion="2017D00184" siren="830111191">
+      <idt>
+        <rcs>D830111191</rcs>
+        <nom_raison_soc>SCI ARSEJO</nom_raison_soc>
+        <code_form_jur>6540</code_form_jur>
+        <siege>
+          <adr_1>
+            <pays>FR</pays>
+          </adr_1>
+        </siege>
+        <immat>
+          <dat>20170607</dat>
+        </immat>
+        <activ>
+          <ape_naf>6820B</ape_naf>
+        </activ>
+        <cap>
+          <montant>300000</montant>
+          <devise>EUR</devise>
+        </cap>
+      </idt>
+      <etabs>
+        <etab>
+          <categ>PRI</categ>
+          <adr1>
+            <voie>67 RUE ARMAND BARBES</voie>
+            <cp_bur>97110 POINTE A PITRE</cp_bur>
+          </adr1>
+          <activ>
+            <siret>83011119100011</siret>
+            <ape_naf>6820B</ape_naf>
+          </activ>
+        </etab>
+      </etabs>
+    </societe>
+  </grf>
+  <grf cod="0000">
+    <societe siren="830559035">
+      <reps>
+        <rep>
+          <qual>0100</qual>
+          <rais_nom>JEAN LOUIS                                                      JEAN</rais_nom>
+          <nom_denom>JEAN LOUIS</nom_denom>
+          <prenom>JEAN</prenom>
+          <type_dir>PP</type_dir>
+          <pers_physique>
+            <dat_naiss>19760615</dat_naiss>
+            <lieu_naiss>CHANTAL</lieu_naiss>
+          </pers_physique>
+        </rep>
+      </reps>
+      <acts>
+        <act>
+          <type>AA</type>
+          <nature>DI</nature>
+          <dat_depot>20170726</dat_depot>
+          <num_depot_manuel>2099</num_depot_manuel>
+        </act>
+        <act>
+          <type>AD</type>
+          <dat_depot>20170726</dat_depot>
+          <num_depot_manuel>2099</num_depot_manuel>
+        </act>
+        <act>
+          <type>A1        </type>
+          <dat_depot>20170726</dat_depot>
+          <num_depot_manuel>2099</num_depot_manuel>
+        </act>
+        <act>
+          <type>AB</type>
+          <dat_depot>20170726</dat_depot>
+          <num_depot_manuel>2099</num_depot_manuel>
+        </act>
+      </acts>
+    </societe>
+  </grf>
+</fichier>

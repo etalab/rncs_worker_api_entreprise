@@ -45,4 +45,12 @@ describe ZIP::Operation::Extract do
 
     expect(file_list).to_not include(File.join(dest_directory, 'very_nested'))
   end
+
+  context 'when file is not found' do
+    let(:zip_path) { Rails.root.join('tmp', 'you_will_never_find_me').to_s }
+
+    it { is_expected.to be_failure }
+
+    its([:error]) { is_expected.to match /unzip:  cannot find or open .+you_will_never_find_me.+/ }
+  end
 end

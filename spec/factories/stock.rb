@@ -34,7 +34,7 @@ FactoryBot.define do
     factory :stock_titmc, class: StockTribunalInstance do
       factory :stock_titmc_with_pending_units do
         after :create do |stock|
-          create_list(:stock_unit_wildcard, 3, status: 'PENDING', stock: stock)
+          create_list(:stock_unit_titmc, 3, status: 'PENDING', stock: stock)
         end
       end
     end

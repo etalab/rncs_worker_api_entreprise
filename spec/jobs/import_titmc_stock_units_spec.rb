@@ -3,15 +3,23 @@ require 'rails_helper'
 describe ImportTitmcStockUnitJob, :trb do
   subject { described_class.perform_now(id) }
 
+  let(:logger) { instance_double(Logger).as_null_object }
+
+  before do
+    allow_any_instance_of(StockUnit)
+      .to receive(:logger_for_import)
+      .and_return(logger)
+  end
+
   context 'when stock unit is found' do
-    let(:stock_unit) { create :stock_unit_wildcard, status: 'PENDING' }
+    let(:stock_unit) { create :stock_unit_titmc, status: 'PENDING' }
     let(:id) { stock_unit.id }
 
     describe 'success' do
       it 'calls the operation' do
         expect(DataSource::Stock::TribunalInstance::Unit::Operation::Load)
           .to receive(:call)
-          .with(stock_unit: stock_unit)
+          .with(stock_unit: stock_unit, logger: logger)
           .and_return(trb_result_success)
 
         subject
@@ -20,7 +28,7 @@ describe ImportTitmcStockUnitJob, :trb do
       it 'set status to COMPLETED' do
         allow(DataSource::Stock::TribunalInstance::Unit::Operation::Load)
           .to receive(:call)
-          .with(stock_unit: stock_unit)
+          .with(stock_unit: stock_unit, logger: logger)
           .and_return(trb_result_success)
 
         subject
@@ -30,11 +38,11 @@ describe ImportTitmcStockUnitJob, :trb do
       end
     end
 
-    describe 'failure' do
+    describe 'when operation Load fails' do
       it 'rollbacks database' do
         allow(DataSource::Stock::TribunalInstance::Unit::Operation::Load)
           .to receive(:call)
-          .with(stock_unit: stock_unit)
+          .with(stock_unit: stock_unit, logger: logger)
           .and_wrap_original {
             create :stock_unit, status: 'GHOST'
             trb_result_failure
@@ -49,7 +57,7 @@ describe ImportTitmcStockUnitJob, :trb do
       it 'set status to ERROR' do
         allow(DataSource::Stock::TribunalInstance::Unit::Operation::Load)
           .to receive(:call)
-          .with(stock_unit: stock_unit)
+          .with(stock_unit: stock_unit, logger: logger)
           .and_return(trb_result_failure)
 
         subject

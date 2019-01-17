@@ -74,8 +74,8 @@ end
 task :setup do
   # command %{rbenv install 2.3.0 --skip-existing}
 
-  # add tc_stock log subfolder
-  command %(mkdir -p "#{fetch(:deploy_to)}/shared/log/tc_stock")
+  # add stock (tc/titmc) log subfolder
+  command %(mkdir -p "#{fetch(:deploy_to)}/shared/log/stock")
   # add flux log subfolder
   command %(mkdir -p "#{fetch(:deploy_to)}/shared/log/flux")
 end
