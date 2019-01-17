@@ -13,7 +13,7 @@ describe DataSource::Stock::TribunalInstance::Unit::Operation::LoadTransmission,
   let(:logger) { object_double(Rails.logger, info: true).as_null_object }
 
   context 'when zip exists' do
-    let(:filename) { '9712_S1_20180505_lot02_modified.zip' }
+    let(:filename) { '9712_S1_20180505_lot02.zip' }
 
     context 'when import is successful' do
       it { is_expected.to be_success }
