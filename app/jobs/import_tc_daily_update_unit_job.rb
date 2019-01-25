@@ -5,10 +5,10 @@ class ImportTcDailyUpdateUnitJob < ApplicationJob
     import = nil
     unit = DailyUpdateUnit.find(daily_update_id)
     logger = unit.logger_for_import
+    importer_operation = unit_importer(unit)
 
     wrap_import_with_log_level(:fatal) do
-      import = TribunalCommerce::DailyUpdateUnit::Operation::Load
-        .call(daily_update_unit: unit, logger: logger)
+      import = importer_operation.call(daily_update_unit: unit, logger: logger)
 
       if import.success?
         unit.update(status: 'COMPLETED')
@@ -36,5 +36,13 @@ class ImportTcDailyUpdateUnitJob < ApplicationJob
       yield
     end
     ActiveRecord::Base.logger.level = usual_log_level
+  end
+
+  def unit_importer(unit)
+    if unit.daily_update.partial_stock?
+      return TribunalCommerce::PartialStockUnit::Operation::Load
+    else
+      return TribunalCommerce::DailyUpdateUnit::Operation::Load
+    end
   end
 end
