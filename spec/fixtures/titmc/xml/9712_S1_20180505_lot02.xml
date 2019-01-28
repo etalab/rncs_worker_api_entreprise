@@ -22,6 +22,9 @@
           <montant>300000</montant>
           <devise>EUR</devise>
         </cap>
+        <domicil>
+          <adr>somewhere...</adr>
+        </domicil>
       </idt>
       <etabs>
         <etab>
@@ -35,7 +38,46 @@
             <ape_naf>6820B</ape_naf>
           </activ>
         </etab>
+        <etab>
+          <categ>SEC</categ>
+          <adr1>
+            <voie>67 RUE ARMAND BARBES</voie>
+            <cp_bur>97110 POINTE A PITRE</cp_bur>
+          </adr1>
+          <activ>
+            <siret>83011119100011</siret>
+            <ape_naf>6820B</ape_naf>
+          </activ>
+        </etab>
       </etabs>
+      <reps>
+        <rep>
+          <qual>1200</qual>
+          <rais_nom>OULAC JOSEPH CHARLEMAGNE ALEXANDRE</rais_nom>
+          <nom_denom>OULAC</nom_denom>
+          <prenom>JOSEPH CHARLEMAGNE ALEXANDRE</prenom>
+          <type_dir>PP</type_dir>
+          <adr1>
+            <resid>là bas</resid>
+          </adr1>
+          <pers_physique>
+            <dat_naiss>19480128</dat_naiss>
+            <lieu_naiss>POINTE A PITRE</lieu_naiss>
+          </pers_physique>
+        </rep>
+        <rep>
+          <qual>0100</qual>
+          <rais_nom>2 G. FINANCES</rais_nom>
+          <nom_denom>2 G. FINANCES</nom_denom>
+          <type_dir>PM</type_dir>
+          <pers_mor>
+            <rep_comment>WESPISER PASCAL</rep_comment>
+            <rep_perm>
+              <adr>tout là bas</adr>
+            </rep_perm>
+          </pers_mor>
+        </rep>
+      </reps>
     </societe>
     <societe num_gestion="2017A00422" siren="830964557">
       <idt>
@@ -61,6 +103,15 @@
         <cap>
           <montant>000</montant>
         </cap>
+        <eirl>
+          <denom>FOUSSE ALAIN EIRL</denom>
+          <objet>RAYONNAGE STOCKAGE AGENCEMENT</objet>
+          <adr>
+            <nom_voie>24 RUE DES ROSSIGNOLS</nom_voie>
+            <cp>68500</cp>
+            <bur_cdx>ISSENHEIM</bur_cdx>
+          </adr>
+        </eirl>
       </idt>
       <etabs>
         <etab>

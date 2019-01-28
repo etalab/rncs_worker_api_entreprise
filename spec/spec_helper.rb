@@ -119,4 +119,5 @@ RSpec.configure do |config|
 
   config.include DataSourceHelper
   config.include TrailblazerHelper::RSpec, :trb
+  config.include RepresenterHelper::RSpec, :representer
 end
