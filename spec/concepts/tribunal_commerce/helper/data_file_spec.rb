@@ -48,6 +48,38 @@ describe TribunalCommerce::Helper::DataFile do
     end
   end
 
+  describe '#parse_stock_filename' do
+    subject { includer.parse_stock_filename(["/random/path/#{filename}"]) }
+
+    context 'with a valid filename' do
+      let(:filename) { '0101_S2_20180824_5_rep.csv' }
+
+      it 'reads the code greffe' do
+        expect(subject).to contain_exactly(a_hash_including(code_greffe: '0101'))
+      end
+
+      it 'reads the running order' do
+        expect(subject).to contain_exactly(a_hash_including(run_order: 5))
+      end
+
+      it 'reads the label' do
+        expect(subject).to contain_exactly(a_hash_including(label: 'rep'))
+      end
+    end
+
+    context 'with an invalid filename' do
+      let(:filename) { 'inval1d_filename.txt' }
+
+      it 'raises UnexpectedFilename' do
+        expect { subject }
+          .to raise_error(
+            TribunalCommerce::Helper::DataFile::UnexpectedFilename,
+            'Cannot parse filename : "inval1d_filename.txt" does not match the expected pattern'
+          )
+      end
+    end
+  end
+
   describe '#map_import_worker' do
     def worker(label)
       result = includer.map_import_worker([{ label: label }])
