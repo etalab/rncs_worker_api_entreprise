@@ -12,7 +12,7 @@ module TribunalCommerce
 
         def fetch_partial_stock_units(ctx, daily_update:, **)
           ctx[:partial_stocks_path] = Dir.glob(daily_update.files_path + '/*.zip')
-          !ctx[:partial_stocks_path].empty?
+          ctx[:partial_stocks_path].any?
         end
 
         def deserialize_partial_stock_units(ctx, daily_update:, partial_stocks_path:, **)

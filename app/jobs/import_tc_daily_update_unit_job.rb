@@ -3,15 +3,13 @@ class ImportTcDailyUpdateUnitJob < ApplicationJob
 
   def perform(daily_update_id)
     import = nil
-    unit = DailyUpdateUnit.find(daily_update_id)
-    logger = unit.logger_for_import
-    importer_operation = unit_importer(unit)
+    @unit = DailyUpdateUnit.find(daily_update_id)
 
     wrap_import_with_log_level(:fatal) do
-      import = importer_operation.call(daily_update_unit: unit, logger: logger)
+      import = unit_importer.call(daily_update_unit: @unit, logger: import_logger)
 
       if import.success?
-        unit.update(status: 'COMPLETED')
+        @unit.update(status: 'COMPLETED')
       else
         raise ActiveRecord::Rollback
       end
@@ -21,13 +19,17 @@ class ImportTcDailyUpdateUnitJob < ApplicationJob
     # so the 'ERROR' status is persisted into DB and not rollback to 'PENDING'
     if import.success?
       TribunalCommerce::DailyUpdateUnit::Operation::PostImport
-        .call(daily_update_unit: unit)
+        .call(daily_update_unit: @unit)
     else
-      unit.update(status: 'ERROR')
+      @unit.update(status: 'ERROR')
     end
   end
 
   private
+
+  def import_logger
+    @unit.logger_for_import
+  end
 
   def wrap_import_with_log_level(log_level)
     usual_log_level = ActiveRecord::Base.logger.level
@@ -38,8 +40,8 @@ class ImportTcDailyUpdateUnitJob < ApplicationJob
     ActiveRecord::Base.logger.level = usual_log_level
   end
 
-  def unit_importer(unit)
-    if unit.daily_update.partial_stock?
+  def unit_importer
+    if @unit.daily_update.partial_stock?
       return TribunalCommerce::PartialStockUnit::Operation::Load
     else
       return TribunalCommerce::DailyUpdateUnit::Operation::Load
