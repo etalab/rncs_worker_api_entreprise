@@ -1,44 +1,46 @@
 module TribunalCommerce
   module Helper
-    module FileImporter
-      class << self
-        def supersede_dossiers_entreprise_from_pm(path)
-          #mapping = DOSSIER_ENTREPRISE_FROM_PM_HEADER_MAPPING
-          #file_reader.line_processing(file_path, mapping) do |line|
-          #  line_import = DossierEntreprise::Operation::Supersede.call(data: line)
+    class FileImporter
+      def initialize(file_reader = DataSource::File::CSVReader)
+        @file_reader = file_reader
+      end
 
-          #  if line_import.failure?
-          #    logger.error(line_import[:error])
-          #    return false
-          #  else
-          #    logger.warn(line_import[:warning]) unless line_import[:warning].nil?
-          #  end
-          #end
+      def supersede_dossiers_entreprise_from_pm(path)
+        mapping = DOSSIER_ENTREPRISE_FROM_PM_HEADER_MAPPING
+        @file_reader.line_processing(path, mapping) do |line|
+          line_import = DossierEntreprise::Operation::Supersede.call(data: line)
+
+          if line_import.failure?
+            logger.error(line_import[:error])
+            return false
+          else
+            logger.warn(line_import[:warning]) unless line_import[:warning].nil?
+          end
         end
+      end
 
-        def supersede_dossiers_entreprise_from_pp(path)
+      def supersede_dossiers_entreprise_from_pp(path)
 
-        end
+      end
 
-        def import_personnes_morales(path)
+      def import_personnes_morales(path)
 
-        end
+      end
 
-        def import_personnes_physiques(path)
+      def import_personnes_physiques(path)
 
-        end
+      end
 
-        def import_representants(path)
+      def import_representants(path)
 
-        end
+      end
 
-        def import_etablissements(path)
+      def import_etablissements(path)
 
-        end
+      end
 
-        def import_observations(path)
+      def import_observations(path)
 
-        end
       end
     end
   end

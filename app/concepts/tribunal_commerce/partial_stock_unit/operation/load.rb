@@ -5,7 +5,7 @@ module TribunalCommerce
         include TribunalCommerce::Helper::DataFile
         extend ClassDependencies
 
-        self[:file_importer] = TribunalCommerce::Helper::FileImporter
+        self[:file_importer] = TribunalCommerce::Helper::FileImporter.new
 
         step ->(ctx, logger:, **) { logger.info('Starting import of partial stock unit...') }
         step :prepare_zip_extraction

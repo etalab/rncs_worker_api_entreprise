@@ -14,7 +14,13 @@ describe TribunalCommerce::PartialStockUnit::Operation::Load, :trb do
   # - 0384_S2_20180409_13_comptes_annuels.csv
   let(:fixtures_path) { Rails.root.join('spec/fixtures/tc/partial_stock/2018/04/09/0384_S2_20180409.zip') }
 
-  subject { described_class.call(daily_update_unit: unit, logger: logger) }
+  # Testing unit tests here so we mock the file importer dependency
+  let(:file_importer) do
+    dbl = instance_spy(TribunalCommerce::Helper::FileImporter)
+    dbl
+  end
+
+  subject { described_class.call(daily_update_unit: unit, logger: logger, file_importer: file_importer) }
 
   after do
     # Clean unit extraction directory
@@ -98,61 +104,39 @@ describe TribunalCommerce::PartialStockUnit::Operation::Load, :trb do
   end
 
   describe 'unit\'s files import' do
-    it 'depends on TribunalCommerce::Helper::FileImporter for import' do
-      file_importer = subject[:file_importer]
-
-      expect(file_importer).to eq(TribunalCommerce::Helper::FileImporter)
-    end
-
     it 'imports data files in the right order' do
-      importer = class_spy(TribunalCommerce::Helper::FileImporter)
-      described_class.call(daily_update_unit: unit, logger: logger, file_importer: importer)
+      subject
 
-      expect(importer).to have_received(:supersede_dossiers_entreprise_from_pm)
-        .with(a_string_ending_with('0384_S2_20180409_1_PM.csv'))
-        .ordered
-      expect(importer).to have_received(:import_personnes_morales)
-        .with(a_string_ending_with('0384_S2_20180409_1_PM.csv'))
-        .ordered
-      expect(importer).to have_received(:supersede_dossiers_entreprise_from_pp)
-        .with(a_string_ending_with('0384_S2_20180409_3_PP.csv'))
-        .ordered
-      expect(importer).to have_received(:import_personnes_physiques)
-        .with(a_string_ending_with('0384_S2_20180409_3_PP.csv'))
-        .ordered
-      expect(importer).to have_received(:import_representants)
-        .with(a_string_ending_with('0384_S2_20180409_5_rep.csv'))
-        .ordered
-      expect(importer).to have_received(:import_etablissements)
-        .with(a_string_ending_with('0384_S2_20180409_8_ets.csv'))
-        .ordered
-      expect(importer).to have_received(:import_observations)
-        .with(a_string_ending_with('0384_S2_20180409_11_obs.csv'))
-        .ordered
+      expect_ordered_import_call(:supersede_dossiers_entreprise_from_pm, '0384_S2_20180409_1_PM.csv')
+      expect_ordered_import_call(:import_personnes_morales, '0384_S2_20180409_1_PM.csv')
+      expect_ordered_import_call(:supersede_dossiers_entreprise_from_pp, '0384_S2_20180409_3_PP.csv')
+      expect_ordered_import_call(:import_personnes_physiques, '0384_S2_20180409_3_PP.csv')
+      expect_ordered_import_call(:import_representants, '0384_S2_20180409_5_rep.csv')
+      expect_ordered_import_call(:import_etablissements, '0384_S2_20180409_8_ets.csv')
+      expect_ordered_import_call(:import_observations, '0384_S2_20180409_11_obs.csv')
     end
 
     context 'when a file\'s import fails' do
-      # Stub a fail import on dossier entreprise from a PP file
-      let(:importer) do
-        dbl = class_spy(TribunalCommerce::Helper::FileImporter)
-        allow(dbl).to receive(:supersede_dossiers_entreprise_from_pm).and_return(true)
-        allow(dbl).to receive(:import_personnes_morales).and_return(true)
-        allow(dbl).to receive(:supersede_dossiers_entreprise_from_pp).and_return(false)
-        dbl
-      end
+      before { allow(file_importer).to receive(:supersede_dossiers_entreprise_from_pp).and_return(false) }
 
-      subject { described_class.call(daily_update_unit: unit, logger: logger, file_importer: importer) }
+      subject { described_class.call(daily_update_unit: unit, logger: logger, file_importer: file_importer) }
 
       it { is_expected.to be_failure }
 
       it 'does not import the following files' do
         subject
 
-        expect(importer).to_not have_received(:import_personnes_physiques)
-        expect(importer).to_not have_received(:import_representants)
-        expect(importer).to_not have_received(:import_etablissements)
-        expect(importer).to_not have_received(:import_observations)
+        expect(file_importer).to_not have_received(:import_personnes_physiques)
+        expect(file_importer).to_not have_received(:import_representants)
+        expect(file_importer).to_not have_received(:import_etablissements)
+        expect(file_importer).to_not have_received(:import_observations)
       end
+    end
+
+    def expect_ordered_import_call(import_name, file_path)
+      expect(file_importer).to have_received(import_name)
+        .with(a_string_ending_with(file_path))
+        .ordered
     end
   end
 end
