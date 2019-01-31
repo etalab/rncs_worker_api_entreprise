@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe TribunalCommerce::DailyUpdate::Operation::Import do
+describe TribunalCommerce::DailyUpdate::Operation::Import, :trb do
   subject { described_class.call }
 
   # spec/fixtures/tc/flux/2018/04/
@@ -40,8 +40,13 @@ describe TribunalCommerce::DailyUpdate::Operation::Import do
       end
     end
 
-    context 'when Task::FetchUnits is success' do
+    context 'when the update to apply is a daily update' do
       it { is_expected.to be_success }
+
+      it 'calls Task::FetchUnits operation' do
+        expect_nested_operation_call(TribunalCommerce::DailyUpdate::Task::FetchUnits)
+        subject
+      end
 
       # More detailed tests on created daily update units inside Task::FetchUnits
       it 'creates the daily update units found' do
@@ -55,11 +60,48 @@ describe TribunalCommerce::DailyUpdate::Operation::Import do
             .to have_been_enqueued.with(id).on_queue("rncs_worker_api_entreprise_#{Rails.env}_tc_daily_update")
         end
       end
+
+      context 'when Task::FetchUnits fails' do
+        it 'fails'
+        it 'logs the returned error'
+      end
     end
 
-    context 'when Task::FetchUnits fails' do
-      it 'fails'
-      it 'logs the returned error'
+    context 'when the update to apply is a partial stock' do
+      before do
+        # This partial stock will be selected for import before the daily update
+        # with the same date
+        create(:daily_update_tribunal_commerce,
+               year: '2018', month: '04', day: '09',
+               proceeded: false,
+               partial_stock: true,
+               files_path: Rails.root.join('spec/fixtures/tc/partial_stock/2018/04/09')
+              )
+      end
+
+      it { is_expected.to be_success }
+
+      it 'calls Task::FetchPartialStocks operation' do
+        expect_nested_operation_call(TribunalCommerce::DailyUpdate::Task::FetchPartialStocks)
+        subject
+      end
+
+      it 'saves each partial stocks found as daily updates' do
+        expect { subject }.to change(DailyUpdateUnit, :count).by(3)
+      end
+
+      it 'creates a job for each partial stocks to import' do
+        units_id = fetched_update.daily_update_units.pluck(:id)
+        units_id.each do |id|
+          expect(ImportTcDailyUpdateUnitJob)
+            .to have_been_enqueued.with(id).on_queue("rncs_worker_api_entreprise_#{Rails.env}_tc_daily_update")
+        end
+      end
+
+      context 'when Task::FetchPartialStocks fails' do
+        it 'fails'
+        it 'logs the returned error'
+      end
     end
   end
 

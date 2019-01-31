@@ -3,7 +3,7 @@ require 'rails_helper'
 describe ImportTcDailyUpdateUnitJob do
   let(:result_class) { Trailblazer::Operation::Railway::Result }
   let(:unit) { create(:daily_update_unit, status: 'PENDING') }
-  let(:import_logger) { instance_double(Logger) }
+  let(:import_logger) { instance_double(Logger).as_null_object }
   subject { described_class.perform_now(unit.id) }
 
   before do
@@ -16,6 +16,30 @@ describe ImportTcDailyUpdateUnitJob do
       .and_return(import_logger)
   end
 
+  describe 'the component the unit import is delegated to' do
+    let(:operation_result) { instance_double(result_class, success?: true) }
+
+    it 'calls TribunalCommerce::DailyUpdateUnit::Operation::Load for a unit related to a daily update' do
+      expect(TribunalCommerce::DailyUpdateUnit::Operation::Load)
+        .to receive(:call)
+        .with({ daily_update_unit: unit, logger: import_logger })
+        .and_return(operation_result)
+
+      subject
+    end
+
+    it 'calls TribunalCommerce::PartialStockUnit::Operation::Load for a unit related to a partial stock' do
+      unit.daily_update.update(partial_stock: true)
+      expect(TribunalCommerce::PartialStockUnit::Operation::Load)
+        .to receive(:call)
+        .with({ daily_update_unit: unit, logger: import_logger })
+        .and_return(operation_result)
+
+      subject
+    end
+  end
+
+  # A daily update unit is used for the following specs
   context 'when the unit import is successful' do
     let(:operation_result) { instance_double(result_class, success?: true) }
 
