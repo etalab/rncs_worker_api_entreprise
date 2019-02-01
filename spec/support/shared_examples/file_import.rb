@@ -1,3 +1,4 @@
+# TODO Refactor and remove 'bulk import' and 'line import' shared examples
 shared_examples 'bulk import' do |model, file, header_mapping|
   let(:logger) { double('logger') }
   let(:csv_reader) do
@@ -116,5 +117,58 @@ shared_examples 'invalid import type' do
 
     expect(logger).to have_received(:error)
       .with('Invalid call for file import : import type :not_valid is unknown.')
+  end
+end
+
+shared_examples 'import_line_by_line' do |import_method, line_processor, file_mapping|
+  let(:file_path) { 'im a path lol' }
+  let(:logger) { instance_spy(Logger) }
+  let(:csv_reader) { class_spy(DataSource::File::CSVReader) }
+
+  subject do
+    importer = described_class.new(csv_reader, logger)
+    importer.send(import_method, file_path)
+  end
+
+  context 'when the file reader works' do
+    before do
+      allow(csv_reader).to receive(:line_processing)
+        .with(file_path, file_mapping)
+        .and_yield('first line')
+        .and_yield('second line')
+    end
+
+    it "calls #{line_processor} for each line read" do
+      allow(line_processor).to receive(:call).and_return(trb_result_success)
+      subject
+
+      expect(line_processor).to have_received(:call).with(data: 'first line').ordered
+      expect(line_processor).to have_received(:call).with(data: 'second line').ordered
+    end
+
+    it "logs warning messages returned by #{line_processor} if any" do
+      warning = { warning: 'This is a warning message !' }
+      allow(line_processor).to receive(:call).and_return(trb_result_success_with(warning))
+      subject
+
+      expect(logger).to have_received(:warn).with('This is a warning message !').twice
+    end
+
+    context "when #{line_processor} fails at least once", :trb do
+      before do
+        failure_context = { error: 'Much error' }
+        allow(line_processor)
+          .to receive(:call)
+          .and_return(trb_result_failure_with(failure_context))
+      end
+
+      it { is_expected.to eq(false) }
+
+      it 'logs the returned error' do
+        subject
+
+        expect(logger).to have_received(:error).with('Much error')
+      end
+    end
   end
 end
