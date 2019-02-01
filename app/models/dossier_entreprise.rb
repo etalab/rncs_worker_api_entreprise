@@ -1,9 +1,9 @@
 class DossierEntreprise < ApplicationRecord
-  has_one :personne_morale
-  has_one :personne_physique
-  has_many :representants
-  has_many :etablissements
-  has_many :observations
+  has_one :personne_morale, dependent: :destroy
+  has_one :personne_physique, dependent: :destroy
+  has_many :representants, dependent: :destroy
+  has_many :etablissements, dependent: :destroy
+  has_many :observations, dependent: :destroy
 
   # this will not warn about multiple SIE/SEP on this dossier / siren
   def siege_social
