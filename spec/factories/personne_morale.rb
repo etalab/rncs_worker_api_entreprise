@@ -10,7 +10,7 @@ FactoryBot.define do
     capital_actuel { '' }
     devise { 'EuRoS' } # it's randomly written Euros, euros, EUROS
     date_cloture { '31 Décembre' }
-    date_cloture_exeptionnelle { '' }
+    date_cloture_exceptionnelle { '' }
     economie_sociale_solidaire { 'Non' }
     duree_pm { '99' }
     libelle_derniere_modification { 'Création' }
