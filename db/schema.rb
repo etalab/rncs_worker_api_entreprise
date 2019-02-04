@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_01_28_063705) do
+ActiveRecord::Schema.define(version: 2019_01_31_161041) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -300,7 +300,7 @@ ActiveRecord::Schema.define(version: 2019_01_28_063705) do
     t.string "sigle"
     t.string "nom_commercial"
     t.string "greffe_siege"
-    t.string "status_edition_extrait"
+    t.string "statut_edition_extrait"
     t.string "date_cloture_exceptionnelle"
     t.string "domiciliataire_nom"
     t.string "domiciliataire_rcs"
@@ -346,7 +346,7 @@ ActiveRecord::Schema.define(version: 2019_01_28_063705) do
     t.string "date_radiation"
     t.string "pseudonyme"
     t.string "date_naissance"
-    t.string "lieu_naissance"
+    t.string "ville_naissance"
     t.string "pays_naissance"
     t.string "nationalite"
     t.string "nom_usage"

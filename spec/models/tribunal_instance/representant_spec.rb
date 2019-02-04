@@ -12,7 +12,7 @@ describe TribunalInstance::Representant do
   it { is_expected.to have_db_column(:date_radiation).of_type(:string) }
   it { is_expected.to have_db_column(:pseudonyme).of_type(:string) }
   it { is_expected.to have_db_column(:date_naissance).of_type(:string) }
-  it { is_expected.to have_db_column(:lieu_naissance).of_type(:string) }
+  it { is_expected.to have_db_column(:ville_naissance).of_type(:string) }
   it { is_expected.to have_db_column(:pays_naissance).of_type(:string) }
   it { is_expected.to have_db_column(:nationalite).of_type(:string) }
   it { is_expected.to have_db_column(:nom_usage).of_type(:string) }

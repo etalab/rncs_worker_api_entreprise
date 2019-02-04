@@ -18,7 +18,7 @@ class TribunalInstance::RepresentantRepresenter < Representable::Decorator
   nested :pers_physique do
     property :pseudonyme, as: :pseudo
     property :date_naissance, as: :dat_naiss
-    property :lieu_naissance, as: :lieu_naiss
+    property :ville_naissance, as: :lieu_naiss
     property :pays_naissance, as: :rep_pays_naiss
     property :nationalite, as: :nation
     property :nom_usage, as: :rep_nom_usage
@@ -32,9 +32,10 @@ class TribunalInstance::RepresentantRepresenter < Representable::Decorator
 
     nested :rep_perm do
       property :representant_permanent_nom, as: :nom
+      property :representant_permanent_nom_usage, as: :nom_usage
       property :representant_permanent_prenoms, as: :prenom
       property :representant_permanent_date_naissance, as: :dat_naiss
-      property :representant_permanent_lieu_naissance, as: :lieu_naiss
+      property :representant_permanent_ville_naissance, as: :lieu_naiss
       property :representant_permanent_pays_naissance, as: :pays_naiss
     end
 

@@ -53,7 +53,7 @@ class TribunalInstance::EntrepriseRepresenter < Representable::Decorator
       property :sigle
       property :nom_commercial
       property :greffe_siege
-      property :status_edition_extrait, as: :status_edit_extrait
+      property :statut_edition_extrait, as: :statut_edit_extrait
       property :economie_sociale_solidaire, as: :ess_indic
     end
 
@@ -69,7 +69,7 @@ class TribunalInstance::EntrepriseRepresenter < Representable::Decorator
     nested :eirl do
       property :eirl, as: :eirl_indic
       property :dap_denomnimation, as: :denom
-      property :dap_object, as: :object
+      property :dap_object, as: :objet
       property :dap_date_cloture, as: :dat_cloture_jjmm
    end
 

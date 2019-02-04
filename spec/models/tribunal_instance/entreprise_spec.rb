@@ -24,7 +24,7 @@ describe TribunalInstance::Entreprise do
   it { is_expected.to have_db_column(:sigle).of_type(:string) }
   it { is_expected.to have_db_column(:nom_commercial).of_type(:string) }
   it { is_expected.to have_db_column(:greffe_siege).of_type(:string) }
-  it { is_expected.to have_db_column(:status_edition_extrait).of_type(:string) }
+  it { is_expected.to have_db_column(:statut_edition_extrait).of_type(:string) }
   it { is_expected.to have_db_column(:date_cloture_exceptionnelle).of_type(:string) }
   it { is_expected.to have_db_column(:domiciliataire_nom).of_type(:string) }
   it { is_expected.to have_db_column(:domiciliataire_rcs).of_type(:string) }
@@ -37,6 +37,7 @@ describe TribunalInstance::Entreprise do
   it { is_expected.to have_db_column(:dossier_entreprise_id).of_type(:string) }
 
   # Associations
+  it { is_expected.to belong_to :dossier_entreprise }
   it { is_expected.to have_one(:adresse_siege).dependent(:destroy) }
   it { is_expected.to have_one(:adresse_domiciliataire).dependent(:destroy) }
   it { is_expected.to have_one(:adresse_dap).dependent(:destroy) }

@@ -9,34 +9,92 @@
         <assoc_unique>1</assoc_unique>
         <siege>
           <adr_1>
+            <nom_1>NOM UN</nom_1>
+            <nom_2>NOM DEUX</nom_2>
+            <resid>RESIDENCE</resid>
+            <num_voie>INFINITE</num_voie>
+            <type_voie>BANANA</type_voie>
+            <nom_voie>VOIX</nom_voie>
+            <local>THE MOON</local>
+            <cp>A LOT</cp>
+            <bur_cdx>BUREAU</bur_cdx>
             <pays>FR</pays>
           </adr_1>
         </siege>
+        <rad>
+          <dat>20171207</dat>
+        </rad>
+        <radiation>
+          <code>1</code>
+          <motif>NONE</motif>
+        </radiation>
+        <dern_ajout>
+          <dat_trsft_siege>NEVER</dat_trsft_siege>
+        </dern_ajout>
         <immat>
           <dat>20170607</dat>
+          <dat_prem_immat>DAY ONE</dat_prem_immat>
         </immat>
         <activ>
+          <activ_princip>MANGEUR DE BANANES</activ_princip>
           <ape_naf>6820B</ape_naf>
         </activ>
         <cap>
           <montant>300000</montant>
+          <montant_min>45000</montant_min>
           <devise>EUR</devise>
         </cap>
+        <durees>
+          <duree_pm>MILLE ANS</duree_pm>
+          <dat_cloture_jjmm>JAMAIS!</dat_cloture_jjmm>
+        </durees>
         <domicil>
-          <adr>somewhere...</adr>
+          <denom>NO DEMON</denom>
+          <adr>SOMEWHERE...</adr>
+          <adr_num_voie>INFINITE</adr_num_voie>
+          <adr_typ_voie>BANANA</adr_typ_voie>
+          <adr_nom_voie>VOIX</adr_nom_voie>
+          <adr_resid>RESIDENCE</adr_resid>
+          <adr_cp>9999</adr_cp>
+          <adr_bur>BUREAU</adr_bur>
+          <rcs>UN RCS RANDOM</rcs>
         </domicil>
+        <divers>
+          <ess_indic>O</ess_indic>
+        </divers>
       </idt>
       <etabs>
         <etab>
           <categ>PRI</categ>
           <adr1>
+            <part_1>PARTIE UN</part_1>
+            <part_2>PARTIE DEUX</part_2>
+            <resid>RESIDENCE</resid>
             <voie>67 RUE ARMAND BARBES</voie>
+            <local>THE MOON</local>
             <cp_bur>97110 POINTE A PITRE</cp_bur>
           </adr1>
           <activ>
             <siret>83011119100011</siret>
+            <activité>NE RIEN FAIRE</activité>
             <ape_naf>6820B</ape_naf>
+            <date_debut_activ>L AN ZÉRO</date_debut_activ>
+            <orig_fonds>MA POCHE</orig_fonds>
+            <type_activité>FS</type_activité>
           </activ>
+          <fonds>
+            <dat_cessat_activite>JAMAIS</dat_cessat_activite>
+          </fonds>
+          <exploitation>
+            <type>JE NE SAIS PAS</type>
+          </exploitation>
+          <prec_exploit>
+            <nom>NOM PRECEDENT EXPLOITANT</nom>
+            <nom_usage>NOM USAGE</nom_usage>
+            <prenom>PRENOM PRECEDENT EXPLOITANT</prenom>
+          </prec_exploit>
+          <enseigne>ENSEIGNE A</enseigne>
+          <nom_commerc>NOM COMMERCIAL A</nom_commerc>
         </etab>
         <etab>
           <categ>SEC</categ>
@@ -53,16 +111,27 @@
       <reps>
         <rep>
           <qual>1200</qual>
+          <dat_crea_rep>L AN ZÉRO</dat_crea_rep>
+          <dat_modif>HIER</dat_modif>
+          <dat_radiation>AVANT HIER</dat_radiation>
           <rais_nom>OULAC JOSEPH CHARLEMAGNE ALEXANDRE</rais_nom>
           <nom_denom>OULAC</nom_denom>
           <prenom>JOSEPH CHARLEMAGNE ALEXANDRE</prenom>
           <type_dir>PP</type_dir>
           <adr1>
             <resid>là bas</resid>
+            <voie>VOIX</voie>
+            <cp_bur>75000 et BUREAU</cp_bur>
+            <local>BANANA</local>
+            <pays>NO COUNTRY FOR OLD MEN</pays>
           </adr1>
           <pers_physique>
+            <pseudo>k3v1n75</pseudo>
             <dat_naiss>19480128</dat_naiss>
             <lieu_naiss>POINTE A PITRE</lieu_naiss>
+            <rep_pays_naiss>MOON</rep_pays_naiss>
+            <nation>TERRIEN</nation>
+            <rep_nom_usage>CHARLO</rep_nom_usage>
           </pers_physique>
         </rep>
         <rep>
@@ -72,7 +141,16 @@
           <type_dir>PM</type_dir>
           <pers_mor>
             <rep_comment>WESPISER PASCAL</rep_comment>
+            <greffe_immat>PARIS</greffe_immat>
+            <siren_num_gestion>123456789</siren_num_gestion>
+            <form_jur>9999</form_jur>
             <rep_perm>
+              <nom>REP NOM</nom>
+              <prenom>REP PRENOM</prenom>
+              <nom_usage>REP NOM USAGE</nom_usage>
+              <dat_naiss>REP DATE</dat_naiss>
+              <lieu_naiss>REP VILLE</lieu_naiss>
+              <pays_naiss>REP PAYS</pays_naiss>
               <adr>tout là bas</adr>
             </rep_perm>
           </pers_mor>
@@ -106,12 +184,30 @@
         <eirl>
           <denom>FOUSSE ALAIN EIRL</denom>
           <objet>RAYONNAGE STOCKAGE AGENCEMENT</objet>
+          <dat_cloture_jjmm>JAMAIS</dat_cloture_jjmm>
           <adr>
+            <resid>RESIDENCE</resid>
+            <num_voie>INFINITE</num_voie>
+            <type_voie>BANANA</type_voie>
             <nom_voie>24 RUE DES ROSSIGNOLS</nom_voie>
+            <local>THE MOON</local>
             <cp>68500</cp>
             <bur_cdx>ISSENHEIM</bur_cdx>
+            <pays>NO COUNTRY FOR OLD MEN</pays>
           </adr>
+          <eirl_indic>1</eirl_indic>
         </eirl>
+        <auto_ent>
+          <pp_indic>1</pp_indic>
+        </auto_ent>
+        <divers>
+          <nom_usage>MY LORD</nom_usage>
+          <pseudo>k3v1n75</pseudo>
+          <sigle>LORADIM</sigle>
+          <nom_commercial>JAMES BROWN</nom_commercial>
+          <greffe_siege>THE MOON</greffe_siege>
+          <statut_edit_extrait>A1</statut_edit_extrait>
+        </divers>
       </idt>
       <etabs>
         <etab>

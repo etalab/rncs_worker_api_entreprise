@@ -11,11 +11,11 @@ describe TribunalInstance::DossierEntrepriseRepresenter, :representer do
   its(:siren)                         { is_expected.to eq '830111191' }
   its(:type_inscription)              { is_expected.to eq 'P' }
   its(:date_immatriculation)          { is_expected.to eq '20170607' }
-  its(:date_premiere_immatriculation) { is_expected.to be_nil }
-  its(:date_radiation)                { is_expected.to be_nil }
-  its(:date_transfert)                { is_expected.to be_nil }
+  its(:date_premiere_immatriculation) { is_expected.to eq 'DAY ONE' }
+  its(:date_radiation)                { is_expected.to eq '20171207' }
+  its(:date_transfert)                { is_expected.to eq 'NEVER' }
   its(:date_derniere_modification)    { is_expected.to eq '201601' }
   its(:numero_rcs)                    { is_expected.to eq 'D830111191' }
-  its(:code_radiation)                { is_expected.to be_nil }
-  its(:motif_radiation)               { is_expected.to be_nil }
+  its(:code_radiation)                { is_expected.to eq '1' }
+  its(:motif_radiation)               { is_expected.to eq 'NONE' }
 end
