@@ -78,9 +78,7 @@ module TribunalCommerce
         end
 
         def extract_file_path(files_args, label)
-          files_args
-            .yield_self { |it| it.select { |file_args| file_args[:label] == label } }
-            .yield_self { |it| it.first }
+          files_args.find { |file_args| file_args[:label] == label }
             .yield_self { |it| it[:path] }
         end
       end
