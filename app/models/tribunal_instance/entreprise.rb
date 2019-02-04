@@ -5,4 +5,7 @@ class TribunalInstance::Entreprise < ApplicationRecord
   has_one :adresse_dap,            dependent: :destroy
   has_many :etablissements,        dependent: :destroy
   has_many :representants,         dependent: :destroy
+  has_many :observations,          dependent: :destroy
+  has_many :actes,                 dependent: :destroy
+  has_many :bilans,                dependent: :destroy
 end
