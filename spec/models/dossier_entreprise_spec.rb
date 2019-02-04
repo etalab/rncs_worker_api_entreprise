@@ -14,11 +14,11 @@ describe DossierEntreprise do
   it { is_expected.to have_db_column(:date_cessation_activite).of_type(:string) }
 
   # Associations
-  it { is_expected.to have_one(:personne_morale) }
-  it { is_expected.to have_one(:personne_physique) }
-  it { is_expected.to have_many(:representants) }
-  it { is_expected.to have_many(:observations) }
-  it { is_expected.to have_many(:etablissements) }
+  it { is_expected.to have_one(:personne_morale).dependent(:destroy) }
+  it { is_expected.to have_one(:personne_physique).dependent(:destroy) }
+  it { is_expected.to have_many(:representants).dependent(:destroy) }
+  it { is_expected.to have_many(:observations).dependent(:destroy) }
+  it { is_expected.to have_many(:etablissements).dependent(:destroy) }
 
   it_behaves_like 'having event date and label'
   it_behaves_like 'having dossier greffe id'
@@ -55,41 +55,5 @@ describe DossierEntreprise do
 
     its('siege_social.type_etablissement') { is_expected.to eq 'SIE' }
     its(:etablissement_principal) { is_expected.to be_nil }
-  end
-
-  describe '#destroy' do
-    let(:dossier) { create(:dossier_entreprise_simple) }
-    before { dossier }
-
-    subject { dossier.destroy }
-
-    it 'does not affect other dossiers saved' do
-      dossier_to_keep = create(:dossier_entreprise_simple)
-
-      expect{ subject }.to change(DossierEntreprise, :count).by(-1)
-      expect(dossier_to_keep).to be_persisted
-    end
-
-    it 'also delete associated personne morale' do
-      expect{ subject }.to change(PersonneMorale, :count).by(-1)
-    end
-
-    it 'also delete associated personne physique' do
-      dossier_entrepreneur = create(:dossier_auto_entrepreneur)
-
-      expect{ dossier_entrepreneur.destroy }.to change(PersonnePhysique, :count).by(-1)
-    end
-
-    it 'also delete associated etablissements' do
-      expect{ subject }.to change(Etablissement, :count).by(-1)
-    end
-
-    it 'also delete associated representants' do
-      expect{ subject }.to change(Representant, :count).by(-3)
-    end
-
-    it 'also delete associated observations' do
-      expect{ subject }.to change(Observation, :count).by(-3)
-    end
   end
 end
