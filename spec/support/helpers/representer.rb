@@ -16,6 +16,12 @@ module RepresenterHelper
         .find { |g| g.code_greffe == '9712' }
     end
 
+    def greffe_secondaire
+      fichier_representer
+        .greffes
+        .find { |g| g.code_greffe == '0000' }
+    end
+
     def dossier_entreprise_pm_representer
       greffe_principal
         .dossiers_entreprises

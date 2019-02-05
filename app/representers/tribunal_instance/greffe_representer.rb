@@ -7,19 +7,11 @@ class TribunalInstance::GreffeRepresenter < Representable::Decorator
     as: :societe,
     wrap: false,
     decorator: TribunalInstance::DossierEntrepriseRepresenter,
-    class: DossierEntreprise,
-    if: ->(represented:, **) do
-      represented.code_greffe != '0000'
-    end
+    class: DossierEntreprise
 
   collection :entreprises,
     as: :societe,
     wrap: false,
     decorator: TribunalInstance::EntrepriseRepresenter,
-    class: TribunalInstance::Entreprise,
-    if: ->(represented:, **) do
-      represented.code_greffe != '0000'
-    end
-
-  # TODO: code_greffe == '0000'
+    class: TribunalInstance::Entreprise
 end
