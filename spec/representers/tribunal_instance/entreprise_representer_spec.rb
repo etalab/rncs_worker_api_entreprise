@@ -44,12 +44,8 @@ describe TribunalInstance::EntrepriseRepresenter, :representer do
     its(:adresse_dap)                 { is_expected.to be_nil }
 
     its(:etablissements) { are_expected.to all be_a TribunalInstance::Etablissement }
-    its(:etablissements) { is_expected.to have_attributes(size: 2) }
+    its(:etablissements) { is_expected.to have_attributes size: 2 }
     its(:etablissements) { are_expected.to all have_attributes type_etablissement: /(PRI|SEC)/ }
-
-    its(:representants) { are_expected.to all be_a TribunalInstance::Representant }
-    its(:representants) { is_expected.to have_attributes(size: 2) }
-    its(:representants) { are_expected.to all have_attributes type_representant: /(PM|PP)/ }
   end
 
   describe 'Personne Physique' do
@@ -73,5 +69,25 @@ describe TribunalInstance::EntrepriseRepresenter, :representer do
     its(:dap_date_cloture)       { is_expected.to eq 'JAMAIS' }
     its(:auto_entrepreneur)      { is_expected.to eq '1' }
     its(:adresse_dap)            { is_expected.to be_a TribunalInstance::AdresseDAP }
+  end
+
+  describe 'entreprise greffe secondaire' do
+    subject { entreprise_greffe_secondaire }
+
+    its(:representants) { are_expected.to all be_a TribunalInstance::Representant }
+    its(:representants) { is_expected.to have_attributes size: 2 }
+    its(:representants) { are_expected.to all have_attributes type_representant: /(PM|PP)/ }
+
+    its(:observations) { are_expected.to all be_a TribunalInstance::Observation }
+    its(:observations) { are_expected.to have_attributes size: 3 }
+    its(:observations) { are_expected.to all have_attributes numero: a_string_matching(/\d+/) }
+
+    its(:actes) { are_expected.to all be_a TribunalInstance::Acte }
+    its(:actes) { are_expected.to have_attributes size: 4 }
+    its(:actes) { are_expected.to all have_attributes date_depot: a_string_matching(/\d{8}/) }
+
+    its(:bilans) { are_expected.to all be_a TribunalInstance::Bilan }
+    its(:bilans) { are_expected.to have_attributes size: 2 }
+    its(:bilans) { are_expected.to all have_attributes numero: a_string_matching(/\d{2}/)  }
   end
 end

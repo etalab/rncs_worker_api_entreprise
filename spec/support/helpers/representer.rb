@@ -49,5 +49,11 @@ module RepresenterHelper
       greffe_principal
         .entreprises[1]
     end
+
+    def entreprise_greffe_secondaire
+      greffe_secondaire
+        .entreprises
+        .first
+    end
   end
 end
