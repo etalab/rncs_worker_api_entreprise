@@ -37,14 +37,15 @@ module TribunalCommerce
         end
 
         def fetch_related_stock_units(ctx, new_stock:, **)
-          Dir.each_child(new_stock.files_path) do |unit_name|
-            if match = unit_name.match(/\A(\d{4})_S(\d)_\d{8}\.zip\Z/)
+          greffe_units = Dir.glob("#{new_stock.files_path}/*.zip")
+          greffe_units.each do |unit_path|
+            if match = unit_path.match(/\A.+\/(\d{4})_S(\d)_\d{8}\.zip\Z/)
               code_greffe, unit_number = match.captures
 
               new_stock.stock_units.create(
                 code_greffe: code_greffe,
                 number: unit_number,
-                file_path: ::File.join(new_stock.files_path, unit_name),
+                file_path: unit_path,
                 status: 'PENDING'
               )
             else
