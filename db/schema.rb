@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_02_04_171958) do
+ActiveRecord::Schema.define(version: 2019_02_06_164539) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -259,7 +259,7 @@ ActiveRecord::Schema.define(version: 2019_02_04_171958) do
   end
 
   create_table "titmc_actes", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.string "type"
+    t.string "type_acte"
     t.string "nature"
     t.string "date_depot"
     t.string "date_acte"
