@@ -19,6 +19,7 @@ module TribunalCommerce
         step :import_personnes_morales
         step :supersede_dossiers_entreprise_from_pp
         step :import_personnes_physiques
+        step :rename_csv_header_for_rep
         step :import_representants
         step :import_etablissements
         step :import_observations
@@ -75,6 +76,14 @@ module TribunalCommerce
         def import_observations(ctx, files_args:, file_importer:, **)
           obs_file_path = extract_file_path(files_args, 'obs')
           file_importer.import_observations(obs_file_path)
+        end
+
+        def rename_csv_header_for_rep(ctx, files_args:, **)
+          file_path = extract_file_path(files_args, 'rep')
+          # for sed portability on different OS : see https://stackoverflow.com/questions/5171901/sed-command-find-and-replace-in-file-and-overwrite-file-doesnt-work-it-empties
+          # some CSV files may contain quoted headers...
+          tmp_file = file_path + '.tmp'
+          `sed -E -e '1s/"?Nom_Greffe"?;"?Numero_Gestion"?;"?Siren"?;"?Type"?;/Nom_Greffe;Numero_Gestion;Siren_Entreprise;Type;/' #{file_path} > #{tmp_file} && mv #{tmp_file} #{file_path}`
         end
 
         def extract_file_path(files_args, label)
