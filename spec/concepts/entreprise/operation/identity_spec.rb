@@ -22,7 +22,7 @@ describe Entreprise::Operation::Identity do
 
     it 'sets a 404 http error' do
       expect(http_error[:code]).to eq(404)
-      expect(http_error[:message]).to eq('Aucun dossier trouvé.')
+      expect(http_error[:message]).to eq('Aucun dossier trouvé')
     end
   end
 
