@@ -1,6 +1,7 @@
 class TribunalInstance::ActeRepresenter < Representable::Decorator
   include Representable::XML
 
+  property :code_greffe, reader: ->(doc:, **) { doc.parent.parent.parent[:cod] }
   property :type_acte, as: :type
   property :nature
   property :date_depot, as: :dat_depot

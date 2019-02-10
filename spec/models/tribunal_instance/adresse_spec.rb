@@ -2,6 +2,7 @@ require 'rails_helper'
 
 describe TribunalInstance::Adresse do
   it { is_expected.to have_db_column(:id).of_type(:uuid) }
+  it { is_expected.to have_db_column(:code_greffe).of_type(:string) }
   it { is_expected.to have_db_column(:type).of_type(:string) }
   it { is_expected.to have_db_column(:ligne_1).of_type(:string) }
   it { is_expected.to have_db_column(:ligne_2).of_type(:string) }

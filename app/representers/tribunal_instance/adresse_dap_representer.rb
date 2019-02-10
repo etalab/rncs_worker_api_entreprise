@@ -1,6 +1,8 @@
 class TribunalInstance::AdresseDAPRepresenter < Representable::Decorator
   include Representable::XML
 
+  property :code_greffe, reader: ->(doc:, **) { doc.parent.parent.parent[:cod] }
+
   nested :adr do
     property :residence,       as: :resid
     property :numero_voie,     as: :num_voie

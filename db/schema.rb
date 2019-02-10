@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_02_06_164539) do
+ActiveRecord::Schema.define(version: 2019_02_10_135958) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -267,6 +267,7 @@ ActiveRecord::Schema.define(version: 2019_02_06_164539) do
     t.string "entreprise_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "code_greffe"
   end
 
   create_table "titmc_adresses", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -286,6 +287,7 @@ ActiveRecord::Schema.define(version: 2019_02_06_164539) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "representant_id"
+    t.string "code_greffe"
   end
 
   create_table "titmc_bilans", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -299,6 +301,7 @@ ActiveRecord::Schema.define(version: 2019_02_06_164539) do
     t.string "entreprise_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "code_greffe"
   end
 
   create_table "titmc_entreprises", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -357,6 +360,7 @@ ActiveRecord::Schema.define(version: 2019_02_06_164539) do
     t.string "entreprise_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "code_greffe"
   end
 
   create_table "titmc_observations", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -367,6 +371,7 @@ ActiveRecord::Schema.define(version: 2019_02_06_164539) do
     t.string "entreprise_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "code_greffe"
   end
 
   create_table "titmc_representants", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -397,6 +402,7 @@ ActiveRecord::Schema.define(version: 2019_02_06_164539) do
     t.string "entreprise_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "code_greffe"
   end
 
   add_foreign_key "daily_update_units", "daily_updates"

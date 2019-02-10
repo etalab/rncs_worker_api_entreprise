@@ -3,6 +3,7 @@ require 'rails_helper'
 describe TribunalInstance::BilanRepresenter, :representer do
   subject { entreprise_greffe_secondaire.bilans.first }
 
+  its(:code_greffe)                        { is_expected.to eq '0000' }
   its(:date_cloture_annee)                 { is_expected.to eq '2013' }
   its(:date_cloture_jour_mois)             { is_expected.to eq '3006' }
   its(:date_depot)                         { is_expected.to eq '20150109' }

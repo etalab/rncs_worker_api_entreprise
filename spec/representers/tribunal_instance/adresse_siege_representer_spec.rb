@@ -5,6 +5,7 @@ describe TribunalInstance::AdresseSiegeRepresenter, :representer do
 
   it { is_expected.to be_a TribunalInstance::AdresseSiege }
 
+  its(:code_greffe)     { is_expected.to eq '9712' }
   its(:ligne_1)         { is_expected.to eq 'NOM UN' }
   its(:ligne_2)         { is_expected.to eq 'NOM DEUX' }
   its(:residence)       { is_expected.to eq 'RESIDENCE' }

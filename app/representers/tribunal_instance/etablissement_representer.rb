@@ -1,6 +1,7 @@
 class TribunalInstance::EtablissementRepresenter < Representable::Decorator
   include Representable::XML
 
+  property :code_greffe, reader: ->(doc:, **) { doc.parent.parent.parent[:cod] }
   property :type_etablissement, as: :categ
 
   nested :activ do

@@ -2,6 +2,7 @@ require 'rails_helper'
 
 describe TribunalInstance::Bilan do
   it { is_expected.to have_db_column(:id).of_type(:uuid) }
+  it { is_expected.to have_db_column(:code_greffe).of_type(:string) }
   it { is_expected.to have_db_column(:date_cloture_annee).of_type(:string) }
   it { is_expected.to have_db_column(:date_cloture_jour_mois).of_type(:string) }
   it { is_expected.to have_db_column(:date_depot).of_type(:string) }

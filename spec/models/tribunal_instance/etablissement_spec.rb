@@ -2,6 +2,7 @@ require 'rails_helper'
 
 describe TribunalInstance::Etablissement do
   it { is_expected.to have_db_column(:id).of_type(:uuid) }
+  it { is_expected.to have_db_column(:code_greffe).of_type(:string) }
   it { is_expected.to have_db_column(:type_etablissement).of_type(:string) }
   it { is_expected.to have_db_column(:siret).of_type(:string) }
   it { is_expected.to have_db_column(:activite).of_type(:string) }

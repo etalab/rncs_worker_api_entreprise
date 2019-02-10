@@ -2,6 +2,7 @@ require 'rails_helper'
 
 describe TribunalInstance::Representant do
   it { is_expected.to have_db_column(:id).of_type(:uuid) }
+  it { is_expected.to have_db_column(:code_greffe).of_type(:string) }
   it { is_expected.to have_db_column(:qualite).of_type(:string) }
   it { is_expected.to have_db_column(:raison_sociale_ou_nom_ou_prenom).of_type(:string) }
   it { is_expected.to have_db_column(:nom_ou_denomination).of_type(:string) }

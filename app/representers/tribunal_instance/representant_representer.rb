@@ -1,6 +1,7 @@
 class TribunalInstance::RepresentantRepresenter < Representable::Decorator
   include Representable::XML
 
+  property :code_greffe, reader: ->(doc:, **) { doc.parent.parent.parent[:cod] }
   property :qualite, as: :qual
   property :raison_sociale_ou_nom_ou_prenom, as: :rais_nom
   property :nom_ou_denomination, as: :nom_denom

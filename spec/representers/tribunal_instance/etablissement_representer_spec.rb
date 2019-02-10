@@ -5,6 +5,7 @@ describe TribunalInstance::EtablissementRepresenter, :representer do
 
   it { is_expected.to be_an TribunalInstance::Etablissement }
 
+  its(:code_greffe)                    { is_expected.to eq '9712' }
   its(:type_etablissement)             { is_expected.to eq 'PRI' }
   its(:siret)                          { is_expected.to eq '83011119100011' }
   its(:activite)                       { is_expected.to eq 'NE RIEN FAIRE' }
