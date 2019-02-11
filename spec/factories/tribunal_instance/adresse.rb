@@ -12,17 +12,14 @@ FactoryBot.define do
   end
 
   factory :adresse_etablissement, class: TribunalInstance::AdresseEtablissement do
-    association :etablissement, factory: :titmc_etablissement
     ligne_1 { 'Ceci est une adresse d\'établissement' }
   end
 
   factory :adresse_representant, class: TribunalInstance::AdresseRepresentant do
-    association :representant, factory: :titmc_representant
     ligne_1 { 'Ceci est une adresse de représentant' }
   end
 
   factory :adresse_representant_permanent, class: TribunalInstance::AdresseRepresentantPermanent do
-    association :representant, factory: :titmc_representant
     ligne_1 { 'Ceci est une adresse de représentant permanent' }
   end
 end

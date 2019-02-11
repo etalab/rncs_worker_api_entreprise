@@ -84,7 +84,9 @@ FactoryBot.define do
 
     factory :titmc_dossier_entreprise do
       after :create do |dossier|
-        create :titmc_entreprise, dossier_entreprise: dossier
+        create :titmc_entreprise,
+          dossier_entreprise: dossier,
+          code_greffe: dossier.code_greffe
       end
     end
   end

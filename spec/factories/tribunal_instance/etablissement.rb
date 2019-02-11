@@ -1,10 +1,13 @@
 FactoryBot.define do
   factory :titmc_etablissement, class: TribunalInstance::Etablissement do
-    precedent_exploitant_nom { 'me' }
     association :entreprise, factory: :titmc_entreprise
 
+    precedent_exploitant_nom { 'me' }
+
     after :create do |etab|
-      create :adresse_etablissement, etablissement: etab
+      create :adresse_etablissement,
+        etablissement: etab,
+        code_greffe: etab.code_greffe
     end
   end
 end
