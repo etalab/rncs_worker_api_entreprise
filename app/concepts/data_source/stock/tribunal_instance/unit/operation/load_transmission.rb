@@ -29,10 +29,12 @@ module DataSource
               logger.info "Files extracted: #{extracted_files}"
             end
 
-            def import(ctx, extracted_files:, logger:, **)
+            def import(ctx, extracted_files:, code_greffe:, logger:, **)
               extracted_files.each do |extracted_file_path|
                 operation = Import.call(
-                  path: extracted_file_path
+                  code_greffe: code_greffe,
+                  path: extracted_file_path,
+                  logger: logger
                 )
 
                 if operation.success?
