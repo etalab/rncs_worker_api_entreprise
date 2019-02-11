@@ -75,7 +75,10 @@ colonne "Siren" en doublon par exeple) il faut s'assurer que les fichiers CSV
 sont accessibles en lecture et en écriture, ce qui peut potentiellement changer
 d'un fichier à l'autre.
 
-`find flux -type f -exec chmod 644 {} +`
+```zsh
+find flux -type d -exec chmod 755 {} +
+find flux -type f -exec chmod 644 {} +
+```
 
 #### Défaut d'encodage des fichiers CSV
 Seulement 2 fichiers de mises à jour quotidiennes (sur environ 1,5 millions de
