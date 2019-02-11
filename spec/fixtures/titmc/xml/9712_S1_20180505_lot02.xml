@@ -179,7 +179,20 @@
     </societe>
   </grf>
   <grf cod="0000">
-    <societe siren="830559035">
+    <societe siren="830111191">
+      <etabs>
+        <etab>
+          <categ>SEC</categ>
+          <adr1>
+            <voie>10_000 RUE DE L INFINI</voie>
+            <cp_bur>97110 POINTE A PITRE</cp_bur>
+          </adr1>
+          <activ>
+            <siret>83011119100012</siret>
+            <ape_naf>6820B</ape_naf>
+          </activ>
+        </etab>
+      </etabs>
       <reps>
         <rep>
           <qual>1200</qual>
@@ -281,7 +294,7 @@
         </bil>
       </bils>
     </societe>
-    <societe siren="830111191">
+    <societe siren="830964557">
       <reps>
         <rep>
           <qual>1200</qual>

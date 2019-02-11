@@ -59,7 +59,7 @@ describe DataSource::Stock::TribunalInstance::Unit::Operation::Load, :trb do
 
     it { is_expected.to be_success }
 
-    it 'persists some data', pending: 'no data persisted now' do
+    it 'persists some data' do
       expect { subject }.to change(DossierEntreprise, :count)
     end
 
