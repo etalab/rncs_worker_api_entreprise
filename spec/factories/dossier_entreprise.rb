@@ -81,5 +81,11 @@ FactoryBot.define do
         create_list :etablissement, 4, dossier_entreprise: dossier, type_etablissement: 'SEC', siren: dossier.siren
       end
     end
+
+    factory :titmc_dossier_entreprise do
+      after :create do |dossier|
+        create :titmc_entreprise, dossier_entreprise: dossier
+      end
+    end
   end
 end

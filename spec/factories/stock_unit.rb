@@ -21,7 +21,7 @@ FactoryBot.define do
       file_path do
         Rails.root.join(
           'spec', 'fixtures', 'titmc', 'zip',
-          '9712_S1_20180505_lot02_modified.zip'
+          '9712_S1_20180505_lot02.zip'
         ).to_s
       end
     end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_01_16_103811) do
+ActiveRecord::Schema.define(version: 2019_02_10_135958) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -57,6 +57,9 @@ ActiveRecord::Schema.define(version: 2019_01_16_103811) do
     t.string "libelle_derniere_modification"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "numero_rcs"
+    t.string "code_radiation"
+    t.string "motif_radiation"
   end
 
   create_table "etablissements", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -253,6 +256,153 @@ ActiveRecord::Schema.define(version: 2019_01_16_103811) do
     t.string "files_path"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "titmc_actes", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "type_acte"
+    t.string "nature"
+    t.string "date_depot"
+    t.string "date_acte"
+    t.string "numero_depot_manuel"
+    t.string "entreprise_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "code_greffe"
+  end
+
+  create_table "titmc_adresses", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "type"
+    t.string "ligne_1"
+    t.string "ligne_2"
+    t.string "residence"
+    t.string "numero_voie"
+    t.string "type_voie"
+    t.string "nom_voie"
+    t.string "localite"
+    t.string "code_postal"
+    t.string "bureau_et_cedex"
+    t.string "pays"
+    t.string "entreprise_id"
+    t.string "etablissement_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "representant_id"
+    t.string "code_greffe"
+  end
+
+  create_table "titmc_bilans", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "date_cloture_annee"
+    t.string "date_cloture_jour_mois"
+    t.string "date_depot"
+    t.string "confidentialite_document_comptable"
+    t.string "confidentialite_compte_resultat"
+    t.string "numero"
+    t.string "duree_exercice"
+    t.string "entreprise_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "code_greffe"
+  end
+
+  create_table "titmc_entreprises", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "code_greffe"
+    t.string "siren"
+    t.string "numero_gestion"
+    t.string "denomination"
+    t.string "nom_patronyme"
+    t.string "prenoms"
+    t.string "forme_juridique"
+    t.string "associe_unique"
+    t.string "date_naissance"
+    t.string "ville_naissance"
+    t.string "code_activite"
+    t.string "activite_principale"
+    t.string "capital"
+    t.string "devise"
+    t.string "capital_actuel"
+    t.string "duree_pm"
+    t.string "date_cloture"
+    t.string "nom_usage"
+    t.string "pseudonyme"
+    t.string "sigle"
+    t.string "nom_commercial"
+    t.string "greffe_siege"
+    t.string "statut_edition_extrait"
+    t.string "date_cloture_exceptionnelle"
+    t.string "domiciliataire_nom"
+    t.string "domiciliataire_rcs"
+    t.string "eirl"
+    t.string "dap_denomnimation"
+    t.string "dap_object"
+    t.string "dap_date_cloture"
+    t.string "auto_entrepreneur"
+    t.string "economie_sociale_solidaire"
+    t.string "dossier_entreprise_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "titmc_etablissements", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "type_etablissement"
+    t.string "siret"
+    t.string "activite"
+    t.string "code_activite"
+    t.string "enseigne"
+    t.string "nom_commercial"
+    t.string "date_debut_activite"
+    t.string "origine_fonds"
+    t.string "type_activite"
+    t.string "date_cessation_activite"
+    t.string "type_exploitation"
+    t.string "precedent_exploitant_nom"
+    t.string "precedent_exploitant_nom_usage"
+    t.string "precedent_exploitant_prenom"
+    t.string "entreprise_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "code_greffe"
+  end
+
+  create_table "titmc_observations", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "code"
+    t.text "texte"
+    t.string "date"
+    t.string "numero"
+    t.string "entreprise_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "code_greffe"
+  end
+
+  create_table "titmc_representants", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "qualite"
+    t.string "raison_sociale_ou_nom_ou_prenom"
+    t.string "nom_ou_denomination"
+    t.string "prenoms"
+    t.string "type_representant"
+    t.string "date_creation"
+    t.string "date_modification"
+    t.string "date_radiation"
+    t.string "pseudonyme"
+    t.string "date_naissance"
+    t.string "ville_naissance"
+    t.string "pays_naissance"
+    t.string "nationalite"
+    t.string "nom_usage"
+    t.string "greffe_immatriculation"
+    t.string "siren_ou_numero_gestion"
+    t.string "forme_juridique"
+    t.string "commentaire"
+    t.string "representant_permanent_nom"
+    t.string "representant_permanent_prenoms"
+    t.string "representant_permanent_nom_usage"
+    t.string "representant_permanent_date_naissance"
+    t.string "representant_permanent_ville_naissance"
+    t.string "representant_permanent_pays_naissance"
+    t.string "entreprise_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "code_greffe"
   end
 
   add_foreign_key "daily_update_units", "daily_updates"
