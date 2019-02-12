@@ -54,6 +54,7 @@ group :development, :test do
   gem 'spring-commands-rspec'
   gem 'rspec-rails'
   gem 'rspec-its'
+  gem 'rspec-json_expectations'
   gem 'shoulda-matchers'
   gem 'guard-rspec'
   gem 'factory_bot_rails'

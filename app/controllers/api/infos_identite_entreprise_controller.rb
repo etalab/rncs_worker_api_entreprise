@@ -6,7 +6,7 @@ class API::InfosIdentiteEntrepriseController< ApplicationController
       render json: retrieve_identity[:entreprise_identity], status: 200
     else
       http_error = retrieve_identity[:http_error]
-      render json: http_error[:message], status: http_error[:code]
+      render json: { error: http_error[:message] }, status: http_error[:code]
     end
   end
 
@@ -18,7 +18,7 @@ class API::InfosIdentiteEntrepriseController< ApplicationController
       send_data(pdf.render, filename: "infos_#{siren}.pdf", type: 'application/pdf')
     else
       http_error = retrieve_identity[:http_error]
-      render json: http_error[:message], status: http_error[:code]
+      render json: { error: http_error[:message] }, status: http_error[:code]
     end
   end
 

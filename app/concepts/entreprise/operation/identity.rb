@@ -27,7 +27,7 @@ module Entreprise
       end
 
       def no_dossier_exists(ctx, **)
-        ctx[:http_error] = { code: 404, message: 'Aucun dossier trouvé.' }
+        ctx[:http_error] = { code: 404, message: 'Aucun dossier trouvé' }
       end
 
       def fetch_dossier_principal(ctx, dossiers_entreprise:, **)
