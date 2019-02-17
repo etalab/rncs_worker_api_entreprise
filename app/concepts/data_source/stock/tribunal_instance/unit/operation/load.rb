@@ -7,6 +7,7 @@ module DataSource
 
             pass :log_info_stock
             step :fetch_transmissions
+            pass ->(ctx, logger:, **) { logger.info "#{ctx[:transmissions].count} transmissions found" }
             step ->(ctx, stock_unit:, **) { ctx[:code_greffe] = stock_unit.code_greffe }
             step Nested(ResetDatabase)
             fail :log_reset_database_failure
