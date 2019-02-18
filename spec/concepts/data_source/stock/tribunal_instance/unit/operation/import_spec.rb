@@ -4,7 +4,7 @@ describe DataSource::Stock::TribunalInstance::Unit::Operation::Import, :trb do
   subject { described_class.call path: unit_path, code_greffe: '9712', logger: logger }
 
   let(:unit_path) { Rails.root.join 'spec', 'fixtures', 'titmc', 'xml', '9712_S1_20180505_lot02.xml' }
-  let(:logger) { object_double(Rails.logger, info: true).as_null_object }
+  let(:logger) { instance_double(Logger).as_null_object }
 
   context 'success' do
     it { is_expected.to be_success }

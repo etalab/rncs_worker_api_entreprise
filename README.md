@@ -129,3 +129,25 @@ complet est effectuée et ceux-ci seront retransmis dans des stocks partiels.
 
 Dans ces cas là, nous avons fait le choix de créer les dossiers en base en
 attendant que les dossiers complets soient disponibles.
+
+## Import des données des Greffes des Tribunaux d'Instance et de Commerce Mixte (TITMC)
+### Stock
+
+Chaque stock pour un greffe donné est composé de une ou deux transissions, car
+une tramission ne peut contenir plus de 50 000 dossiers.
+
+L'import des fichiers contenant 50 000 dossiers prend 1h et consomme 6-8Go de mémoire.
+Cela est dû au nombre d'ojets crées ainsi que toutes les associations du modèle.
+
+#### Fusion des éléments du greffe '0000'
+
+Chaque fichier XML de stock TITMC et composé de deux balises `<grf cod="1234">`.
+La première balise possède l'attribut "cod" qui est le même que le fichier en cours ;
+c'est le code greffe actuellement traité. Par contre la seconde balise contient le
+cod='0000'.
+
+Peut importe la raison de ce code 0000, il faut rattacher ces informations à l'entreprise
+qui est définie dans la première balise. Cela est fait par l'opération `MergeGreffeSecondaire`
+
+Ceci est une exception des premiers stocks. Les flux suivants n'ont plus cette seconde
+balise et les prochains stocks s'il y a n'en n'auront pas non plus.
