@@ -6,7 +6,7 @@ describe TribunalInstance::DossierEntrepriseRepresenter, :representer do
   it { is_expected.to be_a DossierEntreprise }
 
   its(:code_greffe)                   { is_expected.to eq '9712' }
-  its(:nom_greffe)                    { is_expected.to eq 'fix me with a config file' }
+  its(:nom_greffe)                    { is_expected.to eq 'Pointe-à-Pitre' }
   its(:numero_gestion)                { is_expected.to eq '2017D00184' }
   its(:siren)                         { is_expected.to eq '830111191' }
   its(:type_inscription)              { is_expected.to eq 'P' }
@@ -18,4 +18,10 @@ describe TribunalInstance::DossierEntrepriseRepresenter, :representer do
   its(:numero_rcs)                    { is_expected.to eq 'D830111191' }
   its(:code_radiation)                { is_expected.to eq '1' }
   its(:motif_radiation)               { is_expected.to eq 'NONE' }
+
+  describe 'dossier code greffe 0000' do
+    subject { greffe_secondaire.dossiers_entreprises.first }
+
+    its(:nom_greffe) { is_expected.to be_nil }
+  end
 end
