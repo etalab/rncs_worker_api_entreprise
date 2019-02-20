@@ -13,6 +13,7 @@ module TribunalCommerce
           fail :log_stock_not_found, fail_fast: true
         step :save_new_stock
         step :fetch_related_stock_units
+          fail :rollback_created_stock, fail_fast: true
         step :drop_db_index
         step ->(ctx, logger:, **) { logger.info('Creating jobs to import each greffe\'s unit synchronously...') }
         step :import
@@ -36,7 +37,7 @@ module TribunalCommerce
           )
         end
 
-        def fetch_related_stock_units(ctx, new_stock:, **)
+        def fetch_related_stock_units(ctx, new_stock:, logger:, **)
           greffe_units = Dir.glob("#{new_stock.files_path}/*.zip")
           greffe_units.each do |unit_path|
             if match = unit_path.match(/\A.+\/(\d{4})_S(\d)_\d{8}\.zip\Z/)
@@ -49,6 +50,7 @@ module TribunalCommerce
                 status: 'PENDING'
               )
             else
+              logger.error("Unexpected stock unit found : `#{unit_path}`. Aborting...")
               return false
             end
           end
@@ -69,6 +71,10 @@ module TribunalCommerce
         def log_import_start(ctx, logger:, stock_args:, **)
           stock_name = "#{stock_args[:year]}/#{stock_args[:month]}/#{stock_args[:day]}"
           logger.info("Starting import : looking for stock #{stock_name} in file system...")
+        end
+
+        def rollback_created_stock(ctx, new_stock:, **)
+          new_stock.destroy
         end
       end
     end

@@ -43,6 +43,8 @@ describe TribunalCommerce::Stock::Operation::Import do
       end
     end
 
+    it 'checks the MD5 hash'
+
     it 'creates a StockTribunalCommerce with status "PENDING"' do
       expect(new_stock).to be_persisted
       expect(new_stock).to be_an_instance_of(StockTribunalCommerce)
@@ -50,6 +52,7 @@ describe TribunalCommerce::Stock::Operation::Import do
         year: '2017',
         month: '01',
         day: '28',
+        status: 'PENDING',
         files_path: a_string_ending_with('tc/stock/2017/01/28')
       )
     end
@@ -69,9 +72,23 @@ describe TribunalCommerce::Stock::Operation::Import do
     end
 
     context 'when stock units name are unexpected' do
-      it 'is failure'
-      it 'logs irregular units name are found'
-      it 'does not save any stocks or units in database'
+      let(:invalid_file_path) { File.join(fixture_path, '2017', '01', '28', 'invalid_unit.zip') }
+      before { FileUtils.touch(invalid_file_path) }
+      after { FileUtils.rm(invalid_file_path) }
+
+      it { is_expected.to be_failure }
+
+      it 'logs irregular units name are found' do
+        subject
+
+        expect(logger).to have_received(:error)
+          .with("Unexpected stock unit found : `#{invalid_file_path}`. Aborting...")
+      end
+
+      it 'does not save any stocks or units in database' do
+        expect { subject }.to not_change(StockTribunalCommerce, :count)
+          .and(not_change(StockUnit, :count))
+      end
     end
 
     def expected_drop_query_count
