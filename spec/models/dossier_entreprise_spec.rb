@@ -68,4 +68,16 @@ describe DossierEntreprise do
     its(:titmc_entreprise) { is_expected.to be_a TribunalInstance::Entreprise }
     its(:titmc_entreprise) { is_expected.to have_attributes forme_juridique: '9999' }
   end
+
+  describe 'origine' do
+    it 'is a tribunal commerce' do
+      dossier_tc = build :dossier_entreprise, code_greffe: '7608'
+      expect(dossier_tc.origine).to eq :tribunal_commerce
+    end
+
+    it 'is a tribunal instance' do
+      dossier_titmc = build :dossier_entreprise, code_greffe: '6752'
+      expect(dossier_titmc.origine).to eq :tribunal_instance
+    end
+  end
 end
