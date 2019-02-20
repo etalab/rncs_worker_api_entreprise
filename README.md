@@ -36,6 +36,17 @@ Run `bundle install`
 
 * Capital social de la forme euros.cents (cents peut etre en mono ou duo digits) ou alors vide
 
+## Récupération des fichiers depuis le serveur FTP de l'INPI
+
+La commande utilisée pour se synchroniser avec le flux de fichiers disponibles
+sur le FTP de l'INPI :
+
+```zsh
+lftp -u 'login','password' -p 21 opendata-rncs.inpi.fr -e 'set
+ftp:use-mode-z true; mirror -c -P 4 --only-missing public/IMR_Donnees_Saisies
+~/rncs_data/IMR_Donnees_Saisies; quit'
+```
+
 ## Import des données des Greffes des Tribunaux de Commerce
 
 ### Traitements des fichiers CSV avant import
@@ -64,7 +75,10 @@ colonne "Siren" en doublon par exeple) il faut s'assurer que les fichiers CSV
 sont accessibles en lecture et en écriture, ce qui peut potentiellement changer
 d'un fichier à l'autre.
 
-`find flux -type f -exec chmod 644 {} +`
+```zsh
+find flux -type d -exec chmod 755 {} +
+find flux -type f -exec chmod 644 {} +
+```
 
 #### Défaut d'encodage des fichiers CSV
 Seulement 2 fichiers de mises à jour quotidiennes (sur environ 1,5 millions de
