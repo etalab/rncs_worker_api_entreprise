@@ -60,17 +60,17 @@ module DataSource
             end
 
             def merge_data_from_greffe_secondaire(ctx, hash_entreprises:, greffe_secondaire:, **)
-              greffe_secondaire.entreprises.each do |entreprise_secondaire|
-                entreprise_principale = hash_entreprises[entreprise_secondaire.siren]
+              greffe_secondaire.entreprises.each do |entreprise_code_greffe_0000|
+                entreprise_related = hash_entreprises[entreprise_code_greffe_0000.siren]
 
-                if entreprise_principale.nil?
-                  ctx[:missing_siren] = entreprise_secondaire.siren
+                if entreprise_related.nil?
+                  ctx[:missing_siren] = entreprise_code_greffe_0000.siren
                   return false
                 end
 
-                operation = MergeGreffeSecondaire.call(
-                  entreprise_secondaire: entreprise_secondaire,
-                  entreprise_principale: entreprise_principale,
+                operation = MergeGreffeZero.call(
+                  entreprise_code_greffe_0000: entreprise_code_greffe_0000,
+                  entreprise_related: entreprise_related,
                   code_greffe: ctx[:code_greffe],
                   logger: ctx[:logger]
                 )

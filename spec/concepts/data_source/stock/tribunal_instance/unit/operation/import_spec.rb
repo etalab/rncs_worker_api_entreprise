@@ -31,7 +31,7 @@ describe DataSource::Stock::TribunalInstance::Unit::Operation::Import, :trb do
     end
 
     it 'calls find and merge operation twice' do
-      expect(DataSource::Stock::TribunalInstance::Unit::Operation::MergeGreffeSecondaire)
+      expect(DataSource::Stock::TribunalInstance::Unit::Operation::MergeGreffeZero)
         .to receive(:call)
         .and_return(trb_result_success)
         .twice
@@ -42,7 +42,7 @@ describe DataSource::Stock::TribunalInstance::Unit::Operation::Import, :trb do
 
   describe 'when merge greffe secondaire fails' do
     before do
-      allow(DataSource::Stock::TribunalInstance::Unit::Operation::MergeGreffeSecondaire)
+      allow(DataSource::Stock::TribunalInstance::Unit::Operation::MergeGreffeZero)
         .to receive(:call)
         .and_return(trb_result_failure)
     end

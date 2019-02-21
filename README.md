@@ -139,15 +139,26 @@ une tramission ne peut contenir plus de 50 000 dossiers.
 L'import des fichiers contenant 50 000 dossiers prend 1h et consomme 6-8Go de mémoire.
 Cela est dû au nombre d'ojets crées ainsi que toutes les associations du modèle.
 
-#### Fusion des éléments du greffe '0000'
+#### Fusion des éléments du code greffe '0000'
 
 Chaque fichier XML de stock TITMC et composé de deux balises `<grf cod="1234">`.
 La première balise possède l'attribut "cod" qui est le même que le fichier en cours ;
-c'est le code greffe actuellement traité. Par contre la seconde balise contient le
+c'est le code du greffe actuellement traité. Par contre la seconde balise contient le
 cod='0000'.
 
-Peut importe la raison de ce code 0000, il faut rattacher ces informations à l'entreprise
-qui est définie dans la première balise. Cela est fait par l'opération `MergeGreffeSecondaire`
+Cette seconde balise '0000' ne contient **que** les représentants, les actes,
+les bilans, les observations et *quelques* établissements. À l'inverse la première
+balise ne contiendra **jamais** de représentants, actes, ou bilans.
 
-Ceci est une exception des premiers stocks. Les flux suivants n'ont plus cette seconde
-balise et les prochains stocks s'il y a n'en n'auront pas non plus.
+Ainsi pour une entreprise donnée on se retrouve avec des informations dans la balise
+'1234' et dans la balise '0000'. Ce **ne sont pas** des informations provenant
+d'inscriptions secondaires dans d'autres greffes. En effet une entreprise peut avoir
+plusieurs inscriptions chez différents greffes.
+
+C'est pour cette raison qu'il faut rattacher ces informations associées au code greffe
+'0000' à l'entreprise qui est définie dans la première balise. Cela est fait par
+l'opération MergeGreffeZero. Cette entreprise est identifiée par son SIREN
+seule information d'identification présente dans la balise '0000'.
+
+P.S : Ceci est une exception des premiers stocks. Les flux suivants n'ont plus cette seconde
+balise et les prochains stocks (s'il y a) n'en n'auront pas non plus.
