@@ -29,6 +29,8 @@ describe DossierEntreprise do
   it_behaves_like 'having dossier greffe id'
   it_behaves_like 'having rails timestamps'
 
+  it { is_expected.to be_a_kind_of(ClearDataHelper) }
+
   let(:siren) { '123456789' }
 
   # TODO Refactor for better behaviour description

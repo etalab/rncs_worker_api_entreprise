@@ -1,4 +1,6 @@
 class DossierEntreprise < ApplicationRecord
+  prepend ClearDataHelper
+
   has_one :personne_morale, dependent: :destroy
   has_one :personne_physique, dependent: :destroy
   has_many :representants, dependent: :destroy
