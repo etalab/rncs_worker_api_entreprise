@@ -19,7 +19,7 @@ class DossierEntreprise < ApplicationRecord
     @etablissement_principal ||= etablissements.find_by(type_etablissement: 'PRI') || etablissements.find_by(type_etablissement: 'SEP')
   end
 
-  def origine
+  def type_greffe
     codes_greffes_tribunal_instance.include?(code_greffe) ? :tribunal_instance : :tribunal_commerce
   end
 
