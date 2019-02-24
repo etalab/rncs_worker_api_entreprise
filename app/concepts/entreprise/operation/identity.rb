@@ -45,6 +45,7 @@ module Entreprise
       end
 
       def fetch_etablissement_principal(ctx, dossier_principal:, **)
+        # TODO: this do not warn about multiple etab PRI
         ctx[:etablissement_principal] = dossier_principal.etablissement_principal
       end
 
