@@ -10,7 +10,7 @@ describe DataSource::Stock::TribunalInstance::Unit::Operation::LoadTransmission,
   end
 
   let(:spec_path) { Rails.root.join 'spec', 'fixtures', 'titmc', 'zip', filename }
-  let(:logger) { object_double(Rails.logger, info: true).as_null_object }
+  let(:logger) { instance_double(Logger).as_null_object }
 
   context 'when zip exists' do
     let(:filename) { '9712_S1_20180505_lot02.zip' }
@@ -85,7 +85,7 @@ describe DataSource::Stock::TribunalInstance::Unit::Operation::LoadTransmission,
   end
 
   context 'when ZIP::Operation::Extract fails' do
-    let(:filename) { 'missing_file.zip' }
+    let(:filename) { 'invalid_zip_file.zip' }
 
     it { is_expected.to be_failure }
 
@@ -99,7 +99,27 @@ describe DataSource::Stock::TribunalInstance::Unit::Operation::LoadTransmission,
     it 'logs an error' do
       expect(logger)
         .to receive(:error)
-        .with /unzip:  cannot find or open .+/
+        .with /.+this file is not\n  a zipfile.+/
+      subject
+    end
+  end
+
+  context 'MD5 check fails' do
+    let(:filename) { 'file_without_md5.zip' }
+
+    it { is_expected.to be_failure }
+
+    it 'does not call the import operation' do
+      expect(DataSource::Stock::TribunalInstance::Unit::Operation::Import)
+        .not_to receive(:call)
+
+      subject
+    end
+
+    it 'logs an error' do
+      expect(logger)
+        .to receive(:error)
+        .with "MD5 file not found (#{spec_path})"
       subject
     end
   end
