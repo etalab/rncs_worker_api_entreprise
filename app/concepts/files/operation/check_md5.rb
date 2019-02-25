@@ -1,8 +1,8 @@
 module Files
   module Operation
     class CheckMD5 < Trailblazer::Operation
-      step :get_md5_filename
-      step :load_expected_md5
+      step :parse_md5_filename
+      step :read_md5_file_hash
       fail :log_md5_file_not_found, fail_fast: true
       step :compute_md5
       fail :log_file_not_found, fail_fast: true
@@ -10,11 +10,11 @@ module Files
       fail :log_compare_failed
       pass :log_success
 
-      def get_md5_filename(ctx, path:, **)
+      def parse_md5_filename(ctx, path:, **)
         ctx[:md5_filename] = path.gsub /\..*$/, '.md5'
       end
 
-      def load_expected_md5(ctx, md5_filename:, **)
+      def read_md5_file_hash(ctx, md5_filename:, **)
         ctx[:expected_md5] = ::File.read(md5_filename).delete("\n")
       rescue Errno::ENOENT
         false
