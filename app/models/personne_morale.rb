@@ -1,5 +1,5 @@
 class PersonneMorale < ApplicationRecord
-  include ClearDataHelper
+  include CleanDataHelper
 
   belongs_to :dossier_entreprise
 end

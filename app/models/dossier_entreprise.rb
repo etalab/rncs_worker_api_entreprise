@@ -1,5 +1,5 @@
 class DossierEntreprise < ApplicationRecord
-  include ClearDataHelper
+  include CleanDataHelper
 
   has_one :personne_morale, dependent: :destroy
   has_one :personne_physique, dependent: :destroy

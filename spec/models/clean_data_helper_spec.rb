@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe ClearDataHelper do
+describe CleanDataHelper do
   let(:stubbed_AR_base) do
     klass = Class.new do
       def self.attribute_names
@@ -21,20 +21,20 @@ describe ClearDataHelper do
   context 'when includind class does not respond to .attribute_names' do
     let(:tested_class) do
       klass = Class.new do
-        include ClearDataHelper
+        include CleanDataHelper
       end
       klass
     end
 
     it 'raises an error' do
-      expect { tested_class }.to raise_error(ClearDataHelper::InappropriateBaseClass, 'base class must implement `attribute_names` class method')
+      expect { tested_class }.to raise_error(CleanDataHelper::InappropriateBaseClass, 'base class must implement `attribute_names` class method')
     end
   end
 
   context 'when including class responds to .attribute_names' do
     let(:tested_class) do
       klass = Class.new(stubbed_AR_base) do
-        include ClearDataHelper
+        include CleanDataHelper
       end
       klass
     end

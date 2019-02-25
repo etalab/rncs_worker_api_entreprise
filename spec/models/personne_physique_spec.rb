@@ -52,5 +52,5 @@ describe PersonnePhysique do
   it_behaves_like 'having rails timestamps'
   it_behaves_like 'having dossier greffe id'
 
-  it { is_expected.to be_a_kind_of(ClearDataHelper) }
+  it { is_expected.to be_a_kind_of(CleanDataHelper) }
 end

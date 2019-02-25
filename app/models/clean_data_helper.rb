@@ -1,4 +1,4 @@
-module ClearDataHelper
+module CleanDataHelper
   class InappropriateBaseClass < StandardError; end;
 
   def self.included(base)
@@ -19,15 +19,15 @@ module ClearDataHelper
   end
 
   def remove_leading_spaces_and_quotes(str)
-    return str if str.class != String
+    return str unless str.kind_of?(String)
     str.gsub(/\A[" ]+|[" ]+\z/, '')
   end
 
   def attributes(*args)
     raw_attributes = super(*args)
-    raw_attributes.reduce({}) do |cleaned_hash, (k, v)|
-      cleaned_hash[k] = remove_leading_spaces_and_quotes(v)
-      cleaned_hash
+    raw_attributes.reduce({}) do |cleaned_attributes, (k, v)|
+      cleaned_attributes[k] = remove_leading_spaces_and_quotes(v)
+      cleaned_attributes
     end
   end
 end
