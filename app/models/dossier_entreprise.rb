@@ -18,4 +18,16 @@ class DossierEntreprise < ApplicationRecord
   def etablissement_principal
     @etablissement_principal ||= etablissements.find_by(type_etablissement: 'PRI') || etablissements.find_by(type_etablissement: 'SEP')
   end
+
+  def type_greffe
+    codes_greffes_tribunal_instance.include?(code_greffe) ? :tribunal_instance : :tribunal_commerce
+  end
+
+  private
+
+  def codes_greffes_tribunal_instance
+    YAML.load_file('config/codes_greffes_tribunal_instance.yml')
+      .map(&:keys)
+      .flatten
+  end
 end

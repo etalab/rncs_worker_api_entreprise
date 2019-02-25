@@ -6,7 +6,10 @@ class TribunalInstance::DossierEntrepriseRepresenter < Representable::Decorator
   property :numero_gestion, as: :num_gestion, attribute: true
 
   property :type_inscription,           default: 'P'
-  property :nom_greffe,                 default: 'fix me with a config file'
+  property :nom_greffe, reader: ->(represented:, **) do
+    TribunalInstance::DossierEntrepriseRepresenter
+      .nom_greffe(represented.code_greffe)
+  end
   property :date_derniere_modification, as: :dat_donnees, attribute: true
   property :date_immatriculation
 
@@ -30,5 +33,12 @@ class TribunalInstance::DossierEntrepriseRepresenter < Representable::Decorator
     nested :dern_ajout do
       property :date_transfert, as: :dat_trsft_siege
     end
+  end
+
+  private
+
+  def self.nom_greffe(code_greffe)
+    ::YAML.load_file('config/codes_greffes_tribunal_instance.yml')
+      .find { |e| e.key?(code_greffe) }&.values&.first
   end
 end
