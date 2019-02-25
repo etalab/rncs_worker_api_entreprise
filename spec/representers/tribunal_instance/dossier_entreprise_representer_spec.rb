@@ -20,7 +20,7 @@ describe TribunalInstance::DossierEntrepriseRepresenter, :representer do
   its(:motif_radiation)               { is_expected.to eq 'NONE' }
 
   describe 'dossier code greffe 0000' do
-    subject { greffe_secondaire.dossiers_entreprises.first }
+    subject { greffe_0000.dossiers_entreprises.first }
 
     its(:nom_greffe) { is_expected.to be_nil }
   end

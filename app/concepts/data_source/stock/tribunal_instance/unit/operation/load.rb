@@ -7,14 +7,15 @@ module DataSource
 
             pass :log_info_stock
             step :fetch_transmissions
+            pass ->(ctx, logger:, **) { logger.info "#{ctx[:transmissions].count} transmissions found" }
             step ->(ctx, stock_unit:, **) { ctx[:code_greffe] = stock_unit.code_greffe }
-            #step ResetDatabase # TODO when TITMC model is designed
+            step Nested(ResetDatabase)
             fail :log_reset_database_failure
             step :load_greffe_files
             fail :log_transmission_failure
 
             def log_info_stock(ctx, logger:, stock_unit:, **)
-              logger.info "Starting import of stock #{stock_unit.stock.date}"
+              logger.info "Starting import of stock #{stock_unit.stock.date}, greffe: #{stock_unit.code_greffe}"
             end
 
             def fetch_transmissions(ctx, stock_unit:, **)

@@ -79,7 +79,7 @@ describe DataSource::Stock::TribunalInstance::Unit::Operation::LoadTransmission,
     def expect_import_success_with(filename)
       expect(DataSource::Stock::TribunalInstance::Unit::Operation::Import)
         .to receive(:call)
-        .with(path: a_string_ending_with(filename))
+        .with(path: a_string_ending_with(filename), code_greffe: '9712', logger: logger)
         .and_return(trb_result_success)
     end
   end

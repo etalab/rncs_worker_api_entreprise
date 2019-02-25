@@ -71,8 +71,8 @@ describe TribunalInstance::EntrepriseRepresenter, :representer do
     its(:adresse_dap)            { is_expected.to be_a TribunalInstance::AdresseDAP }
   end
 
-  describe 'entreprise greffe secondaire' do
-    subject { entreprise_greffe_secondaire }
+  describe 'entreprise greffe 0000' do
+    subject { entreprise_greffe_0000 }
 
     its(:representants) { are_expected.to all be_a TribunalInstance::Representant }
     its(:representants) { is_expected.to have_attributes size: 2 }

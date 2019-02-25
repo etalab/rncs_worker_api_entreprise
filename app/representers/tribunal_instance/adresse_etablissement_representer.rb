@@ -2,7 +2,6 @@ class TribunalInstance::AdresseEtablissementRepresenter < Representable::Decorat
   include Representable::XML
 
   property :code_greffe, reader: ->(doc:, **) { doc.parent.parent.parent.parent[:cod] }
-
   property :ligne_1,         as: :part_1
   property :ligne_2,         as: :part_2
   property :residence,       as: :resid

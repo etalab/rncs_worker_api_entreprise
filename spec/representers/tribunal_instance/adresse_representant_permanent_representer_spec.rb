@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe TribunalInstance::AdresseRepresentantPermanentRepresenter, :representer do
   subject do
-    entreprise_greffe_secondaire
+    entreprise_greffe_0000
       .representants[1]
       .adresse_representant_permanent
   end

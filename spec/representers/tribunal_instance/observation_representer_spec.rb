@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe TribunalInstance::ObservationRepresenter, :representer do
-  subject { entreprise_greffe_secondaire.observations.first }
+  subject { entreprise_greffe_0000.observations.first }
 
   it { is_expected.to be_a TribunalInstance::Observation }
 

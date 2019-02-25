@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<fichier type="FULL" version="1.3" xmlns="fr:inpi:odrncs:serpentXML">
+  <grf cod="9712">
+    <societe num_gestion="2017A00422" siren="830964557">
+      <idt>
+        <rcs>A830964557</rcs>
+        <nom_raison_soc>ALEXIS</nom_raison_soc>
+        <prenom>GLADYS AMEDEE</prenom>
+        <code_form_jur>1200</code_form_jur>
+        <siege>
+          <adr_1>
+            <pays>FR</pays>
+          </adr_1>
+        </siege>
+        <activ>
+          <ape_naf>4776Z</ape_naf>
+        </activ>
+      </idt>
+      <etabs>
+        <etab>
+          <categ>PRI</categ>
+          <enseigne>LA RELANCE</enseigne>
+          <activ>
+            <siret>83096455700011</siret>
+            <ape_naf>4776Z</ape_naf>
+          </activ>
+        </etab>
+      </etabs>
+    </societe>
+  </grf>
+  <grf cod="0000">
+    <societe siren="123456789">
+      <reps>
+        <rep>
+          <qual>1200</qual>
+          <rais_nom>OULAC JOSEPH CHARLEMAGNE ALEXANDRE</rais_nom>
+          <nom_denom>OULAC</nom_denom>
+          <prenom>JOSEPH CHARLEMAGNE ALEXANDRE</prenom>
+          <type_dir>PP</type_dir>
+        </rep>
+      </reps>
+    </societe>
+  </grf>
+</fichier>

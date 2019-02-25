@@ -10,26 +10,26 @@ module RepresenterHelper
         .from_xml(File.read(xml_path.to_s))
     end
 
-    def greffe_principal
+    def main_greffe
       fichier_representer
         .greffes
         .find { |g| g.code_greffe == '9712' }
     end
 
-    def greffe_secondaire
+    def greffe_0000
       fichier_representer
         .greffes
         .find { |g| g.code_greffe == '0000' }
     end
 
     def dossier_entreprise_pm_representer
-      greffe_principal
+      main_greffe
         .dossiers_entreprises
         .first
     end
 
     def entreprise_pm_representer
-      greffe_principal
+      main_greffe
         .entreprises
         .first
     end
@@ -46,12 +46,12 @@ module RepresenterHelper
     end
 
     def entreprise_pp_representer
-      greffe_principal
+      main_greffe
         .entreprises[1]
     end
 
-    def entreprise_greffe_secondaire
-      greffe_secondaire
+    def entreprise_greffe_0000
+      greffe_0000
         .entreprises
         .first
     end
