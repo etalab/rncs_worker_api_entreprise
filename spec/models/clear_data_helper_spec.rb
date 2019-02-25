@@ -1,14 +1,27 @@
 require 'rails_helper'
 
 describe ClearDataHelper do
-  context 'when prepender class does not respond to .attribute_names' do
+  let(:stubbed_AR_base) do
+    klass = Class.new do
+      def self.attribute_names
+        ['attr_test']
+      end
+
+      def attr_test
+        '   "  cou" cou   " '
+      end
+
+      def attributes
+        { attr_test: '   "  cou" cou   " ' }
+      end
+    end
+    klass
+  end
+
+  context 'when includind class does not respond to .attribute_names' do
     let(:tested_class) do
       klass = Class.new do
-        prepend ClearDataHelper
-
-        def attr_test
-          '   "  cou" cou   " '
-        end
+        include ClearDataHelper
       end
       klass
     end
@@ -18,26 +31,24 @@ describe ClearDataHelper do
     end
   end
 
-  context 'when prepender class responds to .attribute_names' do
+  context 'when including class responds to .attribute_names' do
     let(:tested_class) do
-      klass = Class.new do
-        def self.attribute_names
-          ['attr_test']
-        end
-
-        prepend ClearDataHelper
-
-        def attr_test
-          '   "  cou" cou   " '
-        end
+      klass = Class.new(stubbed_AR_base) do
+        include ClearDataHelper
       end
       klass
     end
 
-    it 'removes leading quotes and spaces from attributes' do
+    it 'removes leading quotes and spaces on attribute\'s reader call' do
       filtered_attr = tested_class.new.attr_test
 
       expect(filtered_attr).to eq('cou" cou')
+    end
+
+    it 'removes leading quotes and spaces on #atributes method call' do
+      filtered_attr = tested_class.new.attributes
+
+      expect(filtered_attr).to match({ attr_test: 'cou" cou' })
     end
   end
 end

@@ -1,7 +1,7 @@
 module ClearDataHelper
   class InappropriateBaseClass < StandardError; end;
 
-  def self.prepended(base)
+  def self.included(base)
     if base.respond_to?(:attribute_names)
       override_default_attributes(base)
     else
@@ -11,11 +11,9 @@ module ClearDataHelper
 
   def self.override_default_attributes(model)
     model.attribute_names.each do |attr|
-      unless ['id', 'created_at', 'updated_at'].include?(attr)
-        define_method attr do |*args|
-          original_data = super(*args)
-          remove_leading_spaces_and_quotes(original_data)
-        end
+      define_method attr do |*args|
+        original_data = super(*args)
+        remove_leading_spaces_and_quotes(original_data)
       end
     end
   end
@@ -27,10 +25,9 @@ module ClearDataHelper
 
   def attributes(*args)
     raw_attributes = super(*args)
-    clean_attributes = {}
-    raw_attributes.each do |k, v|
-      clean_attributes[k] = remove_leading_spaces_and_quotes(v)
+    raw_attributes.reduce({}) do |cleaned_hash, (k, v)|
+      cleaned_hash[k] = remove_leading_spaces_and_quotes(v)
+      cleaned_hash
     end
-    clean_attributes
   end
 end
