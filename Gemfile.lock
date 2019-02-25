@@ -226,6 +226,7 @@ GEM
     rb-fsevent (0.10.3)
     rb-inotify (0.9.10)
       ffi (>= 0.5.0, < 2)
+    rb-readline (0.5.5)
     redis (4.0.2)
     reform (2.2.4)
       disposable (>= 0.4.1)
@@ -348,6 +349,7 @@ DEPENDENCIES
   puma (~> 3.11)
   rack-cors
   rails (~> 5.2.0)
+  rb-readline
   redis (~> 4.0.2)
   rspec-its
   rspec-json_expectations
