@@ -21,6 +21,16 @@ module ClearDataHelper
   end
 
   def remove_leading_spaces_and_quotes(str)
+    return str if str.class != String
     str.gsub(/\A[" ]+|[" ]+\z/, '')
+  end
+
+  def attributes(*args)
+    raw_attributes = super(*args)
+    clean_attributes = {}
+    raw_attributes.each do |k, v|
+      clean_attributes[k] = remove_leading_spaces_and_quotes(v)
+    end
+    clean_attributes
   end
 end
