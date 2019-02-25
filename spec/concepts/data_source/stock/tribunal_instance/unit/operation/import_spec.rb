@@ -26,7 +26,7 @@ describe DataSource::Stock::TribunalInstance::Unit::Operation::Import, :trb do
       expect { subject }.to change(TribunalInstance::Adresse, :count).by 10
     end
 
-    it 'persists some data from greffe secondaire' do
+    it 'persists some data from greffe 0000' do
       expect { subject }.to change(TribunalInstance::Observation, :count).by 3
     end
 
@@ -40,7 +40,7 @@ describe DataSource::Stock::TribunalInstance::Unit::Operation::Import, :trb do
     end
   end
 
-  describe 'when merge greffe secondaire fails' do
+  describe 'when merge code greffe 0000 fails' do
     before do
       allow(DataSource::Stock::TribunalInstance::Unit::Operation::MergeGreffeZero)
         .to receive(:call)
@@ -50,13 +50,13 @@ describe DataSource::Stock::TribunalInstance::Unit::Operation::Import, :trb do
     it { is_expected.to be_failure }
   end
 
-  context 'when entreprise in greffe secondaire not in greffe principal' do
-    let(:unit_path) { Rails.root.join 'spec', 'fixtures', 'titmc', 'xml', 'missing_entreprise_principale.xml' }
+  context 'when entreprise in greffe 0000 not in normal greffe ' do
+    let(:unit_path) { Rails.root.join 'spec', 'fixtures', 'titmc', 'xml', 'missing_entreprise_in_main_greffe.xml' }
 
     it { is_expected.to be_failure }
 
     it 'logs an error' do
-      expect(logger).to receive(:error).with('No entreprise found in greffe principal for entreprise 123456789 of greffe secondaire')
+      expect(logger).to receive(:error).with('No entreprise found in main greffe section for entreprise 123456789 of greffe 0000')
       subject
     end
   end

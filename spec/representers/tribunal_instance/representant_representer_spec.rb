@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe TribunalInstance::RepresentantRepresenter, :representer do
   describe 'representant PP' do
-    subject { entreprise_greffe_secondaire.representants.first }
+    subject { entreprise_greffe_0000.representants.first }
 
     it { is_expected.to be_a TribunalInstance::Representant }
 
@@ -37,7 +37,7 @@ describe TribunalInstance::RepresentantRepresenter, :representer do
   end
 
   describe 'representant PM' do
-    subject { entreprise_greffe_secondaire.representants[1] }
+    subject { entreprise_greffe_0000.representants[1] }
 
     its(:adresse_representant_permanent)         { is_expected.to be_a TribunalInstance::AdresseRepresentantPermanent }
     its(:greffe_immatriculation)                 { is_expected.to eq 'PARIS' }

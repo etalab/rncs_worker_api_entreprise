@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe TribunalInstance::ActeRepresenter, :representer do
-  subject { entreprise_greffe_secondaire.actes.first }
+  subject { entreprise_greffe_0000.actes.first }
 
   its(:code_greffe)         { is_expected.to eq '0000' }
   its(:type_acte)           { is_expected.to eq 'AA' }

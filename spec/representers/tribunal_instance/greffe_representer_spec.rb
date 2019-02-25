@@ -9,14 +9,14 @@ describe TribunalInstance::GreffeRepresenter, :representer do
     its(:entreprises)           { are_expected.to all be_a TribunalInstance::Entreprise }
   end
 
-  describe 'inscriptions principales' do
-    subject { greffe_principal }
+  describe 'inscriptions in main greffe' do
+    subject { main_greffe }
 
     it_behaves_like 'greffe with dossiers', code_greffe: '9712'
   end
 
-  describe 'inscriptions secondaires' do
-    subject { greffe_secondaire }
+  describe 'inscriptions greffe 0000' do
+    subject { greffe_0000 }
 
     it_behaves_like 'greffe with dossiers', code_greffe: '0000'
   end

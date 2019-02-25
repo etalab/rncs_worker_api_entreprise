@@ -51,7 +51,7 @@ describe DataSource::Stock::TribunalInstance::Unit::Operation::MergeGreffeZero d
     end
   end
 
-  context 'when entreprise secondaire has incomplete data' do
+  context 'when entreprise in code greffe 0000 has incomplete data' do
     let(:entreprise_code_greffe_0000) { create :titmc_entreprise_incomplete, siren: siren, code_greffe: code_greffe }
     let(:entreprise_related)          { create :titmc_entreprise,            siren: siren, code_greffe: '0000' }
 

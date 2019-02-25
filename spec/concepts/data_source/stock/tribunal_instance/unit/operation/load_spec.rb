@@ -59,8 +59,8 @@ describe DataSource::Stock::TribunalInstance::Unit::Operation::Load, :trb do
 
     it { is_expected.to be_success }
 
-    it 'persists some data' do
-      expect { subject }.to change(DossierEntreprise, :count)
+    it 'persists two dossiers entreprises' do
+      expect { subject }.to change(DossierEntreprise, :count).by 2
     end
 
     it 'does not log any error' do

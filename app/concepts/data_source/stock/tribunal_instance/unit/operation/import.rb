@@ -4,40 +4,38 @@ module DataSource
       module Unit
         module Operation
           class Import < Trailblazer::Operation
-            BATCH_SIZE = 5_000
+            extend ClassDependencies
+
+            BATCH_SIZE         = 5_000
+            Fichier            = Struct.new(:greffes)
+            self[:fichier]     = Fichier.new
+            self[:representer] = ::TribunalInstance::FichierRepresenter.new self[:fichier]
 
             pass ->(ctx, logger:, **) { logger.info 'Starting import' }
 
-            step :set_context
             step :parse_xml
             step :extract_data_from_greffes
             pass :log_mapping_done
 
             step :create_associations_dossiers_and_entreprises
             step :create_entreprises_hash_with_siren
-            step :merge_data_from_greffe_secondaire
-            fail :log_missing_siren_in_greffe_principal
+            step :merge_data_from_code_greffe_0000
+            fail :log_missing_siren_in_main_greffe
             pass ->(ctx, logger:, **) { logger.info 'Models associations done' }
 
             step :persist
             pass ->(ctx, logger:, **) { logger.info 'All data persisted' }
 
-            Fichier = Struct.new(:greffes)
-
-            def set_context(ctx, **)
-              ctx[:fichier]     = Fichier.new
-              ctx[:representer] = ::TribunalInstance::FichierRepresenter.new ctx[:fichier]
-            end
 
             def parse_xml(ctx, path:, representer:, **)
               representer.from_xml ::File.read path
             end
 
             def extract_data_from_greffes(ctx, fichier:, code_greffe:, **)
-              ctx[:greffe_principal]     = fichier.greffes.find { |g| g.code_greffe == code_greffe }
-              ctx[:greffe_secondaire]    = fichier.greffes.find { |g| g.code_greffe == '0000' }
-              ctx[:dossiers_entreprises] = ctx[:greffe_principal].dossiers_entreprises
-              ctx[:entreprises]          = ctx[:greffe_principal].entreprises
+              main_greffe                = fichier.greffes.find { |g| g.code_greffe == code_greffe }
+              ctx[:greffe_0000]          = fichier.greffes.find { |g| g.code_greffe == '0000' }
+              ctx[:dossiers_entreprises] = main_greffe.dossiers_entreprises
+              ctx[:entreprises]          = main_greffe.entreprises
             end
 
             def log_mapping_done(ctx, logger:, dossiers_entreprises:, **)
@@ -46,7 +44,11 @@ module DataSource
 
             def create_associations_dossiers_and_entreprises(ctx, dossiers_entreprises:, entreprises:, **)
               dossiers_entreprises.each_with_index do |dossier, index|
-                # both have the same index & it's instant compared to Array.find
+                # dossiers_entreprises[index] and entreprise[index] refers to the same company
+                # they are created in the same time by Trailblazer representer
+                # equivalent as : dossier.titmc_entreprise = entreprises.find_by(siren: dossier.siren, numero_gestion: dossier.numero_gestion)
+                # but faster
+                # so we can do this safely:
                 dossier.titmc_entreprise = entreprises[index]
               end
             end
@@ -59,8 +61,8 @@ module DataSource
               ctx[:hash_entreprises] = hash_entreprises
             end
 
-            def merge_data_from_greffe_secondaire(ctx, hash_entreprises:, greffe_secondaire:, **)
-              greffe_secondaire.entreprises.each do |entreprise_code_greffe_0000|
+            def merge_data_from_code_greffe_0000(ctx, hash_entreprises:, greffe_0000:, **)
+              greffe_0000.entreprises.each do |entreprise_code_greffe_0000|
                 entreprise_related = hash_entreprises[entreprise_code_greffe_0000.siren]
 
                 if entreprise_related.nil?
@@ -79,9 +81,9 @@ module DataSource
               end
             end
 
-            def log_missing_siren_in_greffe_principal(ctx, logger:, **)
+            def log_missing_siren_in_main_greffe(ctx, logger:, **)
               if ctx[:missing_siren]
-                logger.error "No entreprise found in greffe principal for entreprise #{ctx[:missing_siren]} of greffe secondaire"
+                logger.error "No entreprise found in main greffe section for entreprise #{ctx[:missing_siren]} of greffe 0000"
               end
             end
 
