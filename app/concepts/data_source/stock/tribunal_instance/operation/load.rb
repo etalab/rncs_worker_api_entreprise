@@ -4,6 +4,7 @@ module DataSource
       module Operation
         class Load < Trailblazer::Operation
           extend ClassDependencies
+          include TrailblazerHelper::DBIndexes
 
           self[:stocks_folder] = ::File.join(Rails.configuration.rncs_sources['path'], 'titmc', 'stock')
           self[:stock_class] = StockTribunalInstance
@@ -17,8 +18,12 @@ module DataSource
           step ->(ctx, stock:, **) { stock.save }
           step Nested(PrepareImport), Output(:fail_fast) => Track(:failure)
           fail :log_sub_operation_failure
-          # TODO: drop & create DB Indexes
+          step :drop_db_index
           step :import
+
+          def drop_db_index(ctx, **)
+            drop_queries(:tribunal_instance).each { |query| ActiveRecord::Base.connection.execute(query) }
+          end
 
           def import(ctx, stock_units:, **)
             stock_units.each do |stock_unit|
