@@ -1,8 +1,8 @@
 module TrailblazerHelper
   module DBIndexes
-    def create_queries
+    def create_queries(type_greffe)
       queries = []
-      for_all_indexes do |table, index|
+      for_all_indexes(type_greffe) do |table, index|
         index_name = name_for(table, index)
         index_columns = columns_for(index)
         queries.push("CREATE INDEX IF NOT EXISTS #{index_name} ON #{table} #{index_columns};")
@@ -11,9 +11,9 @@ module TrailblazerHelper
       queries
     end
 
-    def drop_queries
+    def drop_queries(type_greffe)
       queries = []
-      for_all_indexes do |table, index|
+      for_all_indexes(type_greffe) do |table, index|
         index_name = name_for(table, index)
         queries.push("DROP INDEX IF EXISTS #{index_name};")
       end
@@ -28,8 +28,8 @@ module TrailblazerHelper
       Rails.application.config_for(:db_indexes)
     end
 
-    def for_all_indexes
-      configured_indexes.each do |table, indexes|
+    def for_all_indexes(type_greffe)
+      configured_indexes[type_greffe.to_s].each do |table, indexes|
         indexes.each do |index|
           yield(table, index)
         end

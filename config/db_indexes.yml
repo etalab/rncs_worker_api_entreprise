@@ -1,32 +1,62 @@
 default: &default
-  dossiers_entreprises:
-    - siren
-    - [code_greffe, numero_gestion]
+  tribunal_instance:
+    dossiers_entreprises:
+      - siren
+      - [code_greffe, numero_gestion]
+    titmc_entreprises:
+      - siren
+      - [code_greffe, numero_gestion]
+      - dossier_entreprise_id
+    titmc_actes:
+      - code_greffe
+      - entreprise_id
+    titmc_bilans:
+      - code_greffe
+      - entreprise_id
+    titmc_etablissements:
+      - code_greffe
+      - entreprise_id
+    titmc_observations:
+      - code_greffe
+      - entreprise_id
+    titmc_representants:
+      - code_greffe
+      - entreprise_id
+    titmc_adresses:
+      - code_greffe
+      - entreprise_id
+      - etablissement_id
+      - representant_id
 
-  personnes_morales:
-    - siren
-    - [code_greffe, numero_gestion]
-    - dossier_entreprise_id
+  tribunal_commerce:
+    dossiers_entreprises:
+      - siren
+      - [code_greffe, numero_gestion]
 
-  personnes_physiques:
-    - siren
-    - [code_greffe, numero_gestion]
-    - dossier_entreprise_id
+    personnes_morales:
+      - siren
+      - [code_greffe, numero_gestion]
+      - dossier_entreprise_id
 
-  representants:
-    - siren
-    - [code_greffe, numero_gestion]
-    - dossier_entreprise_id
+    personnes_physiques:
+      - siren
+      - [code_greffe, numero_gestion]
+      - dossier_entreprise_id
 
-  etablissements:
-    - siren
-    - [code_greffe, numero_gestion]
-    - dossier_entreprise_id
+    representants:
+      - siren
+      - [code_greffe, numero_gestion]
+      - dossier_entreprise_id
 
-  observations:
-    - siren
-    - [code_greffe, numero_gestion]
-    - dossier_entreprise_id
+    etablissements:
+      - siren
+      - [code_greffe, numero_gestion]
+      - dossier_entreprise_id
+
+    observations:
+      - siren
+      - [code_greffe, numero_gestion]
+      - dossier_entreprise_id
 
 development:
   <<: *default
