@@ -25,16 +25,39 @@ describe ImportTitmcStockUnitJob, :trb do
         subject
       end
 
-      it 'set status to COMPLETED' do
-        allow(DataSource::Stock::TribunalInstance::Unit::Operation::Load)
-          .to receive(:call)
-          .with(stock_unit: stock_unit, logger: logger)
-          .and_return(trb_result_success)
+      describe 'when load operation succeed' do
+        before do
+          allow(DataSource::Stock::TribunalInstance::Unit::Operation::Load)
+            .to receive(:call)
+            .with(stock_unit: stock_unit, logger: logger)
+            .and_return(trb_result_success)
+        end
 
-        subject
-        stock_unit.reload
+        it 'set status to COMPLETED' do
+          subject
+          stock_unit.reload
 
-        expect(stock_unit.status).to eq 'COMPLETED'
+          expect(stock_unit.status).to eq 'COMPLETED'
+        end
+
+        it 'calls PostImport with success' do
+          expect(DataSource::Stock::TribunalInstance::Operation::PostImport)
+            .to receive(:call)
+            .with(stock_unit: stock_unit, logger: logger)
+            .and_return(trb_result_success)
+
+          subject
+        end
+
+        it 'calls PostImport but fails when another stock unit is not completed' do
+          create :stock_unit, status: 'PENDING', stock: stock_unit.stock
+          expect(DataSource::Stock::TribunalInstance::Operation::PostImport)
+            .to receive(:call)
+            .with(stock_unit: stock_unit, logger: logger)
+            .and_return(trb_result_failure)
+
+          subject
+        end
       end
     end
 
@@ -46,7 +69,7 @@ describe ImportTitmcStockUnitJob, :trb do
           .and_wrap_original {
             create :stock_unit, status: 'GHOST'
             trb_result_failure
-        }
+          }
 
         subject
 

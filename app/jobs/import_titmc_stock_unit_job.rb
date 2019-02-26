@@ -22,6 +22,8 @@ class ImportTitmcStockUnitJob < ApplicationJob
 
       if operation.success?
         @stock_unit.update(status: 'COMPLETED')
+        DataSource::Stock::TribunalInstance::Operation::PostImport
+          .call stock_unit: @stock_unit, logger: @logger
       else
         raise ActiveRecord::Rollback
       end
