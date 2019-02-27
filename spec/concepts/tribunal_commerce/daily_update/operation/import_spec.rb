@@ -106,7 +106,17 @@ describe TribunalCommerce::DailyUpdate::Operation::Import, :trb do
   end
 
   context 'when Task::NextQueuedUpdate fails' do
-    it 'fails'
-    it 'logs the returned error'
+    # Simulating an empty queue (no updates with #proceeded attribute to false in db)
+    before do
+      create(:daily_update_with_completed_units, year: '2018', month: '04', day: '08', proceeded: true)
+    end
+
+    it { is_expected.to be_failure }
+
+    it 'logs the returned error' do
+      error_msg = subject[:error]
+
+      expect(error_msg).to eq('No updates have been queued for import.')
+    end
   end
 end

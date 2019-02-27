@@ -2,7 +2,7 @@ module TribunalCommerce
   module DailyUpdate
     module Operation
       class Import < Trailblazer::Operation
-        step Nested(Task::NextQueuedUpdate)
+        step Nested(Task::NextQueuedUpdate), fail_fast: true
         step ->(ctx, daily_update:, **) { daily_update.update(proceeded: true) }
 
         step :partial_stock?
