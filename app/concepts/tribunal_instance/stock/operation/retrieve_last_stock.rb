@@ -1,6 +1,6 @@
-module DataSource
+module TribunalInstance
   module Stock
-    module Task
+    module Operation
       class RetrieveLastStock < Trailblazer::Operation
 
         # ctx should have stocks_folder & stock_class

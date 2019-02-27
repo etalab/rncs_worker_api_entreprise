@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe DataSource::Stock::Task::RetrieveLastStock do
+describe TribunalInstance::Stock::Operation::RetrieveLastStock do
   class DummyStockClass < Stock; end
 
   context 'when no valid stocks are found' do

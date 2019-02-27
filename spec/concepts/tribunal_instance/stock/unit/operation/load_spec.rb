@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe DataSource::Stock::TribunalInstance::Unit::Operation::Load, :trb do
+describe TribunalInstance::Stock::Unit::Operation::Load, :trb do
   subject { described_class.call logger: logger, stock_unit: stock_unit }
 
   let(:stock_unit) { create :stock_unit_titmc, stock: create(:stock_titmc) }
@@ -13,7 +13,7 @@ describe DataSource::Stock::TribunalInstance::Unit::Operation::Load, :trb do
 
   describe 'success' do
     before do
-      allow(DataSource::Stock::TribunalInstance::Unit::Operation::LoadTransmission)
+      allow(TribunalInstance::Stock::Unit::Operation::LoadTransmission)
         .to receive(:call)
         .and_return(trb_result_success)
     end
@@ -29,7 +29,7 @@ describe DataSource::Stock::TribunalInstance::Unit::Operation::Load, :trb do
 
   describe 'when at least one transmission import fails' do
     before do
-      allow(DataSource::Stock::TribunalInstance::Unit::Operation::LoadTransmission)
+      allow(TribunalInstance::Stock::Unit::Operation::LoadTransmission)
         .to receive(:call)
         .and_return(trb_result_failure_with(path: '/failed_transmission', error: 'this is an error'))
     end
@@ -37,7 +37,7 @@ describe DataSource::Stock::TribunalInstance::Unit::Operation::Load, :trb do
     it { is_expected.to be_failure }
 
     it 'does not import the following transmissions' do
-      expect(DataSource::Stock::TribunalInstance::Unit::Operation::LoadTransmission)
+      expect(TribunalInstance::Stock::Unit::Operation::LoadTransmission)
         .to receive(:call)
         .once
 
@@ -71,7 +71,7 @@ describe DataSource::Stock::TribunalInstance::Unit::Operation::Load, :trb do
 
   def expect_ordered_import_of_transmissions
     (1..2).each do |lot_number|
-      expect(DataSource::Stock::TribunalInstance::Unit::Operation::LoadTransmission)
+      expect(TribunalInstance::Stock::Unit::Operation::LoadTransmission)
         .to receive(:call)
         .with(path: a_string_ending_with("lot0#{lot_number}.zip"), code_greffe: '9721', logger: logger)
         .and_return(trb_result_success)

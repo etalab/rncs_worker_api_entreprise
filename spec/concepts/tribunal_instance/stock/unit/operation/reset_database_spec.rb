@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe DataSource::Stock::TribunalInstance::Unit::Operation::ResetDatabase, :trb do
+describe TribunalInstance::Stock::Unit::Operation::ResetDatabase, :trb do
   subject { described_class.call code_greffe: code_greffe, logger: logger }
 
   let(:code_greffe) { '9712' }

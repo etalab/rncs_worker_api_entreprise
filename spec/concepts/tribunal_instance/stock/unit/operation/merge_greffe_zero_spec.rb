@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe DataSource::Stock::TribunalInstance::Unit::Operation::MergeGreffeZero do
+describe TribunalInstance::Stock::Unit::Operation::MergeGreffeZero do
   subject do
     described_class.call(
       entreprise_code_greffe_0000: entreprise_code_greffe_0000,

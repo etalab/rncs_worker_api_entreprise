@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe DataSource::Stock::TribunalInstance::Unit::Operation::LoadTransmission, :trb do
+describe TribunalInstance::Stock::Unit::Operation::LoadTransmission, :trb do
   subject do
     described_class.call(
       code_greffe: '9712',
@@ -19,7 +19,7 @@ describe DataSource::Stock::TribunalInstance::Unit::Operation::LoadTransmission,
       it { is_expected.to be_success }
 
       it 'calls Import operation with success' do
-        expect(DataSource::Stock::TribunalInstance::Unit::Operation::Import)
+        expect(TribunalInstance::Stock::Unit::Operation::Import)
           .to receive(:call)
           .and_return(trb_result_success)
           .once
@@ -35,7 +35,7 @@ describe DataSource::Stock::TribunalInstance::Unit::Operation::LoadTransmission,
 
     context 'when Import fails' do
       before do
-        allow(DataSource::Stock::TribunalInstance::Unit::Operation::Import)
+        allow(TribunalInstance::Stock::Unit::Operation::Import)
           .to receive(:call)
           .and_return(trb_result_failure)
       end
@@ -53,7 +53,7 @@ describe DataSource::Stock::TribunalInstance::Unit::Operation::LoadTransmission,
     let(:filename) { 'two_files.zip' }
 
     before do
-      allow(DataSource::Stock::TribunalInstance::Unit::Operation::Import)
+      allow(TribunalInstance::Stock::Unit::Operation::Import)
         .to receive(:call)
         .and_return(trb_result_success)
     end
@@ -68,7 +68,7 @@ describe DataSource::Stock::TribunalInstance::Unit::Operation::LoadTransmission,
     end
 
     it 'calls Import exactly twice' do
-      expect(DataSource::Stock::TribunalInstance::Unit::Operation::Import)
+      expect(TribunalInstance::Stock::Unit::Operation::Import)
         .to receive(:call)
         .and_return(trb_result_success)
         .twice
@@ -77,7 +77,7 @@ describe DataSource::Stock::TribunalInstance::Unit::Operation::LoadTransmission,
     end
 
     def expect_import_success_with(filename)
-      expect(DataSource::Stock::TribunalInstance::Unit::Operation::Import)
+      expect(TribunalInstance::Stock::Unit::Operation::Import)
         .to receive(:call)
         .with(path: a_string_ending_with(filename), code_greffe: '9712', logger: logger)
         .and_return(trb_result_success)
@@ -90,7 +90,7 @@ describe DataSource::Stock::TribunalInstance::Unit::Operation::LoadTransmission,
     it { is_expected.to be_failure }
 
     it 'does not call the import operation' do
-      expect(DataSource::Stock::TribunalInstance::Unit::Operation::Import)
+      expect(TribunalInstance::Stock::Unit::Operation::Import)
         .not_to receive(:call)
 
       subject
@@ -110,7 +110,7 @@ describe DataSource::Stock::TribunalInstance::Unit::Operation::LoadTransmission,
     it { is_expected.to be_failure }
 
     it 'does not call the import operation' do
-      expect(DataSource::Stock::TribunalInstance::Unit::Operation::Import)
+      expect(TribunalInstance::Stock::Unit::Operation::Import)
         .not_to receive(:call)
 
       subject
