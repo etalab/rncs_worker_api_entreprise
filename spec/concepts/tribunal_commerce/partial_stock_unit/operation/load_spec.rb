@@ -37,7 +37,7 @@ describe TribunalCommerce::PartialStockUnit::Operation::Load, :trb do
 
   describe 'unit archive extraction' do
     it 'calls ZIP::Operation::Extract' do
-      expect_nested_operation_call(ZIP::Operation::Extract)
+      expect_to_call_nested_operation(ZIP::Operation::Extract)
 
       subject
     end

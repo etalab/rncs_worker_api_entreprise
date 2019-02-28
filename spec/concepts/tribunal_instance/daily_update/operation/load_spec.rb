@@ -44,7 +44,7 @@ describe TribunalInstance::DailyUpdate::Operation::Load, :trb do
     end
 
     it 'starts the import' do
-      expect_nested_operation_call(TribunalInstance::DailyUpdate::Operation::Import)
+      expect_to_call_nested_operation(TribunalInstance::DailyUpdate::Operation::Import)
       subject
     end
 
