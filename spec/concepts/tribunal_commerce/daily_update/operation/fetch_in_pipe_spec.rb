@@ -22,7 +22,7 @@ describe TribunalCommerce::DailyUpdate::Operation::FetchInPipe do
     end
   end
 
-	# spec/fixtures/tc/flux
+  # spec/fixtures/tc/flux
   # └── 2018
   #     └── 04
   #         ├── 09
@@ -46,6 +46,16 @@ describe TribunalCommerce::DailyUpdate::Operation::FetchInPipe do
       expect(updates.size).to eq(7)
     end
 
-    it 'matches the dates found in repository'
+    it 'matches the dates found in repository' do
+      expect(subject[:daily_updates]).to contain_exactly(
+        an_object_having_attributes(year: '2018', month: '04', day: '09'),
+        an_object_having_attributes(year: '2018', month: '04', day: '10'),
+        an_object_having_attributes(year: '2018', month: '04', day: '11'),
+        an_object_having_attributes(year: '2018', month: '04', day: '12'),
+        an_object_having_attributes(year: '2018', month: '04', day: '13'),
+        an_object_having_attributes(year: '2018', month: '04', day: '14'),
+        an_object_having_attributes(year: '2018', month: '04', day: '18'),
+      )
+    end
   end
 end
