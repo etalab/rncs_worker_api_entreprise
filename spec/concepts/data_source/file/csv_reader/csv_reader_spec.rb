@@ -85,6 +85,7 @@ describe DataSource::File::CSVReader do
       wow;hey
       much value;012
       1000.00;3,14
+      " cou"cou  "; " blank
       CSV
       file.write(content.unindent)
       file.close
@@ -139,6 +140,12 @@ describe DataSource::File::CSVReader do
       line = lines[0]
 
       expect(line).to match({ maybe_empty: nil, never_empty: 'hello' })
+    end
+
+    it 'removes surrounding blank and quotes' do
+      line = fetch_line(5)
+
+      expect(line).to match({ maybe_empty: 'cou"cou', never_empty: 'blank'})
     end
   end
 end
