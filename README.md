@@ -145,8 +145,13 @@ C'est pour cela que l'import doit se faire de cette façon :
 2. Import du stock du 2018/05/05
 3. Import du reste des flux
 
-Cela doit être fait manuellement ça serait trop lourd à gérer dans le code pour
-un seul stock.
+Les différents scripts doivent être lancés manuellement avec les bons paramètres.
+```
+# As of 3/3/2019 these doesn't exists yet. Soon ;)
+bundle exec rake titmc:flux:load[2018/05/05]
+bundle exec rake titmc:stock:load
+bundle exec rake titmc:flux:load[2018/05/05]
+```
 
 ### Stock
 

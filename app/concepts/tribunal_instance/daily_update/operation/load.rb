@@ -28,8 +28,10 @@ module TribunalInstance
         end
 
         def save_handled_updates(ctx, daily_updates:, **)
-          daily_updates.each { |e| e.proceeded = false }
-          daily_updates.each(&:save)
+          daily_updates.each do |e|
+            e.proceeded = false
+            e.save
+          end
         end
 
         def log_no_updates_to_import(ctx, db_current_date:, logger:, **)
