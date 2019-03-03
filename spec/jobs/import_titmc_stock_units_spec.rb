@@ -17,7 +17,7 @@ describe ImportTitmcStockUnitJob, :trb do
 
     describe 'success' do
       it 'calls the operation' do
-        expect(DataSource::Stock::TribunalInstance::Unit::Operation::Load)
+        expect(TribunalInstance::Stock::Unit::Operation::Load)
           .to receive(:call)
           .with(stock_unit: stock_unit, logger: logger)
           .and_return(trb_result_success)
@@ -27,7 +27,7 @@ describe ImportTitmcStockUnitJob, :trb do
 
       describe 'when load operation succeed' do
         before do
-          allow(DataSource::Stock::TribunalInstance::Unit::Operation::Load)
+          allow(TribunalInstance::Stock::Unit::Operation::Load)
             .to receive(:call)
             .with(stock_unit: stock_unit, logger: logger)
             .and_return(trb_result_success)
@@ -41,7 +41,7 @@ describe ImportTitmcStockUnitJob, :trb do
         end
 
         it 'calls PostImport with success' do
-          expect(DataSource::Stock::TribunalInstance::Operation::PostImport)
+          expect(TribunalInstance::Stock::Operation::PostImport)
             .to receive(:call)
             .with(stock_unit: stock_unit, logger: logger)
             .and_return(trb_result_success)
@@ -51,7 +51,7 @@ describe ImportTitmcStockUnitJob, :trb do
 
         it 'calls PostImport but fails when another stock unit is not completed' do
           create :stock_unit, status: 'PENDING', stock: stock_unit.stock
-          expect(DataSource::Stock::TribunalInstance::Operation::PostImport)
+          expect(TribunalInstance::Stock::Operation::PostImport)
             .to receive(:call)
             .with(stock_unit: stock_unit, logger: logger)
             .and_return(trb_result_failure)
@@ -63,7 +63,7 @@ describe ImportTitmcStockUnitJob, :trb do
 
     describe 'when operation Load fails' do
       it 'rollbacks database' do
-        allow(DataSource::Stock::TribunalInstance::Unit::Operation::Load)
+        allow(TribunalInstance::Stock::Unit::Operation::Load)
           .to receive(:call)
           .with(stock_unit: stock_unit, logger: logger)
           .and_wrap_original {
@@ -78,7 +78,7 @@ describe ImportTitmcStockUnitJob, :trb do
       end
 
       it 'set status to ERROR' do
-        allow(DataSource::Stock::TribunalInstance::Unit::Operation::Load)
+        allow(TribunalInstance::Stock::Unit::Operation::Load)
           .to receive(:call)
           .with(stock_unit: stock_unit, logger: logger)
           .and_return(trb_result_failure)
@@ -95,7 +95,7 @@ describe ImportTitmcStockUnitJob, :trb do
     let(:id) { 1234 }
 
     it 'does not call the operation' do
-      expect(DataSource::Stock::TribunalInstance::Unit::Operation::Load)
+      expect(TribunalInstance::Stock::Unit::Operation::Load)
         .not_to receive(:call)
       subject
     end

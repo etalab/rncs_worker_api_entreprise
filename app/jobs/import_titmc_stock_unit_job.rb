@@ -17,12 +17,12 @@ class ImportTitmcStockUnitJob < ApplicationJob
   def call_operation
     operation = nil
     ActiveRecord::Base.transaction do
-      operation = DataSource::Stock::TribunalInstance::Unit::Operation::Load
+      operation = TribunalInstance::Stock::Unit::Operation::Load
         .call(stock_unit: @stock_unit, logger: @logger)
 
       if operation.success?
         @stock_unit.update(status: 'COMPLETED')
-        DataSource::Stock::TribunalInstance::Operation::PostImport
+        TribunalInstance::Stock::Operation::PostImport
           .call stock_unit: @stock_unit, logger: @logger
       else
         raise ActiveRecord::Rollback

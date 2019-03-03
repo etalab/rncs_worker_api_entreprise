@@ -4,7 +4,7 @@ namespace :titmc do
   desc 'Start the import of the latest Titmc Stock'
   task import_stocks: :environment do
     puts 'Operations log will be done in log/stock/*.log not in STDOUT'.yellow
-    operation = DataSource::Stock::TribunalInstance::Operation::Load
+    operation = TribunalInstance::Stock::Operation::Load
       .call(logger: Logger.new(STDOUT))
     puts "Success: #{operation.success?}".blue
   end

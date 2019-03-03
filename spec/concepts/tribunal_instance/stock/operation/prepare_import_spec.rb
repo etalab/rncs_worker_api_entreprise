@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe DataSource::Stock::TribunalInstance::Operation::PrepareImport do
+describe TribunalInstance::Stock::Operation::PrepareImport do
   subject { described_class.call(stock: stock) }
 
   let(:stock) { create(:stock_titmc, files_path: path_param) }

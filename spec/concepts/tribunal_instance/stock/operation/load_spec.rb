@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe DataSource::Stock::TribunalInstance::Operation::Load do
+describe TribunalInstance::Stock::Operation::Load do
   subject { described_class.call(params) }
 
   let(:logger) { instance_double(Logger).as_null_object }

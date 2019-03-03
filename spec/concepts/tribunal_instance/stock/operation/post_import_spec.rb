@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe DataSource::Stock::TribunalInstance::Operation::PostImport do
+describe TribunalInstance::Stock::Operation::PostImport do
   subject { described_class.call stock_unit: stock_unit, logger: logger }
 
   let(:logger) { instance_double(Logger).as_null_object }

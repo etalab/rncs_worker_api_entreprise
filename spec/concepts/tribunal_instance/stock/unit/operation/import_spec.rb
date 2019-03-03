@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe DataSource::Stock::TribunalInstance::Unit::Operation::Import, :trb do
+describe TribunalInstance::Stock::Unit::Operation::Import, :trb do
   subject { described_class.call path: unit_path, code_greffe: '9712', logger: logger }
 
   let(:unit_path) { Rails.root.join 'spec', 'fixtures', 'titmc', 'xml', '9712_S1_20180505_lot02.xml' }
@@ -31,7 +31,7 @@ describe DataSource::Stock::TribunalInstance::Unit::Operation::Import, :trb do
     end
 
     it 'calls find and merge operation twice' do
-      expect(DataSource::Stock::TribunalInstance::Unit::Operation::MergeGreffeZero)
+      expect(TribunalInstance::Stock::Unit::Operation::MergeGreffeZero)
         .to receive(:call)
         .and_return(trb_result_success)
         .twice
@@ -42,7 +42,7 @@ describe DataSource::Stock::TribunalInstance::Unit::Operation::Import, :trb do
 
   describe 'when merge code greffe 0000 fails' do
     before do
-      allow(DataSource::Stock::TribunalInstance::Unit::Operation::MergeGreffeZero)
+      allow(TribunalInstance::Stock::Unit::Operation::MergeGreffeZero)
         .to receive(:call)
         .and_return(trb_result_failure)
     end
