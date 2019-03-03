@@ -20,8 +20,12 @@ module TrailblazerHelper
       trb_result(success: false)
     end
 
-    def expect_nested_operation_call(operation)
+    def expect_to_call_nested_operation(operation)
       expect(operation).to receive(:call_with_circuit_interface).and_call_original
+    end
+
+    def expect_not_to_call_nested_operation(operation)
+      expect(operation).not_to receive(:call_with_circuit_interface)
     end
 
     # TODO stub a nested operation to return a fake object

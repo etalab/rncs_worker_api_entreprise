@@ -44,7 +44,7 @@ describe TribunalCommerce::DailyUpdate::Operation::Import, :trb do
       it { is_expected.to be_success }
 
       it 'calls Task::FetchUnits operation' do
-        expect_nested_operation_call(TribunalCommerce::DailyUpdate::Task::FetchUnits)
+        expect_to_call_nested_operation(TribunalCommerce::DailyUpdate::Task::FetchUnits)
         subject
       end
 
@@ -82,7 +82,7 @@ describe TribunalCommerce::DailyUpdate::Operation::Import, :trb do
       it { is_expected.to be_success }
 
       it 'calls Task::FetchPartialStocks operation' do
-        expect_nested_operation_call(TribunalCommerce::DailyUpdate::Task::FetchPartialStocks)
+        expect_to_call_nested_operation(TribunalCommerce::DailyUpdate::Task::FetchPartialStocks)
         subject
       end
 

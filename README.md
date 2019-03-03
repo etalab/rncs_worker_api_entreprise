@@ -131,6 +131,28 @@ Dans ces cas là, nous avons fait le choix de créer les dossiers en base en
 attendant que les dossiers complets soient disponibles.
 
 ## Import des données des Greffes des Tribunaux d'Instance et de Commerce Mixte (TITMC)
+
+_Il faut opérer des fusions et non des remplacements._
+
+Le stock ne contient pas toutes les informations présentes dans les flux précédents.
+Des bilans sont présents dans les flux antérieurs au stock, mais aussi l'adresse du
+siège par exemple. Et inversement des codes juridiques sont présents dans le stock
+mais pas dans les flux antérieurs.
+
+C'est pour cela que l'import doit se faire de cette façon :
+
+1. Import des flux du 2017/05/18 au 2018/05/05 (inclu)
+2. Import du stock du 2018/05/05
+3. Import du reste des flux
+
+Les différents scripts doivent être lancés manuellement avec les bons paramètres.
+```
+# As of 3/3/2019 these doesn't exists yet. Soon ;)
+bundle exec rake titmc:flux:load[2018/05/05]
+bundle exec rake titmc:stock:load
+bundle exec rake titmc:flux:load[2018/05/05]
+```
+
 ### Stock
 
 Chaque stock pour un greffe donné est composé de une ou deux transissions, car
@@ -162,3 +184,5 @@ seule information d'identification présente dans la balise '0000'.
 
 P.S : Ceci est une exception des premiers stocks. Les flux suivants n'ont plus cette seconde
 balise et les prochains stocks (s'il y a) n'en n'auront pas non plus.
+
+### Flux
