@@ -19,7 +19,7 @@ module TribunalCommerce
         step :import
 
         def drop_db_index(ctx, **)
-          drop_queries.each { |query| ActiveRecord::Base.connection.execute(query) }
+          drop_queries(:tribunal_commerce).each { |query| ActiveRecord::Base.connection.execute(query) }
         end
 
         def stock_exists?(ctx, stock_args:, stocks_folder:, **)

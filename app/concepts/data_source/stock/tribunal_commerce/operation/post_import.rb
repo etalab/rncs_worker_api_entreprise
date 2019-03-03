@@ -16,7 +16,7 @@ module DataSource
           end
 
           def create_db_indexes(ctx, **)
-            create_queries.each { |query| ActiveRecord::Base.connection.execute(query) }
+            create_queries(:tribunal_commerce).each { |query| ActiveRecord::Base.connection.execute(query) }
           end
 
           def fill_in_foreign_keys(ctx, **)

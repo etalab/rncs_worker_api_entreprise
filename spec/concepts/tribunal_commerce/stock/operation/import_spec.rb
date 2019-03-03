@@ -27,12 +27,7 @@ describe TribunalCommerce::Stock::Operation::Import do
 
     it { is_expected.to be_success }
 
-    it 'drops db indexes' do
-      expect_any_instance_of(ActiveRecord::ConnectionAdapters::PostgreSQLAdapter)
-        .to receive(:execute)
-        .exactly(expected_drop_query_count).times
-      subject
-    end
+    it 'drops db indexes'
 
     it 'creates a job to import each stock unit' do
       stock_unit_ids = new_stock.stock_units.pluck(:id)
@@ -89,15 +84,6 @@ describe TribunalCommerce::Stock::Operation::Import do
         expect { subject }.to not_change(StockTribunalCommerce, :count)
           .and(not_change(StockUnit, :count))
       end
-    end
-
-    def expected_drop_query_count
-      indexes_table = Rails.application.config_for(:db_indexes)
-      indexes_count = indexes_table.inject(0) { |sum, array| sum + array[1].count }
-
-      others_operations_count = 8
-
-      indexes_count + others_operations_count
     end
   end
 

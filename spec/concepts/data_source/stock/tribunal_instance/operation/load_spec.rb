@@ -3,7 +3,7 @@ require 'rails_helper'
 describe DataSource::Stock::TribunalInstance::Operation::Load do
   subject { described_class.call(params) }
 
-  let(:logger) { object_double(Rails.logger, info: true).as_null_object }
+  let(:logger) { instance_double(Logger).as_null_object }
   let(:params) { { logger: logger } }
 
   context 'logger:' do
@@ -25,6 +25,8 @@ describe DataSource::Stock::TribunalInstance::Operation::Load do
     let(:stock_units) { subject[:stock_units] }
 
     it { is_expected.to be_success }
+
+    it 'drop db indexes'
 
     it 'enqueues a job for each greffe found in stock (2 jobs but 3 files)' do
       expect { subject }.to have_enqueued_job(ImportTitmcStockUnitJob)
