@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe TribunalInstance::DailyUpdate::Operation::FetchInPipe do
+describe TribunalInstance::DailyUpdate::Task::FetchInPipe do
   context 'when no updates are found' do
     shared_examples 'no update found' do |source_path|
       subject { described_class.call(flux_folder: source_path) }

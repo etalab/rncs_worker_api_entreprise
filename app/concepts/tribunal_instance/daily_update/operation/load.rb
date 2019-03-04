@@ -4,12 +4,12 @@ module TribunalInstance
       class Load < Trailblazer::Operation
 
         pass ->(ctx, logger:, **) { logger.info 'Fetching new daily updates' }
-        step Nested DBCurrentDate
+        step Nested Task::DBCurrentDate
         step ->(ctx, logger:, db_current_date:, **) { logger.info "The database is sync until #{db_current_date}." }
-        step Nested FetchInPipe
+        step Nested Task::FetchInPipe
         step :ignores_older_updates
         step :limit_update_to_keep
-        fail :log_no_updates_to_import
+          fail :log_no_updates_to_import
         pass :log_how_many_updates_found
         step :save_handled_updates
         step Import
