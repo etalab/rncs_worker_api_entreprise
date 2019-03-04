@@ -6,7 +6,7 @@ module TribunalInstance
         # ctx should have stocks_folder & stock_class
         step :fetch_stocks
         step :deserialize
-        fail ->(ctx, stocks_folder:, **) { ctx[:error] = "No stock found inside #{stocks_folder}. Ensure the folder exists with a valid subfolder structure." }
+          fail ->(ctx, stocks_folder:, **) { ctx[:error] = "No stock found inside #{stocks_folder}. Ensure the folder exists with a valid subfolder structure." }
         step :most_recent_stock
 
         def fetch_stocks(ctx, stocks_folder:, **)

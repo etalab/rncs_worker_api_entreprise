@@ -7,10 +7,10 @@ module TribunalInstance
           pass :log_import_starts
           step Nested(Files::Operation::CheckMD5)
           step Nested(ZIP::Operation::Extract)
-          fail :log_zip_error, fail_fast: true
+            fail :log_zip_error, fail_fast: true
           pass :log_zip_info
           step :import
-          fail :log_import_error
+            fail :log_import_error
 
           # TODO: find a better solution ?
           step ->(ctx, dest_directory:, **) { FileUtils.rm_rf(dest_directory) }

@@ -9,9 +9,9 @@ module TribunalInstance
           pass ->(ctx, logger:, **) { logger.info "#{ctx[:transmissions].count} transmissions found" }
           step ->(ctx, stock_unit:, **) { ctx[:code_greffe] = stock_unit.code_greffe }
           step Nested(ResetDatabase)
-          fail :log_reset_database_failure
+            fail :log_reset_database_failure
           step :load_greffe_files
-          fail :log_transmission_failure
+            fail :log_transmission_failure
 
           def log_info_stock(ctx, logger:, stock_unit:, **)
             logger.info "Starting import of stock #{stock_unit.stock.date}, greffe: #{stock_unit.code_greffe}"

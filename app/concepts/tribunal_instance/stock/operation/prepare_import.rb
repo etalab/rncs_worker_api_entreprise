@@ -5,10 +5,10 @@ module TribunalInstance
         class DeserializeError < StandardError; end
 
         step :fetch_stock_units
-        fail ->(ctx, stock:, **) { ctx[:error] = "No stock units found in #{stock.files_path}." }, fail_fast: true
+          fail ->(ctx, stock:, **) { ctx[:error] = "No stock units found in #{stock.files_path}." }, fail_fast: true
 
         step :deserialize_stock_units
-        fail ->(ctx, stock:, **) { ctx[:error] = "Unexpected filenames in #{stock.files_path}." }
+          fail ->(ctx, stock:, **) { ctx[:error] = "Unexpected filenames in #{stock.files_path}." }
 
         def fetch_stock_units(ctx, stock:, **)
           ctx[:stock_units_path] = Dir.glob(stock.files_path + '/*.zip')
