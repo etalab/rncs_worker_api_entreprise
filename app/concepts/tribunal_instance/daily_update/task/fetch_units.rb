@@ -15,9 +15,12 @@ module TribunalInstance
 
         def deserialize(ctx, daily_update:, units_path:, **)
           daily_update_units = units_path.map do |unit_path|
-            if unit_path.match(/\A#{daily_update.files_path}\/.{12}_\d{14}TITMCFLUX\Z/)
+            if match = unit_path.match(/\A#{daily_update.files_path}\/(.{12})_\d{14}TITMCFLUX\Z/)
+
+              reference = match.captures.first
+
               daily_update.daily_update_units.create(
-                code_greffe: 'UNKNOWN',
+                reference: reference,
                 status: 'PENDING',
                 files_path: unit_path,
               )

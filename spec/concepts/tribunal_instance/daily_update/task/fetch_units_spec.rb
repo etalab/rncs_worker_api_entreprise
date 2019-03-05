@@ -22,7 +22,18 @@ describe TribunalInstance::DailyUpdate::Task::FetchUnits do
     its([:daily_update_units]) { are_expected.to all be_an_instance_of DailyUpdateUnit }
     its([:daily_update_units]) { are_expected.to all be_persisted }
     its([:daily_update_units]) { are_expected.to all have_attributes status: 'PENDING' }
-    its([:daily_update_units]) { are_expected.to all have_attributes code_greffe: 'UNKNOWN' }
+
+    they 'have all valid references' do
+      references = subject[:daily_update_units].pluck(:reference)
+
+      expect(references).to contain_exactly(
+        '0O09IEJ9562u',
+        '0qLllJmhaRhU',
+        '0NKxyI4J7iuk',
+        '0Hnni3p82a62',
+        '1eUKHhoF3kQT'
+      )
+    end
 
     they 'have the correct files path' do
       units_path = subject[:daily_update_units].pluck(:files_path)
