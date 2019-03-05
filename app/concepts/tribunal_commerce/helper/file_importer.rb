@@ -18,15 +18,15 @@ module TribunalCommerce
       end
 
       def import_dossiers_entreprise_evt_from_pm(path)
-
+        import_line_by_line(path, DOSSIER_ENTREPRISE_FROM_PM_HEADER_MAPPING, DossierEntreprise::Operation::Update)
       end
 
       def import_dossiers_entreprise_from_pm(path)
-
+        import_line_by_line(path, DOSSIER_ENTREPRISE_FROM_PM_HEADER_MAPPING, DossierEntreprise::Operation::Create)
       end
 
       def import_dossiers_entreprise_evt_from_pp(path)
-
+        import_line_by_line(path, DOSSIER_ENTREPRISE_FROM_PP_HEADER_MAPPING, DossierEntreprise::Operation::Update)
       end
 
       def supersede_dossiers_entreprise_from_pp(path)
@@ -34,7 +34,7 @@ module TribunalCommerce
       end
 
       def import_dossiers_entreprise_from_pp(path)
-
+        import_line_by_line(path, DOSSIER_ENTREPRISE_FROM_PP_HEADER_MAPPING, DossierEntreprise::Operation::Create)
       end
 
       def import_personnes_morales(path)
@@ -42,7 +42,7 @@ module TribunalCommerce
       end
 
       def import_personnes_morales_evt(path)
-
+        import_line_by_line(path, PM_HEADER_MAPPING, PersonneMorale::Operation::Update)
       end
 
       def import_personnes_physiques(path)
@@ -50,7 +50,7 @@ module TribunalCommerce
       end
 
       def import_personnes_physiques_evt(path)
-
+        import_line_by_line(path, PP_HEADER_MAPPING, PersonnePhysique::Operation::Update)
       end
 
       def import_representants(path)
@@ -58,11 +58,11 @@ module TribunalCommerce
       end
 
       def import_representants_nouveau_modifie(path)
-
+        import_line_by_line(path, REP_HEADER_MAPPING, Representant::Operation::NouveauModifie)
       end
 
       def import_representants_partant(path)
-
+        import_line_by_line(path, REP_HEADER_MAPPING, Representant::Operation::Delete)
       end
 
       def import_etablissements(path)
@@ -70,11 +70,11 @@ module TribunalCommerce
       end
 
       def import_etablissements_nouveau_modifie(path)
-
+        import_line_by_line(path, ETS_HEADER_MAPPING, Etablissement::Operation::NouveauModifie)
       end
 
       def import_etablissements_supprime(path)
-
+        import_line_by_line(path, ETS_HEADER_MAPPING, Etablissement::Operation::Delete)
       end
 
       def import_observations(path)
