@@ -17,7 +17,15 @@ module TribunalCommerce
         import_line_by_line(path, DOSSIER_ENTREPRISE_FROM_PM_HEADER_MAPPING, DossierEntreprise::Operation::Supersede)
       end
 
+      def import_dossiers_entreprise_evt_from_pm(path)
+
+      end
+
       def import_dossiers_entreprise_from_pm(path)
+
+      end
+
+      def import_dossiers_entreprise_evt_from_pp(path)
 
       end
 

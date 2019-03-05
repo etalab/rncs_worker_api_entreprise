@@ -15,9 +15,11 @@ module TribunalCommerce
 
         step :import_dossiers_entreprise_from_pm
         step :import_personnes_morales
+        step :import_dossiers_entreprise_evt_from_pm
         step :import_personnes_morales_evt
         step :import_dossiers_entreprise_from_pp
         step :import_personnes_physiques
+        step :import_dossiers_entreprise_evt_from_pp
         step :import_personnes_physiques_evt
         step :import_representants
         step :import_representants_nouveau_modifie
@@ -61,6 +63,11 @@ module TribunalCommerce
           file_importer.import_personnes_morales(pm_file_path)
         end
 
+        def import_dossiers_entreprise_evt_from_pm(ctx, files_args:, file_importer:, logger:, **)
+          pm_file_path = extract_file_path(files_args, 'PM_EVT')
+          file_importer.import_dossiers_entreprise_evt_from_pm(pm_file_path)
+        end
+
         def import_personnes_morales_evt(ctx, files_args:, file_importer:, logger:, **)
           pm_file_path = extract_file_path(files_args, 'PM_EVT')
           file_importer.import_personnes_morales_evt(pm_file_path)
@@ -74,6 +81,11 @@ module TribunalCommerce
         def import_personnes_physiques(ctx, files_args:, file_importer:, logger:, **)
           pp_file_path = extract_file_path(files_args, 'PP')
           file_importer.import_personnes_physiques(pp_file_path)
+        end
+
+        def import_dossiers_entreprise_evt_from_pp(ctx, files_args:, file_importer:, logger:, **)
+          pp_file_path = extract_file_path(files_args, 'PP_EVT')
+          file_importer.import_dossiers_entreprise_evt_from_pp(pp_file_path)
         end
 
         def import_personnes_physiques_evt(ctx, files_args:, file_importer:, logger:, **)

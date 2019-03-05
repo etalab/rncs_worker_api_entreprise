@@ -94,9 +94,11 @@ describe TribunalCommerce::DailyUpdateUnit::Operation::ImportTransmission, :trb 
 
         expect_ordered_import_call(:import_dossiers_entreprise_from_pm, '0101_1_20170512_112544_1_PM.csv')
         expect_ordered_import_call(:import_personnes_morales, '0101_1_20170512_112544_1_PM.csv')
+        expect_ordered_import_call(:import_dossiers_entreprise_evt_from_pm, '0101_1_20170512_112544_2_PM_EVT.csv')
         expect_ordered_import_call(:import_personnes_morales_evt, '0101_1_20170512_112544_2_PM_EVT.csv')
         expect_ordered_import_call(:import_dossiers_entreprise_from_pp, '0101_1_20170512_112544_3_PP.csv')
         expect_ordered_import_call(:import_personnes_physiques, '0101_1_20170512_112544_3_PP.csv')
+        expect_ordered_import_call(:import_dossiers_entreprise_evt_from_pp, '0101_1_20170512_112544_4_PP_EVT.csv')
         expect_ordered_import_call(:import_personnes_physiques_evt, '0101_1_20170512_112544_4_PP_EVT.csv')
         expect_ordered_import_call(:import_representants, '0101_1_20170512_112544_5_rep.csv')
         expect_ordered_import_call(:import_representants_nouveau_modifie, '0101_1_20170512_112544_6_rep_nouveau_modifie_EVT.csv')
