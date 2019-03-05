@@ -15,6 +15,11 @@ describe TribunalInstance::Stock::Unit::Operation::LoadTransmission, :trb do
   context 'when zip exists' do
     let(:filename) { '9712_S1_20180505_lot02.zip' }
 
+    it 'logs import start' do
+      expect(logger).to receive(:info).with(/Starting import of transmission: .+9712_S1_20180505_lot02.zip/)
+      subject
+    end
+
     context 'when import is successful' do
       it { is_expected.to be_success }
 
