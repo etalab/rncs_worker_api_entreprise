@@ -126,8 +126,15 @@ shared_examples 'import_line_by_line' do |import_method, line_processor, file_ma
   let(:csv_reader) { class_spy(DataSource::File::CSVReader) }
 
   subject do
-    importer = described_class.new(csv_reader, logger)
+    importer = described_class.new(logger, csv_reader)
     importer.send(import_method, file_path)
+  end
+
+  it 'logs the start of the file import' do
+    subject
+
+    expect(logger).to have_received(:info)
+      .with("Starting import of #{file_path} with #{line_processor} :")
   end
 
   context 'when the file reader works' do
@@ -136,6 +143,12 @@ shared_examples 'import_line_by_line' do |import_method, line_processor, file_ma
         .with(file_path, file_mapping)
         .and_yield('first line')
         .and_yield('second line')
+    end
+
+    it 'returns a truthy value' do
+      allow(line_processor).to receive(:call).and_return(trb_result_success)
+
+      expect(subject).to be_truthy
     end
 
     it "calls #{line_processor} for each line read" do
@@ -154,6 +167,14 @@ shared_examples 'import_line_by_line' do |import_method, line_processor, file_ma
       expect(logger).to have_received(:warn).with('This is a warning message !').twice
     end
 
+    it 'logs the file has been imported sucessfully' do
+      allow(line_processor).to receive(:call).and_return(trb_result_success)
+      subject
+
+      expect(logger).to have_received(:info)
+        .with("Import of file #{file_path} is complete !")
+    end
+
     context "when #{line_processor} fails at least once", :trb do
       before do
         failure_context = { error: 'Much error' }
@@ -168,6 +189,13 @@ shared_examples 'import_line_by_line' do |import_method, line_processor, file_ma
         subject
 
         expect(logger).to have_received(:error).with('Much error')
+      end
+
+      it 'logs the file failed to import' do
+        subject
+
+        expect(logger).to have_received(:error)
+          .with("Fail to import file `#{file_path}`.")
       end
     end
   end
