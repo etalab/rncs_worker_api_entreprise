@@ -9,7 +9,8 @@ module TribunalInstance
         step :daily_update_completed?
           fail :log_incomplete_update, fail_fast: true
 
-        step :raw_daily_update_date
+        step :raw_daily_update_date, Output(:failure) => Track(:empty_database)
+
         pass :log_no_daily_update, magnetic_to: [:empty_database]
 
        def queued_updates?(ctx, **)
@@ -37,7 +38,7 @@ module TribunalInstance
         end
 
         def log_no_daily_update(ctx, logger:, **)
-          logger.info 'No daily update found, proceeding...'
+          logger.info 'No existing daily update found, proceeding...'
         end
       end
     end

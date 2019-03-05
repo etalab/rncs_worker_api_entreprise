@@ -11,7 +11,7 @@ describe TribunalInstance::DailyUpdate::Task::DBCurrentDate do
       its([:db_current_date]) { is_expected.to be_nil }
 
       it 'logs' do
-        expect(logger).to receive(:info).with('No daily update found, proceeding...')
+        expect(logger).to receive(:info).with('No existing daily update found, proceeding...')
 
         subject
       end
