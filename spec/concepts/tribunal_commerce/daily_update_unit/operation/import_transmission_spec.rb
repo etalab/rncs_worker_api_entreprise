@@ -116,6 +116,24 @@ describe TribunalCommerce::DailyUpdateUnit::Operation::ImportTransmission, :trb 
         expect(logger).to have_received(:info).with('All files have been successfuly imported !')
       end
 
+      # For example : no new etablissements created this day for one greffe
+      context 'when a file is not present in the transmission' do
+        let(:absent_file) { File.join(example_path, '0101_1_20170512_112544_2_PM_EVT.csv') }
+
+        before { FileUtils.rm(absent_file) }
+        after { FileUtils.touch(absent_file) }
+
+        it { is_expected.to be_success }
+
+        it 'logs the file is not present in the transmission' do
+          subject
+
+          expect(logger).to have_received(:info)
+            .with('Nothing to import from PM_EVT : no file present in the transmission. Continue...')
+            .twice # one for DossierEntreprise, one for PersonneMorale
+        end
+      end
+
       context 'when one file fails to import' do
         before { allow(file_importer).to receive(:import_representants_partant).and_return(false) }
 
