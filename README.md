@@ -36,7 +36,9 @@ Run `bundle install`
 
 * Capital social de la forme euros.cents (cents peut etre en mono ou duo digits) ou alors vide
 
-## Récupération des fichiers depuis le serveur FTP de l'INPI
+## Quelques commandes utiles
+
+### Récupération des fichiers depuis le serveur FTP de l'INPI
 
 La commande utilisée pour se synchroniser avec le flux de fichiers disponibles
 sur le FTP de l'INPI :
@@ -45,6 +47,47 @@ sur le FTP de l'INPI :
 lftp -u 'login','password' -p 21 opendata-rncs.inpi.fr -e 'set
 ftp:use-mode-z true; mirror -c -P 4 --only-missing public/IMR_Donnees_Saisies
 ~/rncs_data/IMR_Donnees_Saisies; quit'
+```
+
+### Import du stock
+
+Il s'agit ici de la commande pour importer un stock, au vrai sens du terme :
+un stock complet afin d'initialiser la base. Il ne s'agit pas des stocks
+partiels, même s'ils sont rangés au même endroit (le dossier *tc/stocks*).
+
+Il n'y a aujourd'hui qu'un seul stock complet, en date du 4 mai 2017, et il
+n'est pas prévu qu'il en soit mis à disposition régulièrement. L'import d'un
+stock est donc aujourd'hui une opération manuelle, réalisée excepionnellement :
+
+```ruby
+my_stock = { year: '2017', month: '05', day: '04' }
+TribunalCommerce::Stock::Operation::Import.call(stock_args: my_stock)
+```
+
+Toute la donnée en base sera supprimée avant import pour ne laisser place qu'à
+la donnée du stock.
+
+### Import des mises à jour quotidennes
+
+L'import du flux quotidien est réalisé en deux étapes : l'ajout des nouvelles
+mises à jours disponibles dans la file d'attente et l'import des mises à jour
+dans la file.
+
+La commande suivante sert à remplir la file d'attente avec les nouvelles mises à
+jour disponibles :
+
+```ruby
+TribunalCommerce::DailyUpdate::Operation::Load.call
+```
+
+L'opération récupère la date de la dernière mise à jour importée en base et
+place dans la file toute nouvelle mise à jour plus récente.
+
+La commande suivante permet d'importer les mises à jour en attente dans la file,
+dans l'ordre :
+
+```ruby
+TribunalCommerce::DailyUpdate::Operation::Import.call
 ```
 
 ## Import des données des Greffes des Tribunaux de Commerce
@@ -67,7 +110,25 @@ les fichiers sont uniformisés :
 * [Snake casing](https://fr.wikipedia.org/wiki/Snake_case)
 
 De plus, tous les fichiers relatifs aux représentants possèdent deux colonnes
-avec le même en-tête "Siren" ; l'un de ces deux en-têtes est renommé.
+avec le même en-tête "Siren" ; l'un de ces deux en-têtes est renommé pour tous
+les fichiers relatifs aux représentants avant import.
+
+#### Uniformisation de la donnée
+
+Toutes les données des fichiers CSV sont importées en base au format `String`.
+En effet, comme les conventions du format CSV ne sont pas respectés, de même
+que la procédure d'échange de la donnée entre les Greffes et l'INPI, cela
+permet d'importer toutes les données disponibles sans froisser les contraintes
+de typage (ou de format de date) de la base de données.
+
+Les API peuvent cependant convertir la donnée en base avant de répondre, pour
+par exemple renvoyer la donnée dans un format qui fait sens (dates ou entiers,
+...) ou ne serait-ce que pour l'uniformiser (on peut trouver différents formats
+de dates dans les fichiers de mises à jour, "06/10/2017" ou "06-10-2017").
+
+Puisque toutes les données sont importées en tant que chaine de caractères, les
+espaces blancs et les guillemets en début et fin de chaine sont supprimés avant
+import en base.
 
 #### Droits d'accès aux fichiers
 Les fichiers CSV étant modifiés avant import (renommage d'un des titres de
