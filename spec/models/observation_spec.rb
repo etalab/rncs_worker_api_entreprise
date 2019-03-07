@@ -15,6 +15,4 @@ describe Observation do
   it_behaves_like 'having event date and label'
   it_behaves_like 'having rails timestamps'
   it_behaves_like 'having dossier greffe id'
-
-  it { is_expected.to be_a_kind_of(CleanDataHelper) }
 end

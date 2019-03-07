@@ -38,7 +38,7 @@ module DataSource
           col_sep: ';',
           chunk_size: Rails.configuration.rncs_sources['import_batch_size'],
           force_simple_split: true,
-          hash_transformations: [:none],
+          hash_transformations: [:none, remove_surrounding_quotes_and_blank],
           header_transformations: [:none, harmonize_headers]
         }
       end
@@ -61,6 +61,15 @@ module DataSource
              .yield_self { |it| it.gsub('"', '') }
              .yield_self { |it| I18n.transliterate(it) }
              .yield_self { |it| it.to_sym }
+          end
+        end
+      end
+
+      def remove_surrounding_quotes_and_blank
+        Proc.new do |hash|
+          hash.reduce({}) do |cleaned_hash, (k, v)|
+            cleaned_hash[k] = (v.nil?) ? v : v.gsub(/\A[" ]+|[" ]+\z/, '')
+            cleaned_hash
           end
         end
       end

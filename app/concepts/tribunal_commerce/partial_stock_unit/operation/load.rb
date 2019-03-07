@@ -3,9 +3,11 @@ module TribunalCommerce
     module Operation
       class Load < Trailblazer::Operation
         include TribunalCommerce::Helper::DataFile
-        extend ClassDependencies
 
-        self[:file_importer] = TribunalCommerce::Helper::FileImporter.new
+        step ->(ctx, logger:, file_importer:nil, **) do
+          ctx[:file_importer] = TribunalCommerce::Helper::FileImporter.new(logger) if file_importer.nil?
+          true
+        end
 
         step ->(ctx, logger:, **) { logger.info('Starting import of partial stock unit...') }
         step :prepare_zip_extraction

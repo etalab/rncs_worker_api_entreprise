@@ -4,13 +4,33 @@ module TribunalCommerce
       class ImportTransmission < Trailblazer::Operation
         include TribunalCommerce::Helper::DataFile
 
+        step ->(ctx, logger:, file_importer:nil, **) do
+          ctx[:file_importer] = TribunalCommerce::Helper::FileImporter.new(logger) if file_importer.nil?
+          true
+        end
+
         step :fetch_files_from_folder
         step :read_files_metadata
         step :rename_rep_files_headers
-        step :retrieve_import_workers
-        step :order_files_import
-        step :import
 
+        step :import_dossiers_entreprise_from_pm
+        step :import_personnes_morales
+        step :import_dossiers_entreprise_evt_from_pm
+        step :import_personnes_morales_evt
+        step :import_dossiers_entreprise_from_pp
+        step :import_personnes_physiques
+        step :import_dossiers_entreprise_evt_from_pp
+        step :import_personnes_physiques_evt
+        step :import_representants
+        step :import_representants_nouveau_modifie
+        step :import_representants_partant
+        step :import_etablissements
+        step :import_etablissements_nouveau_modifie
+        step :import_etablissements_supprime
+        step :import_observations
+
+        step :log_transmission_import_complete
+        fail :log_transmission_import_failure
 
         def fetch_files_from_folder(ctx, files_path:, **)
           ctx[:files_list] = fetch_from_folder(files_path)
@@ -33,34 +53,157 @@ module TribunalCommerce
           end
         end
 
-        def retrieve_import_workers(ctx, files_args:, **)
-          ctx[:files_args] = map_import_worker(files_args)
-        end
-
-        def order_files_import(ctx, files_args:, **)
-          files_args.sort_by! { |e| e[:run_order] }
-        end
-
-        def import(ctx, files_args:, logger:, **)
-          files_args.each do |arg|
-            label = arg[:label]
-            import_worker = arg[:import_worker]
-            filename = arg[:path].split('/').last
-
-            unless ['actes', 'comptes_annuels'].include?(label)
-              logger.info("Starting import of file #{filename}...")
-              file_import = import_worker.call(file_path: arg[:path], type_import: :flux, logger: logger)
-
-              if file_import.success?
-                logger.info("Import of file #{filename} is complete")
-              else
-                logger.error("Import of file #{filename} failed. Aborting import...")
-                return false
-              end
-            end
+        # TODO XXX Move logger logic into FileIMporter class, along with `extract_file_path`
+        # method
+        def import_dossiers_entreprise_from_pm(ctx, files_args:, file_importer:, logger:, **)
+          pm_file_path = extract_file_path(files_args, 'PM')
+          if pm_file_path.nil?
+            logger.info('Nothing to import from PM : no file present in the transmission. Continue...')
+          else
+            file_importer.import_dossiers_entreprise_from_pm(pm_file_path)
           end
+        end
 
+        def import_personnes_morales(ctx, files_args:, file_importer:, logger:, **)
+          pm_file_path = extract_file_path(files_args, 'PM')
+          if pm_file_path.nil?
+            logger.info('Nothing to import from PM : no file present in the transmission. Continue...')
+          else
+            file_importer.import_personnes_morales(pm_file_path)
+          end
+        end
+
+        def import_dossiers_entreprise_evt_from_pm(ctx, files_args:, file_importer:, logger:, **)
+          pm_file_path = extract_file_path(files_args, 'PM_EVT')
+          if pm_file_path.nil?
+            logger.info('Nothing to import from PM_EVT : no file present in the transmission. Continue...')
+          else
+            file_importer.import_dossiers_entreprise_evt_from_pm(pm_file_path)
+          end
+        end
+
+        def import_personnes_morales_evt(ctx, files_args:, file_importer:, logger:, **)
+          pm_file_path = extract_file_path(files_args, 'PM_EVT')
+          if pm_file_path.nil?
+            logger.info('Nothing to import from PM_EVT : no file present in the transmission. Continue...')
+          else
+            file_importer.import_personnes_morales_evt(pm_file_path)
+          end
+        end
+
+        def import_dossiers_entreprise_from_pp(ctx, files_args:, file_importer:, logger:, **)
+          pp_file_path = extract_file_path(files_args, 'PP')
+          if pp_file_path.nil?
+            logger.info('Nothing to import from PP : no file present in the transmission. Continue...')
+          else
+            file_importer.import_dossiers_entreprise_from_pp(pp_file_path)
+          end
+        end
+
+        def import_personnes_physiques(ctx, files_args:, file_importer:, logger:, **)
+          pp_file_path = extract_file_path(files_args, 'PP')
+          if pp_file_path.nil?
+            logger.info('Nothing to import from PP : no file present in the transmission. Continue...')
+          else
+            file_importer.import_personnes_physiques(pp_file_path)
+          end
+        end
+
+        def import_dossiers_entreprise_evt_from_pp(ctx, files_args:, file_importer:, logger:, **)
+          pp_file_path = extract_file_path(files_args, 'PP_EVT')
+          if pp_file_path.nil?
+            logger.info('Nothing to import from PP_EVT : no file present in the transmission. Continue...')
+          else
+            file_importer.import_dossiers_entreprise_evt_from_pp(pp_file_path)
+          end
+        end
+
+        def import_personnes_physiques_evt(ctx, files_args:, file_importer:, logger:, **)
+          pp_file_path = extract_file_path(files_args, 'PP_EVT')
+          if pp_file_path.nil?
+            logger.info('Nothing to import from PP_EVT : no file present in the transmission. Continue...')
+          else
+            file_importer.import_personnes_physiques_evt(pp_file_path)
+          end
+        end
+
+        def import_representants(ctx, files_args:, file_importer:, logger:, **)
+          rep_file_path = extract_file_path(files_args, 'rep')
+          if rep_file_path.nil?
+            logger.info('Nothing to import from REP : no file present in the transmission. Continue...')
+          else
+            file_importer.import_representants(rep_file_path)
+          end
+        end
+
+        def import_representants_nouveau_modifie(ctx, files_args:, file_importer:, logger:, **)
+          rep_file_path = extract_file_path(files_args, 'rep_nouveau_modifie_EVT')
+          if rep_file_path.nil?
+            logger.info('Nothing to import from rep_nouveau_modifie_EVT : no file present in the transmission. Continue...')
+          else
+            file_importer.import_representants_nouveau_modifie(rep_file_path)
+          end
+        end
+
+        def import_representants_partant(ctx, files_args:, file_importer:, logger:, **)
+          rep_file_path = extract_file_path(files_args, 'rep_partant_EVT')
+          if rep_file_path.nil?
+            logger.info('Nothing to import from rep_partant_EVT : no file present in the transmission. Continue...')
+          else
+            file_importer.import_representants_partant(rep_file_path)
+          end
+        end
+
+        def import_etablissements(ctx, files_args:, file_importer:, logger:, **)
+          ets_file_path = extract_file_path(files_args, 'ets')
+          if ets_file_path.nil?
+            logger.info('Nothing to import from ets : no file present in the transmission. Continue...')
+          else
+            file_importer.import_etablissements(ets_file_path)
+          end
+        end
+
+        def import_etablissements_nouveau_modifie(ctx, files_args:, file_importer:, logger:, **)
+          ets_file_path = extract_file_path(files_args, 'ets_nouveau_modifie_EVT')
+          if ets_file_path.nil?
+            logger.info('Nothing to import from ets_nouveau_modifie_EVT : no file present in the transmission. Continue...')
+          else
+            file_importer.import_etablissements_nouveau_modifie(ets_file_path)
+          end
+        end
+
+        def import_etablissements_supprime(ctx, files_args:, file_importer:, logger:, **)
+          ets_file_path = extract_file_path(files_args, 'ets_supprime_EVT')
+          if ets_file_path.nil?
+            logger.info('Nothing to import from ets_supprime_EVT : no file present in the transmission. Continue...')
+          else
+            file_importer.import_etablissements_supprime(ets_file_path)
+          end
+        end
+
+        def import_observations(ctx, files_args:, file_importer:, logger:, **)
+          obs_file_path = extract_file_path(files_args, 'obs')
+          if obs_file_path.nil?
+            logger.info('Nothing to import from obs : no file present in the transmission. Continue...')
+          else
+            file_importer.import_observations(obs_file_path)
+          end
+        end
+
+        def log_transmission_import_complete(ctx, logger:, **)
           logger.info('All files have been successfuly imported !')
+        end
+
+        def log_transmission_import_failure(ctx, logger:, **)
+          logger.error('An error occured while importing a file, abort import of transmission...')
+        end
+
+        # TODO Move this into its own class (a class containing the logic to parse
+        # file names, storing the files_args hash and allowing to retrieve the path
+        # from the label)
+        def extract_file_path(files_args, label)
+          files_args.find { |file_args| file_args[:label] == label }
+            .yield_self { |it| it.nil? ? nil : it[:path] }
         end
       end
     end

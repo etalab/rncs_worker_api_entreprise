@@ -49,14 +49,6 @@ module TribunalCommerce
         data
       end
 
-      def map_import_worker(files_args)
-        result = files_args.map do |file_arg|
-          file_arg[:import_worker] = fetch_worker_for(file_arg[:label])
-          file_arg
-        end
-        result
-      end
-
       private
 
       def flux_filename_regex
@@ -65,49 +57,6 @@ module TribunalCommerce
 
       def stock_filename_regex
         /\A(\d{4})_(S\d)_(\d{8})_(\d{1,2})_(.+)\.csv\Z/
-      end
-
-      def fetch_worker_for(label)
-        case label
-        when 'PM'
-          DataSource::File::PM::Operation::Import
-
-        when 'PM_EVT'
-          TribunalCommerce::File::PMEvent::Operation::Import
-
-        when 'PP'
-          DataSource::File::PP::Operation::Import
-
-        when 'PP_EVT'
-          TribunalCommerce::File::PPEvent::Operation::Import
-
-        when 'rep'
-          DataSource::File::Rep::Operation::Import
-
-        when 'rep_nouveau_modifie_EVT'
-          TribunalCommerce::File::RepNouveauModifie::Operation::Import
-
-        when 'rep_partant_EVT'
-          TribunalCommerce::File::RepPartant::Operation::Import
-
-        when 'ets'
-          DataSource::File::Ets::Operation::Import
-
-        when 'ets_nouveau_modifie_EVT'
-          TribunalCommerce::File::EtsNouveauModifie::Operation::Import
-
-        when 'ets_supprime_EVT'
-          TribunalCommerce::File::EtsSupprime::Operation::Import
-
-        when 'obs'
-          DataSource::File::Obs::Operation::Import
-
-        when 'actes'
-        when 'comptes_annuels'
-
-        else
-          raise UnknownFileLabel, "Unknown file label \"#{label}\""
-        end
       end
     end
   end
