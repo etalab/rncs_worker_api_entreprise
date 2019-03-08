@@ -3,6 +3,7 @@ require 'rails_helper'
 describe TribunalCommerce::DailyUpdate::Operation::Load do
   let(:logger) { object_double(Rails.logger, info: true).as_null_object }
   let(:op_params) { { logger: logger } }
+
   subject { described_class.call(op_params) }
 
   describe 'logger:' do
@@ -150,10 +151,22 @@ describe TribunalCommerce::DailyUpdate::Operation::Load do
     end
 
     describe 'available options' do
-      # TODO use TimeCop
       describe 'delay:' do
-        it 'runs only updates older than the number of days provided'
-        it 'defaults to 0'
+        # Let's say the last imported daily update was 09/04/2018
+        let(:db_timestamp) { { year: '2018', month: '04', day: '09' } }
+
+        it 'runs only updates older than the number of days provided' do
+          # We are the 12/04/2018 and we want a one day delay
+          Timecop.freeze(Date.new(2018, 4, 12))
+          op_params[:delay] = 1
+          handled_updates = subject[:daily_updates]
+
+          expect(handled_updates).to contain_exactly(
+            an_object_having_attributes(year: '2018', month: '04', day: '10'),
+            an_object_having_attributes(year: '2018', month: '04', day: '11'),
+          )
+          Timecop.return
+        end
       end
 
       describe 'limit:' do
