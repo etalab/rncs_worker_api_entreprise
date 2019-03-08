@@ -3,6 +3,8 @@ class TribunalInstance::FichierRepresenter < Representable::Decorator
 
   remove_namespaces!
 
+  property :type, attribute: true
+
   collection :greffes,
     as: :grf,
     wrap: false,

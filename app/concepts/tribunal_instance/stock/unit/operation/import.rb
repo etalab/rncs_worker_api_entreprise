@@ -6,8 +6,7 @@ module TribunalInstance
           extend ClassDependencies
 
           BATCH_SIZE         = 5_000
-          Fichier            = Struct.new(:greffes)
-          self[:fichier]     = Fichier.new
+          self[:fichier]     = TribunalInstance::Fichier.new
           self[:representer] = ::TribunalInstance::FichierRepresenter.new self[:fichier]
 
           pass ->(ctx, logger:, **) { logger.info 'Starting import' }

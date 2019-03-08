@@ -3,7 +3,8 @@ require 'rails_helper'
 describe TribunalInstance::FichierRepresenter, :representer do
   subject { fichier_representer }
 
-  it { is_expected.to be_a RepresenterHelper::RSpec::Fichier }
+  it { is_expected.to be_a TribunalInstance::Fichier }
+  its(:type) { is_expected.to eq 'FULL' }
 
   its(:greffes) { is_expected.to have_attributes count: 2 }
   its(:greffes) { are_expected.to all respond_to :dossiers_entreprises }

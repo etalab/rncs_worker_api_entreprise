@@ -1,12 +1,10 @@
 module RepresenterHelper
   module RSpec
-    Fichier = Struct.new(:greffes)
-
     def fichier_representer
       xml_path = Rails.root.join 'spec', 'fixtures', 'titmc', 'xml', '9712_S1_20180505_lot02.xml'
 
     TribunalInstance::FichierRepresenter
-        .new(Fichier.new)
+        .new(TribunalInstance::Fichier.new)
         .from_xml(File.read(xml_path.to_s))
     end
 
