@@ -103,6 +103,8 @@ GEM
       dry-logic (~> 0.4, >= 0.4.0)
       dry-types (~> 0.12.0)
     erubi (1.7.1)
+    et-orbi (1.1.7)
+      tzinfo
     factory_bot (4.11.1)
       activesupport (>= 3.0.0)
     factory_bot_rails (4.11.1)
@@ -114,6 +116,9 @@ GEM
       multipart-post (>= 1.2, < 3)
     ffi (1.9.25)
     formatador (0.2.5)
+    fugit (1.1.8)
+      et-orbi (~> 1.1, >= 1.1.7)
+      raabro (~> 1.1)
     globalid (0.4.1)
       activesupport (>= 4.2.0)
     guard (2.14.2)
@@ -192,6 +197,7 @@ GEM
       byebug (~> 10.0)
       pry (~> 0.10)
     puma (3.12.0)
+    raabro (1.1.6)
     rack (2.0.6)
     rack-cors (1.0.2)
     rack-protection (2.0.4)
@@ -276,6 +282,9 @@ GEM
       connection_pool (~> 2.2, >= 2.2.2)
       rack-protection (>= 1.5.0)
       redis (>= 3.3.5, < 5)
+    sidekiq-cron (1.1.0)
+      fugit (~> 1.1)
+      sidekiq (>= 4.2.1)
     spring (2.0.2)
       activesupport (>= 4.2)
     spring-commands-rspec (1.0.4)
@@ -357,6 +366,7 @@ DEPENDENCIES
   sentry-raven
   shoulda-matchers
   sidekiq (~> 5.2.1)
+  sidekiq-cron (~> 1.1)
   smarter_csv!
   spring
   spring-commands-rspec
