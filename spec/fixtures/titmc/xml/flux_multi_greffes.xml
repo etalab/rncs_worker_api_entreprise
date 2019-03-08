@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<fichier type="BIL" version="1.3" xmlns="fr:inpi:odrncs:serpentXML">
+  <grf cod="1111">
+    <societe dat_donnees="20170517" num_gestion="2006B00357">
+      <bils>
+        <bil>
+          <date_cloture_aa>2007</date_cloture_aa>
+          <dat_depot>20080919</dat_depot>
+        </bil>
+      </bils>
+    </societe>
+  </grf>
+  <grf cod="2222">
+    <societe dat_donnees="20170517" num_gestion="2006B00357">
+      <bils>
+        <bil>
+          <date_cloture_aa>2007</date_cloture_aa>
+          <dat_depot>20080919</dat_depot>
+        </bil>
+      </bils>
+    </societe>
+  </grf>
+</fichier>
