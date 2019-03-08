@@ -9,12 +9,18 @@ describe TribunalInstance::DailyUpdate::Unit::Operation::LoadTransmission, :trb 
   context 'when zip exists' do
     let(:filename) { '20170509212412TITMCFLUX.zip' }
 
-    it 'logs import start' do
-      expect(logger).to receive(:info).with(/Starting import of transmission: .+20170509212412TITMCFLUX.zip/)
-      subject
-    end
-
     context 'when import is successful' do
+      before do
+        allow(TribunalInstance::DailyUpdate::Unit::Operation::Import)
+          .to receive(:call)
+          .and_return(trb_result_success)
+      end
+
+      it 'logs import start' do
+        expect(logger).to receive(:info).with(/Starting import of transmission: .+20170509212412TITMCFLUX.zip/)
+        subject
+      end
+
       it { is_expected.to be_success }
 
       it 'calls Import operation with success' do
