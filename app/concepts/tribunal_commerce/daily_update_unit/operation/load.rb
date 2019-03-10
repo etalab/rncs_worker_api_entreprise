@@ -44,7 +44,7 @@ module TribunalCommerce
         end
 
         def log_success(ctx, daily_update_unit:, logger:, **)
-          logger.info("Each transmission has been successfuly imported. The daily update is a success for greffe #{daily_update_unit.code_greffe} !")
+          logger.info("Each transmission has been successfuly imported. The daily update is a success for greffe #{daily_update_unit.reference} !")
         end
       end
     end

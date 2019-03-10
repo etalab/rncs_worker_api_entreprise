@@ -1,6 +1,6 @@
 module TribunalInstance
   module DailyUpdate
-    module Operation
+    module Task
       class FetchInPipe < Trailblazer::Operation
         extend ClassDependencies
 
@@ -8,7 +8,7 @@ module TribunalInstance
 
         step :fetch_updates
         step :deserialize
-        fail ->(ctx, flux_folder:, **) { ctx[:error] = "No daily updates found inside #{flux_folder}. Ensure the folder exists with a valid subfolder structure." }
+          fail ->(ctx, flux_folder:, **) { ctx[:error] = "No daily updates found inside #{flux_folder}. Ensure the folder exists with a valid subfolder structure." }
 
         def fetch_updates(ctx, flux_folder:, **)
           # Flux are located in subfolders following the 'AAAA/MM/DD' pattern

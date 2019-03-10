@@ -10,13 +10,13 @@ module TribunalInstance
 
         pass ->(ctx, logger:, **) { logger.info 'Checking last TITMC stock...' }
         step Nested(RetrieveLastStock)
-        fail :log_sub_operation_failure, fail_fast: true
+          fail :log_sub_operation_failure, fail_fast: true
         pass :log_current_stock
         step ->(ctx, stock:, **) { stock.newer? }
-        fail :log_not_newer_stock, fail_fast: true
+          fail :log_not_newer_stock, fail_fast: true
         step ->(ctx, stock:, **) { stock.save }
         step Nested(PrepareImport), Output(:fail_fast) => Track(:failure)
-        fail :log_sub_operation_failure
+          fail :log_sub_operation_failure
         step :drop_db_index
         step :import
 

@@ -31,9 +31,9 @@ describe TribunalCommerce::DailyUpdate::Task::FetchPartialStocks do
       end
 
       they 'have the correct code greffe' do
-        units_code = units.pluck(:code_greffe)
+        references = units.pluck(:reference)
 
-        expect(units_code).to contain_exactly('1234', '5556', '0384')
+        expect(references).to contain_exactly('1234', '5556', '0384')
       end
 
       they 'have the correct files path' do

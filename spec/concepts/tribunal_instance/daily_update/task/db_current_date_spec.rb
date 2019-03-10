@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe TribunalInstance::DailyUpdate::Operation::DBCurrentDate do
+describe TribunalInstance::DailyUpdate::Task::DBCurrentDate do
   subject { described_class.call logger: logger }
 
   let(:logger) { instance_double(Logger).as_null_object }

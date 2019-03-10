@@ -5,9 +5,9 @@ describe TribunalCommerce::DailyUpdate::Task::FetchUnits do
   subject { described_class.call(daily_update: daily_update) }
 
   # spec/fixtures/tc/flux/2018/04/09
-	# ├── 0110
-	# ├── 1237
-	# └── 9402
+  # ├── 0110
+  # ├── 1237
+  # └── 9402
   context 'happy path' do
     let(:files_path) { Rails.root.join('spec/fixtures/tc/flux/2018/04/09') }
 
@@ -31,9 +31,9 @@ describe TribunalCommerce::DailyUpdate::Task::FetchUnits do
       end
 
       they 'have the correct code greffe' do
-        units_code = units.pluck(:code_greffe)
+        references = units.pluck(:reference)
 
-        expect(units_code).to contain_exactly('0110', '1237', '9402')
+        expect(references).to contain_exactly('0110', '1237', '9402')
       end
 
       they 'have the correct files path' do

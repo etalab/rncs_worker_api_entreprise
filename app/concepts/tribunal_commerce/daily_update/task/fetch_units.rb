@@ -18,7 +18,7 @@ module TribunalCommerce
               code_greffe = match.captures.first
 
               daily_update.daily_update_units.create(
-                code_greffe: code_greffe,
+                reference: code_greffe,
                 status: 'PENDING',
                 files_path: unit_path,
               )

@@ -1,13 +1,13 @@
 module TribunalInstance
   module DailyUpdate
-    module Operation
+    module Task
       class DBCurrentDate < Trailblazer::Operation
         step :queued_updates?
-        fail :log_updates_waiting_for_import, fail_fast: true
+          fail :log_updates_waiting_for_import, fail_fast: true
 
         step :latest_daily_update_imported, Output(:failure) => Track(:empty_database)
         step :daily_update_completed?
-        fail :log_incomplete_update, fail_fast: true
+          fail :log_incomplete_update, fail_fast: true
 
         step :raw_daily_update_date
         pass :log_no_daily_update, magnetic_to: [:empty_database]

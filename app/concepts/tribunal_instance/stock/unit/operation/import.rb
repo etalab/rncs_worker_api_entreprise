@@ -19,7 +19,7 @@ module TribunalInstance
           step :create_associations_dossiers_and_entreprises
           step :create_entreprises_hash_with_siren
           step :merge_data_from_code_greffe_0000
-          fail :log_missing_siren_in_main_greffe
+            fail :log_missing_siren_in_main_greffe
           pass ->(ctx, logger:, **) { logger.info 'Models associations done' }
 
           step :persist

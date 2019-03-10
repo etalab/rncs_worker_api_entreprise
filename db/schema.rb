@@ -10,14 +10,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_02_10_135958) do
+ActiveRecord::Schema.define(version: 2019_03_05_072430) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
 
   create_table "daily_update_units", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.string "code_greffe"
+    t.string "reference"
     t.integer "num_transmission"
     t.string "files_path"
     t.string "status"

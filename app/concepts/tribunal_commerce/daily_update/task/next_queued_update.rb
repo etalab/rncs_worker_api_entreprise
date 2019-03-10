@@ -10,7 +10,6 @@ module TribunalCommerce
         step :retrieve_next_queued_update, id: :next_update
           fail :log_empty_queue
 
-
         def retrieve_last_update(ctx, **)
           ctx[:last_update] = DailyUpdateTribunalCommerce.current
         end
