@@ -32,7 +32,7 @@ describe TribunalInstance::DailyUpdate::Unit::Operation::Load, :trb do
       ['20170509212412TITMCFLUX.zip', '20170509212415TITMCFLUX.zip'].each do |filename|
         expect(TribunalInstance::DailyUpdate::Unit::Operation::LoadTransmission)
           .to receive(:call)
-          .with(path: /.+#{filename}$/, logger: logger)
+          .with(path: a_string_ending_with(filename), logger: logger)
       end
 
       subject

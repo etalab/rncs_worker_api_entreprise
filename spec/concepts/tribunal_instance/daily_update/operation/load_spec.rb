@@ -106,6 +106,12 @@ describe TribunalInstance::DailyUpdate::Operation::Load, :trb do
       expect(logger).to receive(:info).with('First run, no daily updates')
       subject
     end
+
+    it 'import from the first update in directory' do
+      expect(subject[:daily_updates]).to include(
+        an_object_having_attributes(year: '2017', month: '05', day: '18')
+      )
+    end
   end
 
 
