@@ -2,6 +2,7 @@ require 'rails_helper'
 
 describe Entreprise::Operation::Identity do
   subject { described_class.call(siren: siren) }
+
   let(:http_error) { subject[:http_error] }
 
   context 'with an invalid siren' do
@@ -52,9 +53,9 @@ describe Entreprise::Operation::Identity do
 
   context 'with one and only one dossier principal' do
     let(:siren) { valid_siren }
-    let(:dossier) { create(:dossier_entreprise, code_greffe: 'code_test', numero_gestion: 'numero_test', type_inscription: 'P', siren: siren) }
+    let!(:dossier) { create(:dossier_entreprise, code_greffe: 'code_test', numero_gestion: 'numero_test', type_inscription: 'P', siren: siren) }
 
-    before { dossier }
+    before { create :daily_update_with_completed_units }
 
     context 'when an etablissement principal is found in this dossier' do
       before { create(:etablissement_principal, dossier_entreprise: dossier, enseigne: 'do not forget me') }
@@ -137,12 +138,12 @@ describe Entreprise::Operation::Identity do
       end
     end
 
-    describe 'db_current_date' do
+    describe 'db_current_date is found' do
       before { create :etablissement_principal, dossier_entreprise: dossier, enseigne: 'do not forget me' }
 
       let(:dossier_attributes) { subject[:entreprise_identity][:dossier_entreprise_greffe_principal] }
 
-      it 'returns db_current_date from last daily update', pending: 'db_current_date is hardcored currently' do
+      it 'returns db_current_date from last daily update' do
         create :daily_update_with_completed_units
         expect(dossier_attributes).to include db_current_date: '2016-04-21'
       end
@@ -161,6 +162,20 @@ describe Entreprise::Operation::Identity do
         expect(http_error[:message]).to eq('Aucun etablissement principal trouvé dans le dossier principal')
       end
     end
+  end
+
+  describe 'when a daily update is running' do
+    before do
+      create :daily_update_tribunal_commerce
+      create :etablissement_principal, dossier_entreprise: dossier, enseigne: 'do not forget me'
+    end
+
+    let(:siren) { valid_siren }
+    let!(:dossier) { create(:dossier_entreprise, code_greffe: 'code_test', numero_gestion: 'numero_test', type_inscription: 'P', siren: siren) }
+
+    it { is_expected.to be_failure }
+
+    its([:error]) { is_expected.to eq 'The current update is still running. Abort...' }
   end
 end
 
