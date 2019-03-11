@@ -157,6 +157,7 @@ describe TribunalCommerce::DailyUpdate::Operation::Load do
 
         it 'runs only updates older than the number of days provided' do
           # We are the 12/04/2018 and we want a one day delay
+          # there are fixtures directories until 18/04/2018
           Timecop.freeze(Date.new(2018, 4, 12))
           op_params[:delay] = 1
           handled_updates = subject[:daily_updates]
