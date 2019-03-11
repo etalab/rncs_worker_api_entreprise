@@ -3,11 +3,11 @@ require 'colorize'
 namespace :titmc do
   namespace :flux do
     desc 'Start import of remaning daily updates'
-    task :load, [:limit_date] => :environment do |_, args|
-      puts "Date limite d'import #{args[:limit_date].yellow}"
+    task :load, [:import_until_date] => :environment do |_, args|
+      puts "Date limite d'import #{args[:import_until_date].yellow}"
 
       operation = TribunalInstance::DailyUpdate::Operation::Load.call(
-        limit_date: args[:limit_date],
+        import_until_date: args[:import_until_date],
         logger: Logger.new(STDOUT)
       )
       puts "Operation status: #{operation.success?}".blue

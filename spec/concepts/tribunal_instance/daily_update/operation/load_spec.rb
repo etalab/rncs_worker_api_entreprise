@@ -64,8 +64,21 @@ describe TribunalInstance::DailyUpdate::Operation::Load, :trb do
         )
       end
 
-      describe 'limit option' do
-        before { params[:limit_date] = '2017/05/20' }
+      describe 'import_until_date option' do
+        before { params[:import_until_date] = '2017/05/20' }
+
+        its([:daily_updates]) { is_expected.to have_attributes count: 2 }
+
+        it 'limit to 2 updates' do
+          expect(subject[:daily_updates]).to contain_exactly(
+            an_object_having_attributes(year: '2017', month: '05', day: '19'),
+            an_object_having_attributes(year: '2017', month: '05', day: '20'),
+          )
+        end
+      end
+
+      describe 'import_next_x_days option' do
+        before { params[:import_next_x_days] = 2 }
 
         its([:daily_updates]) { is_expected.to have_attributes count: 2 }
 

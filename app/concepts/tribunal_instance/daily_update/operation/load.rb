@@ -18,7 +18,8 @@ module TribunalInstance
         def set_default_db_current_date(ctx, daily_updates:, **)
           unless ctx.key?(:db_current_date)
             oldest_daily_update = daily_updates.sort_by(&:date).first
-            ctx[:db_current_date] = oldest_daily_update.date - 1
+            day_before_first_update = oldest_daily_update.date - 1
+            ctx[:db_current_date] = day_before_first_update
           else
             true
           end
@@ -28,10 +29,9 @@ module TribunalInstance
           daily_updates.keep_if { |update| update.newer?(db_current_date) }
         end
 
-        def limit_update_to_keep(ctx, daily_updates:, limit_date: nil, db_current_date:, **)
-          unless limit_date.nil?
-            limit_date = Date.new *limit_date.split('/').map(&:to_i)
-            daily_updates.keep_if { |update| !update.newer?(limit_date) }
+        def limit_update_to_keep(ctx, daily_updates:, **)
+          if import_option_provided? ctx
+            daily_updates.keep_if { |update| !update.newer?(date_limit_to_import ctx) }
           end
 
           ctx[:daily_updates].any?
@@ -58,6 +58,19 @@ module TribunalInstance
 
         def log_how_many_updates_found(ctx, daily_updates:, logger:, **)
           logger.info "#{daily_updates.count} daily updates found."
+        end
+
+        private
+
+        def import_option_provided?(ctx)
+          !ctx[:import_until_date].nil? || !ctx[:import_next_x_days].nil?
+        end
+
+        def date_limit_to_import(ctx)
+          until_date_to_import = ctx[:db_current_date] + ctx[:import_next_x_days] if ctx[:import_next_x_days]
+          until_date_to_import = ctx[:import_until_date].to_date                  if ctx[:import_until_date]
+
+          return until_date_to_import
         end
       end
     end
