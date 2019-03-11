@@ -1,22 +1,16 @@
 require 'rails_helper'
 
-describe TribunalInstance::Stock::Unit::Operation::LoadTransmission, :trb do
-  subject do
-    described_class.call(
-      code_greffe: '9712',
-      path: spec_path.to_s,
-      logger: logger
-    )
-  end
+describe TribunalInstance::DailyUpdate::Unit::Operation::LoadTransmission, :trb do
+  subject { described_class.call path: spec_path.to_s, logger: logger }
 
   let(:spec_path) { Rails.root.join 'spec', 'fixtures', 'titmc', 'zip', filename }
   let(:logger) { instance_double(Logger).as_null_object }
 
   context 'when zip exists' do
-    let(:filename) { '9712_S1_20180505_lot02.zip' }
+    let(:filename) { '20170509212412TITMCFLUX.zip' }
 
     it 'logs import start' do
-      expect(logger).to receive(:info).with(/Starting import of transmission: .+9712_S1_20180505_lot02.zip/)
+      expect(logger).to receive(:info).with(/Starting import of transmission: .+20170509212412TITMCFLUX.zip/)
       subject
     end
 
@@ -24,10 +18,10 @@ describe TribunalInstance::Stock::Unit::Operation::LoadTransmission, :trb do
       it { is_expected.to be_success }
 
       it 'calls Import operation with success' do
-        expect(TribunalInstance::Stock::Unit::Operation::Import)
+        expect(TribunalInstance::DailyUpdate::Unit::Operation::Import)
           .to receive(:call)
           .and_return(trb_result_success)
-          .once
+          .with(path: /.+random_file.txt/, logger: logger)
 
         subject
       end
@@ -40,7 +34,7 @@ describe TribunalInstance::Stock::Unit::Operation::LoadTransmission, :trb do
 
     context 'when Import fails' do
       before do
-        allow(TribunalInstance::Stock::Unit::Operation::Import)
+        allow(TribunalInstance::DailyUpdate::Unit::Operation::Import)
           .to receive(:call)
           .and_return(trb_result_failure)
       end
@@ -58,7 +52,7 @@ describe TribunalInstance::Stock::Unit::Operation::LoadTransmission, :trb do
     let(:filename) { 'two_files.zip' }
 
     before do
-      allow(TribunalInstance::Stock::Unit::Operation::Import)
+      allow(TribunalInstance::DailyUpdate::Unit::Operation::Import)
         .to receive(:call)
         .and_return(trb_result_success)
     end
@@ -73,7 +67,7 @@ describe TribunalInstance::Stock::Unit::Operation::LoadTransmission, :trb do
     end
 
     it 'calls Import exactly twice' do
-      expect(TribunalInstance::Stock::Unit::Operation::Import)
+      expect(TribunalInstance::DailyUpdate::Unit::Operation::Import)
         .to receive(:call)
         .and_return(trb_result_success)
         .twice
@@ -82,9 +76,9 @@ describe TribunalInstance::Stock::Unit::Operation::LoadTransmission, :trb do
     end
 
     def expect_import_success_with(filename)
-      expect(TribunalInstance::Stock::Unit::Operation::Import)
+      expect(TribunalInstance::DailyUpdate::Unit::Operation::Import)
         .to receive(:call)
-        .with(path: a_string_ending_with(filename), code_greffe: '9712', logger: logger)
+        .with(path: a_string_ending_with(filename), logger: logger)
         .and_return(trb_result_success)
     end
   end
@@ -95,7 +89,7 @@ describe TribunalInstance::Stock::Unit::Operation::LoadTransmission, :trb do
     it { is_expected.to be_failure }
 
     it 'does not call the import operation' do
-      expect(TribunalInstance::Stock::Unit::Operation::Import)
+      expect(TribunalInstance::DailyUpdate::Unit::Operation::Import)
         .not_to receive(:call)
 
       subject
@@ -115,7 +109,7 @@ describe TribunalInstance::Stock::Unit::Operation::LoadTransmission, :trb do
     it { is_expected.to be_failure }
 
     it 'does not call the import operation' do
-      expect(TribunalInstance::Stock::Unit::Operation::Import)
+      expect(TribunalInstance::DailyUpdate::Unit::Operation::Import)
         .not_to receive(:call)
 
       subject

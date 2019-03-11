@@ -36,7 +36,7 @@ module TribunalInstance
 
         def log_not_newer_stock(ctx, logger:, **)
           current_stock = StockTribunalInstance.current
-          logger.error "No stock newer than #{current_stock.date} available"
+          logger.error "No stock newer than #{current_stock.date} available ; current stock status: #{current_stock.status}"
         end
 
         def log_sub_operation_failure(ctx, logger:, error:, **)

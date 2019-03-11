@@ -75,7 +75,7 @@ describe TribunalInstance::Stock::Operation::Load do
     it_behaves_like 'failure that does nothing'
 
     it 'logs "this stock is already loaded"' do
-      expect(logger).to receive(:error).with 'No stock newer than 2018-05-05 available'
+      expect(logger).to receive(:error).with 'No stock newer than 2018-05-05 available ; current stock status: PENDING'
       subject
     end
   end
