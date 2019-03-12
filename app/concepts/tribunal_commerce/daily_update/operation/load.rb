@@ -14,6 +14,7 @@ module TribunalCommerce
         step :append_partial_stocks_to_daily_updates
         step :ignores_older_updates
         step :limit_update_to_keep
+        step :delay_update
           fail :no_updates_to_import
         step :save_handled_updates
 
@@ -29,7 +30,16 @@ module TribunalCommerce
         def limit_update_to_keep(ctx, daily_updates:, limit:nil, db_current_date:, **)
           unless limit.nil?
             date_limit = db_current_date + limit
-            daily_updates.keep_if { |update| !update.newer?(date_limit) }
+            daily_updates.keep_if { |update| update.older?(date_limit) }
+          end
+
+          ctx[:daily_updates].any?
+        end
+
+        def delay_update(ctx, daily_updates:, delay:nil, **)
+          unless delay.nil?
+            date_limit = Date.today - delay
+            daily_updates.keep_if { |update| update.older?(date_limit) }
           end
 
           ctx[:daily_updates].any?

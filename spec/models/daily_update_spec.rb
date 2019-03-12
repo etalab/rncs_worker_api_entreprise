@@ -128,6 +128,28 @@ describe DailyUpdate do
     end
   end
 
+  describe '#older?' do
+    subject { build(:daily_update, year: '2017', month: '09', day: '11') }
+
+    it 'is true when given date is newer' do
+      newer_date = Date.new(2018, 6, 23)
+
+      expect(subject.older?(newer_date)).to eq(true)
+    end
+
+    it 'is true when given date equals record\'s date' do
+      same_date = subject.date
+
+      expect(subject.older?(same_date)).to eq(true)
+    end
+
+    it 'is false when given date is older' do
+      older_date = Date.new(2017, 2, 18)
+
+      expect(subject.older?(older_date)).to eq(false)
+    end
+  end
+
   describe '#status' do
     subject { create(daily_update_param) }
 

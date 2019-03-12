@@ -27,6 +27,10 @@ class DailyUpdate < ApplicationRecord
     self.date > telltale_date
   end
 
+  def older?(telltale_date)
+    not self.newer?(telltale_date)
+  end
+
   def status
     child_status = daily_update_units_status
 

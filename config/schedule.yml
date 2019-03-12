@@ -1,0 +1,4 @@
+sync_ftp_job:
+  cron: '0 0 * * *'
+  class: 'SyncFTPJob'
+  queue: 'auto_updates'

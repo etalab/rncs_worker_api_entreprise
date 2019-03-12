@@ -80,6 +80,16 @@ jour disponibles :
 TribunalCommerce::DailyUpdate::Operation::Load.call
 ```
 
+Il est possible d'utiliser l'option *delay:* (en nombre de jours) pour spécifier
+le nombre de jours à attendre avant d'importer les mises à jour. Par exemple, la
+commande suivante n'ajoutera pas la mise à jour du jour en cours dans la file
+d'attente (ceci permet d'attendre que toutes les transmissions d'une même
+journée soient disponibles sur le FTP avant d'importer les mises à jour).
+
+```ruby
+TribunalCommerce::DailyUpdate::Operation::Load.call(delay: 1)
+```
+
 L'opération récupère la date de la dernière mise à jour importée en base et
 place dans la file toute nouvelle mise à jour plus récente.
 
