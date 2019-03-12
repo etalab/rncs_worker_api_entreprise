@@ -1,6 +1,8 @@
 require 'rails_helper'
 
 describe API::InfosIdentiteEntrepriseController, type: :controller do
+  before { create :daily_update_with_completed_units }
+
   describe '#show' do
     subject do
       get :show, params: { siren: siren }
