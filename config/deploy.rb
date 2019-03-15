@@ -20,12 +20,13 @@ set :deploy_to, "/var/www/rncs_api_#{ENV['to']}"
 set :rails_env, ENV['to']
 set :repository, 'git@github.com:etalab/rncs_worker_api_entreprise.git'
 
-# TODO configure for production environment
 branch = ENV['branch'] ||
   begin
     case ENV['to']
-    when 'sandbox'
+    when 'production'
       'master'
+    when 'sandbox'
+      'develop'
     end
   end
 
