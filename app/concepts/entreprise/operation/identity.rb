@@ -9,7 +9,7 @@ module Entreprise
         fail :no_exclusif_dossier_principal, fail_fast: true
       step :fetch_etablissement_principal
         fail :no_etablissement_principal
-      step :fetch_db_current_date
+      step Nested TribunalCommerce::DailyUpdate::Operation::DBCurrentDate
       step :fetch_identity_data
 
 
@@ -51,14 +51,6 @@ module Entreprise
 
       def no_etablissement_principal(ctx, **)
         ctx[:http_error] = { code: 500, message: 'Aucun etablissement principal trouvé dans le dossier principal' }
-      end
-
-      # TODO: finish me
-      # pending due to no stock in production
-      def fetch_db_current_date(ctx, **)
-        db_date_operation = TribunalCommerce::DailyUpdate::Operation::DBCurrentDate.call
-        ctx[:db_current_date] = db_date_operation.success? ? db_date_operation[:db_current_date] : nil # <= cannot be nil
-        ctx[:db_current_date] = Date.parse('2018-11-26')
       end
 
       def fetch_identity_data(ctx, dossier_principal:, etablissement_principal:, db_current_date:, **)
