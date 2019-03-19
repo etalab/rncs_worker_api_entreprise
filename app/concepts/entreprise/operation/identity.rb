@@ -41,7 +41,7 @@ module Entreprise
       end
 
       def no_exclusif_dossier_principal(ctx, dossiers_principaux_count:, **)
-        ctx[:http_error] = { code: 500, message: "#{dossiers_principaux_count} dossiers principaux trouvés" }
+        ctx[:http_error] = { code: 404, message: "#{dossiers_principaux_count} dossiers principaux trouvés" }
       end
 
       def fetch_etablissement_principal(ctx, dossier_principal:, **)
@@ -50,7 +50,7 @@ module Entreprise
       end
 
       def no_etablissement_principal(ctx, **)
-        ctx[:http_error] = { code: 500, message: 'Aucun etablissement principal trouvé dans le dossier principal' }
+        ctx[:http_error] = { code: 404, message: 'Aucun etablissement principal trouvé dans le dossier principal' }
       end
 
       def fetch_identity_data(ctx, dossier_principal:, etablissement_principal:, db_current_date:, **)

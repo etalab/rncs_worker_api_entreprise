@@ -33,8 +33,8 @@ describe Entreprise::Operation::Identity do
     shared_examples 'no exclusif dossier principal' do
       it { is_expected.to be_failure }
 
-      it 'returns a 500 error' do
-        expect(http_error[:code]).to eq(500)
+      it 'returns a 404 error' do
+        expect(http_error[:code]).to eq(404)
         expect(http_error[:message]).to match(/\A\d+ dossiers principaux trouvés\Z/)
       end
     end
@@ -157,8 +157,8 @@ describe Entreprise::Operation::Identity do
     context 'when no etablissement principal is found' do
       it { is_expected.to be_failure }
 
-      it 'returns a 500 error' do
-        expect(http_error[:code]).to eq(500)
+      it 'returns a 404 error' do
+        expect(http_error[:code]).to eq(404)
         expect(http_error[:message]).to eq('Aucun etablissement principal trouvé dans le dossier principal')
       end
     end
