@@ -2,3 +2,8 @@ sync_ftp_job:
   cron: '0 0 * * *'
   class: 'SyncFTPJob'
   queue: 'auto_updates'
+
+daily_import_tc_job:
+  cron: '0 10 * * *'
+  class: 'DailyImportTCJob'
+  queue: 'auto_updates'
