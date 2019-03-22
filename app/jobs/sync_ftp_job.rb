@@ -4,8 +4,10 @@ class SyncFTPJob < ActiveJob::Base
   queue_as :auto_updates
 
   def perform(*_)
-    sync_files
-    ensure_permissions_are_correct
+    if Rails.env.production?
+      sync_files
+      ensure_permissions_are_correct
+    end
   end
 
   private

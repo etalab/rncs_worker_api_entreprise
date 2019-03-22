@@ -3,44 +3,58 @@ require 'rails_helper'
 describe SyncFTPJob do
   subject { described_class.perform_now }
 
-  describe 'when all command are successful' do
-    before do
-      allow_lftp_success
-      allow_chmod_success
+  context 'when in production environment' do
+    before { allow(Rails.env).to receive(:production?).and_return(true) }
+
+    describe 'when all command are successful' do
+      before do
+        allow_lftp_success
+        allow_chmod_success
+      end
+
+      it 'calls the commands lines ordered' do
+        expect(Open3).to receive(:capture3).with(/lftp/).ordered
+        expect(Open3).to receive(:capture3).with(/chmod/).twice.ordered
+        subject
+      end
+
+      it 'does not log any error' do
+        expect(Rails.logger).not_to receive(:error)
+        subject
+      end
     end
 
-    it 'calls the commands lines ordered' do
-      expect(Open3).to receive(:capture3).with(/lftp/).ordered
-      expect(Open3).to receive(:capture3).with(/chmod/).twice.ordered
-      subject
+    describe 'when lftp fails' do
+      before do
+        allow(Open3).to receive(:capture3).with(/lftp/).and_return(['', 'random error', status_failure])
+        allow_chmod_success
+      end
+
+      it 'logs an error' do
+        expect(Rails.logger).to receive(:error).with('LFTP sync failed with: random error')
+        subject
+      end
     end
 
-    it 'does not log any error' do
-      expect(Rails.logger).not_to receive(:error)
-      subject
+    describe 'when chmod fails' do
+      before do
+        allow_lftp_success
+        allow(Open3).to receive(:capture3).with(/chmod/).and_return(['', 'random error', status_failure])
+      end
+
+      it 'logs an error' do
+        expect(Rails.logger).to receive(:error).with(/Ensure permissions for .+/).twice
+        subject
+      end
     end
   end
 
-  describe 'when lftp fails' do
-    before do
-      allow(Open3).to receive(:capture3).with(/lftp/).and_return(['', 'random error', status_failure])
-      allow_chmod_success
-    end
+  context 'when not in production environement' do
+    before { allow(Rails.env).to receive(:production?).and_return(false) }
 
-    it 'logs an error' do
-      expect(Rails.logger).to receive(:error).with('LFTP sync failed with: random error')
-      subject
-    end
-  end
+    it 'does nothing' do
+      expect(Open3).to_not receive(:capture3)
 
-  describe 'when chmod fails' do
-    before do
-      allow_lftp_success
-      allow(Open3).to receive(:capture3).with(/chmod/).and_return(['', 'random error', status_failure])
-    end
-
-    it 'logs an error' do
-      expect(Rails.logger).to receive(:error).with(/Ensure permissions for .+/).twice
       subject
     end
   end
