@@ -8,7 +8,7 @@ Rails.application.configure do
 
   # Do not eager load code on boot.
   config.eager_load = false
-  config.trailblazer.use_loader = false
+  config.trailblazer.enable_loader = false
 
   # Show full error reports.
   config.consider_all_requests_local = true

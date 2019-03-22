@@ -52,8 +52,6 @@ module RncsWorkerApiEntreprise
     # knowledge of the data quality. Uncomment when ready
     # config.active_record.lock_optimistically = false
 
-    config.reform.validations = :dry
-
     config.generators do |g|
         g.orm :active_record, primary_key_type: :uuid
     end
