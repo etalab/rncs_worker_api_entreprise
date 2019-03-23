@@ -11,7 +11,7 @@ shared_examples 'handling siren errors' do
     it 'returns 422 with error message' do
       json = JSON.parse response.body
 
-      expect(json).to include_json error: 'Siren invalide'
+      expect(json).to include_json error: 'Le numéro siren en paramètre est mal formaté.'
     end
   end
 
@@ -25,7 +25,7 @@ shared_examples 'handling siren errors' do
     it 'returns 404 with error message' do
       json = JSON.parse response.body
 
-      expect(json).to include_json error: 'Aucun dossier trouvé'
+      expect(json).to include_json error: 'Aucun dossier d\'immatriculation connu pour ce siren.'
     end
   end
 end
