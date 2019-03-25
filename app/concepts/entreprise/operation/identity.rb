@@ -18,7 +18,7 @@ module Entreprise
       end
 
       def invalid_siren(ctx, **)
-        ctx[:http_error] = { code: 422, message: 'Siren invalide' }
+        ctx[:http_error] = { code: 422, message: 'Le numéro siren en paramètre est mal formaté.' }
       end
 
       def find_dossiers_entreprise(ctx, siren:, **)
@@ -27,7 +27,7 @@ module Entreprise
       end
 
       def no_dossier_exists(ctx, **)
-        ctx[:http_error] = { code: 404, message: 'Aucun dossier trouvé' }
+        ctx[:http_error] = { code: 404, message: 'Aucun dossier d\'immatriculation connu pour ce siren.' }
       end
 
       def fetch_dossier_principal(ctx, dossiers_entreprise:, **)
@@ -41,7 +41,7 @@ module Entreprise
       end
 
       def no_exclusif_dossier_principal(ctx, dossiers_principaux_count:, **)
-        ctx[:http_error] = { code: 404, message: "#{dossiers_principaux_count} dossiers principaux trouvés" }
+        ctx[:http_error] = { code: 404, message: "#{dossiers_principaux_count} immatriculations principales trouvées." }
       end
 
       def fetch_etablissement_principal(ctx, dossier_principal:, **)
@@ -50,7 +50,7 @@ module Entreprise
       end
 
       def no_etablissement_principal(ctx, **)
-        ctx[:http_error] = { code: 404, message: 'Aucun etablissement principal trouvé dans le dossier principal' }
+        ctx[:http_error] = { code: 404, message: 'Aucun établissement principal dans le dossier d\'immatriculation.' }
       end
 
       def fetch_identity_data(ctx, dossier_principal:, etablissement_principal:, db_current_date:, **)
