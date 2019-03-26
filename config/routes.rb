@@ -5,8 +5,8 @@ Rails.application.routes.draw do
   mount Sidekiq::Web => '/sidekiq'
 
   concern :v1_routes do
-    get 'infos_identite_entreprise/:siren',     to: 'api/v1/infos_identite_entreprise#show'
-    get 'infos_identite_entreprise/:siren/pdf', to: 'api/v1/infos_identite_entreprise#pdf'
+    get 'fiches_identite/:siren',     to: 'api/v1/fiches_identite#show'
+    get 'fiches_identite/:siren/pdf', to: 'api/v1/fiches_identite#pdf'
   end
 
   scope :v1 do

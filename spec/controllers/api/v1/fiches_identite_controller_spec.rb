@@ -1,11 +1,11 @@
 require 'rails_helper'
 
-describe API::V1::InfosIdentiteEntrepriseController, type: :request do
+describe API::V1::FichesIdentiteController, type: :request do
   before { create :daily_update_with_completed_units }
 
   describe '#show' do
     subject do
-      get "/v1/infos_identite_entreprise/#{siren}"
+      get "/v1/fiches_identite/#{siren}"
     end
 
     it_behaves_like 'handling siren errors'
@@ -24,7 +24,7 @@ describe API::V1::InfosIdentiteEntrepriseController, type: :request do
 
   describe '#pdf' do
     subject do
-      get "/v1/infos_identite_entreprise/#{siren}/pdf"
+      get "/v1/fiches_identite/#{siren}/pdf"
     end
 
     it_behaves_like 'handling siren errors'
@@ -59,7 +59,7 @@ describe API::V1::InfosIdentiteEntrepriseController, type: :request do
     # of observation splitted on 2 pages handled by code
     it '[NOT A SPEC] generates a test PDF in /tmp' do
       create :dossier_entreprise_simple, siren: valid_siren
-      get "/v1/infos_identite_entreprise/#{valid_siren}/pdf"
+      get "/v1/fiches_identite/#{valid_siren}/pdf"
 
       File.open('./tmp/identite_entreprise_pp.pdf', 'wb') do |file|
         file.write response.body

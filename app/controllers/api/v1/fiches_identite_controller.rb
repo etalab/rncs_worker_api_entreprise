@@ -1,6 +1,6 @@
 module API
   module V1
-    class InfosIdentiteEntrepriseController< ApplicationController
+    class FichesIdentiteController< ApplicationController
       def show
         retrieve_identity = Entreprise::Operation::Identity.call(siren: siren)
 
