@@ -107,7 +107,7 @@ TribunalCommerce::DailyUpdate::Operation::Import.call
 #### Uniformisation des en-têtes de colonnes
 
 Les fichiers CSV transmis ne respectent pas toujours les en-têtes de colonne
-de la documentation technique : en fonction des Greffes et en fonction du temps
+de la documentation technique : en fonction des greffes et en fonction du temps
 les en-têtes peuvent varier d'un fichier à l'autre (variation de la casse,
 présence ou non des guillemets séparateurs, ...). Pour prévenir toute erreur
 dûe au parsing des fichiers CSV lors de l'import les en-têtes de tous
@@ -127,7 +127,7 @@ les fichiers relatifs aux représentants avant import.
 
 Toutes les données des fichiers CSV sont importées en base au format `String`.
 En effet, comme les conventions du format CSV ne sont pas respectés, de même
-que la procédure d'échange de la donnée entre les Greffes et l'INPI, cela
+que la procédure d'échange de la donnée entre les greffes et l'INPI, cela
 permet d'importer toutes les données disponibles sans froisser les contraintes
 de typage (ou de format de date) de la base de données.
 
@@ -165,7 +165,7 @@ pas ajouter de complexité supplémentaire au script d'import, ces fichiers ont
 Certaines mises à jour transmises ne respectent pas les contraintes d'intégrité
 de la donné décrite dans la documentation technique et ne sont alors pas
 importées en base. Lorsqu'une mise à jour est inapplicable, l'INPI demande le
-dossier complet au Greffe concerné à des fins de corrections. Ces dossiers
+dossier complet au greffe concerné à des fins de corrections. Ces dossiers
 correctifs sont transmis sous la forme de stocks partiels et doivent être
 traités en annule et remplace.
 
@@ -298,3 +298,116 @@ résoudre ces deux problèmes. Et l'import des flux n'est pas encore opérationn
 La solution actuellement à l'étude et d'importer tant qu'il n'y a pas deux dossiers en conflits
 et logger l'erreur précisement. Ainsi les blians et les actes peuvent exister _sans dossier_ (et
 non pas avec un dossier vide), cela implique quelques changement dans le modèle.
+
+## Constitution des fiches d'immatriculation au RNCS
+
+Le point d'accès */fiches_identite/:siren* permet d'obtenir la fiche
+d'immatriculation principale de l'entreprise au registre national du commerce et
+des sociétés pour un numéro siren donné. L'information est valable au jour de la
+requête : il n'y a pas d'historique de l'état d'une entreprise à une antérieure.
+
+Pour une entreprise donnée, la fiche est contruite à partir de l'agrégation
+de tous les dossiers d'immatriculations - principale et secondaires - présents
+en base de données au moment de la requête. Cela demande de faire le tri parmi
+différents dossiers pouvant être enregistrés auprès des 148 greffes -
+Tribunaux de Commerce et Tribunaux d'Instance et Tribunaux Mixte de Commerce -
+qui ont chacun leurs propres règles métier et qui communiquent indépendamment
+les mises à jour de leur registre respectif.
+
+Ces disparités de règles et de format compliquent l'exploitation de la donnée ;
+dans certains cas, il n'est pas possible de constituer la fiche d'identité de
+l'entreprise. L'algorithme et les choix d'implémentation sont détaillés
+ci-dessous.
+
+### Contenu de la fiche d'immatriculation principale
+
+La fiche d'immatriculation principale au RNCS représente la carte d'identité à
+jour d'une entreprise et contient les informations suivantes :
+
+* le nom du greffe d'immatriculation principale ;
+* la raison sociale, le sigle et l'enseigne ;
+* l'identifiant de l'entreprise (numéro siren) ;
+* la forme juridique ;
+* le capital social (montant et devise) ;
+* l'adresse du siège (avec les informations de domiciliation le cas échéant) ;
+* la durée de vie de la société ;
+* la date de création ;
+* l'activité (code NAF et détails) ;
+* l'adresse de l'établissement principal ;
+* l'identité et la fonction des administrateurs et commissaires aux comptes ;
+* la date de valeur de la fiche ;
+* les observations du Tribunal de Commerce.
+
+### Périmètre couvert par la délivrance d'une fiche d'identité
+
+Aujourd'hui, la fiche d'immatriculation est disponible pour environ 90% des
+sociétés enregistrées au RNCS à ce jour.
+
+Compte tenu des difficultées rencontrées à l'import des données des Tribunaux
+d'Instance et Tribunaux Mixte de Commerce, il n'est pas encore possible
+d'obtenir la fiche d'identité d'une entreprise dont l'immatriculation principale
+réside auprès de l'un des ces tribunal.
+
+Le service va continuer d'évoluer pour couvrir un périmètre toujours plus large.
+De plus, des dossiers correctifs peuvent être transmis par les greffes et ainsi
+corriger par eux même des erreurs rencontrées à la création d'une fiche
+d'identité.
+
+### Identification de l'immatriculation principale
+
+Afin d'établir la fiche d'identité, la première étape consiste à identifier
+l'immatriculation principale de l'entreprise. Cette information est renseignée
+dans le champ *type_inscription* du dossier : "P" pour principale, "S" pour
+secondaire.
+
+Les données d'identité de la fiche (greffe d'immatriculation, raison sociale,
+sigle, forme juridique, ...) sont celles du dossier d'immatriculation
+principale.
+
+Bien que l'immatriculation principale au RNCS soit unique pour une entreprise,
+il est parfois compliqué d'identifier la dernière en date. Par exemple, dans le
+cas d'un transfert de siège sociale donnant lieu à une nouvelle immatricualtion
+dans un greffe différent de celui d'origine, il est possible de trouver deux
+immatriculations principales en base pour un même numéro siren. Ceci arrive
+lorsque le greffe final transmet la donnée à jour avant le greffe d'origine,
+lorsque les champs *date_transfert* ou *date_radiation* ne sont pas renseignés,
+ou encore si la mise à jour est rejetée pour avoir causé une erreur à
+l'import...
+
+A ce jour, et dans un premier temps, seules sont disponibles les fiches
+d'identité pour une entreprise dont une et une seule immatriculation principale
+est trouvée en base.
+
+### Etablissement siège et établissement principal
+
+Les données des établissements siège et principal de la fiche d'identité sont
+celles des établissements rattachés au dossier d'immatriculation principale,
+quand ils sont présents en base.
+
+Aujourd'hui nous renvoyons une erreur lorsqu'au moins l'un des établissements
+est manquant. En cas de doublons (plusieurs établissements taggés comme "siège"
+ou "principal" présents en base de données), l'un d'eux est sélectionné
+arbitrairement pour constituer la fiche d'identité.
+
+### Données de Gestion, Direction, Administration, Contrôle, Associés ou Membres
+
+Les données d'identité des différents rôles de gestion, administration, contrôle...
+affichées dans la fiche sont celles de tous les représentants qui sont rattachés au
+dossier d'immatriculation principale préalablement identifié.
+
+### Les décisions judiciaires
+
+Toutes les observations judiciaires rendues par les Tribunaux de Commerce
+présentes sur la fiche d'identité sont celles rattachées au dossier
+d'immatriculation principale préalablement identifié.
+
+### La date de valeur
+
+La date de valeur indiquée sur la fiche d'identité représente la date à laquelle
+les données sont à jour dans le RNCS. Il s'agit de la date de la dernière mise à
+jour quotidienne importée en base.
+
+Cette date peut avoir quelques jours de retard par rapport au jour où la requête
+est effectuée. En effet, il arrive qu'aucune mise à jour ne soient transmisent
+certain jours (le week-end par exemple ; le lundi, la date de valeur sera donc
+celle du vendredi d'avant).
