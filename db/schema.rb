@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_03_05_072430) do
+ActiveRecord::Schema.define(version: 2019_03_28_114955) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -258,18 +258,6 @@ ActiveRecord::Schema.define(version: 2019_03_05_072430) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "titmc_actes", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.string "type_acte"
-    t.string "nature"
-    t.string "date_depot"
-    t.string "date_acte"
-    t.string "numero_depot_manuel"
-    t.string "entreprise_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.string "code_greffe"
-  end
-
   create_table "titmc_adresses", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "type"
     t.string "ligne_1"
@@ -287,20 +275,6 @@ ActiveRecord::Schema.define(version: 2019_03_05_072430) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "representant_id"
-    t.string "code_greffe"
-  end
-
-  create_table "titmc_bilans", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.string "date_cloture_annee"
-    t.string "date_cloture_jour_mois"
-    t.string "date_depot"
-    t.string "confidentialite_document_comptable"
-    t.string "confidentialite_compte_resultat"
-    t.string "numero"
-    t.string "duree_exercice"
-    t.string "entreprise_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
     t.string "code_greffe"
   end
 

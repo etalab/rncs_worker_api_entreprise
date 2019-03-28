@@ -15,16 +15,8 @@ describe TribunalInstance::Stock::Unit::Operation::ResetDatabase, :trb do
     expect { subject }.to change(DossierEntreprise, :count).by -1
   end
 
-  it 'deletes actes' do
-    expect { subject }.to change(TribunalInstance::Acte, :count).by -5
-  end
-
   it 'deletes adresses' do
     expect { subject }.to change(TribunalInstance::Adresse, :count).by -9
-  end
-
-  it 'deletes bilans' do
-    expect { subject }.to change(TribunalInstance::Bilan, :count).by -3
   end
 
   it 'deletes entreprise' do

@@ -7,8 +7,6 @@ module TribunalInstance
 
           step :merge_etablissements
           step :merge_representants
-          step :merge_actes
-          step :merge_bilans
           step :merge_observations
 
           def merge_etablissements(ctx, entreprise_code_greffe_0000:, entreprise_related:, code_greffe:, **)
@@ -28,16 +26,6 @@ module TribunalInstance
             end
 
             entreprise_related.representants << entreprise_code_greffe_0000.representants
-          end
-
-          def merge_actes(ctx, entreprise_code_greffe_0000:, entreprise_related:, code_greffe:, **)
-            entreprise_code_greffe_0000.actes.each { |a| a.code_greffe = code_greffe }
-            entreprise_related.actes << entreprise_code_greffe_0000.actes
-          end
-
-          def merge_bilans(ctx, entreprise_code_greffe_0000:, entreprise_related:, code_greffe:, **)
-            entreprise_code_greffe_0000.bilans.each { |b| b.code_greffe = code_greffe }
-            entreprise_related.bilans << entreprise_code_greffe_0000.bilans
           end
 
           def merge_observations(ctx, entreprise_code_greffe_0000:, entreprise_related:, code_greffe:, **)

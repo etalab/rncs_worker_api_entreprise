@@ -44,8 +44,6 @@ describe TribunalInstance::Entreprise do
   it { is_expected.to have_many(:etablissements).dependent(:destroy) }
   it { is_expected.to have_many(:representants).dependent(:destroy) }
   it { is_expected.to have_many(:observations).dependent(:destroy) }
-  it { is_expected.to have_many(:actes).dependent(:destroy) }
-  it { is_expected.to have_many(:bilans).dependent(:destroy) }
 
   describe 'dossier TITMC' do
     subject { create :titmc_entreprise }
