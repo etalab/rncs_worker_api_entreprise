@@ -203,12 +203,9 @@ attendant que les dossiers complets soient disponibles.
 
 ## Import des données des Greffes des Tribunaux d'Instance et de Commerce Mixte (TITMC)
 
-_Il faut opérer des fusions et non des remplacements._
-
 Le stock ne contient pas toutes les informations présentes dans les flux précédents.
 Des bilans sont présents dans les flux antérieurs au stock, mais aussi l'adresse du
-siège par exemple. Et inversement des codes juridiques sont présents dans le stock
-mais pas dans les flux antérieurs.
+siège par exemple.
 
 C'est pour cela que l'import doit se faire de cette façon :
 
@@ -216,7 +213,8 @@ C'est pour cela que l'import doit se faire de cette façon :
 2. Import du stock du 2018/05/05
 3. Import du reste des flux
 
-Les différents scripts doivent être lancés manuellement avec les bons paramètres.
+Ce qui se matérialise par les commandes suivantes (les différents scripts doivent
+être lancés manuellement avec les bons paramètres) :
 ```
 bundle exec rake titmc:flux:load[2018/05/05]
 bundle exec rake titmc:stock:load
@@ -230,6 +228,15 @@ une tramission ne peut contenir plus de 50 000 dossiers.
 
 L'import des fichiers contenant 50 000 dossiers prend 1h et consomme 6-8Go de mémoire.
 Cela est dû au nombre d'ojets crées ainsi que toutes les associations du modèle.
+
+#### En cours en date du 27/03/2019
+
+L'import par annule et remplace est fonctionnel mais fait perdre énormément de données.
+En effet il y a beaucoup plus de données dans les flux que dans le stock (dans le stock
+il n'y a aucune adresse de siège, aucun bilan, aucun acte et encore d'autres choses moins
+cruciales).
+
+L'import du stock doit donc être revu une fois l'opération d'import de flux fonctionnelle.
 
 #### Fusion des éléments du code greffe '0000'
 
@@ -256,3 +263,38 @@ P.S : Ceci est une exception des premiers stocks. Les flux suivants n'ont plus c
 balise et les prochains stocks (s'il y a) n'en n'auront pas non plus.
 
 ### Flux
+
+Il y a 3 types de fichiers de flux :
+
+1. RCS: contient les données d'identité
+2. BIL: contient uniquement les bilans
+3. ACT: contient uniquement les actes
+
+#### Fichiers type RCS
+
+Contient toutes les données d'identité de l'entreprise et peut être intégré en annule
+et rempalce. La clef est le _numéro de gestion_, le _siren_ et le _code greffe_ (cela
+n'est pas pour autant facile de retrouver l'entreprise ; cf section suivante)
+
+#### Fichiers type BIL et ACT
+
+Ces fichiers ne contiennent que les actes ou les bilans. La clef pour identifier une
+entreprise est le _numéro de gestion_ et le _code greffe_.
+
+Cela génère deux problèmes :
+
+1. Il peut exister plusieurs sirens associés à au couple _numéro de gestion_ et _code greffe_
+il est impossible de savoir à quelle entreprise cette donnée fait référence
+2. Comme les fichiers BIL/ACT arrivent séparemment des fichiers RCS, il est possible d'avoir
+les bilans avant le dossier de l'entreprise et vice et versa. L'import. Ainsi lorsque la donnée
+d'identité arrive il faut retrouver les bilans déjà crées et les lier au nouveau dossier. Et
+inversement.
+
+#### En cours en date du 27/03/2019
+
+La solution technique pour importer simplement et efficacemment les flux n'a pas été décidé pour
+résoudre ces deux problèmes. Et l'import des flux n'est pas encore opérationnel.
+
+La solution actuellement à l'étude et d'importer tant qu'il n'y a pas deux dossiers en conflits
+et logger l'erreur précisement. Ainsi les blians et les actes peuvent exister _sans dossier_ (et
+non pas avec un dossier vide), cela implique quelques changement dans le modèle.
