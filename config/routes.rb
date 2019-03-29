@@ -4,6 +4,12 @@ Rails.application.routes.draw do
   require 'sidekiq/cron/web'
   mount Sidekiq::Web => '/sidekiq'
 
-  get 'infos_identite_entreprise/:siren',     to: 'api/infos_identite_entreprise#show'
-  get 'infos_identite_entreprise/:siren/pdf', to: 'api/infos_identite_entreprise#pdf'
+  concern :v1_routes do
+    get 'fiches_identite/:siren',     to: 'api/v1/fiches_identite#show'
+    get 'fiches_identite/:siren/pdf', to: 'api/v1/fiches_identite#pdf'
+  end
+
+  scope :v1 do
+    concerns :v1_routes
+  end
 end

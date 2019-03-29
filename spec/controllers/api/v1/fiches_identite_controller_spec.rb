@@ -1,11 +1,11 @@
 require 'rails_helper'
 
-describe API::InfosIdentiteEntrepriseController, type: :controller do
+describe API::V1::FichesIdentiteController, type: :request do
   before { create :daily_update_with_completed_units }
 
   describe '#show' do
     subject do
-      get :show, params: { siren: siren }
+      get "/v1/fiches_identite/#{siren}"
     end
 
     it_behaves_like 'handling siren errors'
@@ -15,14 +15,16 @@ describe API::InfosIdentiteEntrepriseController, type: :controller do
       let(:siren) { valid_siren }
 
       it 'returns 200' do
-        expect(subject.status).to eq(200)
+        subject
+
+        expect(response).to have_http_status(200)
       end
     end
   end
 
   describe '#pdf' do
     subject do
-      get :pdf, params: { siren: siren }
+      get "/v1/fiches_identite/#{siren}/pdf"
     end
 
     it_behaves_like 'handling siren errors'
@@ -32,16 +34,23 @@ describe API::InfosIdentiteEntrepriseController, type: :controller do
 
       let(:siren) { valid_siren }
 
-      its(:status) { is_expected.to eq 200 }
+      it 'returns 200' do
+        subject
+
+        expect(response).to have_http_status(200)
+      end
 
       it 'has a binary PDF body' do
-        mime = MimeMagic.by_magic(subject.body)
+        subject
+        mime = MimeMagic.by_magic(response.body)
+
         expect(mime.child_of?('application/pdf')).to be_truthy
       end
 
       it '[NOT A SPEC] generates a test PDF in /tmp' do
+        subject
         File.open('./tmp/identite_entreprise_pm.pdf', 'wb') do |file|
-          file.write subject.body
+          file.write response.body
         end
       end
     end
@@ -50,7 +59,7 @@ describe API::InfosIdentiteEntrepriseController, type: :controller do
     # of observation splitted on 2 pages handled by code
     it '[NOT A SPEC] generates a test PDF in /tmp' do
       create :dossier_entreprise_simple, siren: valid_siren
-      get :pdf, params: { siren: valid_siren }
+      get "/v1/fiches_identite/#{valid_siren}/pdf"
 
       File.open('./tmp/identite_entreprise_pp.pdf', 'wb') do |file|
         file.write response.body

@@ -67,5 +67,5 @@ test:
 sandbox:
   <<: *default
 
-prodution:
+production:
   <<: *default

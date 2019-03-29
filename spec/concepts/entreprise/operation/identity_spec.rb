@@ -12,7 +12,7 @@ describe Entreprise::Operation::Identity do
 
     it 'returns a 422 error' do
       expect(http_error[:code]).to eq(422)
-      expect(http_error[:message]).to eq('Siren invalide')
+      expect(http_error[:message]).to eq('Le numéro siren en paramètre est mal formaté.')
     end
   end
 
@@ -23,7 +23,7 @@ describe Entreprise::Operation::Identity do
 
     it 'sets a 404 http error' do
       expect(http_error[:code]).to eq(404)
-      expect(http_error[:message]).to eq('Aucun dossier trouvé')
+      expect(http_error[:message]).to eq('Aucun dossier d\'immatriculation connu pour ce siren.')
     end
   end
 
@@ -33,9 +33,9 @@ describe Entreprise::Operation::Identity do
     shared_examples 'no exclusif dossier principal' do
       it { is_expected.to be_failure }
 
-      it 'returns a 500 error' do
-        expect(http_error[:code]).to eq(500)
-        expect(http_error[:message]).to match(/\A\d+ dossiers principaux trouvés\Z/)
+      it 'returns a 404 error' do
+        expect(http_error[:code]).to eq(404)
+        expect(http_error[:message]).to match(/\A\d+ immatriculations principales trouvées\.\Z/)
       end
     end
 
@@ -157,9 +157,9 @@ describe Entreprise::Operation::Identity do
     context 'when no etablissement principal is found' do
       it { is_expected.to be_failure }
 
-      it 'returns a 500 error' do
-        expect(http_error[:code]).to eq(500)
-        expect(http_error[:message]).to eq('Aucun etablissement principal trouvé dans le dossier principal')
+      it 'returns a 404 error' do
+        expect(http_error[:code]).to eq(404)
+        expect(http_error[:message]).to eq('Aucun établissement principal dans le dossier d\'immatriculation.')
       end
     end
   end
