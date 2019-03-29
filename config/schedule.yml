@@ -1,9 +1,22 @@
-sync_ftp_job:
-  cron: '0 0 * * *'
-  class: 'SyncFTPJob'
-  queue: 'auto_updates'
+development:
+  daily_import_tc_job:
+    cron: '0 6 * * *'
+    class: 'DailyImportTCJob'
+    queue: 'auto_updates'
 
-daily_import_tc_job:
-  cron: '0 10 * * *'
-  class: 'DailyImportTCJob'
-  queue: 'auto_updates'
+sandbox:
+  daily_import_tc_job:
+    cron: '0 8 * * *'
+    class: 'DailyImportTCJob'
+    queue: 'auto_updates'
+
+production:
+  sync_ftp_job:
+    cron: '0 0 * * *'
+    class: 'SyncFTPJob'
+    queue: 'auto_updates'
+
+  daily_import_tc_job:
+    cron: '0 10 * * *'
+    class: 'DailyImportTCJob'
+    queue: 'auto_updates'
