@@ -32,18 +32,6 @@ describe TribunalInstance::Stock::Unit::Operation::MergeGreffeZero do
       expect(rep).to have_attributes code_greffe: '9712'
     end
 
-    it 'has actes from greffe 0000' do
-      acte = subject[:entreprise_related].actes.find { |a| a.numero_depot_manuel == '666' }
-      expect(acte).to have_attributes type_acte: 'AA'
-      expect(acte).to have_attributes code_greffe: '9712'
-    end
-
-    it 'has bilans from greffe 0000' do
-      bilan = subject[:entreprise_related].bilans.find { |b| b.numero == '42' }
-      expect(bilan).to have_attributes confidentialite_document_comptable: '1'
-      expect(bilan).to have_attributes code_greffe: '9712'
-    end
-
     it 'has observation from greffe 0000' do
       obs = subject[:entreprise_related].observations.find { |o| o.numero == '1234' }
       expect(obs).to have_attributes code: 'C18'

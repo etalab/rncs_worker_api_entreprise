@@ -81,13 +81,5 @@ describe TribunalInstance::EntrepriseRepresenter, :representer do
     its(:observations) { are_expected.to all be_a TribunalInstance::Observation }
     its(:observations) { are_expected.to have_attributes size: 3 }
     its(:observations) { are_expected.to all have_attributes numero: a_string_matching(/\d+/) }
-
-    its(:actes) { are_expected.to all be_a TribunalInstance::Acte }
-    its(:actes) { are_expected.to have_attributes size: 4 }
-    its(:actes) { are_expected.to all have_attributes date_depot: a_string_matching(/\d{8}/) }
-
-    its(:bilans) { are_expected.to all be_a TribunalInstance::Bilan }
-    its(:bilans) { are_expected.to have_attributes size: 2 }
-    its(:bilans) { are_expected.to all have_attributes numero: a_string_matching(/\d{2}/)  }
   end
 end

@@ -112,18 +112,6 @@ class TribunalInstance::EntrepriseRepresenter < Representable::Decorator
     decorator: TribunalInstance::ObservationRepresenter,
     class: TribunalInstance::Observation
 
-  collection :actes,
-    as: :act,
-    wrap: :acts,
-    decorator: TribunalInstance::ActeRepresenter,
-    class: TribunalInstance::Acte
-
-  collection :bilans,
-    as: :bil,
-    wrap: :bils,
-    decorator: TribunalInstance::BilanRepresenter,
-    class: TribunalInstance::Bilan
-
   private
 
   def self.numero_rcs_from(xml)
