@@ -27,11 +27,11 @@ describe TribunalInstance::DailyUpdate::Task::FetchUnits do
       references = subject[:daily_update_units].pluck(:reference)
 
       expect(references).to contain_exactly(
-        '0O09IEJ9562u',
-        '0qLllJmhaRhU',
-        '0NKxyI4J7iuk',
-        '0Hnni3p82a62',
-        '1eUKHhoF3kQT'
+        '20170504204802_0O09IEJ9562u',
+        '20170509212412_0Hnni3p82a62',
+        '20170515205704_1eUKHhoF3kQT',
+        '20170516221805_0qLllJmhaRhU',
+        '20170517210602_0NKxyI4J7iuk'
       )
     end
 
