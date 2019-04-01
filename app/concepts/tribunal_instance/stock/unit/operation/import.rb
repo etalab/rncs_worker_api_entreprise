@@ -3,11 +3,7 @@ module TribunalInstance
     module Unit
       module Operation
         class Import < Trailblazer::Operation
-          extend ClassDependencies
-
-          BATCH_SIZE         = 5_000
-          self[:fichier]     = TribunalInstance::Fichier.new
-          self[:representer] = ::TribunalInstance::FichierRepresenter.new self[:fichier]
+          BATCH_SIZE = 5_000
 
           pass ->(ctx, logger:, **) { logger.info 'Starting import' }
 
@@ -24,8 +20,10 @@ module TribunalInstance
           step :persist
           pass ->(ctx, logger:, **) { logger.info 'All data persisted' }
 
+          def parse_xml(ctx, path:, **)
+            ctx[:fichier]     = TribunalInstance::Fichier.new
 
-          def parse_xml(ctx, path:, representer:, **)
+            representer = ::TribunalInstance::FichierRepresenter.new ctx[:fichier]
             representer.from_xml ::File.read path
           end
 
