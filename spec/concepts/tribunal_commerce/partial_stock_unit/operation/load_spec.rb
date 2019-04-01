@@ -24,7 +24,7 @@ describe TribunalCommerce::PartialStockUnit::Operation::Load, :trb do
 
   after do
     # Clean unit extraction directory
-    FileUtils.rm_rf(Rails.root.join('tmp/0384_S2_20180409'))
+    FileUtils.rm_rf(Rails.root.join(subject[:dest_directory]))
   end
 
   it 'logs that the import starts' do
@@ -46,13 +46,13 @@ describe TribunalCommerce::PartialStockUnit::Operation::Load, :trb do
       unit_files = subject[:extracted_files]
 
       expect(unit_files).to contain_exactly(
-        a_string_ending_with('tmp/0384_S2_20180409/0384_S2_20180409_1_PM.csv'),
-        a_string_ending_with('tmp/0384_S2_20180409/0384_S2_20180409_3_PP.csv'),
-        a_string_ending_with('tmp/0384_S2_20180409/0384_S2_20180409_5_rep.csv'),
-        a_string_ending_with('tmp/0384_S2_20180409/0384_S2_20180409_8_ets.csv'),
-        a_string_ending_with('tmp/0384_S2_20180409/0384_S2_20180409_11_obs.csv'),
-        a_string_ending_with('tmp/0384_S2_20180409/0384_S2_20180409_12_actes.csv'),
-        a_string_ending_with('tmp/0384_S2_20180409/0384_S2_20180409_13_comptes_annuels.csv'),
+        a_string_matching(/tmp\/0384_S2_20180409_.{6}\/0384_S2_20180409_1_PM.csv/),
+        a_string_matching(/tmp\/0384_S2_20180409_.{6}\/0384_S2_20180409_3_PP.csv/),
+        a_string_matching(/tmp\/0384_S2_20180409_.{6}\/0384_S2_20180409_5_rep.csv/),
+        a_string_matching(/tmp\/0384_S2_20180409_.{6}\/0384_S2_20180409_8_ets.csv/),
+        a_string_matching(/tmp\/0384_S2_20180409_.{6}\/0384_S2_20180409_11_obs.csv/),
+        a_string_matching(/tmp\/0384_S2_20180409_.{6}\/0384_S2_20180409_12_actes.csv/),
+        a_string_matching(/tmp\/0384_S2_20180409_.{6}\/0384_S2_20180409_13_comptes_annuels.csv/),
       )
     end
 
