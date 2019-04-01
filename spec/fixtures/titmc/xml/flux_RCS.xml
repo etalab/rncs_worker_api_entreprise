@@ -71,15 +71,26 @@
           </activ>
         </etab>
       </etabs>
+      <procs>
+        <proc>
+          <code_obs>J41</code_obs>
+          <texte_obs>7600;SELARL DAVID KOCH;;0004 RUE DU CONSEIL SOUVERAIN;;68000;COLMAR;;;0000;0000;;;</texte_obs>
+          <dat_obs>20090908</dat_obs>
+          <num_obs>1</num_obs>
+        </proc>
+        <proc>
+          <num_obs>2</num_obs>
+        </proc>
+      </procs>
     </societe>
-    <societe dat_donnees="20170509" num_gestion="multiple dossiers found" siren="819537317">
+    <societe dat_donnees="20170509" siren="missing numero gestion">
       <idt>
-        <rcs>B819537317</rcs>
-        <nom_raison_soc>WARANOO</nom_raison_soc>
-        <code_form_jur>5720</code_form_jur>
+        <rcs>B819959883</rcs>
+        <nom_raison_soc>GREGALI</nom_raison_soc>
+        <code_form_jur>5499</code_form_jur>
       </idt>
     </societe>
-    <societe dat_donnees="20170509" num_gestion="dossier not found" siren="819959883">
+    <societe dat_donnees="20170509" num_gestion="missing siren">
       <idt>
         <rcs>B819959883</rcs>
         <nom_raison_soc>GREGALI</nom_raison_soc>
