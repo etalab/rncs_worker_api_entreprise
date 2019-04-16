@@ -47,6 +47,9 @@ Rails.application.configure do
 
   config.active_job.queue_adapter = :sidekiq
 
+  # Redis database URL
+  config.redis_database = 'redis://localhost:6379/0'
+
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
 
