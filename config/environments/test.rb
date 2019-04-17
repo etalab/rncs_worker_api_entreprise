@@ -41,6 +41,9 @@ Rails.application.configure do
 
   config.active_job.queue_adapter = :test
 
+  # Redis database URL
+  config.redis_database = 'redis://localhost:6379/0'
+
   # Print deprecation notices to the stderr.
   config.active_support.deprecation = :stderr
 

@@ -7,9 +7,7 @@ module TribunalInstance
 
           def reset_database(ctx, code_greffe:, **)
             [
-              "DELETE FROM titmc_actes WHERE code_greffe = '#{code_greffe}';",
               "DELETE FROM titmc_adresses WHERE code_greffe = '#{code_greffe}';",
-              "DELETE FROM titmc_bilans WHERE code_greffe = '#{code_greffe}';",
               "DELETE FROM titmc_entreprises WHERE code_greffe = '#{code_greffe}';",
               "DELETE FROM titmc_etablissements WHERE code_greffe = '#{code_greffe}';",
               "DELETE FROM titmc_observations WHERE code_greffe = '#{code_greffe}';",

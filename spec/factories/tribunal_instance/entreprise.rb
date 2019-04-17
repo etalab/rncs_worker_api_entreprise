@@ -37,14 +37,6 @@ FactoryBot.define do
           entreprise: entreprise,
           code_greffe: entreprise.code_greffe
 
-        create_list :titmc_acte, 5,
-          entreprise: entreprise,
-          code_greffe: entreprise.code_greffe
-
-        create_list :titmc_bilan, 3,
-          entreprise: entreprise,
-          code_greffe: entreprise.code_greffe
-
         create_list :titmc_observation, 4,
           entreprise: entreprise,
           code_greffe: entreprise.code_greffe

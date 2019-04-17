@@ -17,6 +17,6 @@ production:
     queue: 'auto_updates'
 
   daily_import_tc_job:
-    cron: '0 10 * * *'
+    cron: '0 8 * * *'
     class: 'DailyImportTCJob'
     queue: 'auto_updates'

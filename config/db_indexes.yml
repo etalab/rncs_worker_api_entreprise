@@ -7,12 +7,6 @@ default: &default
       - siren
       - [code_greffe, numero_gestion]
       - dossier_entreprise_id
-    titmc_actes:
-      - code_greffe
-      - entreprise_id
-    titmc_bilans:
-      - code_greffe
-      - entreprise_id
     titmc_etablissements:
       - code_greffe
       - entreprise_id
