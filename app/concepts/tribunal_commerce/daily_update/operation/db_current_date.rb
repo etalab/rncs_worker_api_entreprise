@@ -2,11 +2,7 @@ module TribunalCommerce
   module DailyUpdate
     module Operation
       class DBCurrentDate < Trailblazer::Operation
-        step :queued_updates?
-        fail :log_updates_waiting_for_import, fail_fast: true
-        step :latest_daily_update_imported, Output(:failure) => Track(:no_daily_updates_yet)
-        step :daily_update_completed?
-        fail :log_incomplete_update, fail_fast: true
+        step :find_latest_completed_update, Output(:failure) => Track(:no_daily_updates_yet)
         step :raw_daily_update_date
 
         step :current_stock, magnetic_to: [:no_daily_updates_yet], Output(:success) => Track(:no_daily_updates_yet)
@@ -15,16 +11,11 @@ module TribunalCommerce
         fail :log_incomplete_stock, fail_fast: true
         step :raw_stock_date, magnetic_to: [:no_daily_updates_yet], Output(:success) => 'End.success'
 
-        def queued_updates?(ctx, **)
-          !DailyUpdateTribunalCommerce.queued_updates?
-        end
+        def find_latest_completed_update(ctx, **)
+          successful_updates = DailyUpdateTribunalCommerce.where(proceeded: true).order(year: :desc, month: :desc, day: :desc, partial_stock: :asc)
+          last_completed_update = successful_updates.find { |e| e.status == 'COMPLETED' }
 
-        def latest_daily_update_imported(ctx, **)
-          ctx[:current_daily_update] = DailyUpdateTribunalCommerce.current
-        end
-
-        def daily_update_completed?(ctx, current_daily_update:, **)
-          current_daily_update.status == 'COMPLETED'
+          ctx[:current_daily_update] = last_completed_update
         end
 
         def raw_daily_update_date(ctx, current_daily_update:, **)
@@ -44,19 +35,11 @@ module TribunalCommerce
         end
 
         def log_empty_db(ctx, **)
-          ctx[:error] = 'No stock loads into database. Please load last stock available first.'
+          ctx[:error] = 'No updates or stocks load into database. Please load last stock available first.'
         end
 
         def log_incomplete_stock(ctx, **)
           ctx[:error] = 'Current stock import is still running, please import daily updates when its done.'
-        end
-
-        def log_incomplete_update(ctx, **)
-          ctx[:error] = 'The current update is still running. Abort...'
-        end
-
-        def log_updates_waiting_for_import(ctx, **)
-          ctx[:error] = 'Pending daily updates found in database. Aborting... Please import remaining updates first.'
         end
       end
     end
