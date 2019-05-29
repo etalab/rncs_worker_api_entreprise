@@ -12,10 +12,7 @@ module TribunalCommerce
         step :raw_stock_date, magnetic_to: [:no_daily_updates_yet], Output(:success) => 'End.success'
 
         def find_latest_completed_update(ctx, **)
-          successful_updates = DailyUpdateTribunalCommerce.where(proceeded: true).order(year: :desc, month: :desc, day: :desc, partial_stock: :asc)
-          last_completed_update = successful_updates.find { |e| e.status == 'COMPLETED' }
-
-          ctx[:current_daily_update] = last_completed_update
+          ctx[:current_daily_update] = DailyUpdateTribunalCommerce.last_completed
         end
 
         def raw_daily_update_date(ctx, current_daily_update:, **)
