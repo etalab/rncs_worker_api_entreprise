@@ -26,7 +26,7 @@ class SyncFTPJob < ActiveJob::Base
   end
 
   def lftp_command
-    "lftp -u '#{ftp_login}','#{ftp_password}' -p 21 opendata-rncs.inpi.fr -e 'mirror -c -P 4 --only-missing public/IMR_Donnees_Saisies #{rncs_source_path}; quit'"
+    "lftp -u '#{ftp_login}','#{ftp_password}' -p 21 opendata-rncs.inpi.fr -e 'mirror -c -P 4 public/IMR_Donnees_Saisies #{rncs_source_path}; quit'"
   end
 
   def rncs_source_path
