@@ -7,6 +7,13 @@ class DailyUpdate < ApplicationRecord
       collection.first
     end
 
+    def last_completed
+     self
+       .where(proceeded: true)
+       .order(year: :desc, month: :desc, day: :desc, partial_stock: :asc)
+       .find { |e| e.status == 'COMPLETED' }
+    end
+
     def queued_updates?
       collection = self.where(proceeded: false)
       !collection.empty?

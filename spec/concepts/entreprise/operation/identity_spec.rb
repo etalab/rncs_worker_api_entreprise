@@ -5,177 +5,191 @@ describe Entreprise::Operation::Identity do
 
   let(:http_error) { subject[:http_error] }
 
-  context 'with an invalid siren' do
-    let(:siren) { invalid_siren }
-
-    it { is_expected.to be_failure }
-
-    it 'returns a 422 error' do
-      expect(http_error[:code]).to eq(422)
-      expect(http_error[:message]).to eq('Le numéro siren en paramètre est mal formaté.')
+  context 'when daily updates have been successfully imported' do
+    before do
+      create(:daily_update_with_completed_units, year: '2012', month: '03', day: '13')
+      create(:daily_update_with_completed_units, year: '2015', month: '09', day: '27')
     end
-  end
 
-  context 'when no dossiers are found' do
-    let(:siren) { valid_siren }
+    context 'with an invalid siren' do
+      let(:siren) { invalid_siren }
 
-    it { is_expected.to be_failure }
-
-    it 'sets a 404 http error' do
-      expect(http_error[:code]).to eq(404)
-      expect(http_error[:message]).to eq('Aucun dossier d\'immatriculation connu pour ce siren.')
-    end
-  end
-
-  context 'with no exclusif dossier principal' do
-    let(:siren) { valid_siren }
-
-    shared_examples 'no exclusif dossier principal' do
       it { is_expected.to be_failure }
 
-      it 'returns a 404 error' do
-        expect(http_error[:code]).to eq(404)
-        expect(http_error[:message]).to match(/\A\d+ immatriculations principales trouvées\.\Z/)
+      it 'returns a 422 error' do
+        expect(http_error[:code]).to eq(422)
+        expect(http_error[:message]).to eq('Le numéro siren en paramètre est mal formaté.')
       end
     end
 
-    context 'with 0 dossier principal' do
-      before { create(:dossier_entreprise, type_inscription: 'S', siren: siren) }
+    context 'when no dossiers are found' do
+      let(:siren) { valid_siren }
 
-      it_behaves_like 'no exclusif dossier principal'
+      it { is_expected.to be_failure }
+
+      it 'sets a 404 http error' do
+        expect(http_error[:code]).to eq(404)
+        expect(http_error[:message]).to eq('Aucun dossier d\'immatriculation connu pour ce siren.')
+      end
     end
 
-    context 'with 2 dossier principal' do
-      before { create_list(:dossier_entreprise, 3, type_inscription: 'S', siren: siren) }
-      it_behaves_like 'no exclusif dossier principal'
+    context 'with no exclusif dossier principal' do
+      let(:siren) { valid_siren }
+
+      shared_examples 'no exclusif dossier principal' do
+        it { is_expected.to be_failure }
+
+        it 'returns a 404 error' do
+          expect(http_error[:code]).to eq(404)
+          expect(http_error[:message]).to match(/\A\d+ immatriculations principales trouvées\.\Z/)
+        end
+      end
+
+      context 'with 0 dossier principal' do
+        before { create(:dossier_entreprise, type_inscription: 'S', siren: siren) }
+
+        it_behaves_like 'no exclusif dossier principal'
+      end
+
+      context 'with 2 dossier principal' do
+        before { create_list(:dossier_entreprise, 3, type_inscription: 'S', siren: siren) }
+        it_behaves_like 'no exclusif dossier principal'
+      end
     end
-  end
 
-  context 'with one and only one dossier principal' do
-    let(:siren) { valid_siren }
-    let!(:dossier) { create(:dossier_entreprise, code_greffe: 'code_test', numero_gestion: 'numero_test', type_inscription: 'P', siren: siren) }
+    context 'with one and only one dossier principal' do
+      let(:siren) { valid_siren }
+      let!(:dossier) { create(:dossier_entreprise, code_greffe: 'code_test', numero_gestion: 'numero_test', type_inscription: 'P', siren: siren) }
 
-    before { create :daily_update_with_completed_units }
+      context 'when an etablissement principal is found in this dossier' do
+        before { create(:etablissement_principal, dossier_entreprise: dossier, enseigne: 'do not forget me') }
 
-    context 'when an etablissement principal is found in this dossier' do
-      before { create(:etablissement_principal, dossier_entreprise: dossier, enseigne: 'do not forget me') }
-
-      it { is_expected.to be_success }
-
-      describe 'entreprise identity data' do
         let(:entreprise_identity) { subject[:entreprise_identity] }
 
-        it 'returns dossier principal attributes' do
-          dossier_attributes = entreprise_identity.fetch(:dossier_entreprise_greffe_principal)
+        it { is_expected.to be_success }
 
-          expect(dossier_attributes).to include(
-            code_greffe: 'code_test',
-            numero_gestion: 'numero_test',
-            siren: valid_siren,
-            type_inscription: 'P',
-            # Ensure other keys are returned as well ? Here or inside the controller's spec ?
-          )
+        describe 'entreprise identity data' do
+          it 'returns dossier principal attributes' do
+            dossier_attributes = entreprise_identity.fetch(:dossier_entreprise_greffe_principal)
+
+            expect(dossier_attributes).to include(
+              code_greffe: 'code_test',
+              numero_gestion: 'numero_test',
+              siren: valid_siren,
+              type_inscription: 'P',
+              # Ensure other keys are returned as well ? Here or inside the controller's spec ?
+            )
+          end
+
+          it 'returns all observations associated to the dossier principal' do
+            create(:observation, dossier_entreprise: dossier, texte: 'control value 1')
+            create(:observation, dossier_entreprise: dossier, texte: 'control value 2')
+            create(:observation, texte: 'ghost')
+
+            observations_list = entreprise_identity.fetch(:dossier_entreprise_greffe_principal).fetch(:observations)
+
+            expect(observations_list).to contain_exactly(
+              a_hash_including(texte: 'control value 1'),
+              a_hash_including(texte: 'control value 2'),
+            )
+          end
+
+          it 'returns all representants associated to the dossier principal' do
+            create(:representant, dossier_entreprise: dossier, qualite: 'control value 1')
+            create(:representant, dossier_entreprise: dossier, qualite: 'control value 2')
+            create(:representant, qualite: 'ghost')
+
+            representants_list = entreprise_identity.fetch(:dossier_entreprise_greffe_principal).fetch(:representants)
+
+            expect(representants_list).to contain_exactly(
+              a_hash_including(qualite: 'control value 1'),
+              a_hash_including(qualite: 'control value 2'),
+            )
+          end
+
+          it 'returns all etablissements associated to the dossier principal' do
+            create(:etablissement, dossier_entreprise: dossier, activite: 'control value 1')
+            create(:etablissement, dossier_entreprise: dossier, activite: 'control value 2')
+            create(:etablissement, activite: 'ghost')
+
+            etablissements_list = entreprise_identity.fetch(:dossier_entreprise_greffe_principal).fetch(:etablissements)
+
+            expect(etablissements_list).to contain_exactly(
+              a_hash_including(activite: 'control value 1'),
+              a_hash_including(activite: 'control value 2'),
+              a_hash_including(enseigne: 'do not forget me'), # created in before hook for happy path
+            )
+          end
+
+          it 'returns associated personne morale attributes' do
+            create(:personne_morale, dossier_entreprise: dossier, capital: '42')
+            pm_fields = entreprise_identity.fetch(:dossier_entreprise_greffe_principal).fetch(:personne_morale)
+
+            expect(pm_fields).to include(capital: '42')
+          end
+
+          it 'returns associated personne physique attributes' do
+            create(:personne_physique, dossier_entreprise: dossier, pseudonyme: 'xXxBrinduxXx')
+            pp_fields = entreprise_identity.fetch(:dossier_entreprise_greffe_principal).fetch(:personne_physique)
+
+            expect(pp_fields).to include(pseudonyme: 'xXxBrinduxXx')
+          end
+
+          it 'returns etablissement principal' do
+            etablissement_principal = entreprise_identity.fetch(:dossier_entreprise_greffe_principal).fetch(:etablissement_principal)
+            expect(etablissement_principal).to include enseigne: 'do not forget me'
+          end
         end
 
-        it 'returns all observations associated to the dossier principal' do
-          create(:observation, dossier_entreprise: dossier, texte: 'control value 1')
-          create(:observation, dossier_entreprise: dossier, texte: 'control value 2')
-          create(:observation, texte: 'ghost')
+        describe '#db_current_date' do
+          shared_examples 'returning the last completed update date' do
+            it do
+              dossier_attr = entreprise_identity.fetch(:dossier_entreprise_greffe_principal)
 
-          observations_list = entreprise_identity.fetch(:dossier_entreprise_greffe_principal).fetch(:observations)
+              expect(dossier_attr).to include(db_current_date: '2015-09-27')
+            end
+          end
 
-          expect(observations_list).to contain_exactly(
-            a_hash_including(texte: 'control value 1'),
-            a_hash_including(texte: 'control value 2'),
-          )
-        end
+          context 'when all daily updates have been successfully imported' do
+            it_behaves_like 'returning the last completed update date'
+          end
 
-        it 'returns all representants associated to the dossier principal' do
-          create(:representant, dossier_entreprise: dossier, qualite: 'control value 1')
-          create(:representant, dossier_entreprise: dossier, qualite: 'control value 2')
-          create(:representant, qualite: 'ghost')
+          context 'with a currently running update' do
+            before { create(:daily_update_with_one_loading_unit, year: '2015', month: '09', day: '28') }
 
-          representants_list = entreprise_identity.fetch(:dossier_entreprise_greffe_principal).fetch(:representants)
+            it_behaves_like 'returning the last completed update date'
+          end
 
-          expect(representants_list).to contain_exactly(
-            a_hash_including(qualite: 'control value 1'),
-            a_hash_including(qualite: 'control value 2'),
-          )
-        end
+          context 'with the last update in error' do
+            before { create(:daily_update_with_one_error_unit, year: '2015', month: '09', day: '28') }
 
-        it 'returns all etablissements associated to the dossier principal' do
-          create(:etablissement, dossier_entreprise: dossier, activite: 'control value 1')
-          create(:etablissement, dossier_entreprise: dossier, activite: 'control value 2')
-          create(:etablissement, activite: 'ghost')
-
-          etablissements_list = entreprise_identity.fetch(:dossier_entreprise_greffe_principal).fetch(:etablissements)
-
-          expect(etablissements_list).to contain_exactly(
-            a_hash_including(activite: 'control value 1'),
-            a_hash_including(activite: 'control value 2'),
-            a_hash_including(enseigne: 'do not forget me'), # created in before hook for happy path
-          )
-        end
-
-        it 'returns associated personne morale attributes' do
-          create(:personne_morale, dossier_entreprise: dossier, capital: '42')
-          pm_fields = entreprise_identity.fetch(:dossier_entreprise_greffe_principal).fetch(:personne_morale)
-
-          expect(pm_fields).to include(capital: '42')
-        end
-
-        it 'returns associated personne physique attributes' do
-          create(:personne_physique, dossier_entreprise: dossier, pseudonyme: 'xXxBrinduxXx')
-          pp_fields = entreprise_identity.fetch(:dossier_entreprise_greffe_principal).fetch(:personne_physique)
-
-          expect(pp_fields).to include(pseudonyme: 'xXxBrinduxXx')
-        end
-
-        it 'returns etablissement principal' do
-          etablissement_principal = entreprise_identity.fetch(:dossier_entreprise_greffe_principal).fetch(:etablissement_principal)
-          expect(etablissement_principal).to include enseigne: 'do not forget me'
+            it_behaves_like 'returning the last completed update date'
+          end
         end
       end
-    end
 
-    describe 'db_current_date is found' do
-      before { create :etablissement_principal, dossier_entreprise: dossier, enseigne: 'do not forget me' }
+      context 'when no etablissement principal is found' do
+        it { is_expected.to be_failure }
 
-      let(:dossier_attributes) { subject[:entreprise_identity][:dossier_entreprise_greffe_principal] }
-
-      it 'returns db_current_date from last daily update' do
-        create :daily_update_with_completed_units
-        expect(dossier_attributes).to include db_current_date: '2016-04-21'
-      end
-
-      it 'returns db_current_date from last stock import', pending: 'db_current_date is hardcored currently' do
-        create :stock_with_completed_units, year: '2018', month: '04', day: '10'
-        expect(dossier_attributes).to include db_current_date: '2018-04-10'
-      end
-    end
-
-    context 'when no etablissement principal is found' do
-      it { is_expected.to be_failure }
-
-      it 'returns a 404 error' do
-        expect(http_error[:code]).to eq(404)
-        expect(http_error[:message]).to eq('Aucun établissement principal dans le dossier d\'immatriculation.')
+        it 'returns a 404 error' do
+          expect(http_error[:code]).to eq(404)
+          expect(http_error[:message]).to eq('Aucun établissement principal dans le dossier d\'immatriculation.')
+        end
       end
     end
   end
 
-  describe 'when a daily update is running' do
-    before do
-      create :daily_update_tribunal_commerce
-      create :etablissement_principal, dossier_entreprise: dossier, enseigne: 'do not forget me'
-    end
-
+  context 'when no stocks or updates have been successfully imported yet' do
     let(:siren) { valid_siren }
-    let!(:dossier) { create(:dossier_entreprise, code_greffe: 'code_test', numero_gestion: 'numero_test', type_inscription: 'P', siren: siren) }
 
     it { is_expected.to be_failure }
 
-    its([:error]) { is_expected.to eq 'The current update is still running. Abort...' }
+    it 'returns a HTTP error' do
+      expect(http_error).to match({
+        code: 501,
+        message: 'Nothing load into the database yet: please import the last stock available.'
+      })
+    end
   end
 end
 

@@ -53,6 +53,27 @@ describe DailyUpdate do
     end
   end
 
+  describe '.last_completed' do
+    subject { described_class.last_completed }
+
+    it 'returns the last one that successfully completed' do
+      create(:daily_update_with_completed_units, year: '2017', month: '11', day: '03')
+      create(:daily_update_with_completed_units, year: '2017', month: '11', day: '05')
+      create(:daily_update_with_one_error_unit, year: '2017', month: '11', day: '06')
+      create(:daily_update_with_pending_units, year: '2017', month: '11', day: '07')
+
+      expect(subject).to have_attributes(year: '2017', month: '11', day: '05')
+    end
+
+    it 'returns nil if no updates have been completed' do
+      create(:daily_update_with_pending_units, year: '2017', month: '11', day: '07')
+      create(:daily_update_with_pending_units, year: '2017', month: '11', day: '08')
+      create(:daily_update_with_pending_units, year: '2017', month: '11', day: '09')
+
+      expect(subject).to be_nil
+    end
+  end
+
   describe '.queued_updates?' do
     subject { described_class.queued_updates? }
 
