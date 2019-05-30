@@ -1,6 +1,8 @@
 module Entreprise
   module Operation
     class Identity < Trailblazer::Operation
+      step Nested(TribunalCommerce::DailyUpdate::Operation::DBCurrentDate), Output(:fail_fast) => Track(:failure)
+        fail :empty_database, fail_fast: true
       step :verify_siren
         fail :invalid_siren, fail_fast: true
       step :find_dossiers_entreprise
@@ -9,7 +11,6 @@ module Entreprise
         fail :no_exclusif_dossier_principal, fail_fast: true
       step :fetch_etablissement_principal
         fail :no_etablissement_principal
-      step Nested TribunalCommerce::DailyUpdate::Operation::DBCurrentDate
       step :fetch_identity_data
 
 
@@ -64,6 +65,13 @@ module Entreprise
         nested_data[:personne_morale] = dossier_principal&.personne_morale&.attributes
         nested_data[:personne_physique] = dossier_principal&.personne_physique&.attributes
         ctx[:entreprise_identity] = data.deep_symbolize_keys!
+      end
+
+      def empty_database(ctx, **)
+        ctx[:http_error] = {
+          code: 501,
+          message: 'Nothing load into the database yet: please import the last stock available.'
+        }
       end
     end
   end
