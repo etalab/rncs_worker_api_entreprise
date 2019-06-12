@@ -15,10 +15,7 @@ describe TribunalCommerce::StockUnit::Operation::Load, :trb do
   let(:fixtures_path) { Rails.root.join('spec/fixtures/tc/stock/2017/01/28/0121_S1_20170128.zip') }
 
   # Testing unit tests here so we mock the file importer dependency
-  let(:file_importer) do
-    dbl = instance_spy(TribunalCommerce::Helper::FileImporter)
-    dbl
-  end
+  let(:file_importer) { instance_spy(TribunalCommerce::Helper::FileImporter) }
 
   subject { described_class.call(stock_unit: unit, logger: logger, file_importer: file_importer) }
 
@@ -107,17 +104,17 @@ describe TribunalCommerce::StockUnit::Operation::Load, :trb do
     it 'imports data files in the right order' do
       subject
 
-      expect_ordered_import_call(:import_dossiers_entreprise_from_pm, '0121_S1_20170128_1_PM.csv')
-      expect_ordered_import_call(:import_personnes_morales, '0121_S1_20170128_1_PM.csv')
-      expect_ordered_import_call(:import_dossiers_entreprise_from_pp, '0121_S1_20170128_3_PP.csv')
-      expect_ordered_import_call(:import_personnes_physiques, '0121_S1_20170128_3_PP.csv')
-      expect_ordered_import_call(:import_representants, '0121_S1_20170128_5_rep.csv')
-      expect_ordered_import_call(:import_etablissements, '0121_S1_20170128_8_ets.csv')
-      expect_ordered_import_call(:import_observations, '0121_S1_20170128_11_obs.csv')
+      expect_ordered_import_call(:bulk_import_dossiers_entreprise_from_pm, '0121_S1_20170128_1_PM.csv')
+      expect_ordered_import_call(:bulk_import_personnes_morales, '0121_S1_20170128_1_PM.csv')
+      expect_ordered_import_call(:bulk_import_dossiers_entreprise_from_pp, '0121_S1_20170128_3_PP.csv')
+      expect_ordered_import_call(:bulk_import_personnes_physiques, '0121_S1_20170128_3_PP.csv')
+      expect_ordered_import_call(:bulk_import_representants, '0121_S1_20170128_5_rep.csv')
+      expect_ordered_import_call(:bulk_import_etablissements, '0121_S1_20170128_8_ets.csv')
+      expect_ordered_import_call(:bulk_import_observations, '0121_S1_20170128_11_obs.csv')
     end
 
     context 'when a file\'s import fails' do
-      before { allow(file_importer).to receive(:import_representants).and_return(false) }
+      before { allow(file_importer).to receive(:bulk_import_representants).and_return(false) }
 
       subject { described_class.call(stock_unit: unit, logger: logger, file_importer: file_importer) }
 
@@ -126,8 +123,8 @@ describe TribunalCommerce::StockUnit::Operation::Load, :trb do
       it 'does not import the following files' do
         subject
 
-        expect(file_importer).to_not have_received(:import_etablissements)
-        expect(file_importer).to_not have_received(:import_observations)
+        expect(file_importer).to_not have_received(:bulk_import_etablissements)
+        expect(file_importer).to_not have_received(:bulk_import_observations)
       end
     end
 

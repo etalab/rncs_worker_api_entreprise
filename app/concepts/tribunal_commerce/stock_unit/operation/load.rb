@@ -17,14 +17,14 @@ module TribunalCommerce
         step :read_files_metadata
           fail :log_filenames_parsing_error, fail_fast: true
 
-        step :import_dossiers_entreprise_from_pm
-        step :import_personnes_morales
-        step :import_dossiers_entreprise_from_pp
-        step :import_personnes_physiques
+        step :bulk_import_dossiers_entreprise_from_pm
+        step :bulk_import_personnes_morales
+        step :bulk_import_dossiers_entreprise_from_pp
+        step :bulk_import_personnes_physiques
         step :rename_csv_header_for_rep
-        step :import_representants
-        step :import_etablissements
-        step :import_observations
+        step :bulk_import_representants
+        step :bulk_import_etablissements
+        step :bulk_import_observations
 
         def prepare_zip_extraction(ctx, stock_unit:, **)
           ctx[:path] = stock_unit.file_path
@@ -45,39 +45,39 @@ module TribunalCommerce
           logger.error("An error occured while parsing unit's files : #{error}")
         end
 
-        def import_dossiers_entreprise_from_pm(ctx, files_args:, file_importer:, **)
+        def bulk_import_dossiers_entreprise_from_pm(ctx, files_args:, file_importer:, **)
           pm_file_path = extract_file_path(files_args, 'PM')
-          file_importer.import_dossiers_entreprise_from_pm(pm_file_path)
+          file_importer.bulk_import_dossiers_entreprise_from_pm(pm_file_path)
         end
 
-        def import_dossiers_entreprise_from_pp(ctx, files_args:, file_importer:, **)
+        def bulk_import_dossiers_entreprise_from_pp(ctx, files_args:, file_importer:, **)
           pp_file_path = extract_file_path(files_args, 'PP')
-          file_importer.import_dossiers_entreprise_from_pp(pp_file_path)
+          file_importer.bulk_import_dossiers_entreprise_from_pp(pp_file_path)
         end
 
-        def import_personnes_morales(ctx, files_args:, file_importer:, **)
+        def bulk_import_personnes_morales(ctx, files_args:, file_importer:, **)
           pm_file_path = extract_file_path(files_args, 'PM')
-          file_importer.import_personnes_morales(pm_file_path)
+          file_importer.bulk_import_personnes_morales(pm_file_path)
         end
 
-        def import_personnes_physiques(ctx, files_args:, file_importer:, **)
+        def bulk_import_personnes_physiques(ctx, files_args:, file_importer:, **)
           pp_file_path = extract_file_path(files_args, 'PP')
-          file_importer.import_personnes_physiques(pp_file_path)
+          file_importer.bulk_import_personnes_physiques(pp_file_path)
         end
 
-        def import_representants(ctx, files_args:, file_importer:, **)
+        def bulk_import_representants(ctx, files_args:, file_importer:, **)
           rep_file_path = extract_file_path(files_args, 'rep')
-          file_importer.import_representants(rep_file_path)
+          file_importer.bulk_import_representants(rep_file_path)
         end
 
-        def import_etablissements(ctx, files_args:, file_importer:, **)
+        def bulk_import_etablissements(ctx, files_args:, file_importer:, **)
           ets_file_path = extract_file_path(files_args, 'ets')
-          file_importer.import_etablissements(ets_file_path)
+          file_importer.bulk_import_etablissements(ets_file_path)
         end
 
-        def import_observations(ctx, files_args:, file_importer:, **)
+        def bulk_import_observations(ctx, files_args:, file_importer:, **)
           obs_file_path = extract_file_path(files_args, 'obs')
-          file_importer.import_observations(obs_file_path)
+          file_importer.bulk_import_observations(obs_file_path)
         end
 
         def rename_csv_header_for_rep(ctx, files_args:, **)

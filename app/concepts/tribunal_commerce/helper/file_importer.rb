@@ -81,6 +81,34 @@ module TribunalCommerce
         import_line_by_line(path, OBS_HEADER_MAPPING, Observation::Operation::UpdateOrCreate)
       end
 
+      def bulk_import_dossiers_entreprise_from_pm(path)
+
+      end
+
+      def bulk_import_dossiers_entreprise_from_pp(path)
+
+      end
+
+      def bulk_import_personnes_morales(path)
+
+      end
+
+      def bulk_import_personnes_physiques(path)
+
+      end
+
+      def bulk_import_representants(path)
+
+      end
+
+      def bulk_import_etablissements(path)
+
+      end
+
+      def bulk_import_observations(path)
+
+      end
+
       private
 
       def import_line_by_line(file_path, file_header_mapping, line_processor)
