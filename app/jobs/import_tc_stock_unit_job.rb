@@ -1,28 +1,27 @@
 class ImportTcStockUnitJob < ApplicationJob
   queue_as :tc_stock
 
+  attr_reader :unit
+
   def perform(stock_unit_id)
-    import_unit = nil
-    stock_unit = StockUnit.find(stock_unit_id)
+    import = nil
+    @unit = StockUnit.find(stock_unit_id)
     # TODO Move state update into the underlying operation ??!
     # stock_unit.update(status: 'LOADING')
 
     wrap_import_with_log_level(:fatal) do
-      import_unit = TribunalCommerce::StockUnit::Operation::Load
-        .call(stock_unit: stock_unit, logger: stock_unit.logger_for_import)
+      import = TribunalCommerce::StockUnit::Operation::Load
+        .call(stock_unit: unit, logger: unit.logger_for_import)
 
-      if import_unit.success?
-        stock_unit.update(status: 'COMPLETED')
-      else
-        raise ActiveRecord::Rollback
-      end
+      raise ActiveRecord::Rollback if import.failure?
     end
 
-    if import_unit.success?
+    if import.success?
+      unit.update(status: 'COMPLETED')
       TribunalCommerce::Stock::Operation::PostImport
-        .call(stock_unit: stock_unit)
+        .call(stock_unit: unit)
     else
-      stock_unit.update(status: 'ERROR')
+      unit.update(status: 'ERROR')
     end
   end
 
