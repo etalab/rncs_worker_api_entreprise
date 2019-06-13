@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe DataSource::Stock::TribunalCommerce::Operation::PostImport do
+describe TribunalCommerce::Stock::Operation::PostImport do
   subject { described_class.call stock_unit: stock_unit }
   let(:stock_unit) { stock.stock_units.sample }
 
