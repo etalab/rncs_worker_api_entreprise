@@ -85,4 +85,39 @@ describe TribunalCommerce::Helper::FileImporter, :trb do
     :import_observations,
     Observation::Operation::UpdateOrCreate,
     OBS_HEADER_MAPPING
+
+  it_behaves_like 'bulk_import',
+    :bulk_import_dossiers_entreprise_from_pm,
+    DossierEntreprise,
+    DOSSIER_ENTREPRISE_FROM_PM_HEADER_MAPPING
+
+  it_behaves_like 'bulk_import',
+    :bulk_import_dossiers_entreprise_from_pp,
+    DossierEntreprise,
+    DOSSIER_ENTREPRISE_FROM_PP_HEADER_MAPPING
+
+  it_behaves_like 'bulk_import',
+    :bulk_import_personnes_morales,
+    PersonneMorale,
+    PM_HEADER_MAPPING
+
+  it_behaves_like 'bulk_import',
+    :bulk_import_personnes_physiques,
+    PersonnePhysique,
+    PP_HEADER_MAPPING
+
+  it_behaves_like 'bulk_import',
+    :bulk_import_representants,
+    Representant,
+    REP_HEADER_MAPPING
+
+  it_behaves_like 'bulk_import',
+    :bulk_import_etablissements,
+    Etablissement,
+    ETS_HEADER_MAPPING
+
+  it_behaves_like 'bulk_import',
+    :bulk_import_observations,
+    Observation,
+    OBS_HEADER_MAPPING
 end

@@ -120,6 +120,54 @@ shared_examples 'invalid import type' do
   end
 end
 
+shared_examples 'bulk_import' do |import_method, imported_model, file_mapping|
+  let(:file_path) { 'very path' }
+  let(:logger) { instance_spy(Logger) }
+  let(:csv_reader) { class_spy(DataSource::File::CSVReader) }
+
+  subject do
+    importer = described_class.new(logger, csv_reader)
+    importer.send(import_method, file_path)
+  end
+
+  it 'logs the start of the file import' do
+    subject
+
+    expect(logger).to have_received(:info)
+      .with("Starting bulk import of #{imported_model} from `#{file_path}`:")
+  end
+
+  context 'when the file reader works' do
+    before do
+      # Mock real import method in order to test the flow here, not integrations specs
+      allow(imported_model).to receive(:import)
+      # Same for the CSV reader, we mock its real beheviour for flow testing
+      allow(csv_reader).to receive(:bulk_processing)
+        .with(file_path, file_mapping)
+        .and_yield(['first batch'])
+        .and_yield(['second batch'])
+    end
+
+    it 'returns a truthy value' do # this is important for the underlying Trailblazer flow
+      expect(subject).to be_truthy
+    end
+
+    it "calls #{imported_model}.import for each yielded batch" do
+      subject
+
+      expect(imported_model).to have_received(:import).with(['first batch']).ordered
+      expect(imported_model).to have_received(:import).with(['second batch']).ordered
+    end
+
+    it 'logs the file has been imported successfully' do
+      subject
+
+      expect(logger).to have_received(:info)
+        .with("Import of file #{file_path} is complete!")
+    end
+  end
+end
+
 shared_examples 'import_line_by_line' do |import_method, line_processor, file_mapping|
   let(:file_path) { 'im a path lol' }
   let(:logger) { instance_spy(Logger) }

@@ -82,31 +82,31 @@ module TribunalCommerce
       end
 
       def bulk_import_dossiers_entreprise_from_pm(path)
-
+        bulk_import(path, DOSSIER_ENTREPRISE_FROM_PM_HEADER_MAPPING, DossierEntreprise)
       end
 
       def bulk_import_dossiers_entreprise_from_pp(path)
-
+        bulk_import(path, DOSSIER_ENTREPRISE_FROM_PP_HEADER_MAPPING, DossierEntreprise)
       end
 
       def bulk_import_personnes_morales(path)
-
+        bulk_import(path, PM_HEADER_MAPPING, PersonneMorale)
       end
 
       def bulk_import_personnes_physiques(path)
-
+        bulk_import(path, PP_HEADER_MAPPING, PersonnePhysique)
       end
 
       def bulk_import_representants(path)
-
+        bulk_import(path, REP_HEADER_MAPPING, Representant)
       end
 
       def bulk_import_etablissements(path)
-
+        bulk_import(path, ETS_HEADER_MAPPING, Etablissement)
       end
 
       def bulk_import_observations(path)
-
+        bulk_import(path, OBS_HEADER_MAPPING, Observation)
       end
 
       private
@@ -125,6 +125,14 @@ module TribunalCommerce
           end
         end
         logger.info("Import of file #{file_path} is complete !")
+      end
+
+      def bulk_import(file_path, file_header_mapping, imported_model)
+        logger.info("Starting bulk import of #{imported_model} from `#{file_path}`:")
+        file_reader.bulk_processing(file_path, file_header_mapping) do |batch|
+          imported_model.import(batch)
+        end
+        logger.info("Import of file #{file_path} is complete!")
       end
     end
   end
