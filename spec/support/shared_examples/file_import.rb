@@ -26,22 +26,52 @@ shared_examples 'bulk_import' do |import_method, imported_model, file_mapping|
         .and_yield(['second batch'])
     end
 
-    it 'returns a truthy value' do # this is important for the underlying Trailblazer flow
-      expect(subject).to be_truthy
+    context "when the #{imported_model}.import method is successful" do
+      # This is quite brittle here, the ActiveRecord.import behaviour should be encapsulated
+      # for this to be clearer. However this setup and the code lives in only one place so
+      # there is no need to be nazi and create a proxy component for ActiveRecord.import
+      # The method returns an ActiveRecord::Import::Result instance (a struct), and you can
+      # check if everything went fine by looking at the `failed_instances` array.
+      before do
+        batch_import_result = instance_double(ActiveRecord::Import::Result, failed_instances: [])
+        allow(imported_model).to receive(:import).and_return(batch_import_result)
+      end
+
+      it 'returns a truthy value' do # this is important for the underlying Trailblazer flow
+        expect(subject).to be_truthy
+      end
+
+      it "calls #{imported_model}.import for each yielded batch" do
+        subject
+
+        expect(imported_model).to have_received(:import).with(['first batch'], validate: false).ordered
+        expect(imported_model).to have_received(:import).with(['second batch'], validate: false).ordered
+      end
+
+      it 'logs the file has been imported successfully' do
+        subject
+
+        expect(logger).to have_received(:info)
+          .with("Import of file #{file_path} is complete!")
+      end
     end
 
-    it "calls #{imported_model}.import for each yielded batch" do
-      subject
+    context "when the #{imported_model}.import method fails at least once" do
+      before do
+        batch_import_result = instance_double(ActiveRecord::Import::Result, failed_instances: ['report this noob instance'])
+        allow(imported_model).to receive(:import).and_return(batch_import_result)
+      end
 
-      expect(imported_model).to have_received(:import).with(['first batch']).ordered
-      expect(imported_model).to have_received(:import).with(['second batch']).ordered
-    end
+      it 'returns a falsy value' do
+        expect(subject).to be_falsy
+      end
 
-    it 'logs the file has been imported successfully' do
-      subject
+      it 'logs the import failed' do
+        subject
 
-      expect(logger).to have_received(:info)
-        .with("Import of file #{file_path} is complete!")
+        expect(logger).to have_received(:error)
+          .with("An error occured while importing #{imported_model} from #{file_path}, aborting...")
+      end
     end
   end
 end
