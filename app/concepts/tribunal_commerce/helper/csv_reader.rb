@@ -1,5 +1,5 @@
-module DataSource
-  module File
+module TribunalCommerce
+  module Helper
     class CSVReader
       def self.bulk_processing(file, header_mapping)
         reader = new(file, header_mapping, keep_nil: true)

@@ -4,7 +4,7 @@ module TribunalCommerce
       attr_reader :file_reader, :logger
 
       # TODO here container would be great because it could provide the right logger
-      def initialize(logger, file_reader = DataSource::File::CSVReader)
+      def initialize(logger, file_reader = CSVReader)
         @file_reader = file_reader
         @logger = logger
       end
