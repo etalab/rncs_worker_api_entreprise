@@ -1,9 +1,8 @@
 require 'rails_helper'
 
-describe ImportTcDailyUpdateUnitJob do
-  let(:result_class) { Trailblazer::Operation::Railway::Result }
+describe ImportTcDailyUpdateUnitJob, :trb do
   let(:unit) { create(:daily_update_unit, status: 'PENDING') }
-  let(:import_logger) { instance_double(Logger).as_null_object }
+  let(:import_logger) { instance_spy(Logger) }
   subject { described_class.perform_now(unit.id) }
 
   before do
@@ -17,13 +16,11 @@ describe ImportTcDailyUpdateUnitJob do
   end
 
   describe 'the component the unit import is delegated to' do
-    let(:operation_result) { instance_double(result_class, success?: true) }
-
     it 'calls TribunalCommerce::DailyUpdateUnit::Operation::Load for a unit related to a daily update' do
       expect(TribunalCommerce::DailyUpdateUnit::Operation::Load)
         .to receive(:call)
         .with({ daily_update_unit: unit, logger: import_logger })
-        .and_return(operation_result)
+        .and_return(trb_result_success)
 
       subject
     end
@@ -33,7 +30,7 @@ describe ImportTcDailyUpdateUnitJob do
       expect(TribunalCommerce::PartialStockUnit::Operation::Load)
         .to receive(:call)
         .with({ daily_update_unit: unit, logger: import_logger })
-        .and_return(operation_result)
+        .and_return(trb_result_success)
 
       subject
     end
@@ -41,9 +38,7 @@ describe ImportTcDailyUpdateUnitJob do
 
   # A daily update unit is used for the following specs
   context 'when the unit import is successful' do
-    let(:operation_result) { instance_double(result_class, success?: true) }
-
-    before { mock_unit_load_operation operation_result }
+    before { mock_unit_load_operation(trb_result_success) }
 
     it 'sets the unit\'s status to "COMPLETED"' do
       subject
@@ -61,15 +56,13 @@ describe ImportTcDailyUpdateUnitJob do
   end
 
   context 'when the unit import fails' do
-    let(:operation_result) { instance_double(result_class, success?: false) }
-
     it 'rollbacks everything written in database' do
       expect(TribunalCommerce::DailyUpdateUnit::Operation::Load)
         .to receive(:call)
         .and_wrap_original do |original_method, *args|
         # Write into DB as if the operation did
         create(:daily_update_unit, status: 'GHOST')
-        operation_result
+        trb_result_failure
       end
 
       subject
@@ -79,7 +72,7 @@ describe ImportTcDailyUpdateUnitJob do
     end
 
     it 'sets the unit\'s status to "ERROR"' do
-      mock_unit_load_operation(operation_result)
+      mock_unit_load_operation(trb_result_failure)
       subject
       unit.reload
 

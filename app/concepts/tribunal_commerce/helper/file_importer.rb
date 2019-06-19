@@ -4,7 +4,7 @@ module TribunalCommerce
       attr_reader :file_reader, :logger
 
       # TODO here container would be great because it could provide the right logger
-      def initialize(logger, file_reader = DataSource::File::CSVReader)
+      def initialize(logger, file_reader = CSVReader)
         @file_reader = file_reader
         @logger = logger
       end
@@ -81,6 +81,34 @@ module TribunalCommerce
         import_line_by_line(path, OBS_HEADER_MAPPING, Observation::Operation::UpdateOrCreate)
       end
 
+      def bulk_import_dossiers_entreprise_from_pm(path)
+        bulk_import(path, DOSSIER_ENTREPRISE_FROM_PM_HEADER_MAPPING, DossierEntreprise)
+      end
+
+      def bulk_import_dossiers_entreprise_from_pp(path)
+        bulk_import(path, DOSSIER_ENTREPRISE_FROM_PP_HEADER_MAPPING, DossierEntreprise)
+      end
+
+      def bulk_import_personnes_morales(path)
+        bulk_import(path, PM_HEADER_MAPPING, PersonneMorale)
+      end
+
+      def bulk_import_personnes_physiques(path)
+        bulk_import(path, PP_HEADER_MAPPING, PersonnePhysique)
+      end
+
+      def bulk_import_representants(path)
+        bulk_import(path, REP_HEADER_MAPPING, Representant)
+      end
+
+      def bulk_import_etablissements(path)
+        bulk_import(path, ETS_HEADER_MAPPING, Etablissement)
+      end
+
+      def bulk_import_observations(path)
+        bulk_import(path, OBS_HEADER_MAPPING, Observation)
+      end
+
       private
 
       def import_line_by_line(file_path, file_header_mapping, line_processor)
@@ -97,6 +125,18 @@ module TribunalCommerce
           end
         end
         logger.info("Import of file #{file_path} is complete !")
+      end
+
+      def bulk_import(file_path, file_header_mapping, imported_model)
+        logger.info("Starting bulk import of #{imported_model} from `#{file_path}`:")
+        file_reader.bulk_processing(file_path, file_header_mapping) do |batch|
+          batch_import = imported_model.import(batch, validate: false)
+          if batch_import.failed_instances.any?
+            logger.error("An error occured while importing #{imported_model} from #{file_path}, aborting...")
+            return false
+          end
+        end
+        logger.info("Import of file #{file_path} is complete!")
       end
     end
   end

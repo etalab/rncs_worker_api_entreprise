@@ -160,6 +160,10 @@ pas ajouter de complexité supplémentaire au script d'import, ces fichiers ont
 * IMR_Donnees_Saisies/tc/flux/2017/05/24/8401/5/8401_5_20170512_212823_11_obs.csv
 * IMR_Donnees_Saisies/tc/flux/2017/05/24/5601/5/5601_5_20170512_213441_11_obs.csv
 
+```bash
+iconv -f iso-8859-1 -t utf-8 file.csv
+```
+
 ### Les stocks partiels
 
 Certaines mises à jour transmises ne respectent pas les contraintes d'intégrité
