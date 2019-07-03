@@ -28,9 +28,9 @@ class SyncFTPJob < ActiveJob::Base
     <<-ENDLFTP
     lftp -u '#{ftp_login}','#{ftp_password}' -p 21 opendata-rncs.inpi.fr -e '
       mirror -c -P 2 -F public/IMR_Donnees_Saisies/tc/flux/#{current_year}/#{current_month}/ -O #{rncs_source_path}/tc/flux/#{current_year};
-      mirror -c -P 2 -F public/IMR_Donnees_Saisies/tc/flux/#{previous_month_year}/#{previous_month}/ -O #{rncs_source_path}/tc/flux/#{previous_month_year};
+      mirror -c -P 2 -F public/IMR_Donnees_Saisies/tc/flux/#{year_of_previous_month}/#{previous_month}/ -O #{rncs_source_path}/tc/flux/#{year_of_previous_month};
       mirror -c -P 2 -F public/IMR_Donnees_Saisies/tc/stock/#{current_year}/#{current_month}/ -O #{rncs_source_path}/tc/stock/#{current_year};
-      mirror -c -P 2 -F public/IMR_Donnees_Saisies/tc/stock/#{previous_month_year}/#{previous_month}/ -O #{rncs_source_path}/tc/stock/#{previous_month_year};
+      mirror -c -P 2 -F public/IMR_Donnees_Saisies/tc/stock/#{year_of_previous_month}/#{previous_month}/ -O #{rncs_source_path}/tc/stock/#{year_of_previous_month};
       quit'
     ENDLFTP
   end
@@ -55,7 +55,7 @@ class SyncFTPJob < ActiveJob::Base
     @current_month ||= Time.now.strftime("%m")
   end
 
-  def previous_month_year
+  def year_of_previous_month
     @previous_month_year ||= (Time.now.beginning_of_month - 1.day).strftime("%Y")
   end
 
@@ -67,12 +67,12 @@ class SyncFTPJob < ActiveJob::Base
     sync_folders = [
       "#{rncs_source_path}/tc/flux/#{current_year}/#{current_month}",
       "#{rncs_source_path}/tc/flux/#{current_year}",
-      "#{rncs_source_path}/tc/flux/#{previous_month_year}/#{previous_month}",
-      "#{rncs_source_path}/tc/flux/#{previous_month_year}",
+      "#{rncs_source_path}/tc/flux/#{year_of_previous_month}/#{previous_month}",
+      "#{rncs_source_path}/tc/flux/#{year_of_previous_month}",
       "#{rncs_source_path}/tc/stock/#{current_year}/#{current_month}",
       "#{rncs_source_path}/tc/stock/#{current_year}",
-      "#{rncs_source_path}/tc/stock/#{previous_month_year}/#{previous_month}",
-      "#{rncs_source_path}/tc/stock/#{previous_month_year}",
+      "#{rncs_source_path}/tc/stock/#{year_of_previous_month}/#{previous_month}",
+      "#{rncs_source_path}/tc/stock/#{year_of_previous_month}",
     ]
 
     sync_folders.each do |dir|
