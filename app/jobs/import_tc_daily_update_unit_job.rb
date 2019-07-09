@@ -10,16 +10,13 @@ class ImportTcDailyUpdateUnitJob < ApplicationJob
     wrap_import_with_log_level(:fatal) do
       import = unit_importer.call(daily_update_unit: unit, logger: import_logger)
 
-      if import.success?
-        unit.update(status: 'COMPLETED')
-      else
-        raise ActiveRecord::Rollback
-      end
+      raise ActiveRecord::Rollback if import.failure?
     end
 
     # Checking the import result a second time outside the transaction
     # so the 'ERROR' status is persisted into DB and not rollback to 'PENDING'
     if import.success?
+      unit.update(status: 'COMPLETED')
       TribunalCommerce::DailyUpdateUnit::Operation::PostImport
         .call(daily_update_unit: unit)
     else
