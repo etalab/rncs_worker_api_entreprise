@@ -4,10 +4,9 @@ class SyncFTPJob < ActiveJob::Base
   queue_as :auto_updates
 
   def perform(*_)
-    if Rails.env.production?
-      sync_files
-      ensure_permissions_are_correct
-    end
+    sync_files
+    ensure_permissions_are_correct
+    clean_sync_folders
   end
 
   private
@@ -26,7 +25,14 @@ class SyncFTPJob < ActiveJob::Base
   end
 
   def lftp_command
-    "lftp -u '#{ftp_login}','#{ftp_password}' -p 21 opendata-rncs.inpi.fr -e 'mirror -c -P 4 public/IMR_Donnees_Saisies #{rncs_source_path}; quit'"
+    <<-ENDLFTP
+    lftp -u '#{ftp_login}','#{ftp_password}' -p 21 opendata-rncs.inpi.fr -e '
+      mirror -c -P 2 -F public/IMR_Donnees_Saisies/tc/flux/#{current_year}/#{current_month}/ -O #{rncs_source_path}/tc/flux/#{current_year};
+      mirror -c -P 2 -F public/IMR_Donnees_Saisies/tc/flux/#{year_of_previous_month}/#{previous_month}/ -O #{rncs_source_path}/tc/flux/#{year_of_previous_month};
+      mirror -c -P 2 -F public/IMR_Donnees_Saisies/tc/stock/#{current_year}/#{current_month}/ -O #{rncs_source_path}/tc/stock/#{current_year};
+      mirror -c -P 2 -F public/IMR_Donnees_Saisies/tc/stock/#{year_of_previous_month}/#{previous_month}/ -O #{rncs_source_path}/tc/stock/#{year_of_previous_month};
+      quit'
+    ENDLFTP
   end
 
   def rncs_source_path
@@ -39,5 +45,38 @@ class SyncFTPJob < ActiveJob::Base
 
   def ftp_password
     @ftp_password ||= Rails.application.credentials.ftp_password
+  end
+
+  def current_year
+    @current_year ||= Time.now.strftime("%Y")
+  end
+
+  def current_month
+    @current_month ||= Time.now.strftime("%m")
+  end
+
+  def year_of_previous_month
+    @previous_month_year ||= (Time.now.beginning_of_month - 1.day).strftime("%Y")
+  end
+
+  def previous_month
+    @previous_month ||= (Time.now.beginning_of_month - 1.day).strftime("%m")
+  end
+
+  def clean_sync_folders
+    sync_folders = [
+      "#{rncs_source_path}/tc/flux/#{current_year}/#{current_month}",
+      "#{rncs_source_path}/tc/flux/#{current_year}",
+      "#{rncs_source_path}/tc/flux/#{year_of_previous_month}/#{previous_month}",
+      "#{rncs_source_path}/tc/flux/#{year_of_previous_month}",
+      "#{rncs_source_path}/tc/stock/#{current_year}/#{current_month}",
+      "#{rncs_source_path}/tc/stock/#{current_year}",
+      "#{rncs_source_path}/tc/stock/#{year_of_previous_month}/#{previous_month}",
+      "#{rncs_source_path}/tc/stock/#{year_of_previous_month}",
+    ]
+
+    sync_folders.each do |dir|
+      FileUtils.rm_rf(dir) if Dir.exists?(dir) && Dir.empty?(dir)
+    end
   end
 end
