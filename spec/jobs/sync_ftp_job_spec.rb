@@ -13,15 +13,17 @@ describe SyncFTPJob do
   after { Timecop.return }
 
   let(:rncs_source_path) { Rails.configuration.rncs_sources['path'] }
+  let(:ftp_login) { Rails.application.credentials.ftp_login }
+  let(:ftp_password) { Rails.application.credentials.ftp_password }
 
   describe 'sync job behaviour' do
     before do
-      allow_lftp_success
+      allow_wget_success
       allow_chmod_success
     end
 
     it 'syncs TC daily updates for the current month' do
-      current_month_sync_command = "mirror -c -P 2 -F public/IMR_Donnees_Saisies/tc/flux/2019/01/ -O #{rncs_source_path}/tc/flux/2019;"
+      current_month_sync_command = "wget -r --level=8 -m --reject \"index.html\" -c -N --secure-protocol=auto --no-proxy --ftp-user=#{ftp_login} --ftp-password=#{ftp_password} --directory-prefix=#{rncs_source_path} --no-check-certificate ftps://opendata-rncs.inpi.fr/public/IMR_Donnees_Saisies/tc/flux/2019/01"
       expect(Open3).to receive(:capture3)
         .with(a_string_including(current_month_sync_command))
 
@@ -29,7 +31,7 @@ describe SyncFTPJob do
     end
 
     it 'syncs TC daily updates for the previous month' do
-      previous_month_sync_command = "mirror -c -P 2 -F public/IMR_Donnees_Saisies/tc/flux/2018/12/ -O #{rncs_source_path}/tc/flux/2018;"
+      previous_month_sync_command = "wget -r --level=8 -m --reject \"index.html\" -c -N --secure-protocol=auto --no-proxy --ftp-user=#{ftp_login} --ftp-password=#{ftp_password} --directory-prefix=#{rncs_source_path} --no-check-certificate ftps://opendata-rncs.inpi.fr/public/IMR_Donnees_Saisies/tc/flux/2018/12"
       expect(Open3).to receive(:capture3)
         .with(a_string_including(previous_month_sync_command))
 
@@ -37,7 +39,7 @@ describe SyncFTPJob do
     end
 
     it 'syncs TC partial stocks for the current month' do
-      current_month_sync_command = "mirror -c -P 2 -F public/IMR_Donnees_Saisies/tc/stock/2019/01/ -O #{rncs_source_path}/tc/stock/2019;"
+      current_month_sync_command = "wget -r --level=8 -m --reject \"index.html\" -c -N --secure-protocol=auto --no-proxy --ftp-user=#{ftp_login} --ftp-password=#{ftp_password} --directory-prefix=#{rncs_source_path} --no-check-certificate ftps://opendata-rncs.inpi.fr/public/IMR_Donnees_Saisies/tc/stock/2019/01"
       expect(Open3).to receive(:capture3)
         .with(a_string_including(current_month_sync_command))
 
@@ -45,7 +47,7 @@ describe SyncFTPJob do
     end
 
     it 'syncs TC partial stocks for the previous month' do
-      previous_month_sync_command = "mirror -c -P 2 -F public/IMR_Donnees_Saisies/tc/stock/2018/12/ -O #{rncs_source_path}/tc/stock/2018;"
+      previous_month_sync_command = "wget -r --level=8 -m --reject \"index.html\" -c -N --secure-protocol=auto --no-proxy --ftp-user=#{ftp_login} --ftp-password=#{ftp_password} --directory-prefix=#{rncs_source_path} --no-check-certificate ftps://opendata-rncs.inpi.fr/public/IMR_Donnees_Saisies/tc/stock/2018/12"
       expect(Open3).to receive(:capture3)
         .with(a_string_including(previous_month_sync_command))
 
@@ -55,7 +57,7 @@ describe SyncFTPJob do
     it 'changes file permissions of the files and folders to deploy after sync' do
       change_dirs_permissions_cmd = "find #{rncs_source_path} -type d -exec chmod 755 {} +"
       change_files_permissions_cmd = "find #{rncs_source_path} -type f -exec chmod 644 {} +"
-      expect(Open3).to receive(:capture3).with(/lftp/).ordered
+      expect(Open3).to receive(:capture3).with(/wget/).ordered
       expect(Open3).to receive(:capture3).with(change_dirs_permissions_cmd).ordered
       expect(Open3).to receive(:capture3).with(change_files_permissions_cmd).ordered
 
@@ -68,50 +70,40 @@ describe SyncFTPJob do
     end
   end
 
-  # When specifying folders to sync as we do with lftp, the executed command
-  # will create the targetted folders on the local file system even if they
-  # are empty (because inexistant on the FTP source server). This will happen
-  # a lot for partial stock folders since they can be absent for several
-  # months. We purge such empty folders after the sync since we don't want
-  # the code for import to fail because it founds empty folders on the disk.
+  # When trying to download folders with wget it will create the target's
+  # parent folder tree (until the year folder). Those empty year folders
+  # that could appear during a new year shift are deleted.
   describe 'sync folders post traitment' do
     before do
-      # Mock lftp system call and manually create targetted folders
+      # Mock wget system call and manually create targetted folders
       expect(Open3).to receive(:capture3)
         .and_wrap_original do |original_method, *args|
-        FileUtils.mkdir_p("#{rncs_source_path}/tc/stock/2018/12")
-        FileUtils.touch("#{rncs_source_path}/tc/stock/2018/12/a_file.txt")
-        FileUtils.mkdir_p("#{rncs_source_path}/tc/flux/2019/01")
+        FileUtils.mkdir_p("#{rncs_source_path}/opendata-rncs.inpi.fr/public/IMR_Donnees_Saisies/tc/stock/2018/12")
+        FileUtils.mkdir_p("#{rncs_source_path}/opendata-rncs.inpi.fr/public/IMR_Donnees_Saisies/tc/flux/2019")
         ['', '', status_success]
       end
 
       allow_chmod_success
     end
 
-    after { FileUtils.rm_rf("#{rncs_source_path}/tc/stock/2018/12") }
+    after { FileUtils.rm_rf("#{rncs_source_path}/opendata-rncs.inpi.fr") }
 
-    it 'deletes empty month folder' do
+    it 'deletes empty year folders' do
       subject
 
-      expect(Dir.exists?("#{rncs_source_path}/tc/flux/2019/01")).to eq(false)
+      expect(Dir.exists?("#{rncs_source_path}/opendata-rncs.inpi.fr/public/IMR_Donnees_Saisies/tc/flux/2019")).to eq(false)
     end
 
-    it 'deletes empty year folder' do
+    it 'keeps non empty year folders' do
       subject
 
-      expect(Dir.exists?("#{rncs_source_path}/tc/flux/2019")).to eq(false)
-    end
-
-    it 'keeps non empty folder' do
-      subject
-
-      expect(Dir.exists?("#{rncs_source_path}/tc/stock/2018/12")).to eq(true)
+      expect(Dir.exists?("#{rncs_source_path}/opendata-rncs.inpi.fr/public/IMR_Donnees_Saisies/tc/stock/2018")).to eq(true)
     end
   end
 
-  describe 'when lftp fails' do
+  describe 'when wget fails' do
     before do
-      allow(Open3).to receive(:capture3).with(/lftp/).and_return(['', 'random error', status_failure])
+      allow(Open3).to receive(:capture3).with(/wget/).and_return(['', 'random error', status_failure])
       allow_chmod_success
     end
 
@@ -123,7 +115,7 @@ describe SyncFTPJob do
 
   describe 'when chmod fails' do
     before do
-      allow_lftp_success
+      allow_wget_success
       allow(Open3).to receive(:capture3).with(/chmod/).and_return(['', 'random error', status_failure])
     end
 
@@ -139,8 +131,8 @@ describe SyncFTPJob do
     allow(Open3).to receive(:capture3).with(/chmod/).and_call_original
   end
 
-  def allow_lftp_success
-    allow(Open3).to receive(:capture3).with(/lftp.+/).and_return(['', '', status_success])
+  def allow_wget_success
+    allow(Open3).to receive(:capture3).with(/wget.+/).and_return(['', '', status_success])
   end
 
   def status_success
