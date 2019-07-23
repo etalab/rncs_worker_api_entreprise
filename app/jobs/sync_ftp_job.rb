@@ -26,10 +26,10 @@ class SyncFTPJob < ActiveJob::Base
 
   def wget_command
     <<-ENDWGET
-    wget -r --level=8 -m --reject "index.html" -c -N --secure-protocol=auto --no-proxy --ftp-user=#{ftp_login} --ftp-password=#{ftp_password} --directory-prefix=#{rncs_dir_prefix} --no-check-certificate ftps://opendata-rncs.inpi.fr/public/IMR_Donnees_Saisies/tc/flux/#{current_year}/#{current_month};
-    wget -r --level=8 -m --reject "index.html" -c -N --secure-protocol=auto --no-proxy --ftp-user=#{ftp_login} --ftp-password=#{ftp_password} --directory-prefix=#{rncs_dir_prefix} --no-check-certificate ftps://opendata-rncs.inpi.fr/public/IMR_Donnees_Saisies/tc/flux/#{year_of_previous_month}/#{previous_month};
-    wget -r --level=8 -m --reject "index.html" -c -N --secure-protocol=auto --no-proxy --ftp-user=#{ftp_login} --ftp-password=#{ftp_password} --directory-prefix=#{rncs_dir_prefix} --no-check-certificate ftps://opendata-rncs.inpi.fr/public/IMR_Donnees_Saisies/tc/stock/#{current_year}/#{current_month};
-    wget -r --level=8 -m --reject "index.html" -c -N --secure-protocol=auto --no-proxy --ftp-user=#{ftp_login} --ftp-password=#{ftp_password} --directory-prefix=#{rncs_dir_prefix} --no-check-certificate ftps://opendata-rncs.inpi.fr/public/IMR_Donnees_Saisies/tc/stock/#{year_of_previous_month}/#{previous_month}
+    wget -r --level=8 -m --reject "index.html" -c -N --secure-protocol=auto --no-proxy --ftp-user='#{ftp_login}' --ftp-password='#{ftp_password}' --directory-prefix=#{rncs_dir_prefix} --no-check-certificate ftps://opendata-rncs.inpi.fr/public/IMR_Donnees_Saisies/tc/flux/#{current_year}/#{current_month};
+    wget -r --level=8 -m --reject "index.html" -c -N --secure-protocol=auto --no-proxy --ftp-user='#{ftp_login}' --ftp-password='#{ftp_password}' --directory-prefix=#{rncs_dir_prefix} --no-check-certificate ftps://opendata-rncs.inpi.fr/public/IMR_Donnees_Saisies/tc/flux/#{year_of_previous_month}/#{previous_month};
+    wget -r --level=8 -m --reject "index.html" -c -N --secure-protocol=auto --no-proxy --ftp-user='#{ftp_login}' --ftp-password='#{ftp_password}' --directory-prefix=#{rncs_dir_prefix} --no-check-certificate ftps://opendata-rncs.inpi.fr/public/IMR_Donnees_Saisies/tc/stock/#{current_year}/#{current_month};
+    wget -r --level=8 -m --reject "index.html" -c -N --secure-protocol=auto --no-proxy --ftp-user='#{ftp_login}' --ftp-password='#{ftp_password}' --directory-prefix=#{rncs_dir_prefix} --no-check-certificate ftps://opendata-rncs.inpi.fr/public/IMR_Donnees_Saisies/tc/stock/#{year_of_previous_month}/#{previous_month}
     ENDWGET
   end
 
