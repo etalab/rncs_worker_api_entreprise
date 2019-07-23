@@ -24,7 +24,7 @@ describe SyncFTPJob do
     end
 
     it 'syncs TC daily updates for the current month' do
-      current_month_sync_command = "wget -r --level=8 -m --reject \"index.html\" -c -N --secure-protocol=auto --no-proxy --ftp-user=#{ftp_login} --ftp-password=#{ftp_password} --directory-prefix=#{rncs_path_prefix} --no-check-certificate ftps://opendata-rncs.inpi.fr/public/IMR_Donnees_Saisies/tc/flux/2019/01"
+      current_month_sync_command = "wget -r --level=8 -m --reject \"index.html\" -c -N --secure-protocol=auto --no-proxy --ftp-user='#{ftp_login}' --ftp-password='#{ftp_password}' --directory-prefix=#{rncs_path_prefix} --no-check-certificate ftps://opendata-rncs.inpi.fr/public/IMR_Donnees_Saisies/tc/flux/2019/01"
       expect(Open3).to receive(:capture3)
         .with(a_string_including(current_month_sync_command))
 
@@ -32,7 +32,7 @@ describe SyncFTPJob do
     end
 
     it 'syncs TC daily updates for the previous month' do
-      previous_month_sync_command = "wget -r --level=8 -m --reject \"index.html\" -c -N --secure-protocol=auto --no-proxy --ftp-user=#{ftp_login} --ftp-password=#{ftp_password} --directory-prefix=#{rncs_path_prefix} --no-check-certificate ftps://opendata-rncs.inpi.fr/public/IMR_Donnees_Saisies/tc/flux/2018/12"
+      previous_month_sync_command = "wget -r --level=8 -m --reject \"index.html\" -c -N --secure-protocol=auto --no-proxy --ftp-user='#{ftp_login}' --ftp-password='#{ftp_password}' --directory-prefix=#{rncs_path_prefix} --no-check-certificate ftps://opendata-rncs.inpi.fr/public/IMR_Donnees_Saisies/tc/flux/2018/12"
       expect(Open3).to receive(:capture3)
         .with(a_string_including(previous_month_sync_command))
 
@@ -40,7 +40,7 @@ describe SyncFTPJob do
     end
 
     it 'syncs TC partial stocks for the current month' do
-      current_month_sync_command = "wget -r --level=8 -m --reject \"index.html\" -c -N --secure-protocol=auto --no-proxy --ftp-user=#{ftp_login} --ftp-password=#{ftp_password} --directory-prefix=#{rncs_path_prefix} --no-check-certificate ftps://opendata-rncs.inpi.fr/public/IMR_Donnees_Saisies/tc/stock/2019/01"
+      current_month_sync_command = "wget -r --level=8 -m --reject \"index.html\" -c -N --secure-protocol=auto --no-proxy --ftp-user='#{ftp_login}' --ftp-password='#{ftp_password}' --directory-prefix=#{rncs_path_prefix} --no-check-certificate ftps://opendata-rncs.inpi.fr/public/IMR_Donnees_Saisies/tc/stock/2019/01"
       expect(Open3).to receive(:capture3)
         .with(a_string_including(current_month_sync_command))
 
@@ -48,7 +48,7 @@ describe SyncFTPJob do
     end
 
     it 'syncs TC partial stocks for the previous month' do
-      previous_month_sync_command = "wget -r --level=8 -m --reject \"index.html\" -c -N --secure-protocol=auto --no-proxy --ftp-user=#{ftp_login} --ftp-password=#{ftp_password} --directory-prefix=#{rncs_path_prefix} --no-check-certificate ftps://opendata-rncs.inpi.fr/public/IMR_Donnees_Saisies/tc/stock/2018/12"
+      previous_month_sync_command = "wget -r --level=8 -m --reject \"index.html\" -c -N --secure-protocol=auto --no-proxy --ftp-user='#{ftp_login}' --ftp-password='#{ftp_password}' --directory-prefix=#{rncs_path_prefix} --no-check-certificate ftps://opendata-rncs.inpi.fr/public/IMR_Donnees_Saisies/tc/stock/2018/12"
       expect(Open3).to receive(:capture3)
         .with(a_string_including(previous_month_sync_command))
 
