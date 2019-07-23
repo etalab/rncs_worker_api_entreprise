@@ -26,7 +26,7 @@ describe TribunalInstance::Stock::Operation::RetrieveLastStock do
   context 'when stocks are found' do
     subject { described_class.call stocks_folder: stock_folder_path, stock_class: DummyStockClass }
 
-    let(:stock_folder_path) { File.join(Rails.configuration.rncs_sources['path'], 'tc', 'stock') }
+    let(:stock_folder_path) { File.join(Rails.configuration.rncs_sources_path, 'tc', 'stock') }
 
     its([:stocks_folder]) { is_expected.to eq stock_folder_path }
     it { is_expected.to be_success }

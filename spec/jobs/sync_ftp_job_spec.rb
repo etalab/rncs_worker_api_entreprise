@@ -12,7 +12,8 @@ describe SyncFTPJob do
 
   after { Timecop.return }
 
-  let(:rncs_source_path) { Rails.configuration.rncs_sources['path'] }
+  let(:rncs_path_prefix) { Rails.configuration.rncs_sources['path_prefix'] }
+  let(:rncs_sources_path) { Rails.configuration.rncs_sources_path }
   let(:ftp_login) { Rails.application.credentials.ftp_login }
   let(:ftp_password) { Rails.application.credentials.ftp_password }
 
@@ -23,7 +24,7 @@ describe SyncFTPJob do
     end
 
     it 'syncs TC daily updates for the current month' do
-      current_month_sync_command = "wget -r --level=8 -m --reject \"index.html\" -c -N --secure-protocol=auto --no-proxy --ftp-user=#{ftp_login} --ftp-password=#{ftp_password} --directory-prefix=#{rncs_source_path} --no-check-certificate ftps://opendata-rncs.inpi.fr/public/IMR_Donnees_Saisies/tc/flux/2019/01"
+      current_month_sync_command = "wget -r --level=8 -m --reject \"index.html\" -c -N --secure-protocol=auto --no-proxy --ftp-user=#{ftp_login} --ftp-password=#{ftp_password} --directory-prefix=#{rncs_path_prefix} --no-check-certificate ftps://opendata-rncs.inpi.fr/public/IMR_Donnees_Saisies/tc/flux/2019/01"
       expect(Open3).to receive(:capture3)
         .with(a_string_including(current_month_sync_command))
 
@@ -31,7 +32,7 @@ describe SyncFTPJob do
     end
 
     it 'syncs TC daily updates for the previous month' do
-      previous_month_sync_command = "wget -r --level=8 -m --reject \"index.html\" -c -N --secure-protocol=auto --no-proxy --ftp-user=#{ftp_login} --ftp-password=#{ftp_password} --directory-prefix=#{rncs_source_path} --no-check-certificate ftps://opendata-rncs.inpi.fr/public/IMR_Donnees_Saisies/tc/flux/2018/12"
+      previous_month_sync_command = "wget -r --level=8 -m --reject \"index.html\" -c -N --secure-protocol=auto --no-proxy --ftp-user=#{ftp_login} --ftp-password=#{ftp_password} --directory-prefix=#{rncs_path_prefix} --no-check-certificate ftps://opendata-rncs.inpi.fr/public/IMR_Donnees_Saisies/tc/flux/2018/12"
       expect(Open3).to receive(:capture3)
         .with(a_string_including(previous_month_sync_command))
 
@@ -39,7 +40,7 @@ describe SyncFTPJob do
     end
 
     it 'syncs TC partial stocks for the current month' do
-      current_month_sync_command = "wget -r --level=8 -m --reject \"index.html\" -c -N --secure-protocol=auto --no-proxy --ftp-user=#{ftp_login} --ftp-password=#{ftp_password} --directory-prefix=#{rncs_source_path} --no-check-certificate ftps://opendata-rncs.inpi.fr/public/IMR_Donnees_Saisies/tc/stock/2019/01"
+      current_month_sync_command = "wget -r --level=8 -m --reject \"index.html\" -c -N --secure-protocol=auto --no-proxy --ftp-user=#{ftp_login} --ftp-password=#{ftp_password} --directory-prefix=#{rncs_path_prefix} --no-check-certificate ftps://opendata-rncs.inpi.fr/public/IMR_Donnees_Saisies/tc/stock/2019/01"
       expect(Open3).to receive(:capture3)
         .with(a_string_including(current_month_sync_command))
 
@@ -47,7 +48,7 @@ describe SyncFTPJob do
     end
 
     it 'syncs TC partial stocks for the previous month' do
-      previous_month_sync_command = "wget -r --level=8 -m --reject \"index.html\" -c -N --secure-protocol=auto --no-proxy --ftp-user=#{ftp_login} --ftp-password=#{ftp_password} --directory-prefix=#{rncs_source_path} --no-check-certificate ftps://opendata-rncs.inpi.fr/public/IMR_Donnees_Saisies/tc/stock/2018/12"
+      previous_month_sync_command = "wget -r --level=8 -m --reject \"index.html\" -c -N --secure-protocol=auto --no-proxy --ftp-user=#{ftp_login} --ftp-password=#{ftp_password} --directory-prefix=#{rncs_path_prefix} --no-check-certificate ftps://opendata-rncs.inpi.fr/public/IMR_Donnees_Saisies/tc/stock/2018/12"
       expect(Open3).to receive(:capture3)
         .with(a_string_including(previous_month_sync_command))
 
@@ -55,8 +56,8 @@ describe SyncFTPJob do
     end
 
     it 'changes file permissions of the files and folders to deploy after sync' do
-      change_dirs_permissions_cmd = "find #{rncs_source_path} -type d -exec chmod 755 {} +"
-      change_files_permissions_cmd = "find #{rncs_source_path} -type f -exec chmod 644 {} +"
+      change_dirs_permissions_cmd = "find #{rncs_sources_path} -type d -exec chmod 755 {} +"
+      change_files_permissions_cmd = "find #{rncs_sources_path} -type f -exec chmod 644 {} +"
       expect(Open3).to receive(:capture3).with(/wget/).ordered
       expect(Open3).to receive(:capture3).with(change_dirs_permissions_cmd).ordered
       expect(Open3).to receive(:capture3).with(change_files_permissions_cmd).ordered
@@ -78,26 +79,26 @@ describe SyncFTPJob do
       # Mock wget system call and manually create targetted folders
       expect(Open3).to receive(:capture3)
         .and_wrap_original do |original_method, *args|
-        FileUtils.mkdir_p("#{rncs_source_path}/opendata-rncs.inpi.fr/public/IMR_Donnees_Saisies/tc/stock/2018/12")
-        FileUtils.mkdir_p("#{rncs_source_path}/opendata-rncs.inpi.fr/public/IMR_Donnees_Saisies/tc/flux/2019")
+        FileUtils.mkdir_p("#{rncs_sources_path}/tc/stock/2018/12")
+        FileUtils.mkdir_p("#{rncs_sources_path}/tc/flux/2019")
         ['', '', status_success]
       end
 
       allow_chmod_success
     end
 
-    after { FileUtils.rm_rf("#{rncs_source_path}/opendata-rncs.inpi.fr") }
+    after { FileUtils.remove_dir("#{rncs_sources_path}/tc/stock/2018/12") }
 
     it 'deletes empty year folders' do
       subject
 
-      expect(Dir.exists?("#{rncs_source_path}/opendata-rncs.inpi.fr/public/IMR_Donnees_Saisies/tc/flux/2019")).to eq(false)
+      expect(Dir.exists?("#{rncs_sources_path}/tc/flux/2019")).to eq(false)
     end
 
     it 'keeps non empty year folders' do
       subject
 
-      expect(Dir.exists?("#{rncs_source_path}/opendata-rncs.inpi.fr/public/IMR_Donnees_Saisies/tc/stock/2018")).to eq(true)
+      expect(Dir.exists?("#{rncs_sources_path}/tc/stock/2018")).to eq(true)
     end
   end
 
@@ -108,7 +109,7 @@ describe SyncFTPJob do
     end
 
     it 'logs an error' do
-      expect(Rails.logger).to receive(:error).with('LFTP sync failed with: random error')
+      expect(Rails.logger).to receive(:error).with('WGET sync failed with: random error')
       subject
     end
   end
