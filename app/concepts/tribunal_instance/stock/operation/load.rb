@@ -5,7 +5,7 @@ module TribunalInstance
         extend ClassDependencies
         include TrailblazerHelper::DBIndexes
 
-        self[:stocks_folder] = ::File.join(Rails.configuration.rncs_sources['path'], 'titmc', 'stock')
+        self[:stocks_folder] = ::File.join(Rails.configuration.rncs_sources_path, 'titmc', 'stock')
         self[:stock_class] = StockTribunalInstance
 
         pass ->(ctx, logger:, **) { logger.info 'Checking last TITMC stock...' }

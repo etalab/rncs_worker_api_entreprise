@@ -4,7 +4,7 @@ module TribunalCommerce
       class FetchPartialStocksInPipe < Trailblazer::Operation
         extend ClassDependencies
 
-        self[:partial_stock_folder] = ::File.join(Rails.configuration.rncs_sources['path'], 'tc', 'stock')
+        self[:partial_stock_folder] = ::File.join(Rails.configuration.rncs_sources_path, 'tc', 'stock')
 
         step :fetch_updates
         step :deserialize
