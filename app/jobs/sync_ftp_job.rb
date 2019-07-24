@@ -34,7 +34,7 @@ class SyncFTPJob < ActiveJob::Base
   end
 
   def rncs_dir_prefix
-    Rails.configuration.rncs_sources['path_prefix']
+    Rails.configuration.rncs_sources['local_path_prefix']
   end
 
   def rncs_sources_path

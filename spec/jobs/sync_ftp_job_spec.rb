@@ -12,7 +12,7 @@ describe SyncFTPJob do
 
   after { Timecop.return }
 
-  let(:rncs_path_prefix) { Rails.configuration.rncs_sources['path_prefix'] }
+  let(:rncs_path_prefix) { Rails.configuration.rncs_sources['local_path_prefix'] }
   let(:rncs_sources_path) { Rails.configuration.rncs_sources_path }
   let(:ftp_login) { Rails.application.credentials.ftp_login }
   let(:ftp_password) { Rails.application.credentials.ftp_password }
@@ -75,24 +75,27 @@ describe SyncFTPJob do
   # parent folder tree (until the year folder). Those empty year folders
   # that could appear during a new year shift are deleted.
   describe 'sync folders post traitment' do
+    let(:empty_year_folder) { "#{rncs_sources_path}/tc/flux/2019" }
+    let(:non_empty_year_folder) { "#{rncs_sources_path}/tc/stock/2018/12" }
+
     before do
       # Mock wget system call and manually create targetted folders
       expect(Open3).to receive(:capture3)
         .and_wrap_original do |original_method, *args|
-        FileUtils.mkdir_p("#{rncs_sources_path}/tc/stock/2018/12")
-        FileUtils.mkdir_p("#{rncs_sources_path}/tc/flux/2019")
+        FileUtils.mkdir_p(non_empty_year_folder)
+        FileUtils.mkdir_p(empty_year_folder)
         ['', '', status_success]
       end
 
       allow_chmod_success
     end
 
-    after { FileUtils.remove_dir("#{rncs_sources_path}/tc/stock/2018/12") }
+    after { FileUtils.remove_dir(non_empty_year_folder) }
 
     it 'deletes empty year folders' do
       subject
 
-      expect(Dir.exists?("#{rncs_sources_path}/tc/flux/2019")).to eq(false)
+      expect(Dir.exists?(empty_year_folder)).to eq(false)
     end
 
     it 'keeps non empty year folders' do

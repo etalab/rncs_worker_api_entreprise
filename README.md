@@ -7,12 +7,12 @@ Create the file `config/rncs_sources.yml` with the content :
 
 ```yaml
 development:
-  path_prefix: <YOUR PATH TO SOURCE FILES>
+  local_path_prefix: <FOLDER TO SYNC SOURCE FILES TO>
   ftp_path_prefix: opendata-rncs.inpi.fr/public/IMR_Donnees_Saisies
   import_batch_size: 5_000
 
 test:
-  path_prefix: ./spec/fixtures
+  local_path_prefix: ./spec/fixtures
   ftp_path_prefix: ''
   import_batch_size: 3
 ```
