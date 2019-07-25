@@ -4,7 +4,7 @@ module TribunalCommerce
       class FetchInPipe < Trailblazer::Operation
         extend ClassDependencies
 
-        self[:flux_folder] = ::File.join(Rails.configuration.rncs_sources['path'], 'tc', 'flux')
+        self[:flux_folder] = ::File.join(Rails.configuration.rncs_sources_path, 'tc', 'flux')
 
         step :fetch_updates
         step :deserialize

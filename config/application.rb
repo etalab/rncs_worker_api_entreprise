@@ -57,5 +57,6 @@ module RncsWorkerApiEntreprise
     end
 
     config.rncs_sources = config_for(:rncs_sources)
+    config.rncs_sources_path = ::File.join(Rails.configuration.rncs_sources['local_path_prefix'], Rails.configuration.rncs_sources['ftp_path_prefix'])
   end
 end

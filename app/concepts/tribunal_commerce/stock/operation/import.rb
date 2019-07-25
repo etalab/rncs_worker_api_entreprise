@@ -5,7 +5,7 @@ module TribunalCommerce
         extend ClassDependencies
         include TrailblazerHelper::DBIndexes
 
-        self[:stocks_folder] = ::File.join(Rails.configuration.rncs_sources['path'], 'tc/stock')
+        self[:stocks_folder] = ::File.join(Rails.configuration.rncs_sources_path, 'tc/stock')
         self[:logger] = Rails.logger
 
         step :log_import_start

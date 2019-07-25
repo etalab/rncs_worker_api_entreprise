@@ -12,31 +12,33 @@ class SyncFTPJob < ActiveJob::Base
   private
 
   def ensure_permissions_are_correct
-    _stdout, stderr, status = Open3.capture3 "find #{rncs_source_path} -type d -exec chmod 755 {} +"
+    _stdout, stderr, status = Open3.capture3 "find #{rncs_sources_path} -type d -exec chmod 755 {} +"
     Rails.logger.error "Ensure permissions for directories failed with #{stderr}" unless status.success?
 
-    _stdout, stderr, status = Open3.capture3 "find #{rncs_source_path} -type f -exec chmod 644 {} +"
+    _stdout, stderr, status = Open3.capture3 "find #{rncs_sources_path} -type f -exec chmod 644 {} +"
     Rails.logger.error "Ensure permissions for files failed with #{stderr}" unless status.success?
   end
 
   def sync_files
-    _stdout, stderr, status = Open3.capture3 lftp_command
-    Rails.logger.error "LFTP sync failed with: #{stderr}" unless status.success?
+    _stdout, stderr, status = Open3.capture3 wget_command
+    Rails.logger.error "WGET sync failed with: #{stderr}" unless status.success?
   end
 
-  def lftp_command
-    <<-ENDLFTP
-    lftp -u '#{ftp_login}','#{ftp_password}' -p 21 opendata-rncs.inpi.fr -e '
-      mirror -c -P 2 -F public/IMR_Donnees_Saisies/tc/flux/#{current_year}/#{current_month}/ -O #{rncs_source_path}/tc/flux/#{current_year};
-      mirror -c -P 2 -F public/IMR_Donnees_Saisies/tc/flux/#{year_of_previous_month}/#{previous_month}/ -O #{rncs_source_path}/tc/flux/#{year_of_previous_month};
-      mirror -c -P 2 -F public/IMR_Donnees_Saisies/tc/stock/#{current_year}/#{current_month}/ -O #{rncs_source_path}/tc/stock/#{current_year};
-      mirror -c -P 2 -F public/IMR_Donnees_Saisies/tc/stock/#{year_of_previous_month}/#{previous_month}/ -O #{rncs_source_path}/tc/stock/#{year_of_previous_month};
-      quit'
-    ENDLFTP
+  def wget_command
+    <<-ENDWGET
+    wget -r --level=8 -m --reject "index.html" -c -N --secure-protocol=auto --no-proxy --ftp-user='#{ftp_login}' --ftp-password='#{ftp_password}' --directory-prefix=#{rncs_dir_prefix} --no-check-certificate ftps://opendata-rncs.inpi.fr/public/IMR_Donnees_Saisies/tc/flux/#{current_year}/#{current_month};
+    wget -r --level=8 -m --reject "index.html" -c -N --secure-protocol=auto --no-proxy --ftp-user='#{ftp_login}' --ftp-password='#{ftp_password}' --directory-prefix=#{rncs_dir_prefix} --no-check-certificate ftps://opendata-rncs.inpi.fr/public/IMR_Donnees_Saisies/tc/flux/#{year_of_previous_month}/#{previous_month};
+    wget -r --level=8 -m --reject "index.html" -c -N --secure-protocol=auto --no-proxy --ftp-user='#{ftp_login}' --ftp-password='#{ftp_password}' --directory-prefix=#{rncs_dir_prefix} --no-check-certificate ftps://opendata-rncs.inpi.fr/public/IMR_Donnees_Saisies/tc/stock/#{current_year}/#{current_month};
+    wget -r --level=8 -m --reject "index.html" -c -N --secure-protocol=auto --no-proxy --ftp-user='#{ftp_login}' --ftp-password='#{ftp_password}' --directory-prefix=#{rncs_dir_prefix} --no-check-certificate ftps://opendata-rncs.inpi.fr/public/IMR_Donnees_Saisies/tc/stock/#{year_of_previous_month}/#{previous_month}
+    ENDWGET
   end
 
-  def rncs_source_path
-    Rails.configuration.rncs_sources['path']
+  def rncs_dir_prefix
+    Rails.configuration.rncs_sources['local_path_prefix']
+  end
+
+  def rncs_sources_path
+    Rails.configuration.rncs_sources_path
   end
 
   def ftp_login
@@ -65,14 +67,10 @@ class SyncFTPJob < ActiveJob::Base
 
   def clean_sync_folders
     sync_folders = [
-      "#{rncs_source_path}/tc/flux/#{current_year}/#{current_month}",
-      "#{rncs_source_path}/tc/flux/#{current_year}",
-      "#{rncs_source_path}/tc/flux/#{year_of_previous_month}/#{previous_month}",
-      "#{rncs_source_path}/tc/flux/#{year_of_previous_month}",
-      "#{rncs_source_path}/tc/stock/#{current_year}/#{current_month}",
-      "#{rncs_source_path}/tc/stock/#{current_year}",
-      "#{rncs_source_path}/tc/stock/#{year_of_previous_month}/#{previous_month}",
-      "#{rncs_source_path}/tc/stock/#{year_of_previous_month}",
+      "#{rncs_sources_path}/tc/flux/#{current_year}",
+      "#{rncs_sources_path}/tc/flux/#{year_of_previous_month}",
+      "#{rncs_sources_path}/tc/stock/#{current_year}",
+      "#{rncs_sources_path}/tc/stock/#{year_of_previous_month}",
     ]
 
     sync_folders.each do |dir|
