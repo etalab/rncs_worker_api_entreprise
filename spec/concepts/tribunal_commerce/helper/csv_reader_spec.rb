@@ -26,19 +26,18 @@ describe TribunalCommerce::Helper::CSVReader do
 
     after { FileUtils.rm_rf(example_file) }
 
-    describe '.bulk_processing' do
+    describe '#bulk_processing' do
+      subject { described_class.new(example_file, example_mapping, keep_nil: true) }
+
       specify 'batch size is configured in config/rncs_sources.yml' do
-        reader = described_class.new(example_file, example_mapping)
-        options = reader.instance_variable_get(:@options)
+        options = subject.instance_variable_get(:@options)
 
         expect(options[:chunk_size])
           .to eq(Rails.configuration.rncs_sources['import_batch_size'])
       end
 
       it 'reads the file by batch' do
-        expect do |block_checker|
-          described_class.bulk_processing(example_file, example_mapping, &block_checker)
-        end
+        expect { |block_checker| subject.bulk_processing(&block_checker) }
           .to yield_successive_args(
           [
             { data_a: 'A1', data_b: 'B1' },
@@ -53,10 +52,10 @@ describe TribunalCommerce::Helper::CSVReader do
     end
 
     describe '.line_processing' do
+      subject { described_class.new(example_file, example_mapping) }
+
       it 'reads line by line and filter nil values' do
-        expect do |block_checker|
-          described_class.line_processing(example_file, example_mapping, &block_checker)
-        end
+        expect { |block_checker| subject.line_processing(&block_checker) }
           .to yield_successive_args(
             { data_a: 'A1', data_b: 'B1' },
             { data_b: 'B2' },
