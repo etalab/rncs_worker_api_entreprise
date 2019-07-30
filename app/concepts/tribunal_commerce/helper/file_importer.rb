@@ -1,11 +1,11 @@
 module TribunalCommerce
   module Helper
     class FileImporter
-      attr_reader :file_reader, :logger
+      attr_reader :file_reader_class, :logger
 
       # TODO here container would be great because it could provide the right logger
-      def initialize(logger, file_reader = CSVReader)
-        @file_reader = file_reader
+      def initialize(logger, file_reader_class = CSVReader)
+        @file_reader_class = file_reader_class
         @logger = logger
       end
 
@@ -113,7 +113,8 @@ module TribunalCommerce
 
       def import_line_by_line(file_path, file_header_mapping, line_processor)
         logger.info("Starting import of #{file_path} with #{line_processor} :")
-        file_reader.line_processing(file_path, file_header_mapping) do |line|
+        file_reader = file_reader_class.new(file_path, file_header_mapping, keep_nil: false)
+        file_reader.line_processing do |line|
           line_import = line_processor.call(data: line)
 
           if line_import.failure?
@@ -129,7 +130,8 @@ module TribunalCommerce
 
       def bulk_import(file_path, file_header_mapping, imported_model)
         logger.info("Starting bulk import of #{imported_model} from `#{file_path}`:")
-        file_reader.bulk_processing(file_path, file_header_mapping) do |batch|
+        file_reader = file_reader_class.new(file_path, file_header_mapping, keep_nil: true)
+        file_reader.bulk_processing do |batch|
           batch_import = imported_model.import(batch, validate: false)
           if batch_import.failed_instances.any?
             logger.error("An error occured while importing #{imported_model} from #{file_path}, aborting...")

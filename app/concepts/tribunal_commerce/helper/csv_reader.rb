@@ -1,16 +1,14 @@
 module TribunalCommerce
   module Helper
     class CSVReader
-      def self.bulk_processing(file, header_mapping)
-        reader = new(file, header_mapping, keep_nil: true)
-        reader.proceed do |batch|
+      def bulk_processing
+        proceed do |batch|
           yield(batch)
         end
       end
 
-      def self.line_processing(file, header_mapping)
-        reader = new(file, header_mapping)
-        reader.proceed do |batch|
+      def line_processing
+        proceed do |batch|
           batch.each do |line|
             yield(line)
           end
