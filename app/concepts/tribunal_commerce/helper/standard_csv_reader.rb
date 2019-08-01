@@ -42,6 +42,7 @@ module TribunalCommerce
         Proc.new do |headers|
           headers.map do |h|
             h.then { |it| it.downcase }
+             .then { |it| it.strip }
              .then { |it| it.gsub(/\./, '') }
              .then { |it| it.gsub(/\s|-/, '_') }
              .then { |it| I18n.transliterate(it) }

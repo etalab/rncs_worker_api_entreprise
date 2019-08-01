@@ -90,10 +90,10 @@ describe TribunalCommerce::Helper::StandardCSVReader do
     before do
       file = File.new(example_file, 'w+')
       content = <<-CSV
-      Very data;Much Value;Vérï acçents;l.o.l
-      ;hello;bondour;coucou
-      wow;hey;yo;le nouveau son
-      much value;012;test;''
+      Very data;Much Value;Vérï acçents;l.o.l;   Space
+      ;hello;bondour;coucou;espace
+      wow;hey;yo;le nouveau son;ciel
+      much value;012;test;'';universe
       CSV
       file.write(content.unindent)
       file.close
@@ -110,6 +110,10 @@ describe TribunalCommerce::Helper::StandardCSVReader do
 
       expect(parsed_csv).to all(include(:very_data))
       expect(parsed_csv).to all(exclude(:much_value))
+    end
+
+    it 'strips headers surrounding spaces' do
+      expect(parsed_csv).to all(include(:space))
     end
 
     it 'symbolizes headers' do
