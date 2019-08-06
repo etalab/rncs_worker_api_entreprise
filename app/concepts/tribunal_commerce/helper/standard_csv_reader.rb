@@ -1,12 +1,12 @@
 module TribunalCommerce
   module Helper
     class StandardCSVReader
-      attr_reader :file, :options
+      attr_reader :file, :options, :headers_mapping
 
       def initialize(file, mapping, keep_nil:false, **)
         @file = file
         @options = default_options
-        add_mapping_to_options(mapping)
+        @headers_mapping = mapping
       end
 
       def line_processing
@@ -16,39 +16,69 @@ module TribunalCommerce
       end
 
       def bulk_processing
-        proceed { |batch| yield(batch) }
+        proceed(batch_size: chunk_size) { |batch| yield(batch) }
       end
 
-      def proceed
-        ::File.open(file, 'r:bom|utf-8') do |f|
-          SmarterCSV.process(f, options) { |batch| yield(batch) }
+
+      private
+
+      def proceed(batch_size:1, **)
+        reading_csv_file(file) do |csv_enum|
+          handle_csv_by_batch(csv_enum, batch_size) { |batch| yield(batch) }
         end
+      end
+
+      def reading_csv_file(file_path)
+        ::File.open(file_path, 'r:bom|utf-8') do |f|
+          csv = CSV.new(f, options)
+          yield(csv)
+        end
+      end
+
+      def handle_csv_by_batch(csv, batch_size)
+        csv.each_slice(batch_size) do |array_of_csv_row|
+          array_of_hash = from_csv_row_class_to_hash(array_of_csv_row)
+          yield(array_of_hash)
+        end
+      end
+
+      def from_csv_row_class_to_hash(csv)
+        csv.map do |csv_row|
+          discard_values_from_header_mapped_to_nil(csv_row)
+          csv_row.to_hash
+        end
+      end
+
+      def discard_values_from_header_mapped_to_nil(csv_row)
+        csv_row.delete_if { |k, v| k.nil? }
       end
 
       def default_options
         {
           col_sep: ';',
-          chunk_size: Rails.configuration.rncs_sources['import_batch_size'],
-          header_transformations: [:none, harmonize_headers],
-          hash_transformations: [:none]
+          headers: true,
+          header_converters: [harmonize_headers]
         }
       end
 
-      def add_mapping_to_options(mapping)
-        @options[:header_transformations].push({ key_mapping: mapping })
+      def chunk_size
+        Rails.configuration.rncs_sources['import_batch_size']
       end
 
       def harmonize_headers
-        Proc.new do |headers|
-          headers.map do |h|
-            h.then { |it| it.downcase }
-             .then { |it| it.strip }
-             .then { |it| it.gsub(/\./, '') }
-             .then { |it| it.gsub(/\s|-/, '_') }
-             .then { |it| I18n.transliterate(it) }
-             .then { |it| it.to_sym }
-          end
+        Proc.new do |header|
+          header.then { |it| it.downcase }
+            .then { |it| it.strip }
+            .then { |it| it.gsub(/\./, '') }
+            .then { |it| it.gsub(/\s|-/, '_') }
+            .then { |it| I18n.transliterate(it) }
+            .then { |it| it.to_sym }
+            .then { |it| map_header(it) }
         end
+      end
+
+      def map_header(h)
+        headers_mapping.has_key?(h) ? headers_mapping[h] : h
       end
     end
   end

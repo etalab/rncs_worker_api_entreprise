@@ -33,13 +33,12 @@ describe TribunalCommerce::Helper::StandardCSVReader do
   describe '#bulk_processing' do
     include_context 'simple csv example'
 
-    subject { described_class.new(example_file) }
+    subject { described_class.new(example_file, example_mapping) }
 
     specify 'batch size is configured in config/rncs_sources.yml' do
-      options = subject.instance_variable_get(:@options)
+      chunk_size = subject.send(:chunk_size)
 
-      expect(options[:chunk_size])
-        .to eq(Rails.configuration.rncs_sources['import_batch_size'])
+      expect(chunk_size).to eq(Rails.configuration.rncs_sources['import_batch_size'])
     end
 
     # :chunk_size is set to 3 in test environment
@@ -63,7 +62,7 @@ describe TribunalCommerce::Helper::StandardCSVReader do
   describe '#line_processing' do
     include_context 'simple csv example'
 
-    subject { described_class.new(example_file) }
+    subject { described_class.new(example_file, example_mapping) }
 
     it 'yields lines one by one' do
       expect { |block_checker| subject.line_processing(&block_checker) }
@@ -102,14 +101,17 @@ describe TribunalCommerce::Helper::StandardCSVReader do
     after { FileUtils.rm_rf(example_file) }
 
     it 'transforms header according to the headers mapping dictionary' do
-      expect(parsed_csv).to all(include(:very_data, :much_value))
+      # Note that the mapping is done after header's harmonization
+      example_mapping[:very_data] = :header_changed
+
+      expect(parsed_csv).to all(include(:header_changed))
+      expect(parsed_csv).to all(exclude(:very_data))
     end
 
     it 'discards values for headers mapped to nil' do
       example_mapping[:much_value] = nil
 
-      expect(parsed_csv).to all(include(:very_data))
-      expect(parsed_csv).to all(exclude(:much_value))
+      expect(parsed_csv).to all(exclude(:much_value, nil))
     end
 
     it 'strips headers surrounding spaces' do
@@ -133,7 +135,7 @@ describe TribunalCommerce::Helper::StandardCSVReader do
     def parsed_csv
       reader = described_class.new(example_file, example_mapping)
       csv = []
-      reader.proceed { |batch| csv << batch }
+      reader.send(:proceed) { |batch| csv << batch }
       csv.flatten
     end
   end
