@@ -18,9 +18,9 @@ describe TribunalCommerce::Helper::StandardCSVReader do
       content = <<-CSV
       Data A;Data B
       A1;B1
-      A2;B2
+      ;B2
       A3;B3
-      A4;B4
+      A4;
       A5;B5
       CSV
       file.write(content.unindent)
@@ -33,7 +33,7 @@ describe TribunalCommerce::Helper::StandardCSVReader do
   describe '#bulk_processing' do
     include_context 'simple csv example'
 
-    subject { described_class.new(example_file, example_mapping) }
+    subject { described_class.new(example_file, example_mapping, keep_nil: true) }
 
     specify 'batch size is configured in config/rncs_sources.yml' do
       chunk_size = subject.send(:chunk_size)
@@ -47,11 +47,11 @@ describe TribunalCommerce::Helper::StandardCSVReader do
         .to yield_successive_args(
           [
             { data_a: 'A1', data_b: 'B1' },
-            { data_a: 'A2', data_b: 'B2' },
+            { data_a: nil, data_b: 'B2' },
             { data_a: 'A3', data_b: 'B3' }
           ],
           [
-            { data_a: 'A4', data_b: 'B4' },
+            { data_a: 'A4', data_b: nil },
             { data_a: 'A5', data_b: 'B5' }
           ])
     end
@@ -68,14 +68,14 @@ describe TribunalCommerce::Helper::StandardCSVReader do
       expect { |block_checker| subject.line_processing(&block_checker) }
         .to yield_successive_args(
           { data_a: 'A1', data_b: 'B1' },
-          { data_a: 'A2', data_b: 'B2' },
+          { data_b: 'B2' },
           { data_a: 'A3', data_b: 'B3' },
-          { data_a: 'A4', data_b: 'B4' },
+          { data_a: 'A4' },
           { data_a: 'A5', data_b: 'B5' },
       )
     end
 
-    it 'ignores nil values in the target hash'
+    it 'discards nil values in the result hash'
   end
 
   describe 'CSV parsing behaviour' do
@@ -133,7 +133,7 @@ describe TribunalCommerce::Helper::StandardCSVReader do
     end
 
     def parsed_csv
-      reader = described_class.new(example_file, example_mapping)
+      reader = described_class.new(example_file, example_mapping, keep_nil: true)
       csv = []
       reader.send(:proceed) { |batch| csv << batch }
       csv.flatten
