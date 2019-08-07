@@ -71,6 +71,9 @@ describe IdentiteEntreprisePdf do
       'This is a very long observation, so long that you could not imagine it before reading it.',
       'Mention n°4000A du',
       'This is a very long observation, so long that you could not imagine it before reading it.',
+      'Bulletin Officiel des Annonces Civiles et Commerciales (BODACC)',
+      'Lien',
+      'https://www.bodacc.fr/annonce/liste/123456789',
       'page 2/2'
     ]
 
@@ -121,6 +124,9 @@ describe IdentiteEntreprisePdf do
       'This is a very long observation, so long that you could not imagine it before reading it.',
       'Mention n°4000A du',
       'This is a very long observation, so long that you could not imagine it before reading it.',
+      'Bulletin Officiel des Annonces Civiles et Commerciales (BODACC)',
+      'Lien',
+      'https://www.bodacc.fr/annonce/liste/123456789',
       'page 2/2'
     ]
 
