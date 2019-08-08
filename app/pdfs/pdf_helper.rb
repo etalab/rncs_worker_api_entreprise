@@ -10,7 +10,7 @@ module PdfHelper
 
   def pretty_siren(siren)
     # 111 111 111
-    siren&.insert(6, ' ')&.insert(3, ' ')
+    siren.dup&.insert(6, ' ')&.insert(3, ' ')
   end
 
   # /!\ there is no test that makes sure this works
