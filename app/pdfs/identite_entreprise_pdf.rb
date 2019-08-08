@@ -7,6 +7,7 @@ class IdentiteEntreprisePdf < Prawn::Document
   include SectionIdentitePP
   include SectionObservations
   include SectionRepresentants
+  include SectionBODACC
   include SectionTitle
 
   def initialize(dossier_entreprise_greffe_principal:)
@@ -48,6 +49,8 @@ class IdentiteEntreprisePdf < Prawn::Document
     section_etablissement_principal @dossier
     move_down 20
     section_observations @dossier if @dossier[:observations].any?
+    move_down 20
+    section_bodacc @dossier
   end
 
   def section_identite
