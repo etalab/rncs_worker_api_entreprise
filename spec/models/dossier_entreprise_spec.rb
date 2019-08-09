@@ -31,6 +31,46 @@ describe DossierEntreprise do
 
   let(:siren) { '123456789' }
 
+  describe '.immatriculation_principale' do
+    let(:siren) { '123456789' }
+
+    subject { described_class.immatriculation_principale(siren) }
+
+    context 'with a single or zero immatriculation principale' do
+      it 'returns nil if none are found' do
+        create(:dossier_entreprise, siren: siren, type_inscription: 'S')
+
+        expect(subject).to be_nil
+      end
+
+      it 'returns the only existing one if any' do
+        immat_pri = create(:dossier_entreprise, siren: siren, type_inscription: 'P')
+
+        expect(subject).to eq(immat_pri)
+      end
+    end
+
+    context 'with multiple immatriculations principales' do
+      let(:old_immat) { create(:dossier_entreprise, siren: siren, type_inscription: 'P', date_immatriculation: '2018-01-01') }
+      let(:latest_immat) { create(:dossier_entreprise, siren: siren, type_inscription: 'P', date_immatriculation: '2019-01-01') }
+
+      before do
+        old_immat
+        latest_immat
+      end
+
+      it 'returns the latest' do
+        expect(subject).to eq(latest_immat)
+      end
+
+      it 'returns nil if :date_immatriculation is not filled for at least one' do
+        old_immat.update(date_immatriculation: nil)
+
+        expect(subject).to be_nil
+      end
+    end
+  end
+
   # TODO Refactor for better behaviour description
   # describe wich etablissement the methods siege_social and
   # etablissement_principal return in the various situations
