@@ -36,7 +36,7 @@ describe DossierEntreprise do
 
     subject { described_class.immatriculation_principale(siren) }
 
-    context 'with a single or zero immatriculation principale' do
+    context 'with a single or zero immatriculation principale found in db' do
       it 'returns nil if none are found' do
         create(:dossier_entreprise, siren: siren, type_inscription: 'S')
 
@@ -50,14 +50,9 @@ describe DossierEntreprise do
       end
     end
 
-    context 'with multiple immatriculations principales' do
-      let(:old_immat) { create(:dossier_entreprise, siren: siren, type_inscription: 'P', date_immatriculation: '2018-01-01') }
-      let(:latest_immat) { create(:dossier_entreprise, siren: siren, type_inscription: 'P', date_immatriculation: '2019-01-01') }
-
-      before do
-        old_immat
-        latest_immat
-      end
+    context 'with multiple immatriculations principales found in db' do
+      let!(:old_immat) { create(:dossier_entreprise, siren: siren, type_inscription: 'P', date_immatriculation: '2018-01-01') }
+      let!(:latest_immat) { create(:dossier_entreprise, siren: siren, type_inscription: 'P', date_immatriculation: '2019-01-01') }
 
       it 'returns the latest' do
         expect(subject).to eq(latest_immat)
