@@ -5,10 +5,8 @@ module Entreprise
         fail :empty_database, fail_fast: true
       step :verify_siren
         fail :invalid_siren, fail_fast: true
-      step :find_dossiers_entreprise
-        fail :no_dossier_exists, fail_fast: true
-      step :fetch_dossier_principal
-        fail :no_exclusif_dossier_principal, fail_fast: true
+      step :fetch_immatriculation_principale
+        fail :no_immatriculation_principale, fail_fast: true
       step :fetch_etablissement_principal
         fail :no_etablissement_principal
       step :fetch_identity_data
@@ -22,27 +20,12 @@ module Entreprise
         ctx[:http_error] = { code: 422, message: 'Le numéro siren en paramètre est mal formaté.' }
       end
 
-      def find_dossiers_entreprise(ctx, siren:, **)
-        ctx[:dossiers_entreprise] = DossierEntreprise.where(siren: siren)
-        ctx[:dossiers_entreprise].any?
+      def fetch_immatriculation_principale(ctx, siren:, **)
+        ctx[:dossier_principal] = DossierEntreprise.immatriculation_principale(siren)
       end
 
-      def no_dossier_exists(ctx, **)
-        ctx[:http_error] = { code: 404, message: 'Aucun dossier d\'immatriculation connu pour ce siren.' }
-      end
-
-      def fetch_dossier_principal(ctx, dossiers_entreprise:, **)
-        dossiers_principaux = dossiers_entreprise.where(type_inscription: 'P')
-        if dossiers_principaux.count == 1
-          ctx[:dossier_principal] = dossiers_principaux.first
-        else
-          ctx[:dossiers_principaux_count] = dossiers_principaux.count
-          false
-        end
-      end
-
-      def no_exclusif_dossier_principal(ctx, dossiers_principaux_count:, **)
-        ctx[:http_error] = { code: 404, message: "#{dossiers_principaux_count} immatriculations principales trouvées." }
+      def no_immatriculation_principale(ctx, siren:, **)
+        ctx[:http_error] = { code: 404, message: "Immatriculation principale non trouvée pour le siren #{siren}." }
       end
 
       def fetch_etablissement_principal(ctx, dossier_principal:, **)
