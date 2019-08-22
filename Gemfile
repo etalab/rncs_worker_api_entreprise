@@ -30,8 +30,13 @@ gem 'sidekiq-cron', '~> 1.1'
 gem 'smarter_csv', git: 'https://github.com/brindu/smarter_csv.git', branch: 'multiline_option'
 #gem 'activerecord-import'
 
+# Running `bundle update` messed up with trailblazer dependencies
+# TODO Clean this when migrating to trailblazer 2.1.0 (few regressions to deal with e.g ClassDependencies removed in 2.1.0.rc13)
 gem 'trailblazer', '2.1.0.rc1'
-gem 'trailblazer-rails'
+gem 'trailblazer-macro', '2.1.0.rc1'
+gem 'trailblazer-activity', '0.7.1'
+gem 'trailblazer-operation', '0.4.1'
+#gem 'trailblazer-rails'
 gem 'dry-validation', '~> 0.11.1'
 
 gem 'prawn'
