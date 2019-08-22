@@ -60,7 +60,7 @@ module TribunalCommerce
 
         def import(ctx, new_stock:, **)
           new_stock.stock_units.each do |unit|
-            ImportTcStockUnitJob.perform_later(unit.id)
+            ImportTCStockUnitJob.perform_later(unit.id)
           end
         end
 

@@ -1,4 +1,4 @@
-class ImportTcDailyUpdateUnitJob < ApplicationJob
+class ImportTCDailyUpdateUnitJob < ApplicationJob
   queue_as :tc_daily_update
 
   attr_reader :unit

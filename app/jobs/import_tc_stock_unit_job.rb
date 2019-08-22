@@ -1,4 +1,4 @@
-class ImportTcStockUnitJob < ApplicationJob
+class ImportTCStockUnitJob < ApplicationJob
   queue_as :tc_stock
 
   attr_reader :unit
