@@ -25,7 +25,7 @@ class Observation
         if etat_obs == 'Suppression'
           observation.delete
         else
-          observation.update_attributes(data)
+          observation.update(data)
         end
       end
 

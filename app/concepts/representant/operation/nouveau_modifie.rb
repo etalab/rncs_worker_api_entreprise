@@ -24,7 +24,7 @@ class Representant
       end
 
       def update(ctx, representant:, data:, **)
-        representant.update_attributes(data)
+        representant.update(data)
       end
 
       def create_new_representant(ctx, dossier:, data:, **)

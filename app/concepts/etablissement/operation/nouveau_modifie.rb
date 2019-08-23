@@ -21,7 +21,7 @@ class Etablissement
       end
 
       def update(ctx, etablissement:, data:, **)
-        etablissement.update_attributes(data)
+        etablissement.update(data)
       end
 
       def create_new_etablissement(ctx, dossier:, data:, **)

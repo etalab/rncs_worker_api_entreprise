@@ -7,7 +7,7 @@ describe TribunalCommerce::DailyUpdateUnit::Operation::Load, :trb do
 
   context 'at the beginning' do
     it 'logs the daily update date that will be imported' do
-      unit.daily_update.update_attributes(year: '2020', month: '10', day: '21')
+      unit.daily_update.update(year: '2020', month: '10', day: '21')
       expect(logger).to receive(:info).with('START IMPORT OF UPDATE 2020-10-21')
 
       subject
