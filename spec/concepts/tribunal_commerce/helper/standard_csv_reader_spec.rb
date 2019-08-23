@@ -56,7 +56,7 @@ describe TribunalCommerce::Helper::StandardCSVReader do
           ])
     end
 
-    it 'keeps nil values in the target hash'
+    it 'keeps nil values in the target hash' # indirectly tested in the previous spec
   end
 
   describe '#line_processing' do
@@ -75,7 +75,7 @@ describe TribunalCommerce::Helper::StandardCSVReader do
       )
     end
 
-    it 'discards nil values in the result hash'
+    it 'discards nil values in the result hash' # indirectly tested in the previous spec
   end
 
   describe 'CSV parsing behaviour' do
@@ -89,10 +89,10 @@ describe TribunalCommerce::Helper::StandardCSVReader do
     before do
       file = File.new(example_file, 'w+')
       content = <<-CSV
-      Very data;Much Value;Vérï acçents;l.o.l;   Space
-      ;hello;bondour;coucou;espace
-      wow;hey;yo;le nouveau son;ciel
-      much value;012;test;'';universe
+      Very data;Much Value;Vérï acçents;l.o.l;   Space;strip
+      ;hello;bondour;coucou;espace;"  tease     "
+      wow;hey;yo;le nouveau son;ciel;strip col
+      much value;012;test;'';universe;dunno
       CSV
       file.write(content.unindent)
       file.close
@@ -100,36 +100,48 @@ describe TribunalCommerce::Helper::StandardCSVReader do
 
     after { FileUtils.rm_rf(example_file) }
 
-    it 'transforms header according to the headers mapping dictionary' do
-      # Note that the mapping is done after header's harmonization
-      example_mapping[:very_data] = :header_changed
+    describe 'headers transformations' do
+      it 'transforms header according to the headers mapping dictionary' do
+        # Note that the mapping is done after header's harmonization
+        example_mapping[:very_data] = :header_changed
 
-      expect(parsed_csv).to all(include(:header_changed))
-      expect(parsed_csv).to all(exclude(:very_data))
+        expect(parsed_csv).to all(include(:header_changed))
+        expect(parsed_csv).to all(exclude(:very_data))
+      end
+
+      it 'discards values for headers mapped to nil' do
+        example_mapping[:much_value] = nil
+
+        expect(parsed_csv).to all(exclude(:much_value, nil))
+      end
+
+      it 'strips headers surrounding spaces' do
+        expect(parsed_csv).to all(include(:space))
+      end
+
+      it 'symbolizes headers' do
+        example_mapping.delete('Much Value')
+
+        expect(parsed_csv).to all(include(:very_data, :much_value))
+      end
+
+      it 'transliterates headers name' do
+        expect(parsed_csv).to all(include(:veri_accents))
+      end
+
+      it 'removes dot characters from headers' do
+        expect(parsed_csv).to all(include(:lol))
+      end
     end
 
-    it 'discards values for headers mapped to nil' do
-      example_mapping[:much_value] = nil
+    describe 'values transformations' do
+      it 'strips values' do
+        expect(parsed_csv).to include(a_hash_including(strip: 'tease'))
+      end
 
-      expect(parsed_csv).to all(exclude(:much_value, nil))
-    end
-
-    it 'strips headers surrounding spaces' do
-      expect(parsed_csv).to all(include(:space))
-    end
-
-    it 'symbolizes headers' do
-      example_mapping.delete('Much Value')
-
-      expect(parsed_csv).to all(include(:very_data, :much_value))
-    end
-
-    it 'transliterates headers name' do
-      expect(parsed_csv).to all(include(:veri_accents))
-    end
-
-    it 'removes dot characters from headers' do
-      expect(parsed_csv).to all(include(:lol))
+      it 'keeps leading zero' do
+        expect(parsed_csv).to include(a_hash_including(much_value: '012'))
+      end
     end
 
     def parsed_csv

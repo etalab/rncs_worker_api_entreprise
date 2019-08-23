@@ -65,6 +65,7 @@ module TribunalCommerce
         {
           col_sep: ';',
           headers: true,
+          converters: [strip_data],
           header_converters: [harmonize_headers]
         }
       end
@@ -83,6 +84,10 @@ module TribunalCommerce
             .then { |it| it.to_sym }
             .then { |it| map_header(it) }
         end
+      end
+
+      def strip_data
+        ->(value) { value.strip unless value.nil? }
       end
 
       def map_header(h)
