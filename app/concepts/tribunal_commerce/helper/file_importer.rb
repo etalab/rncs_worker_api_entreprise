@@ -131,13 +131,7 @@ module TribunalCommerce
       def bulk_import(file_path, file_header_mapping, imported_model)
         logger.info("Starting bulk import of #{imported_model} from `#{file_path}`:")
         file_reader = file_reader_class.new(file_path, file_header_mapping, keep_nil: true)
-        file_reader.bulk_processing do |batch|
-          batch_import = imported_model.import(batch, validate: false)
-          if batch_import.failed_instances.any?
-            logger.error("An error occured while importing #{imported_model} from #{file_path}, aborting...")
-            return false
-          end
-        end
+        file_reader.bulk_processing { |batch| imported_model.import(batch) }
         logger.info("Import of file #{file_path} is complete!")
       end
     end
