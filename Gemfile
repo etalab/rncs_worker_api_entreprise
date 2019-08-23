@@ -35,7 +35,6 @@ gem 'trailblazer', '2.1.0.rc1'
 gem 'trailblazer-macro', '2.1.0.rc1'
 gem 'trailblazer-activity', '0.7.1'
 gem 'trailblazer-operation', '0.4.1'
-#gem 'trailblazer-rails'
 gem 'dry-validation', '~> 0.11.1'
 
 gem 'prawn'
