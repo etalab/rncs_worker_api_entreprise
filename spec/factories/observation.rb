@@ -9,7 +9,7 @@ FactoryBot.define do
     dossier_entreprise
 
     factory :random_observation do
-      date_ajout { Faker::Date.backward(300).to_s }
+      date_ajout { Faker::Date.between(from: 1.year.ago, to: 1.year.from_now).to_s }
     end
   end
 end

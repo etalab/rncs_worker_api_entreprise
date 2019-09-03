@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe ImportTcStockUnitJob, :trb do
+describe ImportTCStockUnitJob, :trb do
   let(:unit) { create(:stock_unit, status: 'PENDING') }
   let(:logger) { instance_spy(Logger) }
 

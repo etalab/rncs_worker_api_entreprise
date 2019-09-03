@@ -16,10 +16,15 @@ ActiveSupport::Inflector.inflections(:en) do |inflect|
   inflect.acronym 'DAP'
   inflect.acronym 'PM'
   inflect.acronym 'PP'
-
   inflect.acronym 'API'
   inflect.acronym 'RNCS'
+  inflect.acronym 'TC'
+  inflect.acronym 'FTP'
   inflect.acronym 'BODACC'
+  inflect.acronym 'ZIP'
+  inflect.acronym 'MD5'
+  inflect.acronym 'DB'
+  inflect.acronym 'CSV'
 end
 
 # These inflection rules are supported but not enabled by default:

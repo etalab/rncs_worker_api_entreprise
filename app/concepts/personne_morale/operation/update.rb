@@ -20,7 +20,7 @@ class PersonneMorale
       end
 
       def update(ctx, dossier:, data:, **)
-        dossier.personne_morale.update_attributes(data)
+        dossier.personne_morale.update(data)
       end
 
       def create(ctx, dossier:, data:, **)

@@ -14,7 +14,7 @@ module TribunalCommerce
 
         def create_jobs_for_import(ctx, daily_update:, **)
           daily_update.daily_update_units.each do |unit|
-            ImportTcDailyUpdateUnitJob.perform_later(unit.id)
+            ImportTCDailyUpdateUnitJob.perform_later(unit.id)
           end
         end
 

@@ -20,7 +20,7 @@ class PersonnePhysique
       end
 
       def update(ctx, dossier:, data:, **)
-        dossier.personne_physique.update_attributes(data)
+        dossier.personne_physique.update(data)
       end
 
       def create(ctx, dossier:, data:, **)

@@ -33,7 +33,7 @@ describe TribunalCommerce::Stock::Operation::Import do
       stock_unit_ids = new_stock.stock_units.pluck(:id)
 
       stock_unit_ids.each do |id|
-        expect(ImportTcStockUnitJob)
+        expect(ImportTCStockUnitJob)
           .to have_been_enqueued.with(id).on_queue("rncs_worker_api_entreprise_#{Rails.env}_tc_stock")
       end
     end
@@ -93,7 +93,7 @@ describe TribunalCommerce::Stock::Operation::Import do
     it { is_expected.to be_failure }
 
     it 'creates no job for stock unit import' do
-      expect { subject }.to_not have_enqueued_job(ImportTcStockUnitJob)
+      expect { subject }.to_not have_enqueued_job(ImportTCStockUnitJob)
     end
 
     it 'does not save any stocks or units in database' do
