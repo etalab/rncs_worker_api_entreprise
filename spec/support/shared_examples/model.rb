@@ -31,7 +31,7 @@ shared_examples '.import' do
     subject
   end
 
-  it 'adds timestamps values into the incomming data hash' do
+  it 'adds timestamps values into the incoming data hash' do
     current_time = Time.now
     Timecop.freeze(current_time)
     expect(described_class).to receive(:insert_all!)
