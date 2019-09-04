@@ -56,7 +56,7 @@ describe TribunalCommerce::DailyUpdate::Operation::Import, :trb do
       it 'creates a job for each unit to import' do
         units_id = fetched_update.daily_update_units.pluck(:id)
         units_id.each do |id|
-          expect(ImportTcDailyUpdateUnitJob)
+          expect(ImportTCDailyUpdateUnitJob)
             .to have_been_enqueued.with(id).on_queue("rncs_worker_api_entreprise_#{Rails.env}_tc_daily_update")
         end
       end
@@ -93,7 +93,7 @@ describe TribunalCommerce::DailyUpdate::Operation::Import, :trb do
       it 'creates a job for each partial stocks to import' do
         units_id = fetched_update.daily_update_units.pluck(:id)
         units_id.each do |id|
-          expect(ImportTcDailyUpdateUnitJob)
+          expect(ImportTCDailyUpdateUnitJob)
             .to have_been_enqueued.with(id).on_queue("rncs_worker_api_entreprise_#{Rails.env}_tc_daily_update")
         end
       end

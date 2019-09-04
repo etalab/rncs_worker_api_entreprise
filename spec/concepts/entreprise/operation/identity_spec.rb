@@ -22,44 +22,35 @@ describe Entreprise::Operation::Identity do
       end
     end
 
-    context 'when no dossiers are found' do
+    context 'when no immatriculation principale is found' do
       let(:siren) { valid_siren }
+
+      before do
+        allow(DossierEntreprise).to receive(:immatriculation_principale)
+          .with(siren)
+          .and_return(nil)
+      end
 
       it { is_expected.to be_failure }
 
-      it 'sets a 404 http error' do
+      it 'returns a 404 HTTP code' do
         expect(http_error[:code]).to eq(404)
-        expect(http_error[:message]).to eq('Aucun dossier d\'immatriculation connu pour ce siren.')
+      end
+
+      it 'returns an error message' do
+        expect(http_error[:message]).to match("Immatriculation principale non trouvée pour le siren #{siren}.")
       end
     end
 
-    context 'with no exclusif dossier principal' do
-      let(:siren) { valid_siren }
-
-      shared_examples 'no exclusif dossier principal' do
-        it { is_expected.to be_failure }
-
-        it 'returns a 404 error' do
-          expect(http_error[:code]).to eq(404)
-          expect(http_error[:message]).to match(/\A\d+ immatriculations principales trouvées\.\Z/)
-        end
-      end
-
-      context 'with 0 dossier principal' do
-        before { create(:dossier_entreprise, type_inscription: 'S', siren: siren) }
-
-        it_behaves_like 'no exclusif dossier principal'
-      end
-
-      context 'with 2 dossier principal' do
-        before { create_list(:dossier_entreprise, 3, type_inscription: 'S', siren: siren) }
-        it_behaves_like 'no exclusif dossier principal'
-      end
-    end
-
-    context 'with one and only one dossier principal' do
+    context 'when the immatriculation principale is found' do
       let(:siren) { valid_siren }
       let!(:dossier) { create(:dossier_entreprise, code_greffe: 'code_test', numero_gestion: 'numero_test', type_inscription: 'P', siren: siren) }
+
+      before do
+        allow(DossierEntreprise).to receive(:immatriculation_principale)
+          .with(siren)
+          .and_return(dossier)
+      end
 
       context 'when an etablissement principal is found in this dossier' do
         before { create(:etablissement_principal, dossier_entreprise: dossier, enseigne: 'do not forget me') }

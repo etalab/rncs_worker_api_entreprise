@@ -25,7 +25,7 @@ shared_examples 'handling siren errors' do
     it 'returns 404 with error message' do
       json = JSON.parse response.body
 
-      expect(json).to include_json error: 'Aucun dossier d\'immatriculation connu pour ce siren.'
+      expect(json).to include_json(error: "Immatriculation principale non trouvée pour le siren #{siren}.")
     end
   end
 end

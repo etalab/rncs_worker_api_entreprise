@@ -87,9 +87,7 @@ module TribunalInstance
           end
 
           def persist(ctx, dossiers_entreprises:, **)
-            DossierEntreprise.import dossiers_entreprises,
-              recursive: true,
-              batch_size: BATCH_SIZE
+            dossiers_entreprises.each(&:save)
           end
         end
       end

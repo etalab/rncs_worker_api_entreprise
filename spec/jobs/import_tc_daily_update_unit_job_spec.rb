@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe ImportTcDailyUpdateUnitJob, :trb do
+describe ImportTCDailyUpdateUnitJob, :trb do
   let(:unit) { create(:daily_update_unit, status: 'PENDING') }
   let(:import_logger) { instance_spy(Logger) }
   subject { described_class.perform_now(unit.id) }

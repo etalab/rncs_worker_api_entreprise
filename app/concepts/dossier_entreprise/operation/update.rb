@@ -20,7 +20,7 @@ class DossierEntreprise
       end
 
       def update(ctx, dossier:, data:, **)
-        dossier.update_attributes(data)
+        dossier.update(data)
       end
 
       def find_dossier_with_same_siren(ctx, data:, **)
