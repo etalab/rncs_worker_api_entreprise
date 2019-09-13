@@ -42,7 +42,7 @@ describe TribunalCommerce::Helper::StandardCSVReader do
     end
 
     # :chunk_size is set to 3 in test environment
-    it 'yields chunks of lines' do
+    it 'yields chunks of lines and keeps nil values' do
       expect { |block_checker| subject.bulk_processing(&block_checker) }
         .to yield_successive_args(
           [
@@ -55,8 +55,6 @@ describe TribunalCommerce::Helper::StandardCSVReader do
             { data_a: 'A5', data_b: 'B5' }
           ])
     end
-
-    it 'keeps nil values in the target hash' # indirectly tested in the previous spec
   end
 
   describe '#line_processing' do
@@ -64,7 +62,7 @@ describe TribunalCommerce::Helper::StandardCSVReader do
 
     subject { described_class.new(example_file, example_mapping) }
 
-    it 'yields lines one by one' do
+    it 'yields lines one by one and discards nil values' do
       expect { |block_checker| subject.line_processing(&block_checker) }
         .to yield_successive_args(
           { data_a: 'A1', data_b: 'B1' },
@@ -74,8 +72,6 @@ describe TribunalCommerce::Helper::StandardCSVReader do
           { data_a: 'A5', data_b: 'B5' },
       )
     end
-
-    it 'discards nil values in the result hash' # indirectly tested in the previous spec
   end
 
   describe 'CSV parsing behaviour' do

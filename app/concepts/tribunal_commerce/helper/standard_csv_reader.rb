@@ -38,13 +38,13 @@ module TribunalCommerce
 
       def handle_csv_by_batch(csv, batch_size)
         csv.each_slice(batch_size) do |array_of_csv_row|
-          array_of_hash = from_csv_row_class_to_hash(array_of_csv_row)
+          array_of_hash = convert_from_csv_row_class_to_hash(array_of_csv_row)
           remove_nil_values(array_of_hash) unless keep_nil?
           yield(array_of_hash)
         end
       end
 
-      def from_csv_row_class_to_hash(csv)
+      def convert_from_csv_row_class_to_hash(csv)
         csv.map do |csv_row|
           discard_values_from_header_mapped_to_nil(csv_row)
           csv_row.to_hash
