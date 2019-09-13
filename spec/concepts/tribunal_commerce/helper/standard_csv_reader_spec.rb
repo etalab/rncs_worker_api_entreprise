@@ -89,7 +89,7 @@ describe TribunalCommerce::Helper::StandardCSVReader do
     before do
       file = File.new(example_file, 'w+')
       content = <<-CSV
-      Very data;Much Value;Vérï acçents;l.o.l;   Space;strip
+      Very data;Much Value;Vérï acçents;l.o.l  ;   Space;strip
       ;hello;bondour;coucou;espace;"  tease     "
       wow;hey;yo;le nouveau son;ciel;strip col
       much value;012;test;'';universe;dunno
@@ -116,7 +116,7 @@ describe TribunalCommerce::Helper::StandardCSVReader do
       end
 
       it 'strips headers surrounding spaces' do
-        expect(parsed_csv).to all(include(:space))
+        expect(parsed_csv).to all(include(:space, :lol))
       end
 
       it 'symbolizes headers' do
