@@ -108,7 +108,7 @@ describe TribunalCommerce::Helper::StandardCSVReader do
       it 'discards values for headers mapped to nil' do
         example_mapping[:much_value] = nil
 
-        expect(parsed_csv).to all(exclude(:much_value, nil))
+        expect(parsed_csv).to all(exclude(:much_value))
       end
 
       it 'strips headers surrounding spaces' do
