@@ -362,27 +362,46 @@ d'identité.
 ### Identification de l'immatriculation principale
 
 Afin d'établir la fiche d'identité, la première étape consiste à identifier
-l'immatriculation principale de l'entreprise. Cette information est renseignée
-dans le champ *type_inscription* du dossier : "P" pour principale, "S" pour
-secondaire.
+l'immatriculation principale de l'entreprise.
+
+On appelle *dossier principal* tout dossier avec l'attribut
+*type_inscription* ayant pour valeur "**P**".
 
 Les données d'identité de la fiche (greffe d'immatriculation, raison sociale,
-sigle, forme juridique, ...) sont celles du dossier d'immatriculation
+sigle, forme juridique, ...) sont issues du dossier d'immatriculation
 principale.
 
-Bien que l'immatriculation principale au RNCS soit unique pour une entreprise,
-il est parfois compliqué d'identifier la dernière en date. Par exemple, dans le
-cas d'un transfert de siège sociale donnant lieu à une nouvelle immatricualtion
-dans un greffe différent de celui d'origine, il est possible de trouver deux
-immatriculations principales en base pour un même numéro siren. Ceci arrive
-lorsque le greffe final transmet la donnée à jour avant le greffe d'origine,
-lorsque les champs *date_transfert* ou *date_radiation* ne sont pas renseignés,
-ou encore si la mise à jour est rejetée pour avoir causé une erreur à
-l'import...
+Une dossier principal est créé à chaque fois qu'une société est immatriculée
+chez un greffe. Il peut s'agir par exemple :
+* d'une première inscription dans un Tribunal de Commerce ;
+* d'un transfert de siège sociale à une adresse sous la juridiction d'un
+  Tribunal de Commerce différent ;
+* d'une nouvelle immatriculation après une radiation (un nouveau dossier sera
+  créé même si la société est à nouveau immatriculée dans le même greffe
+  que lors de la précédente inscription).
 
-A ce jour, et dans un premier temps, seules sont disponibles les fiches
-d'identité pour une entreprise dont une et une seule immatriculation principale
-est trouvée en base.
+A un instant T, une société possède une et une seule immatriculation principale
+chez un greffe (tous les autres enregistrements principaux, s'il existent, sont
+normalement des dossiers qui ont été radiés). Pour un numéro siren donné, ce
+dossier est identifié de la manière suivante :
+1. si aucun dossier principale n'est enregistré en base pour ce numéro siren
+   les API renvoient un code d'erreur *404 Not Found* avec le message d'erreur
+   "Immatriculation principale non trouvée pour le siren <SIREN>."
+2. si un et un seul dossier principal est trouvé en base, les API renvoient un
+   code, c'est ce dossier qui sera utilisé pour constituer la fiche d'identité
+   de l'entreprise ;
+3. si plusieurs dossiers principaux sont trouvés en base, le dossier principal
+   actif à cet instant est identifié comme étant celui avec ayant l'attribut
+   *date_immatriculation* à la date la plus récente. Il y a cependant une
+   exception : si l'attribut *date_immatriculation* n'est pas renseigné pour un
+   ou plusieurs de ces dossiers principaux. Dans ce cas les API renvoient un
+   code d'erreur *404 Not Found* avec le message d'erreur "Immatriculation
+   principale non trouvée pour le siren <SIREN>." car il n'est alors plus
+   possible de décider quel est le bon dossier principal à un instant T. La
+   donnée *date_immatriculation* est normalement obligatoire et est censé être
+   forcément présente dans les données transmisent par les greffes, il arrive
+   cependant dans quelques cas que ce ne soit pas le cas (c'est le cas d'un peu
+   moins de 4000 dossiers)
 
 ### Etablissement siège et établissement principal
 
