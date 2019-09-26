@@ -1,0 +1,9 @@
+Nombre total de siren en base : 5812698
+Nombre de siren dont on a aucune immatriculation principale : 1940
+Nombre de siren du périmètre 5810758
+
+Nombre d'échecs à la génération de la fiche d'identité : 40663 soit un ratio de 0
+
+Détails des erreurs :
+- Cannot find principal immat : 0 erreurs
+- Cannot find etablissement principal : 40663 erreurs

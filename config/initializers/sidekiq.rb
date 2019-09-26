@@ -11,7 +11,8 @@ end
 Sidekiq.configure_server do |config|
   config.redis = { url: Rails.configuration.redis_database }
 
-  load_sidekiq_cron_jobs
+  # Don't execute jobs while computing the report
+  #load_sidekiq_cron_jobs
 end
 
 Sidekiq.configure_client do |config|
