@@ -23,7 +23,7 @@ namespace :fiches_identite do
   def create_report_file
     content = report_content
     file = File.new('fiche_covered_ratio.txt', 'w+')
-    file.write(content.unindent)
+    file.write(content)
   end
 
   def report_content
