@@ -6,7 +6,7 @@ describe Representant::Operation::Delete do
       code_greffe: '1234',
       numero_gestion: '1A2B3C',
       id_representant: '1',
-      qualite: 'Ghost',
+      qualite: 'Ghost'
     }
   end
 
@@ -19,7 +19,7 @@ describe Representant::Operation::Delete do
         code_greffe: '1234',
         numero_gestion: '1A2B3C',
         id_representant: '1',
-        qualite: 'Ghost',
+        qualite: 'Ghost'
       )
     end
 

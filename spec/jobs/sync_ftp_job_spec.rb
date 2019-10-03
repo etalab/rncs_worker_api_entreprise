@@ -81,7 +81,7 @@ describe SyncFTPJob do
     before do
       # Mock wget system call and manually create targetted folders
       expect(Open3).to receive(:capture3)
-        .and_wrap_original do |original_method, *args|
+        .and_wrap_original do |_original_method, *_args|
         FileUtils.mkdir_p(non_empty_year_folder)
         FileUtils.mkdir_p(empty_year_folder)
         ['', '', status_success]
@@ -95,13 +95,13 @@ describe SyncFTPJob do
     it 'deletes empty year folders' do
       subject
 
-      expect(Dir.exists?(empty_year_folder)).to eq(false)
+      expect(Dir.exist?(empty_year_folder)).to eq(false)
     end
 
     it 'keeps non empty year folders' do
       subject
 
-      expect(Dir.exists?("#{rncs_sources_path}/tc/stock/2018")).to eq(true)
+      expect(Dir.exist?("#{rncs_sources_path}/tc/stock/2018")).to eq(true)
     end
   end
 

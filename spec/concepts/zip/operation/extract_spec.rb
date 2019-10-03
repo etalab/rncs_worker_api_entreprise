@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe ZIP::Operation::Extract do
-  # TODO deal with not valid files (thinking about :group operation option)
+  # TODO: deal with not valid files (thinking about :group operation option)
   # TODO deal with unzip errors
 
   # Archive manually created for tests.

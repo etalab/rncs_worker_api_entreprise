@@ -3,7 +3,7 @@ class ApplicationRecord < ActiveRecord::Base
 
   def self.import(batch)
     data_with_timestamps = add_timestamps(batch)
-    self.insert_all!(data_with_timestamps)
+    insert_all!(data_with_timestamps)
   end
 
   def self.add_timestamps(data)

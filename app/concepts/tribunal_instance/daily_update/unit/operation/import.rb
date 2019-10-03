@@ -3,7 +3,6 @@ module TribunalInstance
     module Unit
       module Operation
         class Import < Trailblazer::Operation
-
           pass ->(ctx, **) {}
         end
       end

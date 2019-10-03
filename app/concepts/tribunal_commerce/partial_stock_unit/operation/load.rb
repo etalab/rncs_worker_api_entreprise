@@ -4,18 +4,18 @@ module TribunalCommerce
       class Load < Trailblazer::Operation
         include TribunalCommerce::Helper::DataFile
 
-        step ->(ctx, logger:, file_importer:nil, **) do
+        step lambda { |ctx, logger:, file_importer: nil, **|
           ctx[:file_importer] = TribunalCommerce::Helper::FileImporter.new(logger) if file_importer.nil?
           true
-        end
+        }
 
-        step ->(ctx, logger:, **) { logger.info('Starting import of partial stock unit...') }
+        step ->(_, logger:, **) { logger.info('Starting import of partial stock unit...') }
         step :prepare_zip_extraction
         step Nested(ZIP::Operation::Extract)
-          fail :log_zip_extraction_error, fail_fast: true
+        fail :log_zip_extraction_error, fail_fast: true
 
         step :read_files_metadata
-          fail :log_filenames_parsing_error, fail_fast: true
+        fail :log_filenames_parsing_error, fail_fast: true
 
         step :supersede_dossiers_entreprise_from_pm
         step :import_personnes_morales
@@ -30,7 +30,7 @@ module TribunalCommerce
           ctx[:path] = daily_update_unit.files_path
         end
 
-        def log_zip_extraction_error(ctx, daily_update_unit:, error:, logger:, **)
+        def log_zip_extraction_error(_, daily_update_unit:, error:, logger:, **)
           logger.error("An error happened while trying to extract unit archive #{daily_update_unit.files_path} : #{error}")
         end
 
@@ -41,46 +41,46 @@ module TribunalCommerce
           false
         end
 
-        def log_filenames_parsing_error(ctx, logger:, error:, **)
+        def log_filenames_parsing_error(_, logger:, error:, **)
           logger.error("An error occured while parsing unit's files : #{error}")
         end
 
-        def supersede_dossiers_entreprise_from_pm(ctx, files_args:, file_importer:, **)
+        def supersede_dossiers_entreprise_from_pm(_, files_args:, file_importer:, **)
           pm_file_path = extract_file_path(files_args, 'PM')
           file_importer.supersede_dossiers_entreprise_from_pm(pm_file_path)
         end
 
-        def supersede_dossiers_entreprise_from_pp(ctx, files_args:, file_importer:, **)
+        def supersede_dossiers_entreprise_from_pp(_, files_args:, file_importer:, **)
           pp_file_path = extract_file_path(files_args, 'PP')
           file_importer.supersede_dossiers_entreprise_from_pp(pp_file_path)
         end
 
-        def import_personnes_morales(ctx, files_args:, file_importer:, **)
+        def import_personnes_morales(_, files_args:, file_importer:, **)
           pm_file_path = extract_file_path(files_args, 'PM')
           file_importer.import_personnes_morales(pm_file_path)
         end
 
-        def import_personnes_physiques(ctx, files_args:, file_importer:, **)
+        def import_personnes_physiques(_, files_args:, file_importer:, **)
           pp_file_path = extract_file_path(files_args, 'PP')
           file_importer.import_personnes_physiques(pp_file_path)
         end
 
-        def import_representants(ctx, files_args:, file_importer:, **)
+        def import_representants(_, files_args:, file_importer:, **)
           rep_file_path = extract_file_path(files_args, 'rep')
           file_importer.import_representants(rep_file_path)
         end
 
-        def import_etablissements(ctx, files_args:, file_importer:, **)
+        def import_etablissements(_, files_args:, file_importer:, **)
           ets_file_path = extract_file_path(files_args, 'ets')
           file_importer.import_etablissements(ets_file_path)
         end
 
-        def import_observations(ctx, files_args:, file_importer:, **)
+        def import_observations(_, files_args:, file_importer:, **)
           obs_file_path = extract_file_path(files_args, 'obs')
           file_importer.import_observations(obs_file_path)
         end
 
-        def rename_csv_header_for_rep(ctx, files_args:, **)
+        def rename_csv_header_for_rep(_, files_args:, **)
           file_path = extract_file_path(files_args, 'rep')
           # for sed portability on different OS : see https://stackoverflow.com/questions/5171901/sed-command-find-and-replace-in-file-and-overwrite-file-doesnt-work-it-empties
           # some CSV files may contain quoted headers...

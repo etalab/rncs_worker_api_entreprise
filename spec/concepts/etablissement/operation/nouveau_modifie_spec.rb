@@ -7,7 +7,7 @@ describe Etablissement::Operation::NouveauModifie do
       numero_gestion: '1A2B3C',
       id_etablissement: '1',
       nom_commercial: 'GG EASY',
-      enseigne: 'YOU SALTY',
+      enseigne: 'YOU SALTY'
     }
   end
 
@@ -18,7 +18,7 @@ describe Etablissement::Operation::NouveauModifie do
       create(
         :dossier_entreprise,
         code_greffe: '1234',
-        numero_gestion: '1A2B3C',
+        numero_gestion: '1A2B3C'
       )
     end
 
@@ -35,7 +35,7 @@ describe Etablissement::Operation::NouveauModifie do
 
         expect(updated_ets).to have_attributes(
           nom_commercial: 'GG EASY',
-          enseigne: 'YOU SALTY',
+          enseigne: 'YOU SALTY'
         )
       end
     end

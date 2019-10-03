@@ -21,28 +21,28 @@ module Files
       end
 
       def compute_md5(ctx, path:, **)
-        ctx[:computed_md5] = ::Digest::MD5::file(path).hexdigest
+        ctx[:computed_md5] = ::Digest::MD5.file(path).hexdigest
       rescue Errno::ENOENT
         false
       end
 
-      def compare(ctx, computed_md5:, expected_md5:, **)
+      def compare(_, computed_md5:, expected_md5:, **)
         computed_md5 == expected_md5
       end
 
-      def log_md5_file_not_found(ctx, logger:, path:, **)
+      def log_md5_file_not_found(_, logger:, path:, **)
         logger.error "MD5 file not found (#{path})"
       end
 
-      def log_file_not_found(ctx, logger:, path:, **)
+      def log_file_not_found(_, logger:, path:, **)
         logger.error "File not found (#{path})"
       end
 
-      def log_compare_failed(ctx, logger:, path:, **)
+      def log_compare_failed(_, logger:, path:, **)
         logger.error "MD5 comparison failed (#{path})"
       end
 
-      def log_success(ctx, logger:, path:, **)
+      def log_success(_, logger:, path:, **)
         logger.info "MD5 check success (#{path})"
       end
     end

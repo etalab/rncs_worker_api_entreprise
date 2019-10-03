@@ -52,7 +52,7 @@ describe TribunalCommerce::PartialStockUnit::Operation::Load, :trb do
         a_string_ending_with('tmp/0384_S2_20180409/0384_S2_20180409_8_ets.csv'),
         a_string_ending_with('tmp/0384_S2_20180409/0384_S2_20180409_11_obs.csv'),
         a_string_ending_with('tmp/0384_S2_20180409/0384_S2_20180409_12_actes.csv'),
-        a_string_ending_with('tmp/0384_S2_20180409/0384_S2_20180409_13_comptes_annuels.csv'),
+        a_string_ending_with('tmp/0384_S2_20180409/0384_S2_20180409_13_comptes_annuels.csv')
       )
     end
 
@@ -81,7 +81,7 @@ describe TribunalCommerce::PartialStockUnit::Operation::Load, :trb do
         a_hash_including(code_greffe: '0384', label: 'ets', path: a_string_ending_with('0384_S2_20180409_8_ets.csv')),
         a_hash_including(code_greffe: '0384', label: 'obs', path: a_string_ending_with('0384_S2_20180409_11_obs.csv')),
         a_hash_including(code_greffe: '0384', label: 'actes', path: a_string_ending_with('0384_S2_20180409_12_actes.csv')),
-        a_hash_including(code_greffe: '0384', label: 'comptes_annuels', path: a_string_ending_with('0384_S2_20180409_13_comptes_annuels.csv')),
+        a_hash_including(code_greffe: '0384', label: 'comptes_annuels', path: a_string_ending_with('0384_S2_20180409_13_comptes_annuels.csv'))
       )
     end
 

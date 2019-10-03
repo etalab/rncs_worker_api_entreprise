@@ -54,7 +54,7 @@ describe TribunalCommerce::DailyUpdate::Operation::FetchInPipe do
         an_object_having_attributes(year: '2018', month: '04', day: '12'),
         an_object_having_attributes(year: '2018', month: '04', day: '13'),
         an_object_having_attributes(year: '2018', month: '04', day: '14'),
-        an_object_having_attributes(year: '2018', month: '04', day: '18'),
+        an_object_having_attributes(year: '2018', month: '04', day: '18')
       )
     end
   end

@@ -8,8 +8,7 @@ module TribunalCommerce
         step :import
         step :log_success
 
-
-        def log_import_start(ctx, logger:, daily_update_unit:, **)
+        def log_import_start(_, logger:, daily_update_unit:, **)
           daily_update_date = daily_update_unit.daily_update.date.to_s
           logger.info("START IMPORT OF UPDATE #{daily_update_date}")
         end
@@ -20,14 +19,14 @@ module TribunalCommerce
           ctx[:transmissions_paths] = paths # unless flux_paths.empty?
         end
 
-        def order_transmissions(ctx, transmissions_paths:, **)
+        def order_transmissions(_, transmissions_paths:, **)
           transmissions_paths.sort_by! do |path|
             number = path.split('/').last
             number.to_i
           end
         end
 
-        def import(ctx, transmissions_paths:, logger:, **)
+        def import(_, transmissions_paths:, logger:, **)
           transmissions_paths.each do |transmission_path|
             transmission_number = transmission_path.split('/').last
             logger.info("Starting to import transmission number #{transmission_number}...")
@@ -43,7 +42,7 @@ module TribunalCommerce
           end
         end
 
-        def log_success(ctx, daily_update_unit:, logger:, **)
+        def log_success(_, daily_update_unit:, logger:, **)
           logger.info("Each transmission has been successfuly imported. The daily update is a success for greffe #{daily_update_unit.reference} !")
         end
       end

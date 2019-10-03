@@ -43,7 +43,7 @@ describe TribunalInstance::DailyUpdate::Task::FetchUnits do
         a_string_ending_with('titmc/flux/2017/05/18/0qLllJmhaRhU_20170516221805TITMCFLUX'),
         a_string_ending_with('titmc/flux/2017/05/18/0NKxyI4J7iuk_20170517210602TITMCFLUX'),
         a_string_ending_with('titmc/flux/2017/05/18/0Hnni3p82a62_20170509212412TITMCFLUX'),
-        a_string_ending_with('titmc/flux/2017/05/18/1eUKHhoF3kQT_20170515205704TITMCFLUX'),
+        a_string_ending_with('titmc/flux/2017/05/18/1eUKHhoF3kQT_20170515205704TITMCFLUX')
       )
     end
   end
@@ -54,7 +54,7 @@ describe TribunalInstance::DailyUpdate::Task::FetchUnits do
     it { is_expected.to be_failure }
 
     it 'logs an error' do
-      expect(logger).to receive(:error).with(/No directory found in daily update .+2017\/05\/19/)
+      expect(logger).to receive(:error).with(%r{No directory found in daily update .+2017/05/19})
       subject
     end
   end
@@ -65,7 +65,7 @@ describe TribunalInstance::DailyUpdate::Task::FetchUnits do
     it { is_expected.to be_failure }
 
     it 'logs an error' do
-      expect(logger).to receive(:error).with(/Unexpected directory name in daily update .+2017\/05\/20/)
+      expect(logger).to receive(:error).with(%r{Unexpected directory name in daily update .+2017/05/20})
       subject
     end
   end

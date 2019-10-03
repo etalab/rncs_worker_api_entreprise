@@ -7,7 +7,7 @@ describe Observation::Operation::UpdateOrCreate do
       numero_gestion: '2016A10937',
       id_observation: '4000',
       numero: '12A57',
-      texte: 'I can see you',
+      texte: 'I can see you'
     }
   end
 
@@ -18,7 +18,7 @@ describe Observation::Operation::UpdateOrCreate do
       create(
         :dossier_entreprise,
         code_greffe: data[:code_greffe],
-        numero_gestion: data[:numero_gestion],
+        numero_gestion: data[:numero_gestion]
       )
     end
 
@@ -34,7 +34,7 @@ describe Observation::Operation::UpdateOrCreate do
         expect(updated_obs).to have_attributes(
           id_observation: '4000',
           numero: '12A57',
-          texte: 'I can see you',
+          texte: 'I can see you'
         )
       end
 
@@ -64,7 +64,7 @@ describe Observation::Operation::UpdateOrCreate do
     end
   end
 
-  # TODO https://github.com/etalab/rncs_worker_api_entreprise/issues/35
+  # TODO: https://github.com/etalab/rncs_worker_api_entreprise/issues/35
   context 'when associated dossier entreprise is not found' do
     it 'returns a warning message' do
       warning_msg = subject[:warning]

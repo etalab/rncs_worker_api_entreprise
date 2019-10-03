@@ -2,13 +2,12 @@ module TribunalInstance
   module DailyUpdate
     module Operation
       class Import < Trailblazer::Operation
-
         step Nested Task::NextQueuedUpdate
-        step ->(ctx, daily_update:, **) { daily_update.update(proceeded: true) }
+        step ->(_, daily_update:, **) { daily_update.update(proceeded: true) }
         step Nested Task::FetchUnits
         step :create_jobs_for_import
 
-        def create_jobs_for_import(ctx, daily_update:, **)
+        def create_jobs_for_import(_, daily_update:, **)
           daily_update.daily_update_units.each do |unit|
             ImportTitmcDailyUpdateUnitJob.perform_later(unit.id)
           end

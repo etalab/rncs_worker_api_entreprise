@@ -6,7 +6,7 @@ describe Etablissement::Operation::Create do
       code_greffe: '9001',
       numero_gestion: '2016A10937',
       enseigne: 'Very office',
-      nom_commercial: 'Much Building',
+      nom_commercial: 'Much Building'
     }
   end
 
@@ -25,7 +25,7 @@ describe Etablissement::Operation::Create do
         code_greffe: '9001',
         numero_gestion: '2016A10937',
         enseigne: 'Very office',
-        nom_commercial: 'Much Building',
+        nom_commercial: 'Much Building'
       )
     end
 

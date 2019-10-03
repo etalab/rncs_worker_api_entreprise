@@ -3,17 +3,16 @@ module TribunalInstance
     module Unit
       module Operation
         class Load < Trailblazer::Operation
-
           pass :log_info_stock
           step :fetch_transmissions
           pass ->(ctx, logger:, **) { logger.info "#{ctx[:transmissions].count} transmissions found" }
           step ->(ctx, stock_unit:, **) { ctx[:code_greffe] = stock_unit.code_greffe }
           step Nested(ResetDatabase)
-            fail :log_reset_database_failure
+          fail :log_reset_database_failure
           step :load_greffe_files
-            fail :log_transmission_failure
+          fail :log_transmission_failure
 
-          def log_info_stock(ctx, logger:, stock_unit:, **)
+          def log_info_stock(_, logger:, stock_unit:, **)
             logger.info "Starting import of stock #{stock_unit.stock.date}, greffe: #{stock_unit.code_greffe}"
           end
 
@@ -40,7 +39,7 @@ module TribunalInstance
             end
           end
 
-          def log_transmission_failure(ctx, logger:, failed_transmission:, **)
+          def log_transmission_failure(_, logger:, failed_transmission:, **)
             logger.error "Transmission failed (file: #{failed_transmission[:path]}, error: #{failed_transmission[:error]})"
           end
         end

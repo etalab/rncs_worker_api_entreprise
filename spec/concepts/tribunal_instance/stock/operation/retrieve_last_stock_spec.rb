@@ -5,7 +5,7 @@ describe TribunalInstance::Stock::Operation::RetrieveLastStock do
 
   context 'when no valid stocks are found' do
     # Override class dependency for specs purposes
-    subject { described_class.call(stocks_folder: source_path, stock_class: DummyStockClass)}
+    subject { described_class.call(stocks_folder: source_path, stock_class: DummyStockClass) }
 
     context 'when no stocks are found in sources directory' do
       let(:source_path) { Rails.root.join('spec', 'fixtures', 'tc', 'no_stocks_here', 'got_you') }

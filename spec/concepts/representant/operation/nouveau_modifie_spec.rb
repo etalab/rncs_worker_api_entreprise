@@ -9,7 +9,7 @@ describe Representant::Operation::NouveauModifie do
       qualite: 'Président',
       denomination: 'Holding my beer',
       siren_pm: '123456789',
-      representant_permanent_adresse_ligne_1: '23 rue bidon',
+      representant_permanent_adresse_ligne_1: '23 rue bidon'
     }
   end
 
@@ -20,7 +20,7 @@ describe Representant::Operation::NouveauModifie do
       create(
         :dossier_entreprise,
         code_greffe: '1234',
-        numero_gestion: '1A2B3C',
+        numero_gestion: '1A2B3C'
       )
     end
 
@@ -60,7 +60,7 @@ describe Representant::Operation::NouveauModifie do
     end
   end
 
-  # TODO https://github.com/etalab/rncs_worker_api_entreprise/issues/39
+  # TODO: https://github.com/etalab/rncs_worker_api_entreprise/issues/39
   context 'when the related dossier is not found' do
     it 'returns a warning message' do
       warning_msg = subject[:warning]

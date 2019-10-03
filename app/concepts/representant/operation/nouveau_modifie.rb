@@ -4,16 +4,15 @@ class Representant
       step :find_dossier_entreprise
       fail :warn_dossier_not_found, Output(:success) => 'End.success'
       step :retrieve_representant
-        fail :create_new_representant
-        fail :warning_message, Output(:success) => 'End.success'
+      fail :create_new_representant
+      fail :warning_message, Output(:success) => 'End.success'
       step :update
 
-
       def find_dossier_entreprise(ctx, data:, **)
-        ctx[:dossier] = DossierEntreprise.find_by({
+        ctx[:dossier] = DossierEntreprise.find_by(
           code_greffe: data[:code_greffe],
           numero_gestion: data[:numero_gestion]
-        })
+        )
       end
 
       def retrieve_representant(ctx, dossier:, data:, **)
@@ -23,11 +22,11 @@ class Representant
         )
       end
 
-      def update(ctx, representant:, data:, **)
+      def update(_, representant:, data:, **)
         representant.update(data)
       end
 
-      def create_new_representant(ctx, dossier:, data:, **)
+      def create_new_representant(_, dossier:, data:, **)
         dossier.representants.create(data)
       end
 

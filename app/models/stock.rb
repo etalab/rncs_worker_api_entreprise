@@ -3,11 +3,11 @@ class Stock < ApplicationRecord
 
   class << self
     def first_load?
-      self.count == 0
+      count == 0
     end
 
     def current
-      collection = self.order(year: :desc, month: :desc, day: :desc).limit(1)
+      collection = order(year: :desc, month: :desc, day: :desc).limit(1)
       collection.first
     end
   end
@@ -45,6 +45,6 @@ class Stock < ApplicationRecord
   end
 
   def stock_units_status
-    self.stock_units.pluck(:status)
+    stock_units.pluck(:status)
   end
 end

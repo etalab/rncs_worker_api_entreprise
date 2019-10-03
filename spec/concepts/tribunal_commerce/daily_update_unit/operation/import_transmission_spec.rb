@@ -85,7 +85,7 @@ describe TribunalCommerce::DailyUpdateUnit::Operation::ImportTransmission, :trb 
             code_greffe: '0101',
             label: 'comptes_annuels',
             path: a_string_ending_with('0101_1_20170512_112544_13_comptes_annuels.csv')
-          ),
+          )
         )
       end
 
@@ -107,7 +107,6 @@ describe TribunalCommerce::DailyUpdateUnit::Operation::ImportTransmission, :trb 
         expect_ordered_import_call(:import_etablissements_nouveau_modifie, '0101_1_20170512_112544_9_ets_nouveau_modifie_EVT.csv')
         expect_ordered_import_call(:import_etablissements_supprime, '0101_1_20170512_112544_10_ets_supprime_EVT.csv')
         expect_ordered_import_call(:import_observations, '0101_1_20170512_112544_11_obs.csv')
-
       end
 
       it 'logs overall transmission\'s import success' do
@@ -143,7 +142,7 @@ describe TribunalCommerce::DailyUpdateUnit::Operation::ImportTransmission, :trb 
           subject
 
           expect(logger).to have_received(:error)
-            .with("An error occured while importing a file, abort import of transmission...")
+            .with('An error occured while importing a file, abort import of transmission...')
         end
 
         # Actually useless since the import runs in a transaction

@@ -5,7 +5,7 @@ describe Etablissement::Operation::Delete do
     {
       code_greffe: '1234',
       numero_gestion: '1A2B3C',
-      id_etablissement: '1',
+      id_etablissement: '1'
     }
   end
 
@@ -17,7 +17,7 @@ describe Etablissement::Operation::Delete do
         :etablissement,
         code_greffe: '1234',
         numero_gestion: '1A2B3C',
-        id_etablissement: '1',
+        id_etablissement: '1'
       )
     end
 

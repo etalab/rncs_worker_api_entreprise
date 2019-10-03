@@ -9,14 +9,14 @@ describe DossierEntreprise::Operation::Update do
       date_immatriculation: 'hier',
       date_transfert: 'demain',
       sans_activite: 'OUI',
-      date_debut_activite: 'A PAS ACTIVITE',
+      date_debut_activite: 'A PAS ACTIVITE'
     }
   end
 
   subject { described_class.call(data: data) }
 
   context 'when the dossier is not found' do
-    # TODO https://github.com/etalab/rncs_worker_api_entreprise/issues/36
+    # TODO: https://github.com/etalab/rncs_worker_api_entreprise/issues/36
     context 'with no existing dossier found for the given siren number' do
       it 'creates a new dossier' do
         all_dossiers_for_greffe = DossierEntreprise.where(code_greffe: data[:code_greffe])
@@ -33,7 +33,7 @@ describe DossierEntreprise::Operation::Update do
       it { is_expected.to be_success }
     end
 
-    # TODO What to do when multiple dossiers are found for a given siren
+    # TODO: What to do when multiple dossiers are found for a given siren
     # TODO https://github.com/etalab/rncs_worker_api_entreprise/issues/41
     context 'when a dossier already exists for the given siren' do
       before do
@@ -45,11 +45,11 @@ describe DossierEntreprise::Operation::Update do
         )
       end
 
-      #it 'creates a new dossier' do
+      # it 'creates a new dossier' do
       #  all_dossiers_for_greffe = DossierEntreprise.where(code_greffe: data[:code_greffe])
 
       #  expect { subject }.to change(all_dossiers_for_greffe, :count).by(1)
-      #end
+      # end
 
       it 'has now two differents dossiers for the same siren number' do
         subject
@@ -73,7 +73,7 @@ describe DossierEntreprise::Operation::Update do
       create(
         :dossier_entreprise,
         code_greffe: data[:code_greffe],
-        numero_gestion: data[:numero_gestion],
+        numero_gestion: data[:numero_gestion]
       )
     end
 

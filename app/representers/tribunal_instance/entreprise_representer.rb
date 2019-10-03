@@ -8,19 +8,19 @@ class TribunalInstance::EntrepriseRepresenter < Representable::Decorator
   nested :idt do
     property :denomination,
       as: :nom_raison_soc,
-      if: ->(doc:,  **) do
+      if: lambda { |doc:, **|
         TribunalInstance::EntrepriseRepresenter
           .numero_rcs_from(doc)
           .first != 'A'
-      end
+      }
 
     property :nom_patronyme,
       as: :nom_raison_soc,
-      if: ->(doc:, **) do
+      if: lambda { |doc:, **|
         TribunalInstance::EntrepriseRepresenter
           .numero_rcs_from(doc)
           .first == 'A'
-      end
+      }
 
     property :prenoms,         as: :prenom
     property :forme_juridique, as: :code_form_jur
@@ -71,7 +71,7 @@ class TribunalInstance::EntrepriseRepresenter < Representable::Decorator
       property :dap_denomnimation, as: :denom
       property :dap_object, as: :objet
       property :dap_date_cloture, as: :dat_cloture_jjmm
-   end
+    end
 
     nested :auto_ent do
       property :auto_entrepreneur, as: :pp_indic
@@ -91,7 +91,6 @@ class TribunalInstance::EntrepriseRepresenter < Representable::Decorator
       as: :eirl,
       decorator: TribunalInstance::AdresseDAPRepresenter,
       class: TribunalInstance::AdresseDAP
-
   end
 
   collection :etablissements,

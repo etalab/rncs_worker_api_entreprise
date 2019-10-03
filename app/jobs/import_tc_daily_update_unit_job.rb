@@ -41,9 +41,9 @@ class ImportTCDailyUpdateUnitJob < ApplicationJob
 
   def unit_importer
     if unit.daily_update.partial_stock?
-      return TribunalCommerce::PartialStockUnit::Operation::Load
+      TribunalCommerce::PartialStockUnit::Operation::Load
     else
-      return TribunalCommerce::DailyUpdateUnit::Operation::Load
+      TribunalCommerce::DailyUpdateUnit::Operation::Load
     end
   end
 end

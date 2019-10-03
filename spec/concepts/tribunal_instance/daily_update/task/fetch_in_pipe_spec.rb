@@ -52,7 +52,7 @@ describe TribunalInstance::DailyUpdate::Task::FetchInPipe do
         an_object_having_attributes(year: '2017', month: '05', day: '20'),
         an_object_having_attributes(year: '2017', month: '05', day: '23'),
         an_object_having_attributes(year: '2017', month: '05', day: '24'),
-        an_object_having_attributes(year: '2017', month: '05', day: '25'),
+        an_object_having_attributes(year: '2017', month: '05', day: '25')
       )
     end
   end

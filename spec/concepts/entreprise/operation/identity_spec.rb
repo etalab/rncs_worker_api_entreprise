@@ -67,7 +67,7 @@ describe Entreprise::Operation::Identity do
               code_greffe: 'code_test',
               numero_gestion: 'numero_test',
               siren: valid_siren,
-              type_inscription: 'P',
+              type_inscription: 'P'
               # Ensure other keys are returned as well ? Here or inside the controller's spec ?
             )
           end
@@ -81,7 +81,7 @@ describe Entreprise::Operation::Identity do
 
             expect(observations_list).to contain_exactly(
               a_hash_including(texte: 'control value 1'),
-              a_hash_including(texte: 'control value 2'),
+              a_hash_including(texte: 'control value 2')
             )
           end
 
@@ -94,7 +94,7 @@ describe Entreprise::Operation::Identity do
 
             expect(representants_list).to contain_exactly(
               a_hash_including(qualite: 'control value 1'),
-              a_hash_including(qualite: 'control value 2'),
+              a_hash_including(qualite: 'control value 2')
             )
           end
 
@@ -108,7 +108,7 @@ describe Entreprise::Operation::Identity do
             expect(etablissements_list).to contain_exactly(
               a_hash_including(activite: 'control value 1'),
               a_hash_including(activite: 'control value 2'),
-              a_hash_including(enseigne: 'do not forget me'), # created in before hook for happy path
+              a_hash_including(enseigne: 'do not forget me') # created in before hook for happy path
             )
           end
 
@@ -176,11 +176,10 @@ describe Entreprise::Operation::Identity do
     it { is_expected.to be_failure }
 
     it 'returns a HTTP error' do
-      expect(http_error).to match({
+      expect(http_error).to match(
         code: 501,
         message: 'Nothing load into the database yet: please import the last stock available.'
-      })
+      )
     end
   end
 end
-

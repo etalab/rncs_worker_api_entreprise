@@ -24,7 +24,7 @@ describe TribunalInstance::DailyUpdate::Task::DBCurrentDate do
       end
 
       it { is_expected.to be_success }
-      its([:db_current_date]) { is_expected.to eq Date.new 2019, 01, 02 }
+      its([:db_current_date]) { is_expected.to eq Date.new 2019, 0o1, 0o2 }
     end
   end
 

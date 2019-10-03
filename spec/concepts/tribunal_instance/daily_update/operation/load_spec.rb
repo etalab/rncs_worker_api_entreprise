@@ -60,7 +60,7 @@ describe TribunalInstance::DailyUpdate::Operation::Load, :trb do
           an_object_having_attributes(year: '2017', month: '05', day: '20'),
           an_object_having_attributes(year: '2017', month: '05', day: '23'),
           an_object_having_attributes(year: '2017', month: '05', day: '24'),
-          an_object_having_attributes(year: '2017', month: '05', day: '25'),
+          an_object_having_attributes(year: '2017', month: '05', day: '25')
         )
       end
 
@@ -72,7 +72,7 @@ describe TribunalInstance::DailyUpdate::Operation::Load, :trb do
         it 'limit to 2 updates' do
           expect(subject[:daily_updates]).to contain_exactly(
             an_object_having_attributes(year: '2017', month: '05', day: '19'),
-            an_object_having_attributes(year: '2017', month: '05', day: '20'),
+            an_object_having_attributes(year: '2017', month: '05', day: '20')
           )
         end
       end
@@ -85,7 +85,7 @@ describe TribunalInstance::DailyUpdate::Operation::Load, :trb do
         it 'limit to 2 updates' do
           expect(subject[:daily_updates]).to contain_exactly(
             an_object_having_attributes(year: '2017', month: '05', day: '19'),
-            an_object_having_attributes(year: '2017', month: '05', day: '20'),
+            an_object_having_attributes(year: '2017', month: '05', day: '20')
           )
         end
       end
@@ -126,7 +126,6 @@ describe TribunalInstance::DailyUpdate::Operation::Load, :trb do
       )
     end
   end
-
 
   context 'when DBCurrentDate fails' do
     it 'is a failure'

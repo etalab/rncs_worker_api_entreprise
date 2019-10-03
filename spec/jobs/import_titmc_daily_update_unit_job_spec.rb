@@ -53,11 +53,11 @@ describe ImportTitmcDailyUpdateUnitJob, :trb do
       before do
         allow(TribunalInstance::DailyUpdate::Unit::Operation::Load)
           .to receive(:call)
-          .with(daily_update_unit: unit, logger: logger)
-          .and_wrap_original {
-            create :daily_update_unit, status: 'GHOST'
-            trb_result_failure
-          }
+            .with(daily_update_unit: unit, logger: logger)
+            .and_wrap_original {
+                create :daily_update_unit, status: 'GHOST'
+                trb_result_failure
+              }
       end
 
       it 'rollbacks database' do

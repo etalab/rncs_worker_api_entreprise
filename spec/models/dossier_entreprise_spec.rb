@@ -52,8 +52,13 @@ describe DossierEntreprise do
     end
 
     context 'with multiple immatriculations principales found in db' do
-      let!(:old_immat) { create(:dossier_entreprise, siren: siren, type_inscription: 'P', date_immatriculation: '2018-01-01') }
-      let!(:latest_immat) { create(:dossier_entreprise, siren: siren, type_inscription: 'P', date_immatriculation: '2019-01-01') }
+      let!(:old_immat) do
+        create(:dossier_entreprise, siren: siren, type_inscription: 'P', date_immatriculation: '2018-01-01')
+      end
+
+      let!(:latest_immat) do
+        create(:dossier_entreprise, siren: siren, type_inscription: 'P', date_immatriculation: '2019-01-01')
+      end
 
       it 'returns the latest' do
         expect(subject).to eq(latest_immat)
@@ -67,7 +72,7 @@ describe DossierEntreprise do
     end
   end
 
-  # TODO Refactor for better behaviour description
+  # TODO: Refactor for better behaviour description
   # describe wich etablissement the methods siege_social and
   # etablissement_principal return in the various situations
   context 'dossier with siege social & etablissement principal' do

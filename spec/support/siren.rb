@@ -11,5 +11,5 @@ def invalid_siren
 end
 
 def not_a_siren
-  "bull"
+  'bull'
 end

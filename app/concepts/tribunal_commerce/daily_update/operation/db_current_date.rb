@@ -23,7 +23,7 @@ module TribunalCommerce
           ctx[:current_stock] = StockTribunalCommerce.current
         end
 
-        def stock_completed?(ctx, current_stock:, **)
+        def stock_completed?(_, current_stock:, **)
           current_stock.status == 'COMPLETED'
         end
 

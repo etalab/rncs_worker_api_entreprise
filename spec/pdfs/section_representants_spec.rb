@@ -47,10 +47,9 @@ describe SectionRepresentants do
   end
 
   it 'works with nil siren_pm' do
-    expect {
+    expect do
       pdf.section_representants representants: [attributes_for(:representant_pm, siren_pm: nil)]
-    }.not_to raise_error
-
+    end.not_to raise_error
   end
 
   context 'type_representant' do

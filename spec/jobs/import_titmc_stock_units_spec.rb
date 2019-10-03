@@ -65,11 +65,11 @@ describe ImportTitmcStockUnitJob, :trb do
       it 'rollbacks database' do
         allow(TribunalInstance::Stock::Unit::Operation::Load)
           .to receive(:call)
-          .with(stock_unit: stock_unit, logger: logger)
-          .and_wrap_original {
-            create :stock_unit, status: 'GHOST'
-            trb_result_failure
-          }
+            .with(stock_unit: stock_unit, logger: logger)
+            .and_wrap_original {
+                create :stock_unit, status: 'GHOST'
+                trb_result_failure
+              }
 
         subject
 

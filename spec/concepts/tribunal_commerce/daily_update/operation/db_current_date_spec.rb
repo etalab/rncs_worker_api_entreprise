@@ -3,7 +3,7 @@ require 'rails_helper'
 describe TribunalCommerce::DailyUpdate::Operation::DBCurrentDate do
   subject { described_class.call }
 
-  # TODO Deal with partial stocks
+  # TODO: Deal with partial stocks
   # Factories should be genric DailyUpdates
   context 'when successful daily updates are found' do
     before do

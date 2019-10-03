@@ -6,7 +6,7 @@ describe TribunalCommerce::Helper::CSVReader do
     let(:example_mapping) do
       {
         'Data A' => :data_a,
-        'Data B' => :data_b,
+        'Data B' => :data_b
       }
     end
 
@@ -39,15 +39,16 @@ describe TribunalCommerce::Helper::CSVReader do
       it 'reads the file by batch' do
         expect { |block_checker| subject.bulk_processing(&block_checker) }
           .to yield_successive_args(
-          [
-            { data_a: 'A1', data_b: 'B1' },
-            { data_a: nil, data_b: 'B2' },
-            { data_a: 'A3', data_b: 'B3' }
-          ],
-          [
-            { data_a: 'A4', data_b: nil },
-            { data_a: 'A5', data_b: 'B5' }
-          ])
+            [
+              { data_a: 'A1', data_b: 'B1' },
+              { data_a: nil, data_b: 'B2' },
+              { data_a: 'A3', data_b: 'B3' }
+            ],
+            [
+              { data_a: 'A4', data_b: nil },
+              { data_a: 'A5', data_b: 'B5' }
+            ]
+          )
       end
     end
 
@@ -61,7 +62,7 @@ describe TribunalCommerce::Helper::CSVReader do
             { data_b: 'B2' },
             { data_a: 'A3', data_b: 'B3' },
             { data_a: 'A4' },
-            { data_a: 'A5', data_b: 'B5' },
+            data_a: 'A5', data_b: 'B5'
           )
       end
     end
@@ -72,7 +73,7 @@ describe TribunalCommerce::Helper::CSVReader do
     let(:example_mapping) do
       {
         'Maybe Empty' => :maybe_empty,
-        'Never Empty' => :never_empty,
+        'Never Empty' => :never_empty
       }
     end
 
@@ -102,7 +103,7 @@ describe TribunalCommerce::Helper::CSVReader do
     end
 
     def fetch_line(nb)
-      read_file[nb-1]
+      read_file[nb - 1]
     end
 
     it 'returns an array of hash' do
@@ -112,7 +113,7 @@ describe TribunalCommerce::Helper::CSVReader do
     it 'maps headers to the given column names' do
       line = fetch_line(2)
 
-      expect(line).to match({ maybe_empty: 'wow', never_empty: 'hey' })
+      expect(line).to match(maybe_empty: 'wow', never_empty: 'hey')
     end
 
     it 'reads numbers as string' do
@@ -131,20 +132,20 @@ describe TribunalCommerce::Helper::CSVReader do
     it 'keeps nil values found in the CSV' do
       line = fetch_line(1)
 
-      expect(line).to match({ never_empty: 'hello' })
+      expect(line).to match(never_empty: 'hello')
     end
 
     it 'ignores nil values if specified' do
       lines = read_file(keep_nil: true)
       line = lines[0]
 
-      expect(line).to match({ maybe_empty: nil, never_empty: 'hello' })
+      expect(line).to match(maybe_empty: nil, never_empty: 'hello')
     end
 
     it 'removes surrounding blank and quotes' do
       line = fetch_line(5)
 
-      expect(line).to match({ maybe_empty: 'cou"cou', never_empty: 'blank'})
+      expect(line).to match(maybe_empty: 'cou"cou', never_empty: 'blank')
     end
   end
 end

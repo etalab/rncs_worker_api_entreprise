@@ -9,7 +9,7 @@ describe PersonneMorale::Operation::Create do
         code_greffe: '0109',
         numero_gestion: '2016A10937',
         denomination: 'Entreprise Test',
-        forme_juridique: 'SAS',
+        forme_juridique: 'SAS'
       }
     end
     let(:created_pm) { subject[:created_pm] }
@@ -23,7 +23,7 @@ describe PersonneMorale::Operation::Create do
         code_greffe: '0109',
         numero_gestion: '2016A10937',
         denomination: 'Entreprise Test',
-        forme_juridique: 'SAS',
+        forme_juridique: 'SAS'
       )
     end
 
@@ -37,6 +37,5 @@ describe PersonneMorale::Operation::Create do
   # This should never happened since dossiers entreprises and personnes morales
   # share the same CSV file
   context 'when the related dossier entreprise is not found' do
-
   end
 end

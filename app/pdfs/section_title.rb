@@ -22,7 +22,7 @@ module SectionTitle
   private
 
   def pretty_db_current_date
-    I18n.l db_current_date, format: "%d %B %Y"
+    I18n.l db_current_date, format: '%d %B %Y'
   end
 
   def db_current_date

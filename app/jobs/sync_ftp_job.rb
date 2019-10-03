@@ -50,19 +50,19 @@ class SyncFTPJob < ActiveJob::Base
   end
 
   def current_year
-    @current_year ||= Time.now.strftime("%Y")
+    @current_year ||= Time.now.strftime('%Y')
   end
 
   def current_month
-    @current_month ||= Time.now.strftime("%m")
+    @current_month ||= Time.now.strftime('%m')
   end
 
   def year_of_previous_month
-    @previous_month_year ||= (Time.now.beginning_of_month - 1.day).strftime("%Y")
+    @previous_month_year ||= (Time.now.beginning_of_month - 1.day).strftime('%Y')
   end
 
   def previous_month
-    @previous_month ||= (Time.now.beginning_of_month - 1.day).strftime("%m")
+    @previous_month ||= (Time.now.beginning_of_month - 1.day).strftime('%m')
   end
 
   def clean_sync_folders
@@ -70,11 +70,11 @@ class SyncFTPJob < ActiveJob::Base
       "#{rncs_sources_path}/tc/flux/#{current_year}",
       "#{rncs_sources_path}/tc/flux/#{year_of_previous_month}",
       "#{rncs_sources_path}/tc/stock/#{current_year}",
-      "#{rncs_sources_path}/tc/stock/#{year_of_previous_month}",
+      "#{rncs_sources_path}/tc/stock/#{year_of_previous_month}"
     ]
 
     sync_folders.each do |dir|
-      FileUtils.rm_rf(dir) if Dir.exists?(dir) && Dir.empty?(dir)
+      FileUtils.rm_rf(dir) if Dir.exist?(dir) && Dir.empty?(dir)
     end
   end
 end

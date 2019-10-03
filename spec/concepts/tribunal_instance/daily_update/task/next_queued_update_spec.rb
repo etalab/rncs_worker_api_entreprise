@@ -68,7 +68,7 @@ describe TribunalInstance::DailyUpdate::Task::NextQueuedUpdate do
       it { is_expected.to be_failure }
 
       it 'logs an error' do
-        expect(logger).to receive(:error).with("The last update 2017-10-24 is not completed. Aborting import...")
+        expect(logger).to receive(:error).with('The last update 2017-10-24 is not completed. Aborting import...')
         subject
       end
     end

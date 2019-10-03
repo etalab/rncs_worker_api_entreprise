@@ -8,7 +8,7 @@ describe PersonneMorale::Operation::Update do
       denomination: 'Evil Corp',
       devise: 'EUR',
       forme_juridique: 'SAS',
-      capital: '1000',
+      capital: '1000'
     }
   end
 
@@ -24,7 +24,7 @@ describe PersonneMorale::Operation::Update do
         create(
           :dossier_entreprise_with_pm,
           code_greffe: data[:code_greffe],
-          numero_gestion: data[:numero_gestion],
+          numero_gestion: data[:numero_gestion]
         )
       end
 
@@ -52,7 +52,7 @@ describe PersonneMorale::Operation::Update do
       create(
         :dossier_entreprise,
         code_greffe: data[:code_greffe],
-        numero_gestion: data[:numero_gestion],
+        numero_gestion: data[:numero_gestion]
       )
     end
 

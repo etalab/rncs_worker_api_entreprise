@@ -40,7 +40,7 @@ describe TribunalCommerce::DailyUpdateUnit::Operation::Load, :trb do
           a_string_ending_with('/21'),
           a_string_ending_with('/22'),
           a_string_ending_with('/23'),
-          a_string_ending_with('/24'),
+          a_string_ending_with('/24')
         )
       end
 

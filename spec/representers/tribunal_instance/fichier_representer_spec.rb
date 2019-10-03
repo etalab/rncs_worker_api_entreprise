@@ -14,6 +14,6 @@ describe TribunalInstance::FichierRepresenter, :representer do
     expect(subject.greffes).to contain_exactly(
       an_object_having_attributes(code_greffe: '9712'),
       an_object_having_attributes(code_greffe: '0000')
-  )
+    )
   end
 end

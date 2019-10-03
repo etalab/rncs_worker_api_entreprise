@@ -6,7 +6,7 @@ describe TribunalInstance::RepresentantRepresenter, :representer do
 
     it { is_expected.to be_a TribunalInstance::Representant }
 
-  its(:code_greffe)                              { is_expected.to eq '0000' }
+    its(:code_greffe)                              { is_expected.to eq '0000' }
     its(:qualite)                                { is_expected.to eq '1200' }
     its(:raison_sociale_ou_nom_ou_prenom)        { is_expected.to eq 'OULAC JOSEPH CHARLEMAGNE ALEXANDRE' }
     its(:nom_ou_denomination)                    { is_expected.to eq 'OULAC' }

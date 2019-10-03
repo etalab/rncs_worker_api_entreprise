@@ -15,8 +15,7 @@ module TribunalCommerce
         end
       end
 
-
-      def initialize(file, mapping, keep_nil:false, **)
+      def initialize(file, mapping, keep_nil: false, **)
         @file = file
         @options = default_options
         add_mapping_to_options(mapping)
@@ -42,7 +41,7 @@ module TribunalCommerce
       end
 
       def add_mapping_to_options(mapping)
-        @options[:header_transformations].push({ key_mapping: mapping })
+        @options[:header_transformations].push(key_mapping: mapping)
       end
 
       def remove_blank_values
@@ -50,24 +49,23 @@ module TribunalCommerce
       end
 
       def harmonize_headers
-        Proc.new do |headers|
+        proc do |headers|
           headers.map do |h|
-            h.yield_self { |it| it.downcase }
-             .yield_self { |it| it.strip }
-             .yield_self { |it| it.gsub(/\s|-/, '_') }
-             .yield_self { |it| it.gsub(/\./, '') }
-             .yield_self { |it| it.gsub('"', '') }
-             .yield_self { |it| I18n.transliterate(it) }
-             .yield_self { |it| it.to_sym }
+            h.yield_self(&:downcase)
+              .yield_self(&:strip)
+              .yield_self { |it| it.gsub(/\s|-/, '_') }
+              .yield_self { |it| it.gsub(/\./, '') }
+              .yield_self { |it| it.gsub('"', '') }
+              .yield_self { |it| I18n.transliterate(it) }
+              .yield_self(&:to_sym)
           end
         end
       end
 
       def remove_surrounding_quotes_and_blank
-        Proc.new do |hash|
-          hash.reduce({}) do |cleaned_hash, (k, v)|
-            cleaned_hash[k] = (v.nil?) ? v : v.gsub(/\A[" ]+|[" ]+\z/, '')
-            cleaned_hash
+        proc do |hash|
+          hash.each_with_object({}) do |(k, v), cleaned_hash|
+            cleaned_hash[k] = v.nil? ? v : v.gsub(/\A[" ]+|[" ]+\z/, '')
           end
         end
       end

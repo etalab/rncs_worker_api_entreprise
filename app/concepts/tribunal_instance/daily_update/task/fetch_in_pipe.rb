@@ -8,7 +8,7 @@ module TribunalInstance
 
         step :fetch_updates
         step :deserialize
-          fail ->(ctx, flux_folder:, **) { ctx[:error] = "No daily updates found inside #{flux_folder}. Ensure the folder exists with a valid subfolder structure." }
+        fail ->(ctx, flux_folder:, **) { ctx[:error] = "No daily updates found inside #{flux_folder}. Ensure the folder exists with a valid subfolder structure." }
 
         def fetch_updates(ctx, flux_folder:, **)
           # Flux are located in subfolders following the 'AAAA/MM/DD' pattern
@@ -19,7 +19,7 @@ module TribunalInstance
 
         def deserialize(ctx, flux_path_list:, flux_folder:, **)
           daily_updates = flux_path_list.map do |update_path|
-            if match = update_path.match(/\A#{flux_folder}\/(.{4})\/(.{2})\/(.{2})\Z/)
+            if match = update_path.match(%r{\A#{flux_folder}/(.{4})/(.{2})/(.{2})\Z})
               year, month, day = match.captures
               DailyUpdateTribunalInstance.new(
                 year: year,

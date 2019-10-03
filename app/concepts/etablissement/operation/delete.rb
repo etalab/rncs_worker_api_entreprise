@@ -2,19 +2,18 @@ class Etablissement
   module Operation
     class Delete < Trailblazer::Operation
       step :find_etablissement
-        fail :warning_message, Output(:success) => 'End.success'
+      fail :warning_message, Output(:success) => 'End.success'
       step :delete
-
 
       def find_etablissement(ctx, data:, **)
         ctx[:etablissement] = Etablissement.find_by(
           code_greffe: data[:code_greffe],
           numero_gestion: data[:numero_gestion],
-          id_etablissement: data[:id_etablissement],
+          id_etablissement: data[:id_etablissement]
         )
       end
 
-      def delete(ctx, etablissement:, **)
+      def delete(_ctx, etablissement:, **)
         etablissement.delete
       end
 

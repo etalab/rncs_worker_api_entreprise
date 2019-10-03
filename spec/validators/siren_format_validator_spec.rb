@@ -2,13 +2,12 @@ require 'rails_helper'
 
 class SirenFormatValidatable
   include ActiveModel::Validations
-  attr_accessor  :siren
+  attr_accessor :siren
   validates :siren, siren_format: true
 end
 
 describe SirenFormatValidator do
-
-  subject{ SirenFormatValidatable.new }
+  subject { SirenFormatValidatable.new }
 
   it 'validates siren that has 9 digits' do
     subject.siren = valid_siren
@@ -38,5 +37,4 @@ describe SirenFormatValidator do
       'must have luhn_checksum ok'
     )
   end
-
 end

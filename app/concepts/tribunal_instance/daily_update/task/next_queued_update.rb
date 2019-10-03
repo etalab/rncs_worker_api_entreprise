@@ -2,19 +2,18 @@ module TribunalInstance
   module DailyUpdate
     module Task
       class NextQueuedUpdate < Trailblazer::Operation
-
         step :retrieve_last_update, Output(:failure) => Track(:no_previous_update)
         step :ensure_last_daily_import_is_completed
-          fail :log_last_update_fail, fail_fast: true
+        fail :log_last_update_fail, fail_fast: true
 
-        step :retrieve_next_queued_update, magnetic_to: [:success, :no_previous_update]
-          fail :log_empty_queue
+        step :retrieve_next_queued_update, magnetic_to: %i[success no_previous_update]
+        fail :log_empty_queue
 
         def retrieve_last_update(ctx, **)
           ctx[:last_update] = DailyUpdateTribunalInstance.current
         end
 
-        def ensure_last_daily_import_is_completed(ctx, last_update:, **)
+        def ensure_last_daily_import_is_completed(_, last_update:, **)
           last_update.status == 'COMPLETED'
         end
 
@@ -22,11 +21,11 @@ module TribunalInstance
           ctx[:daily_update] = DailyUpdateTribunalInstance.next_in_queue
         end
 
-        def log_empty_queue(ctx, logger:, **)
+        def log_empty_queue(_, logger:, **)
           logger.error 'No updates have been queued for import.'
         end
 
-        def log_last_update_fail(ctx, logger:, last_update:, **)
+        def log_last_update_fail(_, logger:, last_update:, **)
           logger.error "The last update #{last_update.date} is not completed. Aborting import..."
         end
       end

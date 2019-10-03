@@ -7,7 +7,7 @@ describe PersonnePhysique::Operation::Update do
       numero_gestion: '1A2B3C',
       nom_usage: 'Doe',
       pseudonyme: 'Johnny Johnny',
-      eirl: 'Yep',
+      eirl: 'Yep'
     }
   end
 
@@ -23,14 +23,14 @@ describe PersonnePhysique::Operation::Update do
         create(
           :dossier_entreprise_with_pp,
           code_greffe: data[:code_greffe],
-          numero_gestion: data[:numero_gestion],
+          numero_gestion: data[:numero_gestion]
         )
       end
 
       it { is_expected.to be_success }
 
       it 'updates the given fields' do
-       subject
+        subject
         dossier = DossierEntreprise.find_by(code_greffe: data[:code_greffe], numero_gestion: data[:numero_gestion])
         updated_pp = dossier.personne_physique
 
@@ -39,7 +39,7 @@ describe PersonnePhysique::Operation::Update do
           numero_gestion: '1A2B3C',
           nom_usage: 'Doe',
           pseudonyme: 'Johnny Johnny',
-          eirl: 'Yep',
+          eirl: 'Yep'
         )
       end
     end
@@ -50,7 +50,7 @@ describe PersonnePhysique::Operation::Update do
       create(
         :dossier_entreprise,
         code_greffe: data[:code_greffe],
-        numero_gestion: data[:numero_gestion],
+        numero_gestion: data[:numero_gestion]
       )
     end
 
@@ -64,7 +64,7 @@ describe PersonnePhysique::Operation::Update do
         numero_gestion: '1A2B3C',
         nom_usage: 'Doe',
         pseudonyme: 'Johnny Johnny',
-        eirl: 'Yep',
+        eirl: 'Yep'
       )
     end
 

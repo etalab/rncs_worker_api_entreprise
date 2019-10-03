@@ -10,7 +10,7 @@ module TribunalInstance
           self[:fichier]     = Fichier.new
           self[:representer] = ::TribunalInstance::FichierRepresenter.new self[:fichier]
 
-          pass ->(ctx, logger:, **) { logger.info 'Starting import' }
+          pass ->(_, logger:, **) { logger.info 'Starting import' }
 
           step :parse_xml
           step :extract_data_from_greffes
@@ -19,14 +19,13 @@ module TribunalInstance
           step :create_associations_dossiers_and_entreprises
           step :create_entreprises_hash_with_siren
           step :merge_data_from_code_greffe_0000
-            fail :log_missing_siren_in_main_greffe
-          pass ->(ctx, logger:, **) { logger.info 'Models associations done' }
+          fail :log_missing_siren_in_main_greffe
+          pass ->(_, logger:, **) { logger.info 'Models associations done' }
 
           step :persist
-          pass ->(ctx, logger:, **) { logger.info 'All data persisted' }
+          pass ->(_, logger:, **) { logger.info 'All data persisted' }
 
-
-          def parse_xml(ctx, path:, representer:, **)
+          def parse_xml(_, path:, representer:, **)
             representer.from_xml ::File.read path
           end
 
@@ -37,11 +36,11 @@ module TribunalInstance
             ctx[:entreprises]          = main_greffe.entreprises
           end
 
-          def log_mapping_done(ctx, logger:, dossiers_entreprises:, **)
+          def log_mapping_done(_, logger:, dossiers_entreprises:, **)
             logger.info "Trailblazer mapping done (#{dossiers_entreprises.count} dossiers found)"
           end
 
-          def create_associations_dossiers_and_entreprises(ctx, dossiers_entreprises:, entreprises:, **)
+          def create_associations_dossiers_and_entreprises(_, dossiers_entreprises:, entreprises:, **)
             dossiers_entreprises.each_with_index do |dossier, index|
               # dossiers_entreprises[index] and entreprise[index] refers to the same company
               # they are created in the same time by Trailblazer representer
@@ -86,7 +85,7 @@ module TribunalInstance
             end
           end
 
-          def persist(ctx, dossiers_entreprises:, **)
+          def persist(_, dossiers_entreprises:, **)
             dossiers_entreprises.each(&:save)
           end
         end

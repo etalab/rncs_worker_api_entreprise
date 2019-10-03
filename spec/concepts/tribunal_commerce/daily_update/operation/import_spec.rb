@@ -24,7 +24,7 @@ describe TribunalCommerce::DailyUpdate::Operation::Import, :trb do
     end
 
     describe 'the retrieved daily update for import' do
-      # TODO this spec should be removed when mock/stub/double for operations are setup
+      # TODO: this spec should be removed when mock/stub/double for operations are setup
       # indeed the spec is already tested in the nested operation specs
       it 'is the right one' do
         # According to fixtures data, next queued update to import should be 2018-04-09
@@ -72,11 +72,10 @@ describe TribunalCommerce::DailyUpdate::Operation::Import, :trb do
         # This partial stock will be selected for import before the daily update
         # with the same date
         create(:daily_update_tribunal_commerce,
-               year: '2018', month: '04', day: '09',
-               proceeded: false,
-               partial_stock: true,
-               files_path: Rails.root.join('spec/fixtures/tc/partial_stock/2018/04/09')
-              )
+          year: '2018', month: '04', day: '09',
+          proceeded: false,
+          partial_stock: true,
+          files_path: Rails.root.join('spec/fixtures/tc/partial_stock/2018/04/09'))
       end
 
       it { is_expected.to be_success }

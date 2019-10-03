@@ -21,7 +21,6 @@ module TrailblazerHelper
       queries
     end
 
-
     private
 
     def configured_indexes
@@ -38,22 +37,22 @@ module TrailblazerHelper
 
     def name_for(table, index)
       index_name = ''
-      if multi_columns?(index)
-        index_name = "index_#{table}_#{index.join('_')}"
-      else
-        index_name = "index_#{table}_#{index}"
-      end
+      index_name = if multi_columns?(index)
+                     "index_#{table}_#{index.join('_')}"
+                   else
+                     "index_#{table}_#{index}"
+                   end
 
       index_name
     end
 
     def columns_for(index)
       columns = ''
-      if multi_columns?(index)
-        columns = "(#{index.join(',')})"
-      else
-        columns = "(#{index})"
-      end
+      columns = if multi_columns?(index)
+                  "(#{index.join(',')})"
+                else
+                  "(#{index})"
+                end
 
       columns
     end

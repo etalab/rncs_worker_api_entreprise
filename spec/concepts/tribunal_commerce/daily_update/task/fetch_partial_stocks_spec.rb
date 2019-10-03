@@ -42,7 +42,7 @@ describe TribunalCommerce::DailyUpdate::Task::FetchPartialStocks do
         expect(units_path).to contain_exactly(
           a_string_ending_with('tc/partial_stock/2018/04/09/1234_S2_20180409.zip'),
           a_string_ending_with('tc/partial_stock/2018/04/09/5556_S2_20180409.zip'),
-          a_string_ending_with('tc/partial_stock/2018/04/09/0384_S2_20180409.zip'),
+          a_string_ending_with('tc/partial_stock/2018/04/09/0384_S2_20180409.zip')
         )
       end
     end

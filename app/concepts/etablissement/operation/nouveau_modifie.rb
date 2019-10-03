@@ -4,27 +4,26 @@ class Etablissement
       step :find_dossier_entreprise
       fail :warn_dossier_not_found, Output(:success) => 'End.success'
       step :retrieve_etablissement
-        fail :create_new_etablissement
-        fail :warning_message, Output(:success) => 'End.success'
+      fail :create_new_etablissement
+      fail :warning_message, Output(:success) => 'End.success'
       step :update
 
-
       def find_dossier_entreprise(ctx, data:, **)
-        ctx[:dossier] = DossierEntreprise.find_by({
+        ctx[:dossier] = DossierEntreprise.find_by(
           code_greffe: data[:code_greffe],
           numero_gestion: data[:numero_gestion]
-        })
+        )
       end
 
       def retrieve_etablissement(ctx, dossier:, data:, **)
         ctx[:etablissement] = dossier.etablissements.find_by(id_etablissement: data[:id_etablissement])
       end
 
-      def update(ctx, etablissement:, data:, **)
+      def update(_ctx, etablissement:, data:, **)
         etablissement.update(data)
       end
 
-      def create_new_etablissement(ctx, dossier:, data:, **)
+      def create_new_etablissement(_ctx, dossier:, data:, **)
         dossier.etablissements.create(data)
       end
 

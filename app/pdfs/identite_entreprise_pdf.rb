@@ -28,11 +28,11 @@ class IdentiteEntreprisePdf < Prawn::Document
   end
 
   def setup_utf8_font
-    font_path = "public/fonts/Source_Sans_Pro"
+    font_path = 'public/fonts/Source_Sans_Pro'
     font_families.update('Source Sans Pro' => {
-      normal:      "#{font_path}/SourceSansPro-Regular.ttf",
-      italic:      "#{font_path}/SourceSansPro-Italic.ttf",
-      bold:        "#{font_path}/SourceSansPro-Bold.ttf",
+      normal: "#{font_path}/SourceSansPro-Regular.ttf",
+      italic: "#{font_path}/SourceSansPro-Italic.ttf",
+      bold: "#{font_path}/SourceSansPro-Bold.ttf",
       bold_italic: "#{font_path}/SourceSansPro-BoldItalic.ttf"
     })
 
@@ -71,7 +71,7 @@ class IdentiteEntreprisePdf < Prawn::Document
   end
 
   def page_numbering
-    string = "page <page>/<total>"
+    string = 'page <page>/<total>'
     height_position = -30
     width_page_numbering = 150
     options = {
@@ -87,7 +87,7 @@ class IdentiteEntreprisePdf < Prawn::Document
     repeat(:all) do
       height_position = -40
       padding_left = 200
-      draw_text "Ces informations sont issues du RNCS", at: [bounds.left + padding_left, height_position]
+      draw_text 'Ces informations sont issues du RNCS', at: [bounds.left + padding_left, height_position]
     end
   end
 end

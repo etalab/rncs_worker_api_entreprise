@@ -42,7 +42,7 @@ describe TribunalCommerce::DailyUpdate::Task::FetchUnits do
         expect(units_path).to contain_exactly(
           a_string_ending_with('tc/flux/2018/04/09/0110'),
           a_string_ending_with('tc/flux/2018/04/09/1237'),
-          a_string_ending_with('tc/flux/2018/04/09/9402'),
+          a_string_ending_with('tc/flux/2018/04/09/9402')
         )
       end
     end

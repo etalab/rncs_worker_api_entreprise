@@ -3,20 +3,19 @@ module TribunalInstance
     module Unit
       module Operation
         class LoadTransmission < Trailblazer::Operation
-
           pass :log_import_starts
           step Nested(Files::Operation::CheckMD5)
           step Nested(ZIP::Operation::Extract)
-            fail :log_zip_error, fail_fast: true
+          fail :log_zip_error, fail_fast: true
           pass :log_zip_info
           step :import
-            fail :log_import_error
+          fail :log_import_error
 
           # TODO: find a better solution ?
-          step ->(ctx, dest_directory:, **) { FileUtils.rm_rf(dest_directory) }
-          fail ->(ctx, dest_directory:, **) { FileUtils.rm_rf(dest_directory) }
+          step ->(_, dest_directory:, **) { FileUtils.rm_rf(dest_directory) }
+          fail ->(_, dest_directory:, **) { FileUtils.rm_rf(dest_directory) }
 
-          def log_import_starts(ctx, path:, logger:, **)
+          def log_import_starts(_, path:, logger:, **)
             logger.info "Starting import of transmission: #{path}"
           end
 
@@ -24,7 +23,7 @@ module TribunalInstance
             logger.error ctx[:error]
           end
 
-          def log_zip_info(ctx, logger:, extracted_files:, **)
+          def log_zip_info(_, logger:, extracted_files:, **)
             logger.info "Files extracted: #{extracted_files}"
           end
 
@@ -45,7 +44,7 @@ module TribunalInstance
             end
           end
 
-          def log_import_error(ctx, failed_operation:, path:, logger:, **)
+          def log_import_error(_, failed_operation:, path:, logger:, **)
             logger.error "File (#{failed_operation[:path]} from zip #{path}) import failed error: #{failed_operation[:error]}"
           end
         end

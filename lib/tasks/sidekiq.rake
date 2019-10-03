@@ -21,19 +21,19 @@ namespace :sidekiq do
   end
 
   def display_help
-    queue_names = Sidekiq::Queue.all.map { |q|
+    queue_names = Sidekiq::Queue.all.map do |q|
       q.name.slice! queue_prefix
       q.name
-    }.join(', ')
+    end.join(', ')
 
     puts "It requires an argument: all, #{queue_names}".red
   end
 
   def clear_all_queues
-      Sidekiq::Queue.all.each do |q|
-        q.clear
-        puts "Queue #{q.name} cleared".green
-      end
+    Sidekiq::Queue.all.each do |q|
+      q.clear
+      puts "Queue #{q.name} cleared".green
+    end
   end
 
   def clear_one_queue(name)

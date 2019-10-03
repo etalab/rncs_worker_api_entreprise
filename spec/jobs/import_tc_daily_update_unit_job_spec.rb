@@ -19,7 +19,7 @@ describe ImportTCDailyUpdateUnitJob, :trb do
     it 'calls TribunalCommerce::DailyUpdateUnit::Operation::Load for a unit related to a daily update' do
       expect(TribunalCommerce::DailyUpdateUnit::Operation::Load)
         .to receive(:call)
-        .with({ daily_update_unit: unit, logger: import_logger })
+        .with(daily_update_unit: unit, logger: import_logger)
         .and_return(trb_result_success)
 
       subject
@@ -29,7 +29,7 @@ describe ImportTCDailyUpdateUnitJob, :trb do
       unit.daily_update.update(partial_stock: true)
       expect(TribunalCommerce::PartialStockUnit::Operation::Load)
         .to receive(:call)
-        .with({ daily_update_unit: unit, logger: import_logger })
+        .with(daily_update_unit: unit, logger: import_logger)
         .and_return(trb_result_success)
 
       subject
@@ -59,7 +59,7 @@ describe ImportTCDailyUpdateUnitJob, :trb do
     it 'rollbacks everything written in database' do
       expect(TribunalCommerce::DailyUpdateUnit::Operation::Load)
         .to receive(:call)
-        .and_wrap_original do |original_method, *args|
+        .and_wrap_original do |_original_method, *_args|
         # Write into DB as if the operation did
         create(:daily_update_unit, status: 'GHOST')
         trb_result_failure
@@ -83,7 +83,7 @@ describe ImportTCDailyUpdateUnitJob, :trb do
   def mock_unit_load_operation(result)
     expect(TribunalCommerce::DailyUpdateUnit::Operation::Load)
       .to receive(:call)
-      .with({ daily_update_unit: unit, logger: import_logger })
+      .with(daily_update_unit: unit, logger: import_logger)
       .and_return(result)
   end
 end

@@ -86,7 +86,7 @@ describe TribunalCommerce::DailyUpdate::Operation::Load do
             an_object_having_attributes(year: '2018', month: '04', day: '12', partial_stock?: false),
             an_object_having_attributes(year: '2018', month: '04', day: '13'),
             an_object_having_attributes(year: '2018', month: '04', day: '14'),
-            an_object_having_attributes(year: '2018', month: '04', day: '18'),
+            an_object_having_attributes(year: '2018', month: '04', day: '18')
           )
         end
 
@@ -95,7 +95,7 @@ describe TribunalCommerce::DailyUpdate::Operation::Load do
         it 'ignores older updates' do
           expect(handled_updates).to_not include(
             an_object_having_attributes(year: '2018', month: '04', day: '09'),
-            an_object_having_attributes(year: '2018', month: '04', day: '10'),
+            an_object_having_attributes(year: '2018', month: '04', day: '10')
           )
         end
 
@@ -103,7 +103,7 @@ describe TribunalCommerce::DailyUpdate::Operation::Load do
           expect(handled_updates).to_not include(
             an_object_having_attributes(year: '2016', month: '09', day: '28'),
             an_object_having_attributes(year: '2017', month: '01', day: '28'),
-            an_object_having_attributes(year: '2017', month: '11', day: '08'),
+            an_object_having_attributes(year: '2017', month: '11', day: '08')
           )
         end
       end
@@ -143,11 +143,10 @@ describe TribunalCommerce::DailyUpdate::Operation::Load do
 
           expect(handled_updates).to contain_exactly(
             an_object_having_attributes(year: '2018', month: '04', day: '20', partial_stock?: true, status: 'QUEUED', proceeded: false),
-            an_object_having_attributes(year: '2018', month: '04', day: '21', partial_stock?: true, status: 'QUEUED', proceeded: false),
+            an_object_having_attributes(year: '2018', month: '04', day: '21', partial_stock?: true, status: 'QUEUED', proceeded: false)
           )
         end
       end
-
     end
 
     describe 'available options' do
@@ -164,7 +163,7 @@ describe TribunalCommerce::DailyUpdate::Operation::Load do
 
           expect(handled_updates).to contain_exactly(
             an_object_having_attributes(year: '2018', month: '04', day: '10'),
-            an_object_having_attributes(year: '2018', month: '04', day: '11'),
+            an_object_having_attributes(year: '2018', month: '04', day: '11')
           )
           Timecop.return
         end
@@ -183,7 +182,7 @@ describe TribunalCommerce::DailyUpdate::Operation::Load do
             an_object_having_attributes(year: '2018', month: '04', day: '11'),
             an_object_having_attributes(year: '2018', month: '04', day: '12', partial_stock?: false),
             an_object_having_attributes(year: '2018', month: '04', day: '12', partial_stock?: true),
-            an_object_having_attributes(year: '2018', month: '04', day: '13'),
+            an_object_having_attributes(year: '2018', month: '04', day: '13')
           )
         end
       end

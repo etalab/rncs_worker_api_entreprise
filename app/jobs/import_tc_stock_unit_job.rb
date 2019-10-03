@@ -6,7 +6,7 @@ class ImportTCStockUnitJob < ApplicationJob
   def perform(stock_unit_id)
     import = nil
     @unit = StockUnit.find(stock_unit_id)
-    # TODO Move state update into the underlying operation ??!
+    # TODO: Move state update into the underlying operation ??!
     # stock_unit.update(status: 'LOADING')
 
     wrap_import_with_log_level(:fatal) do

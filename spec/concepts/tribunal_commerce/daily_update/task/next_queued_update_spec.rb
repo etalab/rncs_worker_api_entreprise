@@ -113,23 +113,22 @@ describe TribunalCommerce::DailyUpdate::Task::NextQueuedUpdate do
       end
 
       it { is_expected.to be_failure }
-      its([:error]) { is_expected.to eq("The last update 2017-10-24 is not completed. Aborting import...") }
+      its([:error]) { is_expected.to eq('The last update 2017-10-24 is not completed. Aborting import...') }
     end
   end
-
 
   # Helper methods
   def add_queued_partial_stock(year:, month:, day:, **)
     create(:daily_update_tribunal_commerce,
-           year: year, month: month, day: day,
-           partial_stock: true,
-           proceeded: false)
+      year: year, month: month, day: day,
+      partial_stock: true,
+      proceeded: false)
   end
 
   def add_queued_daily_update(year:, month:, day:, **)
     create(:daily_update_tribunal_commerce,
-           year: year, month: month, day: day,
-           partial_stock: false,
-           proceeded: false)
+      year: year, month: month, day: day,
+      partial_stock: false,
+      proceeded: false)
   end
 end

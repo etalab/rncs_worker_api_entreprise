@@ -15,7 +15,7 @@ namespace :titmc do
       Rails.application.config.active_job.queue_adapter = :sidekiq
       puts "Current Stock: #{current_stock.files_path}".blue
 
-      non_completed_units = current_stock.stock_units.select { |u| u.status != 'COMPLETED' }
+      non_completed_units = current_stock.stock_units.reject { |u| u.status == 'COMPLETED' }
 
       non_completed_units.each do |stock_unit|
         restart_import(stock_unit) do |stock_unit_id|
@@ -38,11 +38,11 @@ namespace :titmc do
 
     desc 'Restart ONE pending stock unit job INLINE (escape \[ in command line for zsh)'
     task :restart_one_job, [:code_greffe] => :prepare_env do |_, args|
-      if args[:code_greffe].nil?
-        units = [current_stock.stock_units.first]
-      else
-        units = current_stock.stock_units.where code_greffe: args[:code_greffe]
-      end
+      units = if args[:code_greffe].nil?
+                [current_stock.stock_units.first]
+              else
+                current_stock.stock_units.where code_greffe: args[:code_greffe]
+              end
 
       units.each do |stock_unit|
         restart_import(stock_unit) do |stock_unit_id|
@@ -79,7 +79,7 @@ namespace :titmc do
       puts "#{success_count} successful import".green
     end
 
-    task prepare_env: :environment do |_, args|
+    task prepare_env: :environment do |_, _args|
       puts "Current Stock: #{current_stock.files_path}".blue
       Rails.application.config.active_job.queue_adapter = :inline
     end

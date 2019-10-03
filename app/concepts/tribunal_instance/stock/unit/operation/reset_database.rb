@@ -5,7 +5,7 @@ module TribunalInstance
         class ResetDatabase < Trailblazer::Operation
           step :reset_database
 
-          def reset_database(ctx, code_greffe:, **)
+          def reset_database(_, code_greffe:, **)
             [
               "DELETE FROM titmc_adresses WHERE code_greffe = '#{code_greffe}';",
               "DELETE FROM titmc_entreprises WHERE code_greffe = '#{code_greffe}';",

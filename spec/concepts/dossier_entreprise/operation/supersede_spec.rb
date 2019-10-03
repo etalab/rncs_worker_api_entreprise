@@ -8,7 +8,7 @@ describe DossierEntreprise::Operation::Supersede do
       siren: '123456789',
       date_immatriculation: 'today',
       sans_activite: 'OUI',
-      date_debut_activite: 'A PAS ACTIVITE',
+      date_debut_activite: 'A PAS ACTIVITE'
     }
   end
 
@@ -17,12 +17,11 @@ describe DossierEntreprise::Operation::Supersede do
   context 'when the dossier exists in database' do
     let(:old_dossier) do
       create(:dossier_entreprise,
-             code_greffe: '1234',
-             numero_gestion: '1A2B3C',
-             siren: '123456789',
-             date_immatriculation: 'hier',
-             sans_activite: 'NON',
-            )
+        code_greffe: '1234',
+        numero_gestion: '1A2B3C',
+        siren: '123456789',
+        date_immatriculation: 'hier',
+        sans_activite: 'NON')
     end
 
     before { old_dossier }
@@ -33,7 +32,7 @@ describe DossierEntreprise::Operation::Supersede do
       ghost = old_dossier
       subject
 
-      expect{ ghost.reload }.to raise_error(ActiveRecord::RecordNotFound)
+      expect { ghost.reload }.to raise_error(ActiveRecord::RecordNotFound)
     end
 
     it 'saves the new one' do

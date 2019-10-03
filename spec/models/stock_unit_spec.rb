@@ -26,7 +26,8 @@ describe StockUnit do
       format_time = current_time.strftime '%Y_%m_%d__%H_%M_%S'
       exptected_log_file = Rails.root.join(
         'log', 'stock',
-        "20171023__0123__1__#{format_time}.log").to_s
+        "20171023__0123__1__#{format_time}.log"
+      ).to_s
 
       expect(Logger)
         .to receive(:new)

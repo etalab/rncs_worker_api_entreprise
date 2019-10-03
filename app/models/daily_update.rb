@@ -3,24 +3,23 @@ class DailyUpdate < ApplicationRecord
 
   class << self
     def current
-      collection = self.where(proceeded: true).order(year: :desc, month: :desc, day: :desc, partial_stock: :asc).limit(1)
+      collection = where(proceeded: true).order(year: :desc, month: :desc, day: :desc, partial_stock: :asc).limit(1)
       collection.first
     end
 
     def last_completed
-     self
-       .where(proceeded: true)
-       .order(year: :desc, month: :desc, day: :desc, partial_stock: :asc)
-       .find { |e| e.status == 'COMPLETED' }
+      where(proceeded: true)
+        .order(year: :desc, month: :desc, day: :desc, partial_stock: :asc)
+        .find { |e| e.status == 'COMPLETED' }
     end
 
     def queued_updates?
-      collection = self.where(proceeded: false)
+      collection = where(proceeded: false)
       !collection.empty?
     end
 
     def next_in_queue
-      collection = self.where(proceeded: false).order(year: :asc, month: :asc, day: :asc, partial_stock: :desc).limit(1)
+      collection = where(proceeded: false).order(year: :asc, month: :asc, day: :asc, partial_stock: :desc).limit(1)
       collection.first
     end
   end
@@ -31,11 +30,11 @@ class DailyUpdate < ApplicationRecord
   end
 
   def newer?(telltale_date)
-    self.date > telltale_date
+    date > telltale_date
   end
 
   def older?(telltale_date)
-    not self.newer?(telltale_date)
+    !newer?(telltale_date)
   end
 
   def status
@@ -62,6 +61,6 @@ class DailyUpdate < ApplicationRecord
   end
 
   def daily_update_units_status
-    self.daily_update_units.pluck(:status)
+    daily_update_units.pluck(:status)
   end
 end

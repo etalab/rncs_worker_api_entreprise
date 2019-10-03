@@ -16,9 +16,13 @@ describe TribunalInstance::DailyUpdate::Operation::Import, :trb do
   describe 'success' do
     before do
       create :daily_update_with_completed_units, year: '2017', month: '05', day: '17', proceeded: true
-      create :daily_update_tribunal_instance,    year: '2017', month: '05', day: '18', proceeded: false,
+      create :daily_update_tribunal_instance,
+        year: '2017',
+        month: '05',
+        day: '18',
+        proceeded: false,
         files_path: Rails.root.join('spec/fixtures/titmc/flux/2017/05/18')
-      create :daily_update_tribunal_instance,    year: '2017', month: '05', day: '19', proceeded: false
+      create :daily_update_tribunal_instance, year: '2017', month: '05', day: '19', proceeded: false
     end
 
     it { is_expected.to be_success }
@@ -52,14 +56,18 @@ describe TribunalInstance::DailyUpdate::Operation::Import, :trb do
 
   describe 'when FetchUnits fails' do
     before do
-      create :daily_update_tribunal_instance, year: '2017', month: '05', day: '19', proceeded: false,
-        files_path: Rails.root.join('spec/fixtures/titmc/flux/2017/05/19')
+      create(:daily_update_tribunal_instance,
+        year: '2017',
+        month: '05',
+        day: '19',
+        proceeded: false,
+        files_path: Rails.root.join('spec/fixtures/titmc/flux/2017/05/19'))
     end
 
     it { is_expected.to be_failure }
 
     it 'logs' do
-      expect(logger).to receive(:error).with(/No directory found in daily update .+\/2017\/05\/19/)
+      expect(logger).to receive(:error).with(%r{No directory found in daily update .+/2017/05/19})
       subject
     end
   end

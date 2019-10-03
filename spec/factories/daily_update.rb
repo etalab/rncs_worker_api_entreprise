@@ -26,7 +26,6 @@ FactoryBot.define do
           create :daily_update_unit, status: 'LOADING', daily_update: update
         end
       end
-
     end
 
     factory :daily_update_tribunal_commerce, class: DailyUpdateTribunalCommerce do

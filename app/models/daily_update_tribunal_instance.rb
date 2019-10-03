@@ -1,3 +1,2 @@
 class DailyUpdateTribunalInstance < DailyUpdate
-
 end

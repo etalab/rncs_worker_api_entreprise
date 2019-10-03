@@ -16,7 +16,7 @@ describe ImportTCStockUnitJob, :trb do
   it 'calls the TribunalCommerce::StockUnit::Operation::Load operation' do
     allow(TribunalCommerce::StockUnit::Operation::Load)
       .to receive(:call)
-      .with({ stock_unit: unit, logger: logger })
+      .with(stock_unit: unit, logger: logger)
       .and_return(trb_result_success)
 
     subject
@@ -26,7 +26,7 @@ describe ImportTCStockUnitJob, :trb do
     before do
       allow(TribunalCommerce::StockUnit::Operation::Load)
         .to receive(:call)
-        .with({ stock_unit: unit, logger: logger })
+        .with(stock_unit: unit, logger: logger)
         .and_return(trb_result_success)
     end
 
@@ -50,7 +50,7 @@ describe ImportTCStockUnitJob, :trb do
     it 'rollbacks everything written in database' do
       expect(TribunalCommerce::StockUnit::Operation::Load)
         .to receive(:call)
-        .and_wrap_original do |original_method, *args|
+        .and_wrap_original do |_original_method, *_args|
         # Write into DB as if the operation did
         create(:stock_unit, status: 'GHOST')
         trb_result_failure
@@ -65,7 +65,7 @@ describe ImportTCStockUnitJob, :trb do
     it 'sets the unit\'s status to "ERROR"' do
       allow(TribunalCommerce::StockUnit::Operation::Load)
         .to receive(:call)
-        .with({ stock_unit: unit, logger: logger })
+        .with(stock_unit: unit, logger: logger)
         .and_return(trb_result_failure)
       subject
       unit.reload

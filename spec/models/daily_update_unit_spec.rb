@@ -39,6 +39,6 @@ describe DailyUpdateUnit do
     end
   end
 
-  # TODO not sure I need this since the logger is mocked
+  # TODO: not sure I need this since the logger is mocked
   after { FileUtils.rm_rf(Dir.glob(Rails.root.join('log/flux/*'))) }
 end

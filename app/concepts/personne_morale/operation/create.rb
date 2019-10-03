@@ -4,12 +4,11 @@ class PersonneMorale
       step :find_dossier_entreprise
       step :save_personne_morale
 
-
       def find_dossier_entreprise(ctx, data:, **)
-        ctx[:dossier] = DossierEntreprise.find_by({
+        ctx[:dossier] = DossierEntreprise.find_by(
           code_greffe: data[:code_greffe],
           numero_gestion: data[:numero_gestion]
-        })
+        )
       end
 
       def save_personne_morale(ctx, dossier:, data:, **)

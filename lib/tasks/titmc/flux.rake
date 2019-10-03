@@ -20,7 +20,7 @@ namespace :titmc do
 
       status_count = latest_update
         .daily_update_units
-        .inject(Hash.new(0)) { |hash, unit| hash[unit.status] += 1 ; hash }
+        .each_with_object(Hash.new(0)) { |unit, hash| hash[unit.status] += 1; }
 
       status_count.each do |status, count|
         puts "#{status}: #{count}"

@@ -5,16 +5,16 @@ class TribunalInstance::DossierEntrepriseRepresenter < Representable::Decorator
   property :siren,          attribute: true
   property :numero_gestion, as: :num_gestion, attribute: true
 
-  property :type_inscription,           default: 'P'
-  property :nom_greffe, reader: ->(represented:, **) do
+  property :type_inscription, default: 'P'
+  property :nom_greffe, reader: lambda { |represented:, **|
     TribunalInstance::DossierEntrepriseRepresenter
       .nom_greffe(represented.code_greffe)
-  end
+  }
   property :date_derniere_modification, as: :dat_donnees, attribute: true
   property :date_immatriculation
 
   nested :idt do
-    property :numero_rcs,      as: :rcs
+    property :numero_rcs, as: :rcs
 
     nested :radiation do
       property :code_radiation,  as: :code

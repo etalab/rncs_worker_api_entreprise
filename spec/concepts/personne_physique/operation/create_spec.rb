@@ -9,7 +9,7 @@ describe PersonnePhysique::Operation::Create do
         code_greffe: '0109',
         numero_gestion: '2016A10937',
         nom_usage: 'Bon',
-        prenoms: 'Jean',
+        prenoms: 'Jean'
       }
     end
     let(:created_pp) { subject[:created_pp] }
@@ -23,7 +23,7 @@ describe PersonnePhysique::Operation::Create do
         code_greffe: '0109',
         numero_gestion: '2016A10937',
         nom_usage: 'Bon',
-        prenoms: 'Jean',
+        prenoms: 'Jean'
       )
     end
 
@@ -37,6 +37,5 @@ describe PersonnePhysique::Operation::Create do
   # This should never happened since dossiers entreprises and personnes physique
   # share the same CSV file
   context 'when the related dossier entreprise is not found' do
-
   end
 end

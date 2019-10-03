@@ -35,7 +35,6 @@ describe TribunalInstance::Stock::Unit::Operation::ResetDatabase, :trb do
     expect { subject }.to change(TribunalInstance::Representant, :count).by -2
   end
 
-
   it 'remains others greffes' do
     subject
     expect(DossierEntreprise.all).to contain_exactly(

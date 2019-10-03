@@ -8,23 +8,22 @@ module TribunalCommerce
         step :create_db_indexes
         step :fill_in_foreign_keys
 
-
-        def import_completed?(ctx, stock_unit:, **)
+        def import_completed?(_, stock_unit:, **)
           overall_import = stock_unit.stock
           overall_import.status == 'COMPLETED'
         end
 
-        def create_db_indexes(ctx, **)
+        def create_db_indexes(_, **)
           create_queries(:tribunal_commerce).each { |query| ActiveRecord::Base.connection.execute(query) }
         end
 
-        def fill_in_foreign_keys(ctx, **)
-          [
-            'personnes_morales',
-            'personnes_physiques',
-            'representants',
-            'etablissements',
-            'observations',
+        def fill_in_foreign_keys(_, **)
+          %w[
+            personnes_morales
+            personnes_physiques
+            representants
+            etablissements
+            observations
           ]
             .each do |t|
             sql = <<-END_SQL

@@ -25,7 +25,7 @@ describe Representant::Operation::Create do
         code_greffe: '9001',
         numero_gestion: '2016A10937',
         qualite: 'Bullshit analyst',
-        prenoms: 'Jean Peuplu',
+        prenoms: 'Jean Peuplu'
       )
     end
 

@@ -14,8 +14,8 @@ describe SectionObservations do
     params = { observations: [
       attributes_for(:observation, date_ajout: '2010-01-04'),
       attributes_for(:observation, date_ajout: '2018-04-31'),
-      attributes_for(:observation, date_ajout: '2010-02-04')]
-    }
+      attributes_for(:observation, date_ajout: '2010-02-04')
+    ] }
     pdf.section_observations params
 
     data = [
@@ -35,8 +35,8 @@ describe SectionObservations do
     params = { observations: [
       attributes_for(:observation, date_ajout: nil),
       attributes_for(:observation, date_ajout: '2018-07-05'),
-      attributes_for(:observation, date_ajout: '2018-02-15')]
-    }
+      attributes_for(:observation, date_ajout: '2018-02-15')
+    ] }
     pdf.section_observations params
 
     last_obs = subject[5]

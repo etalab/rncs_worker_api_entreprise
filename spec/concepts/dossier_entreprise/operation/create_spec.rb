@@ -29,7 +29,7 @@ describe DossierEntreprise::Operation::Create do
     it 'destroys the old dossier' do
       subject
 
-      expect{ existing_dossier.reload }.to raise_error(ActiveRecord::RecordNotFound)
+      expect { existing_dossier.reload }.to raise_error(ActiveRecord::RecordNotFound)
     end
 
     it 'saves the new one' do

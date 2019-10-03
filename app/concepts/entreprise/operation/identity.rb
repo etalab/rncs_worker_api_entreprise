@@ -2,17 +2,16 @@ module Entreprise
   module Operation
     class Identity < Trailblazer::Operation
       step Nested(TribunalCommerce::DailyUpdate::Operation::DBCurrentDate), Output(:fail_fast) => Track(:failure)
-        fail :empty_database, fail_fast: true
+      fail :empty_database, fail_fast: true
       step :verify_siren
-        fail :invalid_siren, fail_fast: true
+      fail :invalid_siren, fail_fast: true
       step :fetch_immatriculation_principale
-        fail :no_immatriculation_principale, fail_fast: true
+      fail :no_immatriculation_principale, fail_fast: true
       step :fetch_etablissement_principal
-        fail :no_etablissement_principal
+      fail :no_etablissement_principal
       step :fetch_identity_data
 
-
-      def verify_siren(ctx, siren:, **)
+      def verify_siren(_, siren:, **)
         Siren.new(siren).valid?
       end
 
