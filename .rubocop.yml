@@ -1,0 +1,79 @@
+---
+AllCops:
+  Exclude:
+    - 'Gemfile'
+    - 'Guardfile'
+    - 'Rakefile'
+    - 'bin/**/*'
+    - 'db/**/*'
+    - 'config/**/*'
+    - 'vendor/**/*'
+
+Style/FrozenStringLiteralComment:
+  Enabled: false
+
+Style/Documentation:
+  Enabled: false
+
+Style/ClassAndModuleChildren:
+  EnforcedStyle: compact
+  Exclude:
+    - 'app/channels/**/*'
+    - 'app/concepts/**/*'
+    - 'spec/support/helpers/trailblazer.rb'
+    - 'spec/support/helpers/representer.rb'
+    - 'app/controllers/api/v1/fiches_identite_controller.rb'
+
+Metrics/BlockLength:
+  Exclude:
+    - 'spec/pdfs/**/*'
+    - 'spec/support/shared_examples/*'
+    - 'spec/factories/**/*'
+    - 'app/representers/**/*'
+  ExcludedMethods:
+    - 'describe'
+    - 'context'
+    - 'namespace'
+
+Metrics/MethodLength:
+  Max: 15
+
+Metrics/LineLength:
+  Max: 120
+  IgnoredPatterns:
+    - '# TODO'
+    - '= ".+"'
+    - "= '.+'"
+    - 'logger'
+    - '`.+`'
+
+Style/SignalException:
+  Exclude:
+    - 'app/concepts/**/*'
+
+Lint/UnreachableCode:
+  Exclude:
+    - 'app/concepts/**/*'
+
+Naming/UncommunicativeMethodParamName:
+  AllowedNames:
+    - '_'
+    - 'nb'
+
+Layout/IndentFirstHashElement:
+  EnforcedStyle: consistent
+
+Layout/MultilineMethodCallIndentation:
+  EnforcedStyle: indented
+
+Layout/AlignArguments:
+  EnforcedStyle: with_fixed_indentation
+
+Layout/IndentFirstArgument:
+  EnforcedStyle: consistent
+
+Style/AsciiComments:
+  Enabled: false
+
+Naming/VariableNumber:
+  EnforcedStyle: snake_case
