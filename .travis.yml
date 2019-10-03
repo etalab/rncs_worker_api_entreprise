@@ -1,9 +1,8 @@
+---
 language: ruby
 rbenv:
-- 1.1.1
+  - 1.1.1
 cache: bundler
-service:
-  - postgresql
 addons:
   postgresql: '9.6'
 before_script:
@@ -13,4 +12,5 @@ before_script:
   - psql -d rncs_worker_api_entreprise_test -f /usr/share/postgresql/9.6/extension/pgcrypto--1.3.sql
   - RAILS_ENV=test bundle exec rails db:migrate
 script:
-- bundle exec rspec
+  - bundle exec rubocop
+  - bundle exec rspec

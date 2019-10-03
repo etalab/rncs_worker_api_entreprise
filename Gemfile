@@ -57,6 +57,7 @@ group :development, :test do
   gem 'rspec-rails'
   gem 'rspec-its'
   gem 'rspec-json_expectations'
+  gem 'rubocop'
   gem 'shoulda-matchers'
   gem 'guard-rspec'
   gem 'factory_bot_rails'
