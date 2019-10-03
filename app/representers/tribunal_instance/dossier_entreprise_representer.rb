@@ -35,8 +35,6 @@ class TribunalInstance::DossierEntrepriseRepresenter < Representable::Decorator
     end
   end
 
-  private
-
   def self.nom_greffe(code_greffe)
     ::YAML.load_file('config/codes_greffes_tribunal_instance.yml')
       .find { |e| e.key?(code_greffe) }&.values&.first

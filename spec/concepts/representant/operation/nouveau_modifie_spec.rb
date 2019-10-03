@@ -55,7 +55,8 @@ describe Representant::Operation::NouveauModifie do
       it 'returns a warning message' do
         warning_msg = subject[:warning]
 
-        expect(warning_msg).to eq('The representant (id_representant: 1, qualite: Président) was not found in dossier (code_greffe: 1234, numero_gestion: 1A2B3C). Representant created instead.')
+        message = 'The representant (id_representant: 1, qualite: Président) was not found in dossier (code_greffe: 1234, numero_gestion: 1A2B3C). Representant created instead.'
+        expect(warning_msg).to eq(message)
       end
     end
   end
@@ -65,7 +66,8 @@ describe Representant::Operation::NouveauModifie do
     it 'returns a warning message' do
       warning_msg = subject[:warning]
 
-      expect(warning_msg).to eq("The dossier (code_greffe: #{data[:code_greffe]}, numero_gestion: #{data[:numero_gestion]}) is not found. The representant (id_representant: #{data[:id_representant]}, qualite: #{data[:qualite]}) is not imported.")
+      message = "The dossier (code_greffe: #{data[:code_greffe]}, numero_gestion: #{data[:numero_gestion]}) is not found. The representant (id_representant: #{data[:id_representant]}, qualite: #{data[:qualite]}) is not imported."
+      expect(warning_msg).to eq(message)
     end
 
     it { is_expected.to be_success }

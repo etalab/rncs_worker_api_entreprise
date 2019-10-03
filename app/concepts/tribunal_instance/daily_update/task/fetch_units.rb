@@ -14,18 +14,15 @@ module TribunalInstance
 
         def deserialize(ctx, daily_update:, units_path:, **)
           daily_update_units = units_path.map do |unit_path|
-            if match = unit_path.match(%r{\A#{daily_update.files_path}/(.{12})_\d{14}TITMCFLUX\Z})
+            return false unless (match = unit_path.match(%r{\A#{daily_update.files_path}/(.{12})_\d{14}TITMCFLUX\Z}))
 
-              reference = match.captures.first
+            reference = match.captures.first
 
-              daily_update.daily_update_units.create(
-                reference: reference,
-                status: 'PENDING',
-                files_path: unit_path
-              )
-            else
-              return false
-            end
+            daily_update.daily_update_units.create(
+              reference: reference,
+              status: 'PENDING',
+              files_path: unit_path
+            )
           end
 
           ctx[:daily_update_units] = daily_update_units

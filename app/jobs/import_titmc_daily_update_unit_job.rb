@@ -20,11 +20,9 @@ class ImportTitmcDailyUpdateUnitJob < ApplicationJob
       @operation = TribunalInstance::DailyUpdate::Unit::Operation::Load
         .call(daily_update_unit: @unit, logger: @logger)
 
-      if @operation.success?
-        @unit.update status: 'COMPLETED'
-      else
-        raise ActiveRecord::Rollback
-      end
+      raise ActiveRecord::Rollback unless @operation.success?
+
+      @unit.update status: 'COMPLETED'
     end
   end
 

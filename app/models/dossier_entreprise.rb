@@ -24,12 +24,14 @@ class DossierEntreprise < ApplicationRecord
 
   # this will not warn about multiple SIE/SEP on this dossier / siren
   def siege_social
-    @siege_social ||= etablissements.find_by(type_etablissement: 'SIE') || etablissements.find_by(type_etablissement: 'SEP')
+    @siege_social ||= etablissements.find_by(type_etablissement: 'SIE') ||
+                      etablissements.find_by(type_etablissement: 'SEP')
   end
 
   # this will not warn about multiple PRI/SEP on this dossier / siren
   def etablissement_principal
-    @etablissement_principal ||= etablissements.find_by(type_etablissement: 'PRI') || etablissements.find_by(type_etablissement: 'SEP')
+    @etablissement_principal ||= etablissements.find_by(type_etablissement: 'PRI') ||
+                                 etablissements.find_by(type_etablissement: 'SEP')
   end
 
   def type_greffe

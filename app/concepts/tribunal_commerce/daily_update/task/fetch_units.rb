@@ -13,7 +13,7 @@ module TribunalCommerce
         # ex : /daily/update/path/0101
         def deserialize(ctx, daily_update:, units_path:, **)
           daily_update_units = units_path.map do |unit_path|
-            next unless match = unit_path.match(%r{\A#{daily_update.files_path}/(\d{4})\Z})
+            next unless (match = unit_path.match(%r{\A#{daily_update.files_path}/(\d{4})\Z}))
 
             code_greffe = match.captures.first
 

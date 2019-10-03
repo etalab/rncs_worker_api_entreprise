@@ -19,17 +19,15 @@ module TribunalInstance
 
         def deserialize(ctx, flux_path_list:, flux_folder:, **)
           daily_updates = flux_path_list.map do |update_path|
-            if match = update_path.match(%r{\A#{flux_folder}/(.{4})/(.{2})/(.{2})\Z})
-              year, month, day = match.captures
-              DailyUpdateTribunalInstance.new(
-                year: year,
-                month: month,
-                day: day,
-                files_path: update_path
-              )
-            else
-              return false
-            end
+            return false unless (match = update_path.match(%r{\A#{flux_folder}/(.{4})/(.{2})/(.{2})\Z}))
+
+            year, month, day = match.captures
+            DailyUpdateTribunalInstance.new(
+              year: year,
+              month: month,
+              day: day,
+              files_path: update_path
+            )
           end
 
           ctx[:daily_updates] = daily_updates

@@ -9,15 +9,15 @@ class SirenFormatValidator < ActiveModel::EachValidator
   end
 
   def validate_structure(record, attribute, value)
-    unless !value.nil? && valid_checksum(value)
-      record.errors.add(attribute, :checksum, message: 'must have luhn_checksum ok')
-    end
+    return if !value.nil? && valid_checksum(value)
+
+    record.errors.add(attribute, :checksum, message: 'must have luhn_checksum ok')
   end
 
   private
 
   def valid_checksum(value)
-    (luhn_checksum(value) % 10) == 0
+    (luhn_checksum(value) % 10).zero?
   end
 
   def luhn_checksum(value)

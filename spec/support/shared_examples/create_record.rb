@@ -13,6 +13,7 @@ shared_examples 'related dossier not found' do
   it 'returns an error message' do
     error_msg = subject[:error]
 
-    expect(error_msg).to eq('The dossier (code_greffe: 9001, numero_gestion: 2016A10937) is not found. Aborting...')
+    expect(error_msg)
+      .to eq('The dossier (code_greffe: 9001, numero_gestion: 2016A10937) is not found. Aborting...')
   end
 end

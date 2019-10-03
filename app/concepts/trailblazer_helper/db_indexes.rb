@@ -36,7 +36,6 @@ module TrailblazerHelper
     end
 
     def name_for(table, index)
-      index_name = ''
       index_name = if multi_columns?(index)
                      "index_#{table}_#{index.join('_')}"
                    else
@@ -47,7 +46,6 @@ module TrailblazerHelper
     end
 
     def columns_for(index)
-      columns = ''
       columns = if multi_columns?(index)
                   "(#{index.join(',')})"
                 else

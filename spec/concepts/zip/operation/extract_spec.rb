@@ -51,6 +51,6 @@ describe ZIP::Operation::Extract do
 
     it { is_expected.to be_failure }
 
-    its([:error]) { is_expected.to match /unzip:  cannot find or open .+you_will_never_find_me.+/ }
+    its([:error]) { is_expected.to match(/unzip:  cannot find or open .+you_will_never_find_me.+/) }
   end
 end

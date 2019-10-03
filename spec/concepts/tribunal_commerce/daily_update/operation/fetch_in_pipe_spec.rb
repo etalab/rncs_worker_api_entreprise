@@ -7,7 +7,8 @@ describe TribunalCommerce::DailyUpdate::Operation::FetchInPipe do
       it { is_expected.to be_failure }
 
       it 'sets an error message' do
-        expect(subject[:error]).to eq("No daily updates found inside #{source_path}. Ensure the folder exists with a valid subfolder structure.")
+        message = "No daily updates found inside #{source_path}. Ensure the folder exists with a valid subfolder structure."
+        expect(subject[:error]).to eq(message)
       end
     end
 

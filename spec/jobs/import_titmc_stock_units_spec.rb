@@ -63,13 +63,15 @@ describe ImportTitmcStockUnitJob, :trb do
 
     describe 'when operation Load fails' do
       it 'rollbacks database' do
+        # rubocop:disable Lint/AmbiguousBlockAssociation
         allow(TribunalInstance::Stock::Unit::Operation::Load)
           .to receive(:call)
             .with(stock_unit: stock_unit, logger: logger)
             .and_wrap_original {
-                create :stock_unit, status: 'GHOST'
-                trb_result_failure
-              }
+              create(:stock_unit, status: 'GHOST')
+              trb_result_failure
+            }
+        # rubocop:enable Lint/AmbiguousBlockAssociation
 
         subject
 

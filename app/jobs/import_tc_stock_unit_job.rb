@@ -3,6 +3,8 @@ class ImportTCStockUnitJob < ApplicationJob
 
   attr_reader :unit
 
+  # TODO: should be refactored to remove Rubocop warnings
+  # rubocop:disable Metrics/AbcSize
   def perform(stock_unit_id)
     import = nil
     @unit = StockUnit.find(stock_unit_id)
@@ -24,6 +26,7 @@ class ImportTCStockUnitJob < ApplicationJob
       unit.update(status: 'ERROR')
     end
   end
+  # rubocop:enable Metrics/AbcSize
 
   private
 

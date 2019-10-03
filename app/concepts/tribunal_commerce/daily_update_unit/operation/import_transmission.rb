@@ -1,3 +1,4 @@
+# rubocop:disable Metrics/ClassLength
 module TribunalCommerce
   module DailyUpdateUnit
     module Operation
@@ -209,3 +210,4 @@ module TribunalCommerce
     end
   end
 end
+# rubocop:enable Metrics/ClassLength

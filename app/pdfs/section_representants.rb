@@ -27,8 +27,6 @@ module SectionRepresentants
     end
 
     data_table << ['Adresse', adresse_representant]
-
-    data_table
   end
 
   def representant_pp

@@ -71,7 +71,9 @@ describe TribunalCommerce::DailyUpdate::Operation::DBCurrentDate do
 
         it { is_expected.to be_failure }
 
-        its([:error]) { is_expected.to eq('Current stock import is still running, please import daily updates when its done.') }
+        its([:error]) do
+          is_expected.to eq('Current stock import is still running, please import daily updates when its done.')
+        end
       end
     end
 
@@ -79,7 +81,8 @@ describe TribunalCommerce::DailyUpdate::Operation::DBCurrentDate do
       it { is_expected.to be_failure }
 
       it 'specifies an error message' do
-        expect(subject[:error]).to eq('No updates or stocks load into database. Please load last stock available first.')
+        message = 'No updates or stocks load into database. Please load last stock available first.'
+        expect(subject[:error]).to eq(message)
       end
     end
   end

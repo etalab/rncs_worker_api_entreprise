@@ -142,8 +142,22 @@ describe TribunalCommerce::DailyUpdate::Operation::Load do
           handled_updates = subject[:daily_updates]
 
           expect(handled_updates).to contain_exactly(
-            an_object_having_attributes(year: '2018', month: '04', day: '20', partial_stock?: true, status: 'QUEUED', proceeded: false),
-            an_object_having_attributes(year: '2018', month: '04', day: '21', partial_stock?: true, status: 'QUEUED', proceeded: false)
+            an_object_having_attributes(
+              year: '2018',
+              month: '04',
+              day: '20',
+              partial_stock?: true,
+              status: 'QUEUED',
+              proceeded: false
+            ),
+            an_object_having_attributes(
+              year: '2018',
+              month: '04',
+              day: '21',
+              partial_stock?: true,
+              status: 'QUEUED',
+              proceeded: false
+            )
           )
         end
       end

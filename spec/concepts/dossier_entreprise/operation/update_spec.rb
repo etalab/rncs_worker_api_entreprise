@@ -27,7 +27,8 @@ describe DossierEntreprise::Operation::Update do
       it 'returns a warning message' do
         warning_msg = subject[:warning]
 
-        expect(warning_msg).to eq('Dossier (numero_gestion: 1A2B3C) not found and no dossier with the siren number 123456789 exist for greffe 1234. Creating new dossier.')
+        message = 'Dossier (numero_gestion: 1A2B3C) not found and no dossier with the siren number 123456789 exist for greffe 1234. Creating new dossier.'
+        expect(warning_msg).to eq(message)
       end
 
       it { is_expected.to be_success }
@@ -61,7 +62,8 @@ describe DossierEntreprise::Operation::Update do
       it 'returns a warning message' do
         warning_msg = subject[:warning]
 
-        expect(warning_msg).to eq('Dossier (numero_gestion: 1A2B3C) not found for greffe 1234, but an existing dossier (numero_gestion: 123ZZZ) is found for siren 123456789 : a new dossier is created besides the existing one.')
+        message = 'Dossier (numero_gestion: 1A2B3C) not found for greffe 1234, but an existing dossier (numero_gestion: 123ZZZ) is found for siren 123456789 : a new dossier is created besides the existing one.'
+        expect(warning_msg).to eq(message)
       end
 
       it { is_expected.to be_success }
@@ -81,7 +83,8 @@ describe DossierEntreprise::Operation::Update do
 
     it 'updates the given fields' do
       subject
-      updated_dossier = DossierEntreprise.find_by(code_greffe: data[:code_greffe], numero_gestion: data[:numero_gestion])
+      updated_dossier = DossierEntreprise
+        .find_by(code_greffe: data[:code_greffe], numero_gestion: data[:numero_gestion])
 
       expect(updated_dossier).to have_attributes(
         date_immatriculation: 'hier',

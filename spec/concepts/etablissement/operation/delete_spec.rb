@@ -32,7 +32,8 @@ describe Etablissement::Operation::Delete do
     it 'returns a warning message' do
       warning_msg = subject[:warning]
 
-      expect(warning_msg).to eq('The etablissement with id (code_greffe: 1234, numero_gestion: 1A2B3C, id_etablissement: 1) does not exist in the database and cannot be deleted')
+      message = 'The etablissement with id (code_greffe: 1234, numero_gestion: 1A2B3C, id_etablissement: 1) does not exist in the database and cannot be deleted'
+      expect(warning_msg).to eq(message)
     end
 
     it { is_expected.to be_success }

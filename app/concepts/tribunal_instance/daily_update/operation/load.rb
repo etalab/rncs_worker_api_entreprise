@@ -29,9 +29,7 @@ module TribunalInstance
         end
 
         def limit_update_to_keep(ctx, daily_updates:, **)
-          if import_option_provided? ctx
-            daily_updates.keep_if { |update| !update.newer?(date_limit_to_import(ctx)) }
-          end
+          daily_updates.keep_if { |update| !update.newer?(date_limit_to_import(ctx)) } if import_option_provided? ctx
 
           ctx[:daily_updates].any?
         end

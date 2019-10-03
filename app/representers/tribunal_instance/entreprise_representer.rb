@@ -111,8 +111,6 @@ class TribunalInstance::EntrepriseRepresenter < Representable::Decorator
     decorator: TribunalInstance::ObservationRepresenter,
     class: TribunalInstance::Observation
 
-  private
-
   def self.numero_rcs_from(xml)
     xml
       .children

@@ -51,13 +51,15 @@ describe ImportTitmcDailyUpdateUnitJob, :trb do
 
     describe 'when Load operation fails' do
       before do
+        # rubocop:disable Lint/AmbiguousBlockAssociation
         allow(TribunalInstance::DailyUpdate::Unit::Operation::Load)
           .to receive(:call)
             .with(daily_update_unit: unit, logger: logger)
             .and_wrap_original {
-                create :daily_update_unit, status: 'GHOST'
-                trb_result_failure
-              }
+              create :daily_update_unit, status: 'GHOST'
+              trb_result_failure
+            }
+        # rubocop:enable Lint/AmbiguousBlockAssociation
       end
 
       it 'rollbacks database' do

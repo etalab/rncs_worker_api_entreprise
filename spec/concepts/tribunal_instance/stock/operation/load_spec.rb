@@ -90,7 +90,8 @@ describe TribunalInstance::Stock::Operation::Load do
     it_behaves_like 'failure that does nothing'
 
     it 'logs an error' do
-      expect(logger).to receive(:error).with /No stock found inside .+ Ensure the folder exists with a valid subfolder structure./
+      expect(logger).to receive(:error)
+        .with(/No stock found inside .+ Ensure the folder exists with a valid subfolder structure./)
       subject
     end
   end
@@ -116,7 +117,7 @@ describe TribunalInstance::Stock::Operation::Load do
     end
 
     it 'logs an error' do
-      expect(logger).to receive(:error).with /No stock units found in .+/
+      expect(logger).to receive(:error).with(/No stock units found in .+/)
       subject
     end
   end

@@ -17,17 +17,16 @@ module TribunalCommerce
 
         def deserialize_partial_stock_units(ctx, daily_update:, partial_stocks_path:, **)
           partial_stock_units = partial_stocks_path.map do |unit_path|
-            if match = unit_path.match(%r{\A#{daily_update.files_path}/(\d{4})_S(\d)_\d{8}\.zip\Z})
-              code_greffe = match.captures.first
+            match = unit_path.match(%r{\A#{daily_update.files_path}/(\d{4})_S(\d)_\d{8}\.zip\Z})
+            raise DeserializeError unless match
 
-              daily_update.daily_update_units.create(
-                reference: code_greffe,
-                files_path: unit_path,
-                status: 'PENDING'
-              )
-            else
-              raise DeserializeError
-            end
+            code_greffe = match.captures.first
+
+            daily_update.daily_update_units.create(
+              reference: code_greffe,
+              files_path: unit_path,
+              status: 'PENDING'
+            )
           end
           ctx[:partial_stock_units] = partial_stock_units
         rescue DeserializeError

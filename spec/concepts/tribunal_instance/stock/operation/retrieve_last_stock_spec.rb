@@ -11,14 +11,22 @@ describe TribunalInstance::Stock::Operation::RetrieveLastStock do
       let(:source_path) { Rails.root.join('spec', 'fixtures', 'tc', 'no_stocks_here', 'got_you') }
 
       it { is_expected.to be_failure }
-      its([:error]) { is_expected.to eq("No stock found inside #{source_path}. Ensure the folder exists with a valid subfolder structure.") }
+      its([:error]) do
+        is_expected.to eq(
+          "No stock found inside #{source_path}. Ensure the folder exists with a valid subfolder structure."
+        )
+      end
     end
 
     context 'when folder structure for stocks is unexpected' do
       let(:source_path) { Rails.root.join('spec', 'fixtures', 'tc', 'no_stocks_here') }
 
       it { is_expected.to be_failure }
-      its([:error]) { is_expected.to eq("No stock found inside #{source_path}. Ensure the folder exists with a valid subfolder structure.") }
+      its([:error]) do
+        is_expected.to eq(
+          "No stock found inside #{source_path}. Ensure the folder exists with a valid subfolder structure."
+        )
+      end
     end
   end
 

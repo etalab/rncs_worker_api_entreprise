@@ -39,6 +39,7 @@ class IdentiteEntreprisePdf < Prawn::Document
     font 'Source Sans Pro'
   end
 
+  # rubocop:disable Metrics/AbcSize
   def build_pdf
     section_title @dossier
     move_down 20
@@ -52,6 +53,7 @@ class IdentiteEntreprisePdf < Prawn::Document
     move_down 20
     section_bodacc @dossier
   end
+  # rubocop:enable Metrics/AbcSize
 
   def section_identite
     if personne_morale?

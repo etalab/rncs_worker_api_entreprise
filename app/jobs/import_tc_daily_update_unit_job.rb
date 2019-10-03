@@ -3,6 +3,8 @@ class ImportTCDailyUpdateUnitJob < ApplicationJob
 
   attr_reader :unit
 
+  # TODO: should be refactored to remove Rubocop warnings
+  # rubocop:disable Metrics/AbcSize
   def perform(daily_update_id)
     import = nil
     @unit = DailyUpdateUnit.find(daily_update_id)
@@ -23,6 +25,7 @@ class ImportTCDailyUpdateUnitJob < ApplicationJob
       unit.update(status: 'ERROR')
     end
   end
+  # rubocop:enable Metrics/AbcSize
 
   private
 

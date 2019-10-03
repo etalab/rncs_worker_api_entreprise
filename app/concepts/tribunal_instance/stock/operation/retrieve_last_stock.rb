@@ -17,12 +17,10 @@ module TribunalInstance
 
         def deserialize(ctx, stock_path_list:, stocks_folder:, stock_class:, **)
           stock_list = stock_path_list.map do |path|
-            if match = path.match(%r{\A#{stocks_folder}/(.{4})/(.{2})/(.{2})\Z})
-              year, month, day = match.captures
-              stock_class.new(year: year, month: month, day: day, files_path: path)
-            else
-              return false
-            end
+            return false unless (match = path.match(%r{\A#{stocks_folder}/(.{4})/(.{2})/(.{2})\Z}))
+
+            year, month, day = match.captures
+            stock_class.new(year: year, month: month, day: day, files_path: path)
           end
 
           ctx[:stock_list] = stock_list

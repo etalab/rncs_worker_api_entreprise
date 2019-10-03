@@ -7,7 +7,9 @@ describe TribunalInstance::DailyUpdate::Unit::Operation::Load, :trb do
   let(:logger) { instance_double(Logger).as_null_object }
 
   describe 'Daily update unit with 2 transmissions' do
-    let(:path) { Rails.root.join 'spec', 'fixtures', 'titmc', 'flux', '2017', '05', '18', '0Hnni3p82a62_20170509212412TITMCFLUX' }
+    let(:path) do
+      Rails.root.join 'spec', 'fixtures', 'titmc', 'flux', '2017', '05', '18', '0Hnni3p82a62_20170509212412TITMCFLUX'
+    end
 
     before do
       allow(TribunalInstance::DailyUpdate::Unit::Operation::LoadTransmission)
@@ -45,7 +47,9 @@ describe TribunalInstance::DailyUpdate::Unit::Operation::Load, :trb do
   end
 
   context 'when one transmission fails' do
-    let(:path) { Rails.root.join 'spec', 'fixtures', 'titmc', 'flux', '2017', '05', '18', '0Hnni3p82a62_20170509212412TITMCFLUX' }
+    let(:path) do
+      Rails.root.join 'spec', 'fixtures', 'titmc', 'flux', '2017', '05', '18', '0Hnni3p82a62_20170509212412TITMCFLUX'
+    end
 
     before do
       allow(TribunalInstance::DailyUpdate::Unit::Operation::LoadTransmission)
@@ -66,7 +70,9 @@ describe TribunalInstance::DailyUpdate::Unit::Operation::Load, :trb do
   end
 
   context 'when no transmission found' do
-    let(:path) { Rails.root.join 'spec', 'fixtures', 'titmc', 'flux', '2017', '05', '18', '0NKxyI4J7iuk_20170517210602TITMCFLUX' }
+    let(:path) do
+      Rails.root.join 'spec', 'fixtures', 'titmc', 'flux', '2017', '05', '18', '0NKxyI4J7iuk_20170517210602TITMCFLUX'
+    end
 
     it { is_expected.to be_failure }
 

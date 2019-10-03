@@ -18,18 +18,16 @@ module TribunalCommerce
 
         def deserialize(ctx, partial_stock_path_list:, partial_stock_folder:, **)
           partial_stocks = partial_stock_path_list.map do |stock_path|
-            if match = stock_path.match(%r{\A#{partial_stock_folder}/(.{4})/(.{2})/(.{2})\Z})
-              year, month, day = match.captures
-              DailyUpdateTribunalCommerce.new(
-                year: year,
-                month: month,
-                day: day,
-                files_path: stock_path,
-                partial_stock: true
-              )
-            else
-              return false
-            end
+            return false unless (match = stock_path.match(%r{\A#{partial_stock_folder}/(.{4})/(.{2})/(.{2})\Z}))
+
+            year, month, day = match.captures
+            DailyUpdateTribunalCommerce.new(
+              year: year,
+              month: month,
+              day: day,
+              files_path: stock_path,
+              partial_stock: true
+            )
           end
 
           ctx[:partial_stocks] = partial_stocks

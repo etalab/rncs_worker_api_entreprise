@@ -45,6 +45,8 @@ describe TribunalInstance::Representant do
     its(:adresse_representant) { is_expected.to have_attributes(ligne_1: 'Ceci est une adresse de représentant') }
 
     its(:adresse_representant_permanent) { is_expected.to be_a TribunalInstance::AdresseRepresentantPermanent }
-    its(:adresse_representant_permanent) { is_expected.to have_attributes(ligne_1: 'Ceci est une adresse de représentant permanent') }
+    its(:adresse_representant_permanent) do
+      is_expected.to have_attributes(ligne_1: 'Ceci est une adresse de représentant permanent')
+    end
   end
 end

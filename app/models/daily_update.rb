@@ -37,6 +37,7 @@ class DailyUpdate < ApplicationRecord
     !newer?(telltale_date)
   end
 
+  # rubocop:disable Metrics/PerceivedComplexity, Style/GuardClause, Metrics/CyclomaticComplexity
   def status
     child_status = daily_update_units_status
 
@@ -59,6 +60,7 @@ class DailyUpdate < ApplicationRecord
       return 'PENDING'
     end
   end
+  # rubocop:enable Metrics/PerceivedComplexity, Style/GuardClause, Metrics/CyclomaticComplexity
 
   def daily_update_units_status
     daily_update_units.pluck(:status)

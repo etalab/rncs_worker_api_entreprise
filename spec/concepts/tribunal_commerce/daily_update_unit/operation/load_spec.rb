@@ -57,14 +57,16 @@ describe TribunalCommerce::DailyUpdateUnit::Operation::Load, :trb do
       end
 
       it 'logs each transmission\'s import success' do
-        (21..24).each { |nb| expect(logger).to receive(:info).with("Import of transmission number #{nb} is complete !") }
+        (21..24).each do |nb|
+          expect(logger).to receive(:info).with("Import of transmission number #{nb} is complete !")
+        end
 
         subject
       end
 
       it 'logs the overall unit\'s import success' do
-        expect(logger).to receive(:info)
-          .with("Each transmission has been successfuly imported. The daily update is a success for greffe #{unit.reference} !")
+        message = "Each transmission has been successfuly imported. The daily update is a success for greffe #{unit.reference} !"
+        expect(logger).to receive(:info).with(message)
 
         subject
       end

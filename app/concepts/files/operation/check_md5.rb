@@ -11,7 +11,7 @@ module Files
       pass :log_success
 
       def parse_md5_filename(ctx, path:, **)
-        ctx[:md5_filename] = path.gsub /\..*$/, '.md5'
+        ctx[:md5_filename] = path.gsub(/\..*$/, '.md5')
       end
 
       def read_md5_file_hash(ctx, md5_filename:, **)

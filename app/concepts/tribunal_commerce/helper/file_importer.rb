@@ -111,6 +111,8 @@ module TribunalCommerce
 
       private
 
+      # TODO: refactor to remove Rubocop warning
+      # rubocop:disable Metrics/AbcSize
       def import_line_by_line(file_path, file_header_mapping, line_processor)
         logger.info("Starting import of #{file_path} with #{line_processor} :")
         file_reader = file_reader_class.new(file_path, file_header_mapping, keep_nil: false)
@@ -127,6 +129,7 @@ module TribunalCommerce
         end
         logger.info("Import of file #{file_path} is complete !")
       end
+      # rubocop:enable Metrics/AbcSize
 
       def bulk_import(file_path, file_header_mapping, imported_model)
         logger.info("Starting bulk import of #{imported_model} from `#{file_path}`:")

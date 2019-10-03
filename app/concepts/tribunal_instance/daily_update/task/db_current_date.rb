@@ -15,7 +15,7 @@ module TribunalInstance
 
         def queued_updates?(_, **)
           !DailyUpdateTribunalInstance.queued_updates?
-         end
+        end
 
         def latest_daily_update_imported(ctx, **)
           ctx[:current_daily_update] = DailyUpdateTribunalInstance.current

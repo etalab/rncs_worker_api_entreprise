@@ -43,8 +43,9 @@ module TribunalInstance
           def create_associations_dossiers_and_entreprises(_, dossiers_entreprises:, entreprises:, **)
             dossiers_entreprises.each_with_index do |dossier, index|
               # dossiers_entreprises[index] and entreprise[index] refers to the same company
-              # they are created in the same time by Trailblazer representer
-              # equivalent as : dossier.titmc_entreprise = entreprises.find_by(siren: dossier.siren, numero_gestion: dossier.numero_gestion)
+              # they are created in the same time by Trailblazer representer, equivalent as :
+              # dossier.titmc_entreprise = entreprises
+              #   .find_by(siren: dossier.siren, numero_gestion: dossier.numero_gestion)
               # but faster
               # so we can do this safely:
               dossier.titmc_entreprise = entreprises[index]
@@ -80,9 +81,9 @@ module TribunalInstance
           end
 
           def log_missing_siren_in_main_greffe(ctx, logger:, **)
-            if ctx[:missing_siren]
-              logger.error "No entreprise found in main greffe section for entreprise #{ctx[:missing_siren]} of greffe 0000"
-            end
+            return unless ctx[:missing_siren]
+
+            logger.error "No entreprise found in main greffe section for entreprise #{ctx[:missing_siren]} of greffe 0000"
           end
 
           def persist(_, dossiers_entreprises:, **)

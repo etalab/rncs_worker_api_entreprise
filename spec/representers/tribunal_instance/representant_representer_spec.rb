@@ -6,7 +6,7 @@ describe TribunalInstance::RepresentantRepresenter, :representer do
 
     it { is_expected.to be_a TribunalInstance::Representant }
 
-    its(:code_greffe)                              { is_expected.to eq '0000' }
+    its(:code_greffe)                            { is_expected.to eq '0000' }
     its(:qualite)                                { is_expected.to eq '1200' }
     its(:raison_sociale_ou_nom_ou_prenom)        { is_expected.to eq 'OULAC JOSEPH CHARLEMAGNE ALEXANDRE' }
     its(:nom_ou_denomination)                    { is_expected.to eq 'OULAC' }
@@ -39,7 +39,6 @@ describe TribunalInstance::RepresentantRepresenter, :representer do
   describe 'representant PM' do
     subject { entreprise_greffe_0000.representants[1] }
 
-    its(:adresse_representant_permanent)         { is_expected.to be_a TribunalInstance::AdresseRepresentantPermanent }
     its(:greffe_immatriculation)                 { is_expected.to eq 'PARIS' }
     its(:siren_ou_numero_gestion)                { is_expected.to eq '123456789' }
     its(:forme_juridique)                        { is_expected.to eq '9999' }
@@ -50,5 +49,7 @@ describe TribunalInstance::RepresentantRepresenter, :representer do
     its(:representant_permanent_date_naissance)  { is_expected.to eq 'REP DATE' }
     its(:representant_permanent_ville_naissance) { is_expected.to eq 'REP VILLE' }
     its(:representant_permanent_pays_naissance)  { is_expected.to eq 'REP PAYS' }
+
+    its(:adresse_representant_permanent) { is_expected.to be_a TribunalInstance::AdresseRepresentantPermanent }
   end
 end

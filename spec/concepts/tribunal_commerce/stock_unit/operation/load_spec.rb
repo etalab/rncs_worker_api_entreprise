@@ -77,8 +77,16 @@ describe TribunalCommerce::StockUnit::Operation::Load, :trb do
         a_hash_including(code_greffe: '0121', label: 'rep', path: a_string_ending_with('0121_S1_20170128_5_rep.csv')),
         a_hash_including(code_greffe: '0121', label: 'ets', path: a_string_ending_with('0121_S1_20170128_8_ets.csv')),
         a_hash_including(code_greffe: '0121', label: 'obs', path: a_string_ending_with('0121_S1_20170128_11_obs.csv')),
-        a_hash_including(code_greffe: '0121', label: 'actes', path: a_string_ending_with('0121_S1_20170128_12_actes.csv')),
-        a_hash_including(code_greffe: '0121', label: 'comptes_annuels', path: a_string_ending_with('0121_S1_20170128_13_comptes_annuels.csv'))
+        a_hash_including(
+          code_greffe: '0121',
+          label: 'actes',
+          path: a_string_ending_with('0121_S1_20170128_12_actes.csv')
+        ),
+        a_hash_including(
+          code_greffe: '0121',
+          label: 'comptes_annuels',
+          path: a_string_ending_with('0121_S1_20170128_13_comptes_annuels.csv')
+        )
       )
     end
 

@@ -12,27 +12,27 @@ describe TribunalInstance::Stock::Unit::Operation::ResetDatabase, :trb do
   end
 
   it 'deletes dossier' do
-    expect { subject }.to change(DossierEntreprise, :count).by -1
+    expect { subject }.to change(DossierEntreprise, :count).by(-1)
   end
 
   it 'deletes adresses' do
-    expect { subject }.to change(TribunalInstance::Adresse, :count).by -9
+    expect { subject }.to change(TribunalInstance::Adresse, :count).by(-9)
   end
 
   it 'deletes entreprise' do
-    expect { subject }.to change(TribunalInstance::Entreprise, :count).by -1
+    expect { subject }.to change(TribunalInstance::Entreprise, :count).by(-1)
   end
 
   it 'deletes établissements' do
-    expect { subject }.to change(TribunalInstance::Etablissement, :count).by -2
+    expect { subject }.to change(TribunalInstance::Etablissement, :count).by(-2)
   end
 
   it 'deletes observations' do
-    expect { subject }.to change(TribunalInstance::Observation, :count).by -4
+    expect { subject }.to change(TribunalInstance::Observation, :count).by(-4)
   end
 
   it 'deletes représentants' do
-    expect { subject }.to change(TribunalInstance::Representant, :count).by -2
+    expect { subject }.to change(TribunalInstance::Representant, :count).by(-2)
   end
 
   it 'remains others greffes' do

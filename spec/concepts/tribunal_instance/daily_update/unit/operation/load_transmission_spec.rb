@@ -98,7 +98,7 @@ describe TribunalInstance::DailyUpdate::Unit::Operation::LoadTransmission, :trb 
     it 'logs an error' do
       expect(logger)
         .to receive(:error)
-        .with /.+this file is not\n  a zipfile.+/
+        .with(/.+this file is not\n  a zipfile.+/)
       subject
     end
   end

@@ -44,7 +44,13 @@ describe Entreprise::Operation::Identity do
 
     context 'when the immatriculation principale is found' do
       let(:siren) { valid_siren }
-      let!(:dossier) { create(:dossier_entreprise, code_greffe: 'code_test', numero_gestion: 'numero_test', type_inscription: 'P', siren: siren) }
+      let!(:dossier) do
+        create(:dossier_entreprise,
+          code_greffe: 'code_test',
+          numero_gestion: 'numero_test',
+          type_inscription: 'P',
+          siren: siren)
+      end
 
       before do
         allow(DossierEntreprise).to receive(:immatriculation_principale)
@@ -127,7 +133,8 @@ describe Entreprise::Operation::Identity do
           end
 
           it 'returns etablissement principal' do
-            etablissement_principal = entreprise_identity.fetch(:dossier_entreprise_greffe_principal).fetch(:etablissement_principal)
+            etablissement_principal = entreprise_identity.fetch(:dossier_entreprise_greffe_principal)
+              .fetch(:etablissement_principal)
             expect(etablissement_principal).to include enseigne: 'do not forget me'
           end
         end

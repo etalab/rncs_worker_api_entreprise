@@ -3,7 +3,7 @@ class Stock < ApplicationRecord
 
   class << self
     def first_load?
-      count == 0
+      count.zero?
     end
 
     def current
@@ -27,6 +27,7 @@ class Stock < ApplicationRecord
     end
   end
 
+  # rubocop:disable Style/GuardClause
   def status
     child_status = stock_units_status
 
@@ -43,6 +44,7 @@ class Stock < ApplicationRecord
       return 'ERROR'
     end
   end
+  # rubocop:enable Style/GuardClause
 
   def stock_units_status
     stock_units.pluck(:status)

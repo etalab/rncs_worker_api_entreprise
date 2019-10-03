@@ -16,7 +16,9 @@ describe TribunalInstance::Stock::Unit::Operation::Import, :trb do
 
     its([:dossiers_entreprises]) { are_expected.to all be_persisted }
     its([:dossiers_entreprises]) { are_expected.to all have_attributes code_greffe: '9712' }
-    its([:dossiers_entreprises]) { are_expected.to all have_attributes titmc_entreprise: be_a(TribunalInstance::Entreprise) }
+    its([:dossiers_entreprises]) do
+      are_expected.to all have_attributes titmc_entreprise: be_a(TribunalInstance::Entreprise)
+    end
 
     it 'persists 2 entreprises' do
       expect { subject }.to change(TribunalInstance::Entreprise, :count).by 2
@@ -56,7 +58,8 @@ describe TribunalInstance::Stock::Unit::Operation::Import, :trb do
     it { is_expected.to be_failure }
 
     it 'logs an error' do
-      expect(logger).to receive(:error).with('No entreprise found in main greffe section for entreprise 123456789 of greffe 0000')
+      expect(logger).to receive(:error)
+        .with('No entreprise found in main greffe section for entreprise 123456789 of greffe 0000')
       subject
     end
   end

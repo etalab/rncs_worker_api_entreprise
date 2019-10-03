@@ -54,13 +54,17 @@ describe SectionRepresentants do
 
   context 'type_representant' do
     it 'matches anything like pHysiQue' do
-      pdf.section_representants representants: [attributes_for(:representant_pp, type_representant: 'Truc pHysiquE.?')]
+      pdf.section_representants(
+        representants: [attributes_for(:representant_pp, type_representant: 'Truc pHysiquE.?')]
+      )
 
       expect(subject).to include 'Nom, prénoms'
     end
 
     it 'matches anything like mOralE' do
-      pdf.section_representants representants: [attributes_for(:representant_pm, type_representant: '88 mOralEs!')]
+      pdf.section_representants(
+        representants: [attributes_for(:representant_pm, type_representant: '88 mOralEs!')]
+      )
 
       expect(subject).to include 'Dénomination'
     end

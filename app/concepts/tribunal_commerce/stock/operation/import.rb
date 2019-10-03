@@ -40,7 +40,7 @@ module TribunalCommerce
         def fetch_related_stock_units(_, new_stock:, logger:, **)
           greffe_units = Dir.glob("#{new_stock.files_path}/*.zip")
           greffe_units.each do |unit_path|
-            if match = unit_path.match(%r{\A.+/(\d{4})_S(\d)_\d{8}\.zip\Z})
+            if (match = unit_path.match(%r{\A.+/(\d{4})_S(\d)_\d{8}\.zip\Z}))
               code_greffe, unit_number = match.captures
 
               new_stock.stock_units.create(
@@ -54,8 +54,6 @@ module TribunalCommerce
               return false
             end
           end
-
-          true
         end
 
         def import(_, new_stock:, **)

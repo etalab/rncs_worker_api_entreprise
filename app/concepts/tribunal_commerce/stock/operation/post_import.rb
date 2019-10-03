@@ -18,14 +18,7 @@ module TribunalCommerce
         end
 
         def fill_in_foreign_keys(_, **)
-          %w[
-            personnes_morales
-            personnes_physiques
-            representants
-            etablissements
-            observations
-          ]
-            .each do |t|
+          table_names.each do |t|
             sql = <<-END_SQL
               UPDATE #{t}
               SET dossier_entreprise_id = dossiers_entreprises.id
@@ -36,6 +29,18 @@ module TribunalCommerce
             END_SQL
             ActiveRecord::Base.connection.execute(sql)
           end
+        end
+
+        private
+
+        def table_names
+          %w[
+            personnes_morales
+            personnes_physiques
+            representants
+            etablissements
+            observations
+          ]
         end
       end
     end
