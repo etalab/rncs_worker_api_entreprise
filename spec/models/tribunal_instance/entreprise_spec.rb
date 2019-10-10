@@ -37,7 +37,7 @@ describe TribunalInstance::Entreprise do
   it { is_expected.to have_db_column(:dossier_entreprise_id).of_type(:string) }
 
   # Associations
-  it { is_expected.to belong_to :dossier_entreprise }
+  it { is_expected.to belong_to(:dossier_entreprise) }
   it { is_expected.to have_one(:adresse_siege).dependent(:destroy) }
   it { is_expected.to have_one(:adresse_domiciliataire).dependent(:destroy) }
   it { is_expected.to have_one(:adresse_dap).dependent(:destroy) }
@@ -48,20 +48,20 @@ describe TribunalInstance::Entreprise do
   describe 'dossier TITMC' do
     subject { create :titmc_entreprise }
 
-    its(:adresse_siege) { is_expected.to be_a TribunalInstance::AdresseSiege }
-    its(:adresse_siege) { is_expected.to have_attributes ligne_1: 'Ceci est une adresse de siège' }
+    its(:adresse_siege) { is_expected.to be_a(TribunalInstance::AdresseSiege) }
+    its(:adresse_siege) { is_expected.to have_attributes(ligne_1: 'Ceci est une adresse de siège') }
 
-    its(:adresse_domiciliataire) { is_expected.to be_a TribunalInstance::AdresseDomiciliataire }
-    its(:adresse_domiciliataire) { is_expected.to have_attributes ligne_1: 'Ceci est l adresse du domiciliataire' }
+    its(:adresse_domiciliataire) { is_expected.to be_a(TribunalInstance::AdresseDomiciliataire) }
+    its(:adresse_domiciliataire) { is_expected.to have_attributes(ligne_1: 'Ceci est l adresse du domiciliataire') }
 
-    its(:adresse_dap) { is_expected.to be_a TribunalInstance::AdresseDAP }
-    its(:adresse_dap) { is_expected.to have_attributes residence: 'Ceci est une résidence DAP' }
+    its(:adresse_dap) { is_expected.to be_a(TribunalInstance::AdresseDAP) }
+    its(:adresse_dap) { is_expected.to have_attributes(residence: 'Ceci est une résidence DAP') }
 
-    its(:etablissements) { are_expected.to all be_a TribunalInstance::Etablissement }
-    its(:etablissements) { are_expected.to all have_attributes precedent_exploitant_nom: 'me' }
+    its(:etablissements) { are_expected.to all(be_a(TribunalInstance::Etablissement)) }
+    its(:etablissements) { are_expected.to all(have_attributes(precedent_exploitant_nom: 'me')) }
 
-    its(:representants) { are_expected.to all be_a TribunalInstance::Representant }
-    its(:representants) { are_expected.to all have_attributes type_representant: 'PM' }
+    its(:representants) { are_expected.to all(be_a(TribunalInstance::Representant)) }
+    its(:representants) { are_expected.to all(have_attributes(type_representant: 'PM')) }
   end
 
   it_behaves_like 'having rails timestamps'

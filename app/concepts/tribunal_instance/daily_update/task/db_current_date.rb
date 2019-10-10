@@ -30,15 +30,15 @@ module TribunalInstance
         end
 
         def log_incomplete_update(_, logger:, **)
-          logger.error 'The current update is still running. Aborting...'
+          logger.error('The current update is still running. Aborting...')
         end
 
         def log_updates_waiting_for_import(_, logger:, **)
-          logger.error 'Pending daily updates found in database. Aborting...'
+          logger.error('Pending daily updates found in database. Aborting...')
         end
 
         def log_no_daily_update(_, logger:, **)
-          logger.info 'No existing daily update found, proceeding...'
+          logger.info('No existing daily update found, proceeding...')
         end
       end
     end

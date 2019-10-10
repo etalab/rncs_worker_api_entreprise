@@ -35,11 +35,13 @@ shared_examples '.import' do
     current_time = Time.now
     Timecop.freeze(current_time)
     expect(described_class).to receive(:insert_all!)
-      .with(a_collection_containing_exactly(
-        { code_greffe: '1', numero_gestion: 'A1', siren: 'siren1', created_at: current_time, updated_at: current_time },
-        { code_greffe: '2', numero_gestion: 'B2', siren: 'siren2', created_at: current_time, updated_at: current_time },
-        code_greffe: '3', numero_gestion: 'C3', siren: 'siren3', created_at: current_time, updated_at: current_time
-      ))
+      .with(
+        a_collection_containing_exactly(
+          { code_greffe: '1', numero_gestion: 'A1', siren: 'siren1', created_at: current_time, updated_at: current_time },
+          { code_greffe: '2', numero_gestion: 'B2', siren: 'siren2', created_at: current_time, updated_at: current_time },
+          { code_greffe: '3', numero_gestion: 'C3', siren: 'siren3', created_at: current_time, updated_at: current_time }
+        )
+      )
 
     subject
     Timecop.return

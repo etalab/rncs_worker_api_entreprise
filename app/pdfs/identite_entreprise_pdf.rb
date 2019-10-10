@@ -11,7 +11,7 @@ class IdentiteEntreprisePdf < Prawn::Document
   include SectionTitle
 
   def initialize(dossier_entreprise_greffe_principal:)
-    super margin: [50, 30, 50, 30]
+    super(margin: [50, 30, 50, 30])
 
     @dossier = dossier_entreprise_greffe_principal
 
@@ -23,43 +23,45 @@ class IdentiteEntreprisePdf < Prawn::Document
   private
 
   def configure_text_options
-    default_leading 2
+    default_leading(2)
     setup_utf8_font
   end
 
   def setup_utf8_font
     font_path = 'public/fonts/Source_Sans_Pro'
-    font_families.update('Source Sans Pro' => {
-      normal: "#{font_path}/SourceSansPro-Regular.ttf",
-      italic: "#{font_path}/SourceSansPro-Italic.ttf",
-      bold: "#{font_path}/SourceSansPro-Bold.ttf",
-      bold_italic: "#{font_path}/SourceSansPro-BoldItalic.ttf"
-    })
+    font_families.update(
+      'Source Sans Pro' => {
+        normal: "#{font_path}/SourceSansPro-Regular.ttf",
+        italic: "#{font_path}/SourceSansPro-Italic.ttf",
+        bold: "#{font_path}/SourceSansPro-Bold.ttf",
+        bold_italic: "#{font_path}/SourceSansPro-BoldItalic.ttf"
+      }
+    )
 
-    font 'Source Sans Pro'
+    font('Source Sans Pro')
   end
 
   # rubocop:disable Metrics/AbcSize
   def build_pdf
-    section_title @dossier
-    move_down 20
+    section_title(@dossier)
+    move_down(20)
     section_identite
-    move_down 20
-    section_representants @dossier if @dossier[:representants].any?
-    move_down 20
-    section_etablissement_principal @dossier
-    move_down 20
-    section_observations @dossier if @dossier[:observations].any?
-    move_down 20
-    section_bodacc @dossier
+    move_down(20)
+    section_representants(@dossier) if @dossier[:representants].any?
+    move_down(20)
+    section_etablissement_principal(@dossier)
+    move_down(20)
+    section_observations(@dossier) if @dossier[:observations].any?
+    move_down(20)
+    section_bodacc(@dossier)
   end
   # rubocop:enable Metrics/AbcSize
 
   def section_identite
     if personne_morale?
-      section_identite_pm @dossier
+      section_identite_pm(@dossier)
     else
-      section_identite_pp @dossier
+      section_identite_pp(@dossier)
     end
   end
 
@@ -82,7 +84,7 @@ class IdentiteEntreprisePdf < Prawn::Document
       align: :right
     }
 
-    number_pages string, options
+    number_pages(string, options)
   end
 
   def footer_infos

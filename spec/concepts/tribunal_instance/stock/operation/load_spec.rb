@@ -8,7 +8,7 @@ describe TribunalInstance::Stock::Operation::Load do
 
   context 'logger:' do
     it 'logs' do
-      expect(logger).to receive(:info).with 'Checking last TITMC stock...'
+      expect(logger).to receive(:info).with('Checking last TITMC stock...')
       subject
     end
   end
@@ -37,17 +37,17 @@ describe TribunalInstance::Stock::Operation::Load do
     it 'persists unit for greffe 9721 with valid wilcard' do
       subject
       unit = StockUnit.where(code_greffe: '9721').first
-      expect(unit.file_path).to eq './spec/fixtures/titmc/stock/2018/05/05/9721_S1_20180505_lot*.zip'
+      expect(unit.file_path).to eq('./spec/fixtures/titmc/stock/2018/05/05/9721_S1_20180505_lot*.zip')
     end
 
     it 'persists unit for greffe 9761 with valid wildcard' do
       subject
       unit = StockUnit.where(code_greffe: '9761').first
-      expect(unit.file_path).to eq './spec/fixtures/titmc/stock/2018/05/05/9761_S1_20180505_lot*.zip'
+      expect(unit.file_path).to eq('./spec/fixtures/titmc/stock/2018/05/05/9761_S1_20180505_lot*.zip')
     end
 
     it 'has 2 stock units' do
-      expect(subject[:stock_units].count).to eq 2
+      expect(subject[:stock_units].count).to eq(2)
     end
 
     its([:stock]) { is_expected.to be_persisted }
@@ -61,11 +61,11 @@ describe TribunalInstance::Stock::Operation::Load do
     it { is_expected.to be_failure }
 
     it 'does not create any job' do
-      expect { subject }.not_to have_enqueued_job ImportTitmcStockUnitJob
+      expect { subject }.not_to(have_enqueued_job(ImportTitmcStockUnitJob))
     end
 
     it 'does not persist a stock for import' do
-      expect { subject }.not_to change(StockTribunalInstance, :count)
+      expect { subject }.not_to(change(StockTribunalInstance, :count))
     end
   end
 
@@ -75,7 +75,7 @@ describe TribunalInstance::Stock::Operation::Load do
     it_behaves_like 'failure that does nothing'
 
     it 'logs "this stock is already loaded"' do
-      expect(logger).to receive(:error).with 'No stock newer than 2018-05-05 available ; current stock status: PENDING'
+      expect(logger).to receive(:error).with('No stock newer than 2018-05-05 available ; current stock status: PENDING')
       subject
     end
   end
@@ -109,11 +109,11 @@ describe TribunalInstance::Stock::Operation::Load do
     it { is_expected.to be_failure }
 
     it 'does not persist a stock for import', pending: 'conception problem but not critical' do
-      expect { subject }.not_to change(StockTribunalInstance, :count)
+      expect { subject }.not_to(change(StockTribunalInstance, :count))
     end
 
     it 'does not create any job' do
-      expect { subject }.not_to have_enqueued_job ImportTitmcStockUnitJob
+      expect { subject }.not_to(have_enqueued_job(ImportTitmcStockUnitJob))
     end
 
     it 'logs an error' do

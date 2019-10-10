@@ -37,7 +37,7 @@ describe ImportTitmcStockUnitJob, :trb do
           subject
           stock_unit.reload
 
-          expect(stock_unit.status).to eq 'COMPLETED'
+          expect(stock_unit.status).to eq('COMPLETED')
         end
 
         it 'calls PostImport with success' do
@@ -88,7 +88,7 @@ describe ImportTitmcStockUnitJob, :trb do
         subject
         stock_unit.reload
 
-        expect(stock_unit.status).to eq 'ERROR'
+        expect(stock_unit.status).to eq('ERROR')
       end
     end
   end
@@ -98,12 +98,12 @@ describe ImportTitmcStockUnitJob, :trb do
 
     it 'does not call the operation' do
       expect(TribunalInstance::Stock::Unit::Operation::Load)
-        .not_to receive(:call)
+        .not_to(receive(:call))
       subject
     end
 
     it 'logs an error' do
-      expect(Rails.logger).to receive(:error).with "Couldn't find StockUnit with 'id'=1234"
+      expect(Rails.logger).to receive(:error).with("Couldn't find StockUnit with 'id'=1234")
       subject
     end
   end

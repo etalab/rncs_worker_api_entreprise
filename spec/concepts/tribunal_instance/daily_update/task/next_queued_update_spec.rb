@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe TribunalInstance::DailyUpdate::Task::NextQueuedUpdate do
-  subject { described_class.call logger: logger }
+  subject { described_class.call(logger: logger) }
 
   let(:logger) { instance_double(Logger).as_null_object }
 

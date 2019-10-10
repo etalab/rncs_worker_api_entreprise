@@ -8,5 +8,5 @@ describe TribunalInstance::Observation do
   it { is_expected.to have_db_column(:date).of_type(:string) }
   it { is_expected.to have_db_column(:numero).of_type(:string) }
 
-  it { is_expected.to belong_to :entreprise }
+  it { is_expected.to belong_to(:entreprise) }
 end

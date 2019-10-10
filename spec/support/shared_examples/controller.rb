@@ -9,9 +9,9 @@ shared_examples 'handling siren errors' do
     end
 
     it 'returns 422 with error message' do
-      json = JSON.parse response.body
+      json = JSON.parse(response.body)
 
-      expect(json).to include_json error: 'Le numéro siren en paramètre est mal formaté.'
+      expect(json).to include_json(error: 'Le numéro siren en paramètre est mal formaté.')
     end
   end
 
@@ -23,7 +23,7 @@ shared_examples 'handling siren errors' do
     end
 
     it 'returns 404 with error message' do
-      json = JSON.parse response.body
+      json = JSON.parse(response.body)
 
       expect(json).to include_json(error: "Immatriculation principale non trouvée pour le siren #{siren}.")
     end

@@ -16,7 +16,7 @@ describe SectionObservations do
       attributes_for(:observation, date_ajout: '2018-04-31'),
       attributes_for(:observation, date_ajout: '2010-02-04')
     ] }
-    pdf.section_observations params
+    pdf.section_observations(params)
 
     data = [
       'Observations',
@@ -28,7 +28,7 @@ describe SectionObservations do
       'This is a very long observation, so long that you could not imagine it before reading it.'
     ]
 
-    expect(subject).to eq data
+    expect(subject).to eq(data)
   end
 
   it 'handle null date_ajout at the end' do
@@ -37,9 +37,9 @@ describe SectionObservations do
       attributes_for(:observation, date_ajout: '2018-07-05'),
       attributes_for(:observation, date_ajout: '2018-02-15')
     ] }
-    pdf.section_observations params
+    pdf.section_observations(params)
 
     last_obs = subject[5]
-    expect(last_obs).to eq 'Mention n°4000A du'
+    expect(last_obs).to eq('Mention n°4000A du')
   end
 end

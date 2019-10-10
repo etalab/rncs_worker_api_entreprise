@@ -12,16 +12,16 @@ class SyncFTPJob < ActiveJob::Base
   private
 
   def ensure_permissions_are_correct
-    _stdout, stderr, status = Open3.capture3 "find #{rncs_sources_path} -type d -exec chmod 755 {} +"
-    Rails.logger.error "Ensure permissions for directories failed with #{stderr}" unless status.success?
+    _stdout, stderr, status = Open3.capture3("find #{rncs_sources_path} -type d -exec chmod 755 {} +")
+    Rails.logger.error("Ensure permissions for directories failed with #{stderr}") unless status.success?
 
-    _stdout, stderr, status = Open3.capture3 "find #{rncs_sources_path} -type f -exec chmod 644 {} +"
-    Rails.logger.error "Ensure permissions for files failed with #{stderr}" unless status.success?
+    _stdout, stderr, status = Open3.capture3("find #{rncs_sources_path} -type f -exec chmod 644 {} +")
+    Rails.logger.error("Ensure permissions for files failed with #{stderr}") unless status.success?
   end
 
   def sync_files
-    _stdout, stderr, status = Open3.capture3 wget_command
-    Rails.logger.error "WGET sync failed with: #{stderr}" unless status.success?
+    _stdout, stderr, status = Open3.capture3(wget_command)
+    Rails.logger.error("WGET sync failed with: #{stderr}") unless status.success?
   end
 
   # rubocop:disable Metrics/AbcSize

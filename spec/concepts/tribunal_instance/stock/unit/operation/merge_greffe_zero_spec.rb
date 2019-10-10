@@ -22,20 +22,20 @@ describe TribunalInstance::Stock::Unit::Operation::MergeGreffeZero do
 
     it 'has établissement from greffe 0000' do
       etab = subject[:entreprise_related].etablissements.find { |e| e.siret == '12345678900000' }
-      expect(etab.adresse).to have_attributes ligne_1: 'Ceci est une adresse d\'établissement'
-      expect(etab.adresse).to have_attributes code_greffe: '9712'
+      expect(etab.adresse).to have_attributes(ligne_1: 'Ceci est une adresse d\'établissement')
+      expect(etab.adresse).to have_attributes(code_greffe: '9712')
     end
 
     it 'has representants from greffe 0000' do
       rep = subject[:entreprise_related].representants.find { |r| r.date_creation == '1900-01-01' }
-      expect(rep).to have_attributes qualite: '1200'
-      expect(rep).to have_attributes code_greffe: '9712'
+      expect(rep).to have_attributes(qualite: '1200')
+      expect(rep).to have_attributes(code_greffe: '9712')
     end
 
     it 'has observation from greffe 0000' do
       obs = subject[:entreprise_related].observations.find { |o| o.numero == '1234' }
-      expect(obs).to have_attributes code: 'C18'
-      expect(obs).to have_attributes code_greffe: '9712'
+      expect(obs).to have_attributes(code: 'C18')
+      expect(obs).to have_attributes(code_greffe: '9712')
     end
   end
 

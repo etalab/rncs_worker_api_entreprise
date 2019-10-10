@@ -16,15 +16,15 @@ module TribunalInstance
           fail ->(_, dest_directory:, **) { FileUtils.rm_rf(dest_directory) }
 
           def log_import_starts(_, path:, logger:, **)
-            logger.info "Starting import of transmission: #{path}"
+            logger.info("Starting import of transmission: #{path}")
           end
 
           def log_zip_error(ctx, logger:, **)
-            logger.error ctx[:error]
+            logger.error(ctx[:error])
           end
 
           def log_zip_info(_, logger:, extracted_files:, **)
-            logger.info "Files extracted: #{extracted_files}"
+            logger.info("Files extracted: #{extracted_files}")
           end
 
           def import(ctx, extracted_files:, code_greffe:, logger:, **)
@@ -36,7 +36,7 @@ module TribunalInstance
               )
 
               if operation.success?
-                logger.info "Import of tramission #{extracted_file_path} is a success"
+                logger.info("Import of tramission #{extracted_file_path} is a success")
               else
                 ctx[:failed_operation] = operation
                 return false
@@ -45,7 +45,7 @@ module TribunalInstance
           end
 
           def log_import_error(_, failed_operation:, path:, logger:, **)
-            logger.error "File (#{failed_operation[:path]} from zip #{path}) import failed error: #{failed_operation[:error]}"
+            logger.error("File (#{failed_operation[:path]} from zip #{path}) import failed error: #{failed_operation[:error]}")
           end
         end
       end

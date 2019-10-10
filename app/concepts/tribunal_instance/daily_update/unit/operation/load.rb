@@ -11,7 +11,7 @@ module TribunalInstance
           pass :log_success
 
           def fetch_transmissions(ctx, daily_update_unit:, **)
-            ctx[:transmissions] = Dir.glob daily_update_unit.files_path + '/*.zip'
+            ctx[:transmissions] = Dir.glob(daily_update_unit.files_path + '/*.zip')
             ctx[:transmissions].any?
           end
 
@@ -27,19 +27,19 @@ module TribunalInstance
           end
 
           def log_import_start(_, daily_update_unit:, logger:, **)
-            logger.info "Starting import of #{daily_update_unit.files_path}"
+            logger.info("Starting import of #{daily_update_unit.files_path}")
           end
 
           def log_transmissions_count(_, transmissions:, logger:, **)
-            logger.info "#{transmissions.count} files founds"
+            logger.info("#{transmissions.count} files founds")
           end
 
           def log_no_transmission_found(_, daily_update_unit:, logger:, **)
-            logger.error "No transmission found in #{daily_update_unit.files_path}"
+            logger.error("No transmission found in #{daily_update_unit.files_path}")
           end
 
           def log_success(_, logger:, **)
-            logger.info 'All transmissions imported successfully'
+            logger.info('All transmissions imported successfully')
           end
         end
       end

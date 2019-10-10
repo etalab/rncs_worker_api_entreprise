@@ -20,7 +20,7 @@ describe SectionIdentitePM do
   end
 
   it 'works with complete address' do
-    pdf.section_identite_pm params
+    pdf.section_identite_pm(params)
 
     data = ['Identification de la personne morale',
             'SIREN',                                 '123 456 789',
@@ -33,7 +33,7 @@ describe SectionIdentitePM do
             'Durée de la personne morale',           '99 ans à partir du 2015-05-19',
             'Date de clôture de l\'exercice social', '31 Décembre']
 
-    expect(subject).to eq data
+    expect(subject).to eq(data)
   end
 
   it 'works with incomplete address' do
@@ -43,43 +43,43 @@ describe SectionIdentitePM do
       date_immatriculation: '2015-05-18'
     )
 
-    expect(subject).to include 'Rue des cocotiers 97114 Trois-Rivières'
+    expect(subject).to include('Rue des cocotiers 97114 Trois-Rivières')
   end
 
   it 'works with foreign address' do
     params[:etablissement_principal] = attributes_for(:etablissement_etranger)
-    pdf.section_identite_pm params
+    pdf.section_identite_pm(params)
 
-    expect(subject).to include 'Rue des cocotiers 97114 Trois-Rivières (Syldavie)'
+    expect(subject).to include('Rue des cocotiers 97114 Trois-Rivières (Syldavie)')
   end
 
   it 'works with nil capital' do
     params[:personne_morale][:capital] = nil
-    pdf.section_identite_pm params
+    pdf.section_identite_pm(params)
 
     expected_capital_index = subject.index('Capital') + 1
     label_after_capital = subject[expected_capital_index]
-    expect(label_after_capital).to eq 'Adresse' # and not "nil €"
+    expect(label_after_capital).to eq('Adresse') # and not "nil €"
   end
 
   it 'works with capital but missing devise' do
     params[:personne_morale][:devise] = nil
-    pdf.section_identite_pm params
+    pdf.section_identite_pm(params)
 
-    expect(subject).to include '1 000.00'
+    expect(subject).to include('1 000.00')
   end
 
   it 'works with nil date_immatriculation' do
     params[:date_immatriculation] = nil
-    pdf.section_identite_pm params
+    pdf.section_identite_pm(params)
 
-    expect(subject).to include '99 ans à partir du'
+    expect(subject).to include('99 ans à partir du')
   end
 
   it 'works with nil duree_pm' do
     params[:personne_morale][:duree_pm] = nil
-    pdf.section_identite_pm params
+    pdf.section_identite_pm(params)
 
-    expect(subject).to include 'ans à partir du 2015-05-19'
+    expect(subject).to include('ans à partir du 2015-05-19')
   end
 end

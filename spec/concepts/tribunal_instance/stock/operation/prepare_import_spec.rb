@@ -13,7 +13,7 @@ describe TribunalInstance::Stock::Operation::PrepareImport do
     its([:stock_units]) { is_expected.to be_nil }
 
     it 'does not persist any stock unit' do
-      expect { subject }.not_to change(StockUnit, :count)
+      expect { subject }.not_to(change(StockUnit, :count))
     end
   end
 
@@ -25,7 +25,7 @@ describe TribunalInstance::Stock::Operation::PrepareImport do
     its([:stock_units]) { is_expected.to be_nil }
 
     it 'does not persist any stock unit' do
-      expect { subject }.not_to change(StockUnit, :count)
+      expect { subject }.not_to(change(StockUnit, :count))
     end
   end
 
@@ -41,7 +41,7 @@ describe TribunalInstance::Stock::Operation::PrepareImport do
       expect { subject }.to change(StockUnit, :count).by(2)
     end
 
-    its([:stock_units]) { are_expected.to eq StockUnit.all }
+    its([:stock_units]) { are_expected.to eq(StockUnit.all) }
     its([:stock_units]) { are_expected.to all(have_attributes(status: 'PENDING')) }
     its([:stock_units]) { are_expected.to all(be_persisted) }
 
@@ -62,7 +62,7 @@ describe TribunalInstance::Stock::Operation::PrepareImport do
         unit = stock.stock_units.where(code_greffe: '9761').first
 
         expect(unit.file_path)
-          .to end_with 'spec/fixtures/titmc/stock/2018/05/05/9761_S1_20180505_lot*.zip'
+          .to end_with('spec/fixtures/titmc/stock/2018/05/05/9761_S1_20180505_lot*.zip')
       end
 
       it 'has a wildcard matching 2 files' do
@@ -70,7 +70,7 @@ describe TribunalInstance::Stock::Operation::PrepareImport do
         unit = stock.stock_units.where(code_greffe: '9721').first
 
         expect(unit.file_path)
-          .to end_with 'spec/fixtures/titmc/stock/2018/05/05/9721_S1_20180505_lot*.zip'
+          .to end_with('spec/fixtures/titmc/stock/2018/05/05/9721_S1_20180505_lot*.zip')
       end
     end
   end

@@ -34,7 +34,7 @@ module TribunalInstance
 
         def create_unit(stock, unit_path)
           match = unit_path.match(%r{\A#{stock.files_path}/(\d{4})_S(\d)_\d{8}_lot\d{2}\.zip\Z})
-          raise DeserializeError unless match
+          raise(DeserializeError) unless match
 
           code_greffe, unit_number = match.captures
 

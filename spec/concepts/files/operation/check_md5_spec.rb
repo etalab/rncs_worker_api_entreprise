@@ -1,12 +1,12 @@
 require 'rails_helper'
 
 describe Files::Operation::CheckMD5 do
-  subject { described_class.call path: path, logger: logger }
+  subject { described_class.call(path: path, logger: logger) }
 
   let(:logger) { instance_double(Logger).as_null_object }
 
   describe 'valid MD5' do
-    let(:path) { File.join 'spec', 'concepts', 'files', 'file_with_valid_md5.txt' }
+    let(:path) { File.join('spec', 'concepts', 'files', 'file_with_valid_md5.txt') }
 
     it { is_expected.to be_success }
 
@@ -17,7 +17,7 @@ describe Files::Operation::CheckMD5 do
   end
 
   describe 'file to check not found' do
-    let(:path) { File.join 'spec', 'concepts', 'files', 'missing_file.txt' }
+    let(:path) { File.join('spec', 'concepts', 'files', 'missing_file.txt') }
 
     it { is_expected.to be_failure }
 
@@ -28,7 +28,7 @@ describe Files::Operation::CheckMD5 do
   end
 
   describe 'MD5 file not found' do
-    let(:path) { File.join 'spec', 'concepts', 'files', 'file_without_md5.txt' }
+    let(:path) { File.join('spec', 'concepts', 'files', 'file_without_md5.txt') }
 
     it { is_expected.to be_failure }
 
@@ -39,7 +39,7 @@ describe Files::Operation::CheckMD5 do
   end
 
   describe 'invalid MD5' do
-    let(:path) { File.join 'spec', 'concepts', 'files', 'file_with_invalid_md5.txt' }
+    let(:path) { File.join('spec', 'concepts', 'files', 'file_with_invalid_md5.txt') }
 
     it { is_expected.to be_failure }
 

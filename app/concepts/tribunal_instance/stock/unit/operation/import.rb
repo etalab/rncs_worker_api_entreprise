@@ -8,9 +8,9 @@ module TribunalInstance
           BATCH_SIZE         = 5_000
           Fichier            = Struct.new(:greffes)
           self[:fichier]     = Fichier.new
-          self[:representer] = ::TribunalInstance::FichierRepresenter.new self[:fichier]
+          self[:representer] = ::TribunalInstance::FichierRepresenter.new(self[:fichier])
 
-          pass ->(_, logger:, **) { logger.info 'Starting import' }
+          pass ->(_, logger:, **) { logger.info('Starting import') }
 
           step :parse_xml
           step :extract_data_from_greffes
@@ -20,13 +20,13 @@ module TribunalInstance
           step :create_entreprises_hash_with_siren
           step :merge_data_from_code_greffe_0000
           fail :log_missing_siren_in_main_greffe
-          pass ->(_, logger:, **) { logger.info 'Models associations done' }
+          pass ->(_, logger:, **) { logger.info('Models associations done') }
 
           step :persist
-          pass ->(_, logger:, **) { logger.info 'All data persisted' }
+          pass ->(_, logger:, **) { logger.info('All data persisted') }
 
           def parse_xml(_, path:, representer:, **)
-            representer.from_xml ::File.read path
+            representer.from_xml(::File.read(path))
           end
 
           def extract_data_from_greffes(ctx, fichier:, code_greffe:, **)
@@ -37,7 +37,7 @@ module TribunalInstance
           end
 
           def log_mapping_done(_, logger:, dossiers_entreprises:, **)
-            logger.info "Trailblazer mapping done (#{dossiers_entreprises.count} dossiers found)"
+            logger.info("Trailblazer mapping done (#{dossiers_entreprises.count} dossiers found)")
           end
 
           def create_associations_dossiers_and_entreprises(_, dossiers_entreprises:, entreprises:, **)
@@ -83,7 +83,7 @@ module TribunalInstance
           def log_missing_siren_in_main_greffe(ctx, logger:, **)
             return unless ctx[:missing_siren]
 
-            logger.error "No entreprise found in main greffe section for entreprise #{ctx[:missing_siren]} of greffe 0000"
+            logger.error("No entreprise found in main greffe section for entreprise #{ctx[:missing_siren]} of greffe 0000")
           end
 
           def persist(_, dossiers_entreprises:, **)

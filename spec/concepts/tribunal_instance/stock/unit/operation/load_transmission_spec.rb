@@ -9,7 +9,7 @@ describe TribunalInstance::Stock::Unit::Operation::LoadTransmission, :trb do
     )
   end
 
-  let(:spec_path) { Rails.root.join 'spec', 'fixtures', 'titmc', 'zip', filename }
+  let(:spec_path) { Rails.root.join('spec', 'fixtures', 'titmc', 'zip', filename) }
   let(:logger) { instance_double(Logger).as_null_object }
 
   context 'when zip exists' do
@@ -34,7 +34,7 @@ describe TribunalInstance::Stock::Unit::Operation::LoadTransmission, :trb do
 
       it 'deletes extract directory' do
         directory = Pathname(subject[:dest_directory])
-        expect(directory).not_to exist
+        expect(directory).not_to(exist)
       end
     end
 
@@ -49,7 +49,7 @@ describe TribunalInstance::Stock::Unit::Operation::LoadTransmission, :trb do
 
       it 'deletes extract directory' do
         directory = Pathname(subject[:dest_directory])
-        expect(directory).not_to exist
+        expect(directory).not_to(exist)
       end
     end
   end
@@ -96,7 +96,7 @@ describe TribunalInstance::Stock::Unit::Operation::LoadTransmission, :trb do
 
     it 'does not call the import operation' do
       expect(TribunalInstance::Stock::Unit::Operation::Import)
-        .not_to receive(:call)
+        .not_to(receive(:call))
 
       subject
     end
@@ -116,7 +116,7 @@ describe TribunalInstance::Stock::Unit::Operation::LoadTransmission, :trb do
 
     it 'does not call the import operation' do
       expect(TribunalInstance::Stock::Unit::Operation::Import)
-        .not_to receive(:call)
+        .not_to(receive(:call))
 
       subject
     end
@@ -124,7 +124,7 @@ describe TribunalInstance::Stock::Unit::Operation::LoadTransmission, :trb do
     it 'logs an error' do
       expect(logger)
         .to receive(:error)
-        .with "MD5 file not found (#{spec_path})"
+        .with("MD5 file not found (#{spec_path})")
       subject
     end
   end

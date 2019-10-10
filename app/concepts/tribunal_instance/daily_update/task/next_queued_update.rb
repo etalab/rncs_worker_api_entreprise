@@ -22,11 +22,11 @@ module TribunalInstance
         end
 
         def log_empty_queue(_, logger:, **)
-          logger.error 'No updates have been queued for import.'
+          logger.error('No updates have been queued for import.')
         end
 
         def log_last_update_fail(_, logger:, last_update:, **)
-          logger.error "The last update #{last_update.date} is not completed. Aborting import..."
+          logger.error("The last update #{last_update.date} is not completed. Aborting import...")
         end
       end
     end

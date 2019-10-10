@@ -50,7 +50,7 @@ describe API::V1::FichesIdentiteController, type: :request do
       it '[NOT A SPEC] generates a test PDF in /tmp' do
         subject
         File.open('./tmp/identite_entreprise_pm.pdf', 'wb') do |file|
-          file.write response.body
+          file.write(response.body)
         end
       end
     end
@@ -62,7 +62,7 @@ describe API::V1::FichesIdentiteController, type: :request do
       get "/v1/fiches_identite/#{valid_siren}/pdf"
 
       File.open('./tmp/identite_entreprise_pp.pdf', 'wb') do |file|
-        file.write response.body
+        file.write(response.body)
       end
     end
   end

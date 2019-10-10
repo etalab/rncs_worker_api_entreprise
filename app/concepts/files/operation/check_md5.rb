@@ -31,19 +31,19 @@ module Files
       end
 
       def log_md5_file_not_found(_, logger:, path:, **)
-        logger.error "MD5 file not found (#{path})"
+        logger.error("MD5 file not found (#{path})")
       end
 
       def log_file_not_found(_, logger:, path:, **)
-        logger.error "File not found (#{path})"
+        logger.error("File not found (#{path})")
       end
 
       def log_compare_failed(_, logger:, path:, **)
-        logger.error "MD5 comparison failed (#{path})"
+        logger.error("MD5 comparison failed (#{path})")
       end
 
       def log_success(_, logger:, path:, **)
-        logger.info "MD5 check success (#{path})"
+        logger.info("MD5 check success (#{path})")
       end
     end
   end

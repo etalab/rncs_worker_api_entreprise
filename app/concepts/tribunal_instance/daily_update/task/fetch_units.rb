@@ -29,11 +29,11 @@ module TribunalInstance
         end
 
         def log_empty_folder(_, daily_update:, logger:, **)
-          logger.error "No directory found in daily update #{daily_update.files_path}"
+          logger.error("No directory found in daily update #{daily_update.files_path}")
         end
 
         def log_wrong_directory_name(_, daily_update:, logger:, **)
-          logger.error "Unexpected directory name in daily update #{daily_update.files_path}"
+          logger.error("Unexpected directory name in daily update #{daily_update.files_path}")
         end
       end
     end

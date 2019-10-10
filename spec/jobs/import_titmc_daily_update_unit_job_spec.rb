@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe ImportTitmcDailyUpdateUnitJob, :trb do
-  subject { described_class.perform_now unit_id }
+  subject { described_class.perform_now(unit_id) }
 
   let(:logger) { instance_double(Logger).as_null_object }
 
@@ -36,7 +36,7 @@ describe ImportTitmcDailyUpdateUnitJob, :trb do
         it 'set unit status to COMPLETED' do
           subject
           unit.reload
-          expect(unit.status).to eq 'COMPLETED'
+          expect(unit.status).to eq('COMPLETED')
         end
 
         it 'calls the DailyUpdate::Import operation' do
@@ -71,12 +71,12 @@ describe ImportTitmcDailyUpdateUnitJob, :trb do
       it 'set unit status to ERROR' do
         subject
         unit.reload
-        expect(unit.status).to eq 'ERROR'
+        expect(unit.status).to eq('ERROR')
       end
 
       it 'does not call DailyUpdate::Import operation' do
         expect(TribunalInstance::DailyUpdate::Operation::Import)
-          .not_to receive(:call)
+          .not_to(receive(:call))
 
         subject
       end
@@ -97,7 +97,7 @@ describe ImportTitmcDailyUpdateUnitJob, :trb do
 
     it 'does not call DailyUpdate::Import' do
       expect(TribunalInstance::DailyUpdate::Operation::Import)
-        .not_to receive(:call)
+        .not_to(receive(:call))
 
       subject
     end
@@ -108,7 +108,7 @@ describe ImportTitmcDailyUpdateUnitJob, :trb do
 
     it 'does not call the Load operation' do
       expect(TribunalInstance::DailyUpdate::Unit::Operation::Load)
-        .not_to receive(:call)
+        .not_to(receive(:call))
       subject
     end
 

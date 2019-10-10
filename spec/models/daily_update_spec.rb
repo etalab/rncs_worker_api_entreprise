@@ -32,7 +32,7 @@ describe DailyUpdate do
 
       context 'when the last imported update is a partial stock' do
         it 'returns the partial stock' do
-          partial_stock = create(:daily_update,            year: '2015',            month: '08',            day: '24',            partial_stock: true,            proceeded: true)
+          partial_stock = create(:daily_update, year: '2015', month: '08', day: '24', partial_stock: true, proceeded: true)
 
           expect(subject).to eq(partial_stock)
         end

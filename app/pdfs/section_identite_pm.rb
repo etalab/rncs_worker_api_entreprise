@@ -8,9 +8,9 @@ module SectionIdentitePM
     @etablissement_principal = etablissement_principal
     @date_immatriculation = date_immatriculation
 
-    display_section_title 'Identification de la personne morale'
+    display_section_title('Identification de la personne morale')
 
-    display_table_block [
+    display_table_block([
       ['SIREN',                                 pretty_siren(personne_morale[:siren])],
       ['Date d\'immatriculation',               date_immatriculation],
       ['Dénomination',                          "<b>#{personne_morale[:denomination]}</b>"],
@@ -20,7 +20,7 @@ module SectionIdentitePM
       ['Activités principales',                 etablissement_principal[:activite]],
       ['Durée de la personne morale',           duree_pm],
       ['Date de clôture de l\'exercice social', @personne_morale[:date_cloture]]
-    ]
+    ])
   end
 
   private

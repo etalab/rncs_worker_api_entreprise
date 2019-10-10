@@ -13,7 +13,7 @@ module TribunalCommerce
         data = file_list_paths.map do |file_path|
           filename = file_path.split('/').last
 
-          raise UnexpectedFilename, error_message(filename) unless (match = filename.match(flux_filename_regex))
+          raise(UnexpectedFilename, error_message(filename)) unless (match = filename.match(flux_filename_regex))
 
           code_greffe, _num_transmission, _date, _hour, run_order, label = match.captures
 
@@ -32,7 +32,7 @@ module TribunalCommerce
         data = file_list_paths.map do |file_path|
           filename = file_path.split('/').last
 
-          raise UnexpectedFilename, error_message(filename) unless (match = filename.match(stock_filename_regex))
+          raise(UnexpectedFilename, error_message(filename)) unless (match = filename.match(stock_filename_regex))
 
           code_greffe, _num_stock, _date, run_order, label = match.captures
 

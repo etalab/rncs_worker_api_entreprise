@@ -7,7 +7,7 @@ describe TribunalInstance::DailyUpdate::Task::FetchInPipe do
       it { is_expected.to be_failure }
 
       it 'sets an error message' do
-        expect(subject[:error]).to eq(          "No daily updates found inside #{source_path}. Ensure the folder exists with a valid subfolder structure."        )
+        expect(subject[:error]).to eq("No daily updates found inside #{source_path}. Ensure the folder exists with a valid subfolder structure.")
       end
     end
 
@@ -41,8 +41,8 @@ describe TribunalInstance::DailyUpdate::Task::FetchInPipe do
     it 'returns all daily updates as records' do
       updates = subject[:daily_updates]
 
-      expect(updates).to all be_an_instance_of DailyUpdateTribunalInstance
-      expect(updates.size).to eq 6
+      expect(updates).to all(be_an_instance_of(DailyUpdateTribunalInstance))
+      expect(updates.size).to eq(6)
     end
 
     it 'matches the dates found in repository' do

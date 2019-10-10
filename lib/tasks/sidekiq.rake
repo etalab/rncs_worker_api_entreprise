@@ -16,17 +16,17 @@ namespace :sidekiq do
     when 'all'
       clear_all_queues
     else
-      clear_one_queue args[:queue_name]
+      clear_one_queue(args[:queue_name])
     end
   end
 
   def display_help
     queue_names = Sidekiq::Queue.all.map do |q|
-      q.name.slice! queue_prefix
+      q.name.slice!(queue_prefix)
       q.name
     end.join(', ')
 
-    puts "It requires an argument: all, #{queue_names}".red
+    puts("It requires an argument: all, #{queue_names}".red)
   end
 
   def clear_all_queues
@@ -41,7 +41,7 @@ namespace :sidekiq do
     queue = Sidekiq::Queue.new(fullname)
     nb_jobs = queue.count
     queue.clear
-    puts "Queue #{queue.name} cleared (#{nb_jobs} jobs cancelled)".green
+    puts("Queue #{queue.name} cleared (#{nb_jobs} jobs cancelled)".green)
   end
 
   def queue_prefix

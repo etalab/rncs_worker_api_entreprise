@@ -25,7 +25,7 @@ module TrailblazerHelper
     end
 
     def expect_not_to_call_nested_operation(operation)
-      expect(operation).not_to receive(:call_with_circuit_interface)
+      expect(operation).not_to(receive(:call_with_circuit_interface))
     end
 
     # TODO: stub a nested operation to return a fake object

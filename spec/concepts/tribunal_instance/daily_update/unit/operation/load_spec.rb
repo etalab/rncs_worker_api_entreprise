@@ -1,13 +1,13 @@
 require 'rails_helper'
 
 describe TribunalInstance::DailyUpdate::Unit::Operation::Load, :trb do
-  subject { described_class.call daily_update_unit: unit, logger: logger }
+  subject { described_class.call(daily_update_unit: unit, logger: logger) }
 
   let(:unit) { create :daily_update_unit, files_path: path }
   let(:logger) { instance_double(Logger).as_null_object }
 
   describe 'Daily update unit with 2 transmissions' do
-    let(:path) { Rails.root.join 'spec', 'fixtures', 'titmc', 'flux', '2017', '05', '18', '0Hnni3p82a62_20170509212412TITMCFLUX' }
+    let(:path) { Rails.root.join('spec', 'fixtures', 'titmc', 'flux', '2017', '05', '18', '0Hnni3p82a62_20170509212412TITMCFLUX') }
 
     before do
       allow(TribunalInstance::DailyUpdate::Unit::Operation::LoadTransmission)
@@ -16,7 +16,7 @@ describe TribunalInstance::DailyUpdate::Unit::Operation::Load, :trb do
     end
 
     it { is_expected.to be_success }
-    its([:transmissions]) { is_expected.to have_attributes count: 2 }
+    its([:transmissions]) { is_expected.to have_attributes(count: 2) }
 
     it 'logs import starts' do
       expect(logger).to receive(:info).with(/Starting import of .+0Hnni3p82a62_20170509212412TITMCFLUX/)
@@ -45,7 +45,7 @@ describe TribunalInstance::DailyUpdate::Unit::Operation::Load, :trb do
   end
 
   context 'when one transmission fails' do
-    let(:path) {      Rails.root.join 'spec', 'fixtures', 'titmc', 'flux', '2017', '05', '18', '0Hnni3p82a62_20170509212412TITMCFLUX' }
+    let(:path) { Rails.root.join('spec', 'fixtures', 'titmc', 'flux', '2017', '05', '18', '0Hnni3p82a62_20170509212412TITMCFLUX') }
 
     before do
       allow(TribunalInstance::DailyUpdate::Unit::Operation::LoadTransmission)
@@ -54,7 +54,7 @@ describe TribunalInstance::DailyUpdate::Unit::Operation::Load, :trb do
     end
 
     it { is_expected.to be_failure }
-    its([:transmissions]) { is_expected.to have_attributes count: 2 }
+    its([:transmissions]) { is_expected.to have_attributes(count: 2) }
 
     it 'only calls LoadTransmission once' do
       expect(TribunalInstance::DailyUpdate::Unit::Operation::LoadTransmission)
@@ -66,7 +66,7 @@ describe TribunalInstance::DailyUpdate::Unit::Operation::Load, :trb do
   end
 
   context 'when no transmission found' do
-    let(:path) {     Rails.root.join 'spec', 'fixtures', 'titmc', 'flux', '2017', '05', '18', '0NKxyI4J7iuk_20170517210602TITMCFLUX' }
+    let(:path) { Rails.root.join('spec', 'fixtures', 'titmc', 'flux', '2017', '05', '18', '0NKxyI4J7iuk_20170517210602TITMCFLUX') }
 
     it { is_expected.to be_failure }
 

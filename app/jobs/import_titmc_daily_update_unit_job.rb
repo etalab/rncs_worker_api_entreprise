@@ -2,15 +2,15 @@ class ImportTitmcDailyUpdateUnitJob < ApplicationJob
   queue_as :titmc_daily_update
 
   def perform(daily_update_unit_id, logger = nil)
-    @unit = DailyUpdateUnit.find daily_update_unit_id
-    @unit.update status: 'LOADING'
+    @unit = DailyUpdateUnit.find(daily_update_unit_id)
+    @unit.update(status: 'LOADING')
 
     @logger = logger || @unit.logger_for_import
 
     call_operation
     post_transaction
   rescue ActiveRecord::RecordNotFound
-    Rails.logger.error $ERROR_INFO.message
+    Rails.logger.error($ERROR_INFO.message)
   end
 
   private
@@ -20,9 +20,9 @@ class ImportTitmcDailyUpdateUnitJob < ApplicationJob
       @operation = TribunalInstance::DailyUpdate::Unit::Operation::Load
         .call(daily_update_unit: @unit, logger: @logger)
 
-      raise ActiveRecord::Rollback unless @operation.success?
+      raise(ActiveRecord::Rollback) unless @operation.success?
 
-      @unit.update status: 'COMPLETED'
+      @unit.update(status: 'COMPLETED')
     end
   end
 
@@ -30,13 +30,13 @@ class ImportTitmcDailyUpdateUnitJob < ApplicationJob
     if @operation.success?
       import_next_daily_update if daily_update_completed?
     else
-      @unit.update status: 'ERROR'
+      @unit.update(status: 'ERROR')
     end
   end
 
   def import_next_daily_update
     TribunalInstance::DailyUpdate::Operation::Import
-      .call logger: @logger
+      .call(logger: @logger)
   end
 
   def daily_update_completed?

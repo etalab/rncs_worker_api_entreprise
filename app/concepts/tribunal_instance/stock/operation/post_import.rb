@@ -5,9 +5,9 @@ module TribunalInstance
         include TrailblazerHelper::DBIndexes
 
         step :import_completed?
-        fail ->(_, logger:, **) { logger.warn 'Import not completed, skipping index creation' }
+        fail ->(_, logger:, **) { logger.warn('Import not completed, skipping index creation') }
         step :create_db_indexes
-        pass ->(_, logger:, **) { logger.info 'TITMC indexes created' }
+        pass ->(_, logger:, **) { logger.info('TITMC indexes created') }
 
         def import_completed?(_, stock_unit:, **)
           overall_import = stock_unit.stock

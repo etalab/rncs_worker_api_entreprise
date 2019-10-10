@@ -2,11 +2,11 @@ require 'rails_helper'
 
 describe TribunalInstance::GreffeRepresenter, :representer do
   shared_examples 'greffe with dossiers' do |code_greffe:|
-    it { is_expected.to be_a Struct }
-    it { is_expected.to have_attributes code_greffe: code_greffe }
+    it { is_expected.to be_a(Struct) }
+    it { is_expected.to have_attributes(code_greffe: code_greffe) }
 
-    its(:dossiers_entreprises)  { are_expected.to all be_a DossierEntreprise }
-    its(:entreprises)           { are_expected.to all be_a TribunalInstance::Entreprise }
+    its(:dossiers_entreprises)  { are_expected.to all(be_a(DossierEntreprise)) }
+    its(:entreprises)           { are_expected.to all(be_a(TribunalInstance::Entreprise)) }
   end
 
   describe 'inscriptions in main greffe' do

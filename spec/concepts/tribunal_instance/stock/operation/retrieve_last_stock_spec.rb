@@ -11,24 +11,24 @@ describe TribunalInstance::Stock::Operation::RetrieveLastStock do
       let(:source_path) { Rails.root.join('spec', 'fixtures', 'tc', 'no_stocks_here', 'got_you') }
 
       it { is_expected.to be_failure }
-      its([:error]) { is_expected.to eq("No stock found inside #{source_path}. Ensure the folder exists with a valid subfolder structure."     ) }
+      its([:error]) { is_expected.to eq("No stock found inside #{source_path}. Ensure the folder exists with a valid subfolder structure.") }
     end
 
     context 'when folder structure for stocks is unexpected' do
       let(:source_path) { Rails.root.join('spec', 'fixtures', 'tc', 'no_stocks_here') }
 
       it { is_expected.to be_failure }
-      its([:error]) {        is_expected.to eq(          "No stock found inside #{source_path}. Ensure the folder exists with a valid subfolder structure." ) }
+      its([:error]) { is_expected.to eq("No stock found inside #{source_path}. Ensure the folder exists with a valid subfolder structure.") }
     end
   end
 
   # Inside the stocks folder, stocks are packaged inside a AAAA/MM/DD subfolder structures
   context 'when stocks are found' do
-    subject { described_class.call stocks_folder: stock_folder_path, stock_class: DummyStockClass }
+    subject { described_class.call(stocks_folder: stock_folder_path, stock_class: DummyStockClass) }
 
     let(:stock_folder_path) { File.join(Rails.configuration.rncs_sources_path, 'tc', 'stock') }
 
-    its([:stocks_folder]) { is_expected.to eq stock_folder_path }
+    its([:stocks_folder]) { is_expected.to eq(stock_folder_path) }
     it { is_expected.to be_success }
 
     describe 'returned stock' do

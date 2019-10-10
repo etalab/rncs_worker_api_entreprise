@@ -2,7 +2,7 @@ class StockUnit < ApplicationRecord
   belongs_to :stock
 
   def logger_for_import
-    Logger.new log_file_path
+    Logger.new(log_file_path)
   end
 
   private

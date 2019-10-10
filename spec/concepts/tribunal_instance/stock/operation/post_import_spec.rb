@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe TribunalInstance::Stock::Operation::PostImport do
-  subject { described_class.call stock_unit: stock_unit, logger: logger }
+  subject { described_class.call(stock_unit: stock_unit, logger: logger) }
 
   let(:logger) { instance_double(Logger).as_null_object }
   let(:stock_unit) { stock.stock_units.sample }

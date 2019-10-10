@@ -28,12 +28,12 @@ class DossierEntreprise
           siren: data[:siren]
         )
 
-        if !dossier.nil?
-          ctx[:warning] = "Dossier (numero_gestion: #{data[:numero_gestion]}) not found for greffe #{data[:code_greffe]}, but an existing dossier (numero_gestion: #{dossier.numero_gestion}) is found for siren #{data[:siren]} : a new dossier is created besides the existing one."
+        ctx[:warning] = if !dossier.nil?
+                          "Dossier (numero_gestion: #{data[:numero_gestion]}) not found for greffe #{data[:code_greffe]}, but an existing dossier (numero_gestion: #{dossier.numero_gestion}) is found for siren #{data[:siren]} : a new dossier is created besides the existing one."
 
-        else
-          ctx[:warning] = "Dossier (numero_gestion: #{data[:numero_gestion]}) not found and no dossier with the siren number #{data[:siren]} exist for greffe #{data[:code_greffe]}. Creating new dossier."
-        end
+                        else
+                          "Dossier (numero_gestion: #{data[:numero_gestion]}) not found and no dossier with the siren number #{data[:siren]} exist for greffe #{data[:code_greffe]}. Creating new dossier."
+                        end
         true
       end
 

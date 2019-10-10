@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec::Matchers.define_negated_matcher :not_change, :change
+RSpec::Matchers.define_negated_matcher(:not_change, :change)
 
 describe TribunalCommerce::Stock::Operation::Import do
   let(:stock_args) { { year: '2017', month: '01', day: '28' } }

@@ -5,7 +5,7 @@ module SectionObservations
   def section_observations(observations:, **)
     @observations = observations
 
-    display_section_title 'Observations'
+    display_section_title('Observations')
     sort_observations
     display_observations_in_block
   end

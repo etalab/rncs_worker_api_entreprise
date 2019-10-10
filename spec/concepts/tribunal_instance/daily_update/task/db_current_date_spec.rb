@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe TribunalInstance::DailyUpdate::Task::DBCurrentDate do
-  subject { described_class.call logger: logger }
+  subject { described_class.call(logger: logger) }
 
   let(:logger) { instance_double(Logger).as_null_object }
 
@@ -24,7 +24,7 @@ describe TribunalInstance::DailyUpdate::Task::DBCurrentDate do
       end
 
       it { is_expected.to be_success }
-      its([:db_current_date]) { is_expected.to eq Date.new 2019, 1, 2 }
+      its([:db_current_date]) { is_expected.to eq(Date.new(2019, 1, 2)) }
     end
   end
 

@@ -20,7 +20,7 @@ describe SectionRepresentants do
       ]
     }
 
-    pdf.section_representants params
+    pdf.section_representants(params)
 
     data = [
       'Gestion, Direction, Adminisration, Contrôle, Associés ou Membres',
@@ -43,13 +43,13 @@ describe SectionRepresentants do
       'Adresse',                   '15 rue de Rivoli 75001 Paris'
     ]
 
-    expect(subject).to eq data
+    expect(subject).to eq(data)
   end
 
   it 'works with nil siren_pm' do
     expect do
-      pdf.section_representants representants: [attributes_for(:representant_pm, siren_pm: nil)]
-    end.not_to raise_error
+      pdf.section_representants(representants: [attributes_for(:representant_pm, siren_pm: nil)])
+    end.not_to(raise_error)
   end
 
   context 'type_representant' do
@@ -58,7 +58,7 @@ describe SectionRepresentants do
         representants: [attributes_for(:representant_pp, type_representant: 'Truc pHysiquE.?')]
       )
 
-      expect(subject).to include 'Nom, prénoms'
+      expect(subject).to include('Nom, prénoms')
     end
 
     it 'matches anything like mOralE' do
@@ -66,12 +66,12 @@ describe SectionRepresentants do
         representants: [attributes_for(:representant_pm, type_representant: '88 mOralEs!')]
       )
 
-      expect(subject).to include 'Dénomination'
+      expect(subject).to include('Dénomination')
     end
 
     it 'logs an error' do
-      expect(Raven).to receive(:capture_message).with 'Unhandled type_representant (rentier)'
-      pdf.section_representants representants: [attributes_for(:representant, type_representant: 'rentier')]
+      expect(Raven).to receive(:capture_message).with('Unhandled type_representant (rentier)')
+      pdf.section_representants(representants: [attributes_for(:representant, type_representant: 'rentier')])
     end
   end
 end

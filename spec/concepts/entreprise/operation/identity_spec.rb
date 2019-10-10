@@ -128,7 +128,7 @@ describe Entreprise::Operation::Identity do
 
           it 'returns etablissement principal' do
             etablissement_principal = entreprise_identity.fetch(:dossier_entreprise_greffe_principal).fetch(:etablissement_principal)
-            expect(etablissement_principal).to include enseigne: 'do not forget me'
+            expect(etablissement_principal).to include(enseigne: 'do not forget me')
           end
         end
 

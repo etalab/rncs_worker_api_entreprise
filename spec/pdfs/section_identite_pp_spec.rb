@@ -19,7 +19,7 @@ describe SectionIdentitePP do
   end
 
   it 'works with valid params' do
-    pdf.section_identite_pp params
+    pdf.section_identite_pp(params)
 
     data = ['Identification de la personne physique',
             'SIREN',                     '123 456 789',
@@ -29,7 +29,7 @@ describe SectionIdentitePP do
             'Nationalité',               'Française',
             'Domicile personnel',        'Chez Bébert 1 AV FOCH BEL HOTEL 75008 PARIS']
 
-    expect(subject).to eq data
+    expect(subject).to eq(data)
   end
 
   it 'works with incomplete addresse' do
@@ -37,9 +37,9 @@ describe SectionIdentitePP do
       personne_physique: attributes_for(:personne_physique, siren: siren),
       date_immatriculation: '2015-05-09'
     }
-    pdf.section_identite_pp incomplete_params
+    pdf.section_identite_pp(incomplete_params)
 
-    expect(subject).to include '1 AV FOCH BEL HOTEL 75008 PARIS'
+    expect(subject).to include('1 AV FOCH BEL HOTEL 75008 PARIS')
   end
 
   it 'works with foreign address' do
@@ -47,15 +47,15 @@ describe SectionIdentitePP do
       personne_physique: attributes_for(:personne_physique_etrangere, siren: siren),
       date_immatriculation: '1939-08-10'
     }
-    pdf.section_identite_pp params
+    pdf.section_identite_pp(params)
 
-    expect(subject).to include '1 AV FOCH BEL HOTEL 75008 PARIS (Bordurie)'
+    expect(subject).to include('1 AV FOCH BEL HOTEL 75008 PARIS (Bordurie)')
   end
 
   it 'works with nil nom' do
     params[:personne_physique][:nom_patronyme] = nil
-    pdf.section_identite_pp params
+    pdf.section_identite_pp(params)
 
-    expect(subject).to include 'François Philippe'
+    expect(subject).to include('François Philippe')
   end
 end

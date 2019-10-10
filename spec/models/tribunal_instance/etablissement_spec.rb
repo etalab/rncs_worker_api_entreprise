@@ -20,17 +20,17 @@ describe TribunalInstance::Etablissement do
 
   # Associations
   it { is_expected.to have_one(:adresse).dependent(:destroy) }
-  it { is_expected.to belong_to :entreprise }
+  it { is_expected.to belong_to(:entreprise) }
 
   it_behaves_like 'having rails timestamps'
 
   describe 'adresse' do
     subject { create :titmc_etablissement }
 
-    its(:adresse) { is_expected.to be_a TribunalInstance::AdresseEtablissement }
-    its(:adresse) { is_expected.to have_attributes ligne_1: 'Ceci est une adresse d\'établissement' }
+    its(:adresse) { is_expected.to be_a(TribunalInstance::AdresseEtablissement) }
+    its(:adresse) { is_expected.to have_attributes(ligne_1: 'Ceci est une adresse d\'établissement') }
 
-    its(:entreprise) { is_expected.to be_a TribunalInstance::Entreprise }
-    its(:entreprise) { is_expected.to have_attributes forme_juridique: '9999' }
+    its(:entreprise) { is_expected.to be_a(TribunalInstance::Entreprise) }
+    its(:entreprise) { is_expected.to have_attributes(forme_juridique: '9999') }
   end
 end

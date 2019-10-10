@@ -73,47 +73,47 @@ describe DossierEntreprise do
   context 'dossier with siege social & etablissement principal' do
     subject { create :dossier_entreprise_pm_many_reps, siren: siren }
 
-    its('siege_social.type_etablissement') { is_expected.to eq 'SIE' }
-    its('etablissement_principal.type_etablissement') { is_expected.to eq 'PRI' }
+    its('siege_social.type_etablissement') { is_expected.to eq('SIE') }
+    its('etablissement_principal.type_etablissement') { is_expected.to eq('PRI') }
   end
 
   context 'dossier with SEP' do
     subject { create :dossier_auto_entrepreneur, siren: siren }
 
-    its('siege_social.type_etablissement') { is_expected.to eq 'SEP' }
-    its('etablissement_principal.type_etablissement') { is_expected.to eq 'SEP' }
+    its('siege_social.type_etablissement') { is_expected.to eq('SEP') }
+    its('etablissement_principal.type_etablissement') { is_expected.to eq('SEP') }
   end
 
   describe 'dossier without siege social' do
     subject { create :dossier_entreprise_without_siege_social, siren: siren }
 
     its(:siege_social) { is_expected.to be_nil }
-    its('etablissement_principal.type_etablissement') { is_expected.to eq 'PRI' }
+    its('etablissement_principal.type_etablissement') { is_expected.to eq('PRI') }
   end
 
   describe 'dossier without etablissement principal' do
     subject { create :dossier_entreprise_without_etab_principal, siren: siren }
 
-    its('siege_social.type_etablissement') { is_expected.to eq 'SIE' }
+    its('siege_social.type_etablissement') { is_expected.to eq('SIE') }
     its(:etablissement_principal) { is_expected.to be_nil }
   end
 
   describe 'dossier TITMC' do
     subject { create :titmc_dossier_entreprise }
 
-    its(:titmc_entreprise) { is_expected.to be_a TribunalInstance::Entreprise }
-    its(:titmc_entreprise) { is_expected.to have_attributes forme_juridique: '9999' }
+    its(:titmc_entreprise) { is_expected.to be_a(TribunalInstance::Entreprise) }
+    its(:titmc_entreprise) { is_expected.to have_attributes(forme_juridique: '9999') }
   end
 
   describe 'type_greffe' do
     it 'recognizes a tribunal commerce code' do
-      dossier_tc = build :dossier_entreprise, code_greffe: '7608'
-      expect(dossier_tc.type_greffe).to eq :tribunal_commerce
+      dossier_tc = build(:dossier_entreprise, code_greffe: '7608')
+      expect(dossier_tc.type_greffe).to eq(:tribunal_commerce)
     end
 
     it 'recognizes a tribunal instance code' do
-      dossier_titmc = build :dossier_entreprise, code_greffe: '6752'
-      expect(dossier_titmc.type_greffe).to eq :tribunal_instance
+      dossier_titmc = build(:dossier_entreprise, code_greffe: '6752')
+      expect(dossier_titmc.type_greffe).to eq(:tribunal_instance)
     end
   end
 end

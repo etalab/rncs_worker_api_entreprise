@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe TribunalInstance::Stock::Unit::Operation::Load, :trb do
-  subject { described_class.call logger: logger, stock_unit: stock_unit }
+  subject { described_class.call(logger: logger, stock_unit: stock_unit) }
 
   let(:stock_unit) { create :stock_unit_titmc, stock: create(:stock_titmc) }
   let(:logger) { instance_double(Logger).as_null_object }
@@ -45,7 +45,7 @@ describe TribunalInstance::Stock::Unit::Operation::Load, :trb do
     end
 
     it 'logs an error' do
-      expect(logger).to receive(:error).with 'Transmission failed (file: /failed_transmission, error: this is an error)'
+      expect(logger).to receive(:error).with('Transmission failed (file: /failed_transmission, error: this is an error)')
       subject
     end
   end
@@ -60,11 +60,11 @@ describe TribunalInstance::Stock::Unit::Operation::Load, :trb do
     it { is_expected.to be_success }
 
     it 'persists two dossiers entreprises' do
-      expect { subject }.to change(DossierEntreprise, :count).by 2
+      expect { subject }.to change(DossierEntreprise, :count).by(2)
     end
 
     it 'does not log any error' do
-      expect(logger).not_to receive(:error)
+      expect(logger).not_to(receive(:error))
       subject
     end
   end

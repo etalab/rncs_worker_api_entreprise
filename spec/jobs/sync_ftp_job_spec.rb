@@ -66,7 +66,7 @@ describe SyncFTPJob do
     end
 
     it 'does not log any error' do
-      expect(Rails.logger).not_to receive(:error)
+      expect(Rails.logger).not_to(receive(:error))
       subject
     end
   end
@@ -140,10 +140,10 @@ describe SyncFTPJob do
   end
 
   def status_success
-    instance_double Process::Status, success?: true
+    instance_double(Process::Status, success?: true)
   end
 
   def status_failure
-    instance_double Process::Status, success?: false
+    instance_double(Process::Status, success?: false)
   end
 end

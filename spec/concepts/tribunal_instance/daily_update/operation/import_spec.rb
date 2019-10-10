@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe TribunalInstance::DailyUpdate::Operation::Import, :trb do
-  subject { described_class.call logger: logger }
+  subject { described_class.call(logger: logger) }
 
   let(:logger) { instance_double(Logger).as_null_object }
 
@@ -22,12 +22,12 @@ describe TribunalInstance::DailyUpdate::Operation::Import, :trb do
 
     it { is_expected.to be_success }
 
-    its([:daily_update]) { is_expected.to have_attributes year: '2017', month: '05', day: '18' }
+    its([:daily_update]) { is_expected.to have_attributes(year: '2017', month: '05', day: '18') }
     its([:daily_update]) { is_expected.to be_proceeded }
-    its([:daily_update]) { is_expected.to have_attributes status: 'PENDING' }
+    its([:daily_update]) { is_expected.to have_attributes(status: 'PENDING') }
 
     it 'saved some daily update units' do
-      expect { subject }.to change(DailyUpdateUnit, :count).by 5
+      expect { subject }.to change(DailyUpdateUnit, :count).by(5)
     end
 
     it 'enqueued a job for each unit' do

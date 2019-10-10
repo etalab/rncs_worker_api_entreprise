@@ -31,20 +31,20 @@ describe TribunalInstance::Representant do
   it_behaves_like 'having rails timestamps'
 
   # Associations
-  it { is_expected.to belong_to :entreprise }
+  it { is_expected.to belong_to(:entreprise) }
   it { is_expected.to have_one(:adresse_representant).dependent(:destroy) }
   it { is_expected.to have_one(:adresse_representant_permanent).dependent(:destroy) }
 
   describe 'representant' do
     subject { create :titmc_representant }
 
-    its(:entreprise) { is_expected.to be_a TribunalInstance::Entreprise }
-    its(:entreprise) { is_expected.to have_attributes forme_juridique: '9999' }
+    its(:entreprise) { is_expected.to be_a(TribunalInstance::Entreprise) }
+    its(:entreprise) { is_expected.to have_attributes(forme_juridique: '9999') }
 
-    its(:adresse_representant) { is_expected.to be_a TribunalInstance::AdresseRepresentant }
+    its(:adresse_representant) { is_expected.to be_a(TribunalInstance::AdresseRepresentant) }
     its(:adresse_representant) { is_expected.to have_attributes(ligne_1: 'Ceci est une adresse de représentant') }
 
-    its(:adresse_representant_permanent) { is_expected.to be_a TribunalInstance::AdresseRepresentantPermanent }
-    its(:adresse_representant_permanent) {      is_expected.to have_attributes(ligne_1: 'Ceci est une adresse de représentant permanent') }
+    its(:adresse_representant_permanent) { is_expected.to be_a(TribunalInstance::AdresseRepresentantPermanent) }
+    its(:adresse_representant_permanent) { is_expected.to have_attributes(ligne_1: 'Ceci est une adresse de représentant permanent') }
   end
 end

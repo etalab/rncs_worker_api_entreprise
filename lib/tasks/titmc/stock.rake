@@ -41,7 +41,7 @@ namespace :titmc do
       units = if args[:code_greffe].nil?
                 [current_stock.stock_units.first]
               else
-                current_stock.stock_units.where code_greffe: args[:code_greffe]
+                current_stock.stock_units.where(code_greffe: args[:code_greffe])
               end
 
       units.each do |stock_unit|
@@ -92,12 +92,12 @@ namespace :titmc do
 
     def restart_import(stock_unit)
       filename = Pathname.new(stock_unit.file_path).basename
-      puts "Job id: #{stock_unit.id} filename: #{filename} current status: #{stock_unit.status}"
+      puts("Job id: #{stock_unit.id} filename: #{filename} current status: #{stock_unit.status}")
 
-      yield stock_unit.id
+      yield(stock_unit.id)
 
       stock_unit.reload
-      puts "New status: #{stock_unit.status}"
+      puts("New status: #{stock_unit.status}")
     end
   end
 end

@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe TribunalInstance::DailyUpdate::Task::FetchUnits do
-  subject { described_class.call daily_update: daily_update, logger: logger }
+  subject { described_class.call(daily_update: daily_update, logger: logger) }
 
   let(:daily_update) { create :daily_update_tribunal_instance, files_path: files_path }
   let(:logger) { instance_double(Logger).as_null_object }
@@ -19,9 +19,9 @@ describe TribunalInstance::DailyUpdate::Task::FetchUnits do
 
     it { is_expected.to be_success }
 
-    its([:daily_update_units]) { are_expected.to all be_an_instance_of DailyUpdateUnit }
-    its([:daily_update_units]) { are_expected.to all be_persisted }
-    its([:daily_update_units]) { are_expected.to all have_attributes status: 'PENDING' }
+    its([:daily_update_units]) { are_expected.to all(be_an_instance_of(DailyUpdateUnit)) }
+    its([:daily_update_units]) { are_expected.to all(be_persisted) }
+    its([:daily_update_units]) { are_expected.to all(have_attributes(status: 'PENDING')) }
 
     they 'have all valid references' do
       references = subject[:daily_update_units].pluck(:reference)
@@ -49,7 +49,7 @@ describe TribunalInstance::DailyUpdate::Task::FetchUnits do
   end
 
   context 'when daily update folder is empty' do
-    let(:files_path) { Rails.root.join 'spec/fixtures/titmc/flux/2017/05/19' }
+    let(:files_path) { Rails.root.join('spec/fixtures/titmc/flux/2017/05/19') }
 
     it { is_expected.to be_failure }
 
@@ -60,7 +60,7 @@ describe TribunalInstance::DailyUpdate::Task::FetchUnits do
   end
 
   context 'when units folder name are unexpected' do
-    let(:files_path) { Rails.root.join 'spec/fixtures/titmc/flux/2017/05/20' }
+    let(:files_path) { Rails.root.join('spec/fixtures/titmc/flux/2017/05/20') }
 
     it { is_expected.to be_failure }
 

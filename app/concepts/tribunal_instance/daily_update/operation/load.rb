@@ -2,10 +2,10 @@ module TribunalInstance
   module DailyUpdate
     module Operation
       class Load < Trailblazer::Operation
-        pass ->(_, logger:, **) { logger.info 'Fetching new daily updates' }
-        step Nested Task::DBCurrentDate
+        pass ->(_, logger:, **) { logger.info('Fetching new daily updates') }
+        step Nested(Task::DBCurrentDate)
         pass :log_sync_status
-        step Nested Task::FetchInPipe
+        step Nested(Task::FetchInPipe)
         step :set_default_db_current_date
         step :ignores_older_updates
         step :limit_update_to_keep
@@ -29,7 +29,7 @@ module TribunalInstance
         end
 
         def limit_update_to_keep(ctx, daily_updates:, **)
-          daily_updates.keep_if { |update| !update.newer?(date_limit_to_import(ctx)) } if import_option_provided? ctx
+          daily_updates.keep_if { |update| !update.newer?(date_limit_to_import(ctx)) } if import_option_provided?(ctx)
 
           ctx[:daily_updates].any?
         end
@@ -43,18 +43,18 @@ module TribunalInstance
 
         def log_sync_status(ctx, logger:, **)
           if ctx.key?(:db_current_date)
-            logger.info "The database is sync until #{ctx[:db_current_date]}."
+            logger.info("The database is sync until #{ctx[:db_current_date]}.")
           else
-            logger.info 'First run, no daily updates'
+            logger.info('First run, no daily updates')
           end
         end
 
         def log_no_updates_to_import(_, db_current_date:, logger:, **)
-          logger.info "No daily updates available after #{db_current_date}. Nothing to import."
+          logger.info("No daily updates available after #{db_current_date}. Nothing to import.")
         end
 
         def log_how_many_updates_found(_, daily_updates:, logger:, **)
-          logger.info "#{daily_updates.count} daily updates found."
+          logger.info("#{daily_updates.count} daily updates found.")
         end
 
         private

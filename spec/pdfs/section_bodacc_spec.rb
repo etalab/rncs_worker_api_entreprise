@@ -12,12 +12,12 @@ describe SectionBODACC do
   let(:pdf) { dummy_pdf_bodacc.new }
 
   it 'returns a valid link' do
-    pdf.section_bodacc siren: '123456789'
+    pdf.section_bodacc(siren: '123456789')
     data = [
       'Bulletin Officiel des Annonces Civiles et Commerciales (BODACC)',
       'Lien', 'https://www.bodacc.fr/annonce/liste/123456789'
     ]
 
-    expect(subject).to eq data
+    expect(subject).to eq(data)
   end
 end

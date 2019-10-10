@@ -16,14 +16,14 @@ describe StockUnit do
   describe '#logger_for_import' do
     subject { create(:stock_unit).logger_for_import }
 
-    it { is_expected.to be_a Logger }
+    it { is_expected.to be_a(Logger) }
 
     it 'has a valid filename' do
-      mock_logger = double Logger
+      mock_logger = double(Logger)
       current_time = Time.now
-      Timecop.freeze current_time
+      Timecop.freeze(current_time)
 
-      format_time = current_time.strftime '%Y_%m_%d__%H_%M_%S'
+      format_time = current_time.strftime('%Y_%m_%d__%H_%M_%S')
       exptected_log_file = Rails.root.join(
         'log', 'stock',
         "20171023__0123__1__#{format_time}.log"

@@ -3,12 +3,12 @@ module SectionBODACC
   include PdfHelper
 
   def section_bodacc(siren:, **)
-    display_section_title 'Bulletin Officiel des Annonces Civiles et Commerciales (BODACC)'
+    display_section_title('Bulletin Officiel des Annonces Civiles et Commerciales (BODACC)')
     @siren = siren
 
-    display_table_block [
+    display_table_block([
       ['Lien', link_bodacc]
-    ]
+    ])
   end
 
   private

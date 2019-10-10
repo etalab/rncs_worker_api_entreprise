@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe TribunalInstance::DailyUpdate::Operation::Load, :trb do
-  subject { described_class.call params }
+  subject { described_class.call(params) }
 
   let(:params) { { logger: logger } }
   let(:logger) { instance_double(Logger).as_null_object }
@@ -49,10 +49,10 @@ describe TribunalInstance::DailyUpdate::Operation::Load, :trb do
         subject
       end
 
-      its([:daily_updates]) { are_expected.to all be_persisted }
-      its([:daily_updates]) { are_expected.to all have_attributes proceeded: false }
-      its([:daily_updates]) { are_expected.to all have_attributes status: 'QUEUED' }
-      its([:daily_updates]) { are_expected.to all have_attributes daily_update_units: [] }
+      its([:daily_updates]) { are_expected.to all(be_persisted) }
+      its([:daily_updates]) { are_expected.to all(have_attributes(proceeded: false)) }
+      its([:daily_updates]) { are_expected.to all(have_attributes(status: 'QUEUED')) }
+      its([:daily_updates]) { are_expected.to all(have_attributes(daily_update_units: [])) }
 
       it 'keeps only the latest updates' do
         expect(subject[:daily_updates]).to contain_exactly(
@@ -67,7 +67,7 @@ describe TribunalInstance::DailyUpdate::Operation::Load, :trb do
       describe 'import_until_date option' do
         before { params[:import_until_date] = '2017/05/20' }
 
-        its([:daily_updates]) { is_expected.to have_attributes count: 2 }
+        its([:daily_updates]) { is_expected.to have_attributes(count: 2) }
 
         it 'limit to 2 updates' do
           expect(subject[:daily_updates]).to contain_exactly(
@@ -80,7 +80,7 @@ describe TribunalInstance::DailyUpdate::Operation::Load, :trb do
       describe 'import_next_x_days option' do
         before { params[:import_next_x_days] = 2 }
 
-        its([:daily_updates]) { is_expected.to have_attributes count: 2 }
+        its([:daily_updates]) { is_expected.to have_attributes(count: 2) }
 
         it 'limit to 2 updates' do
           expect(subject[:daily_updates]).to contain_exactly(
@@ -102,7 +102,7 @@ describe TribunalInstance::DailyUpdate::Operation::Load, :trb do
       end
 
       it 'does nothing if no new daliy updates' do
-        expect { subject }.not_to change(DailyUpdateTribunalInstance, :count)
+        expect { subject }.not_to(change(DailyUpdateTribunalInstance, :count))
       end
 
       it 'does not start the import' do

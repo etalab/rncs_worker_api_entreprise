@@ -8,7 +8,7 @@ module TribunalInstance
         self[:stocks_folder] = ::File.join(Rails.configuration.rncs_sources_path, 'titmc', 'stock')
         self[:stock_class] = StockTribunalInstance
 
-        pass ->(_, logger:, **) { logger.info 'Checking last TITMC stock...' }
+        pass ->(_, logger:, **) { logger.info('Checking last TITMC stock...') }
         step Nested(RetrieveLastStock)
         fail :log_sub_operation_failure, fail_fast: true
         pass :log_current_stock
@@ -31,16 +31,16 @@ module TribunalInstance
         end
 
         def log_current_stock(_, logger:, stock:, **)
-          logger.info "Current #{stock.type}: #{stock.date}"
+          logger.info("Current #{stock.type}: #{stock.date}")
         end
 
         def log_not_newer_stock(_, logger:, **)
           current_stock = StockTribunalInstance.current
-          logger.error "No stock newer than #{current_stock.date} available ; current stock status: #{current_stock.status}"
+          logger.error("No stock newer than #{current_stock.date} available ; current stock status: #{current_stock.status}")
         end
 
         def log_sub_operation_failure(_, logger:, error:, **)
-          logger.error error
+          logger.error(error)
         end
       end
     end

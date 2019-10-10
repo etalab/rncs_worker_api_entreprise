@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe TribunalInstance::Stock::Unit::Operation::ResetDatabase, :trb do
-  subject { described_class.call code_greffe: code_greffe, logger: logger }
+  subject { described_class.call(code_greffe: code_greffe, logger: logger) }
 
   let(:code_greffe) { '9712' }
   let(:logger) { object_double(Rails.logger, info: true).as_null_object }

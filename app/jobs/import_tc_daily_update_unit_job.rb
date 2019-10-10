@@ -12,7 +12,7 @@ class ImportTCDailyUpdateUnitJob < ApplicationJob
     wrap_import_with_log_level(:fatal) do
       import = unit_importer.call(daily_update_unit: unit, logger: import_logger)
 
-      raise ActiveRecord::Rollback if import.failure?
+      raise(ActiveRecord::Rollback) if import.failure?
     end
 
     # Checking the import result a second time outside the transaction

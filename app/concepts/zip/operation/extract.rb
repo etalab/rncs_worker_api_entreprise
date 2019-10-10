@@ -15,7 +15,7 @@ module ZIP
 
       def unzip(ctx, path:, dest_directory:, **)
         # -o overrides existing files (removes unix prompt for override)
-        _stdout, stderr, status = ::Open3.capture3 "unzip -o #{path} -d #{dest_directory}"
+        _stdout, stderr, status = ::Open3.capture3("unzip -o #{path} -d #{dest_directory}")
 
         ctx[:zip_stderr] = stderr
         status.success?

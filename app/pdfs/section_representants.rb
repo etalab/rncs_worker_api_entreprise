@@ -3,7 +3,7 @@ module SectionRepresentants
   include PdfHelper
 
   def section_representants(representants:, **)
-    display_section_title 'Gestion, Direction, Adminisration, Contrôle, Associés ou Membres'
+    display_section_title('Gestion, Direction, Adminisration, Contrôle, Associés ou Membres')
 
     representants.each do |rep|
       @current_rep = rep
@@ -23,7 +23,7 @@ module SectionRepresentants
     when /morale/
       data_table += representant_pm
     else
-      Raven.capture_message "Unhandled type_representant (#{@current_rep[:type_representant]})"
+      Raven.capture_message("Unhandled type_representant (#{@current_rep[:type_representant]})")
     end
 
     data_table << ['Adresse', adresse_representant]

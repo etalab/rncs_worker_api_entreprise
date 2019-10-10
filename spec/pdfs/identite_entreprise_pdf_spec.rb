@@ -3,7 +3,7 @@ require 'rails_helper'
 describe IdentiteEntreprisePdf do
   subject { PDF::Inspector::Text.analyze(pdf.render).strings }
 
-  let(:pdf) { described_class.new template_params }
+  let(:pdf) { described_class.new(template_params) }
   let(:siren) { '123456789' }
   let(:template_params) do
     params = { dossier_entreprise_greffe_principal: attributes_for(:dossier_entreprise, siren: siren) }
@@ -77,8 +77,8 @@ describe IdentiteEntreprisePdf do
       'page 2/2'
     ]
 
-    expect(subject).to eq expected_data
-    expect(subject).to include 'page 1/2', 'page 2/2'
+    expect(subject).to eq(expected_data)
+    expect(subject).to include('page 1/2', 'page 2/2')
   end
 
   it 'is a valid Personne Physique PDF' do
@@ -130,7 +130,7 @@ describe IdentiteEntreprisePdf do
       'page 2/2'
     ]
 
-    expect(subject).to eq expected_data
+    expect(subject).to eq(expected_data)
   end
 
   it 'miss section representants & observations' do
@@ -138,7 +138,7 @@ describe IdentiteEntreprisePdf do
     nested_data[:representants] = []
     nested_data[:observations] = []
 
-    expect(subject).not_to include 'Observations'
-    expect(subject).not_to include 'Gestion, Direction, Adminisration, Contrôle, Associés ou Membres'
+    expect(subject).not_to(include('Observations'))
+    expect(subject).not_to(include('Gestion, Direction, Adminisration, Contrôle, Associés ou Membres'))
   end
 end

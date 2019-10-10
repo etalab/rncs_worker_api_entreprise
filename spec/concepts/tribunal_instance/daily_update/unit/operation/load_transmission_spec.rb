@@ -1,9 +1,9 @@
 require 'rails_helper'
 
 describe TribunalInstance::DailyUpdate::Unit::Operation::LoadTransmission, :trb do
-  subject { described_class.call path: spec_path.to_s, logger: logger }
+  subject { described_class.call(path: spec_path.to_s, logger: logger) }
 
-  let(:spec_path) { Rails.root.join 'spec', 'fixtures', 'titmc', 'zip', filename }
+  let(:spec_path) { Rails.root.join('spec', 'fixtures', 'titmc', 'zip', filename) }
   let(:logger) { instance_double(Logger).as_null_object }
 
   context 'when zip exists' do
@@ -28,7 +28,7 @@ describe TribunalInstance::DailyUpdate::Unit::Operation::LoadTransmission, :trb 
 
       it 'deletes extract directory' do
         directory = Pathname(subject[:dest_directory])
-        expect(directory).not_to exist
+        expect(directory).not_to(exist)
       end
     end
 
@@ -43,7 +43,7 @@ describe TribunalInstance::DailyUpdate::Unit::Operation::LoadTransmission, :trb 
 
       it 'deletes extract directory' do
         directory = Pathname(subject[:dest_directory])
-        expect(directory).not_to exist
+        expect(directory).not_to(exist)
       end
     end
   end
@@ -90,7 +90,7 @@ describe TribunalInstance::DailyUpdate::Unit::Operation::LoadTransmission, :trb 
 
     it 'does not call the import operation' do
       expect(TribunalInstance::DailyUpdate::Unit::Operation::Import)
-        .not_to receive(:call)
+        .not_to(receive(:call))
 
       subject
     end
@@ -110,7 +110,7 @@ describe TribunalInstance::DailyUpdate::Unit::Operation::LoadTransmission, :trb 
 
     it 'does not call the import operation' do
       expect(TribunalInstance::DailyUpdate::Unit::Operation::Import)
-        .not_to receive(:call)
+        .not_to(receive(:call))
 
       subject
     end
@@ -118,7 +118,7 @@ describe TribunalInstance::DailyUpdate::Unit::Operation::LoadTransmission, :trb 
     it 'logs an error' do
       expect(logger)
         .to receive(:error)
-        .with "MD5 file not found (#{spec_path})"
+        .with("MD5 file not found (#{spec_path})")
       subject
     end
   end

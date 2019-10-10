@@ -15,7 +15,7 @@ class ImportTCStockUnitJob < ApplicationJob
       import = TribunalCommerce::StockUnit::Operation::Load
         .call(stock_unit: unit, logger: unit.logger_for_import)
 
-      raise ActiveRecord::Rollback if import.failure?
+      raise(ActiveRecord::Rollback) if import.failure?
     end
 
     if import.success?

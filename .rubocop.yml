@@ -26,6 +26,7 @@ Style/ClassAndModuleChildren:
 
 Metrics/BlockLength:
   Exclude:
+    - 'spec/spec_helper.rb'
     - 'spec/pdfs/**/*'
     - 'spec/support/shared_examples/*'
     - 'spec/factories/**/*'
@@ -77,3 +78,9 @@ Style/MethodCallWithArgsParentheses:
 
 Style/BlockComments:
   Enabled: false
+
+Layout/AlignArguments:
+  EnforcedStyle: with_fixed_indentation
+
+Layout/IndentFirstArrayElement:
+  EnforcedStyle: consistent
