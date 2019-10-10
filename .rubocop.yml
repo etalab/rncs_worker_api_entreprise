@@ -39,13 +39,7 @@ Metrics/MethodLength:
   Max: 15
 
 Metrics/LineLength:
-  Max: 120
-  IgnoredPatterns:
-    - '# TODO'
-    - '= ".+"'
-    - "= '.+'"
-    - 'logger'
-    - '`.+`'
+  Enabled: false
 
 Style/SignalException:
   Exclude:
@@ -60,20 +54,26 @@ Naming/UncommunicativeMethodParamName:
     - '_'
     - 'nb'
 
-Layout/IndentFirstHashElement:
-  EnforcedStyle: consistent
-
 Layout/MultilineMethodCallIndentation:
   EnforcedStyle: indented
-
-Layout/AlignArguments:
-  EnforcedStyle: with_fixed_indentation
-
-Layout/IndentFirstArgument:
-  EnforcedStyle: consistent
 
 Style/AsciiComments:
   Enabled: false
 
 Naming/VariableNumber:
   EnforcedStyle: snake_case
+
+Style/BracesAroundHashParameters:
+  EnforcedStyle: context_dependent
+
+Style/MethodCallWithArgsParentheses:
+  Enabled: true
+  Exclude:
+    - 'config.ru'
+  IgnoredMethods:
+    - require
+    - to
+    - to_not
+
+Style/BlockComments:
+  Enabled: false
