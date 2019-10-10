@@ -65,8 +65,7 @@ describe TribunalCommerce::DailyUpdateUnit::Operation::Load, :trb do
       end
 
       it 'logs the overall unit\'s import success' do
-        message = "Each transmission has been successfuly imported. The daily update is a success for greffe #{unit.reference} !"
-        expect(logger).to receive(:info).with(message)
+        expect(logger).to receive(:info).with("Each transmission has been successfuly imported. The daily update is a success for greffe #{unit.reference} !")
 
         subject
       end

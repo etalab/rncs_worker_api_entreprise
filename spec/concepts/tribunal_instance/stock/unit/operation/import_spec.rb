@@ -16,9 +16,7 @@ describe TribunalInstance::Stock::Unit::Operation::Import, :trb do
 
     its([:dossiers_entreprises]) { are_expected.to all be_persisted }
     its([:dossiers_entreprises]) { are_expected.to all have_attributes code_greffe: '9712' }
-    its([:dossiers_entreprises]) do
-      are_expected.to all have_attributes titmc_entreprise: be_a(TribunalInstance::Entreprise)
-    end
+    its([:dossiers_entreprises]) {     are_expected.to all have_attributes titmc_entreprise: be_a(TribunalInstance::Entreprise)}
 
     it 'persists 2 entreprises' do
       expect { subject }.to change(TribunalInstance::Entreprise, :count).by 2

@@ -32,12 +32,7 @@ describe DailyUpdate do
 
       context 'when the last imported update is a partial stock' do
         it 'returns the partial stock' do
-          partial_stock = create(:daily_update,
-            year: '2015',
-            month: '08',
-            day: '24',
-            partial_stock: true,
-            proceeded: true)
+          partial_stock = create(:daily_update,            year: '2015',            month: '08',            day: '24',            partial_stock: true,            proceeded: true)
 
           expect(subject).to eq(partial_stock)
         end
@@ -109,19 +104,8 @@ describe DailyUpdate do
 
     context 'with partial stock and daily update queued with the same date' do
       it 'returns the partial stock prior to the daily update' do
-        create(:daily_update_tribunal_commerce,
-          year: '2017',
-          month: '10',
-          day: '25',
-          proceeded: false,
-          partial_stock: false)
-
-        create(:daily_update_tribunal_commerce,
-          year: '2017',
-          month: '10',
-          day: '25',
-          proceeded: false,
-          partial_stock: true)
+        create(:daily_update_tribunal_commerce,          year: '2017',          month: '10',          day: '25',          proceeded: false,          partial_stock: false)
+        create(:daily_update_tribunal_commerce,          year: '2017',          month: '10',          day: '25',          proceeded: false,          partial_stock: true)
 
         expect(subject.date).to eq(Date.new(2017, 10, 25))
         expect(subject).to be_a_partial_stock

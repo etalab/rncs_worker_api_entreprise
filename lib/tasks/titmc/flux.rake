@@ -16,8 +16,7 @@ namespace :titmc do
     desc 'Give the status of the latest daily update'
     task status: :environment do
       latest_update = DailyUpdateTribunalInstance.current
-      message = "#{latest_update.date.to_s.green}, proceeded: #{latest_update.proceeded.to_s.green}, status: #{latest_update.status.green}"
-      puts message
+      puts "#{latest_update.date.to_s.green}, proceeded: #{latest_update.proceeded.to_s.green}, status: #{latest_update.status.green}"
 
       status_count = latest_update
         .daily_update_units

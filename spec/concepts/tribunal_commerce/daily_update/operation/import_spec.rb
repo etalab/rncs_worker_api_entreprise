@@ -18,12 +18,7 @@ describe TribunalCommerce::DailyUpdate::Operation::Import, :trb do
     let(:fetched_update) { subject[:daily_update] }
     before do
       create(:daily_update_with_completed_units, year: '2018', month: '04', day: '08', proceeded: true)
-      create(:daily_update_tribunal_commerce,
-        year: '2018',
-        month: '04',
-        day: '09',
-        proceeded: false,
-        files_path: Rails.root.join('spec/fixtures/tc/flux/2018/04/09'))
+      create(:daily_update_tribunal_commerce, year: '2018', month: '04', day: '09', proceeded: false, files_path: Rails.root.join('spec/fixtures/tc/flux/2018/04/09'))
       create(:daily_update_tribunal_commerce, year: '2018', month: '04', day: '10', proceeded: false)
       create(:daily_update_tribunal_commerce, year: '2018', month: '04', day: '11', proceeded: false)
     end

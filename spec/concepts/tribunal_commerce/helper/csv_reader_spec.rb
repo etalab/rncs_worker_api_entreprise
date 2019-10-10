@@ -62,7 +62,7 @@ describe TribunalCommerce::Helper::CSVReader do
             { data_b: 'B2' },
             { data_a: 'A3', data_b: 'B3' },
             { data_a: 'A4' },
-            data_a: 'A5', data_b: 'B5'
+            { data_a: 'A5', data_b: 'B5' }
           )
       end
     end

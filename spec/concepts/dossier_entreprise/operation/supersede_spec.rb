@@ -16,12 +16,14 @@ describe DossierEntreprise::Operation::Supersede do
 
   context 'when the dossier exists in database' do
     let(:old_dossier) do
-      create(:dossier_entreprise,
+      create(
+        :dossier_entreprise,
         code_greffe: '1234',
         numero_gestion: '1A2B3C',
         siren: '123456789',
         date_immatriculation: 'hier',
-        sans_activite: 'NON')
+        sans_activite: 'NON'
+      )
     end
 
     before { old_dossier }

@@ -50,8 +50,7 @@ describe Etablissement::Operation::NouveauModifie do
       it 'returns a warning message' do
         warning_msg = subject[:warning]
 
-        message = 'The etablissement (id_etablissement: 1) was not found in dossier (code_greffe: 1234, numero_gestion: 1A2B3C) for update. Created instead.'
-        expect(warning_msg).to eq(message)
+        expect(warning_msg).to eq('The etablissement (id_etablissement: 1) was not found in dossier (code_greffe: 1234, numero_gestion: 1A2B3C) for update. Created instead.')
       end
 
       it { is_expected.to be_success }
@@ -63,8 +62,7 @@ describe Etablissement::Operation::NouveauModifie do
     it 'returns a warning message' do
       warning_msg = subject[:warning]
 
-      message = "The dossier (code_greffe: #{data[:code_greffe]}, numero_gestion: #{data[:numero_gestion]}) is not found. The etablissement (id_etablissement: #{data[:id_etablissement]}) is not imported."
-      expect(warning_msg).to eq(message)
+      expect(warning_msg).to eq("The dossier (code_greffe: #{data[:code_greffe]}, numero_gestion: #{data[:numero_gestion]}) is not found. The etablissement (id_etablissement: #{data[:id_etablissement]}) is not imported.")
     end
 
     it { is_expected.to be_success }

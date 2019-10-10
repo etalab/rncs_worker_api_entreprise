@@ -16,12 +16,7 @@ describe TribunalInstance::DailyUpdate::Operation::Import, :trb do
   describe 'success' do
     before do
       create :daily_update_with_completed_units, year: '2017', month: '05', day: '17', proceeded: true
-      create :daily_update_tribunal_instance,
-        year: '2017',
-        month: '05',
-        day: '18',
-        proceeded: false,
-        files_path: Rails.root.join('spec/fixtures/titmc/flux/2017/05/18')
+      create :daily_update_tribunal_instance, year: '2017', month: '05', day: '18', proceeded: false, files_path: Rails.root.join('spec/fixtures/titmc/flux/2017/05/18')
       create :daily_update_tribunal_instance, year: '2017', month: '05', day: '19', proceeded: false
     end
 
@@ -55,14 +50,7 @@ describe TribunalInstance::DailyUpdate::Operation::Import, :trb do
   end
 
   describe 'when FetchUnits fails' do
-    before do
-      create(:daily_update_tribunal_instance,
-        year: '2017',
-        month: '05',
-        day: '19',
-        proceeded: false,
-        files_path: Rails.root.join('spec/fixtures/titmc/flux/2017/05/19'))
-    end
+    before { create(:daily_update_tribunal_instance, year: '2017', month: '05', day: '19', proceeded: false, files_path: Rails.root.join('spec/fixtures/titmc/flux/2017/05/19')) }
 
     it { is_expected.to be_failure }
 

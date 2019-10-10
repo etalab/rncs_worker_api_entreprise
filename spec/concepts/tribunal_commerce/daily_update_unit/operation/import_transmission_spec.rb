@@ -103,14 +103,11 @@ describe TribunalCommerce::DailyUpdateUnit::Operation::ImportTransmission, :trb 
         expect_ordered_import_call(:import_dossiers_entreprise_evt_from_pp, '0101_1_20170512_112544_4_PP_EVT.csv')
         expect_ordered_import_call(:import_personnes_physiques_evt, '0101_1_20170512_112544_4_PP_EVT.csv')
         expect_ordered_import_call(:import_representants, '0101_1_20170512_112544_5_rep.csv')
-        expect_ordered_import_call(:import_representants_nouveau_modifie,
-          '0101_1_20170512_112544_6_rep_nouveau_modifie_EVT.csv')
+        expect_ordered_import_call(:import_representants_nouveau_modifie, '0101_1_20170512_112544_6_rep_nouveau_modifie_EVT.csv')
         expect_ordered_import_call(:import_representants_partant, '0101_1_20170512_112544_7_rep_partant_EVT.csv')
         expect_ordered_import_call(:import_etablissements, '0101_1_20170512_112544_8_ets.csv')
-        expect_ordered_import_call(:import_etablissements_nouveau_modifie,
-          '0101_1_20170512_112544_9_ets_nouveau_modifie_EVT.csv')
-        expect_ordered_import_call(:import_etablissements_supprime,
-          '0101_1_20170512_112544_10_ets_supprime_EVT.csv')
+        expect_ordered_import_call(:import_etablissements_nouveau_modifie, '0101_1_20170512_112544_9_ets_nouveau_modifie_EVT.csv')
+        expect_ordered_import_call(:import_etablissements_supprime, '0101_1_20170512_112544_10_ets_supprime_EVT.csv')
         expect_ordered_import_call(:import_observations, '0101_1_20170512_112544_11_obs.csv')
       end
 

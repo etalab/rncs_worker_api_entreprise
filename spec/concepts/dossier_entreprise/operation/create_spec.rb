@@ -14,9 +14,7 @@ describe DossierEntreprise::Operation::Create do
   subject { described_class.call(data: data) }
 
   context 'when the dossier already exists' do
-    let(:existing_dossier) do
-      create(:dossier_entreprise, code_greffe: data[:code_greffe], numero_gestion: data[:numero_gestion])
-    end
+    let(:existing_dossier) { create(:dossier_entreprise, code_greffe: data[:code_greffe], numero_gestion: data[:numero_gestion]) }
 
     before { existing_dossier }
 
@@ -25,8 +23,7 @@ describe DossierEntreprise::Operation::Create do
     it 'returns a warning message' do
       warning_msg = subject[:warning]
 
-      message = 'The dossier (code_greffe: 2288, numero_gestion: 1A2B3C) already exists in database and is overriden.'
-      expect(warning_msg).to eq(message)
+      expect(warning_msg).to eq('The dossier (code_greffe: 2288, numero_gestion: 1A2B3C) already exists in database and is overriden.')
     end
 
     it 'destroys the old dossier' do

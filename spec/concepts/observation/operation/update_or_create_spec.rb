@@ -69,8 +69,7 @@ describe Observation::Operation::UpdateOrCreate do
     it 'returns a warning message' do
       warning_msg = subject[:warning]
 
-      message = "The dossier (code_greffe: #{data[:code_greffe]}, numero_gestion: #{data[:numero_gestion]}) is not found. The observation with ID: #{data[:id_observation]} is not imported."
-      expect(warning_msg).to eq(message)
+      expect(warning_msg).to eq("The dossier (code_greffe: #{data[:code_greffe]}, numero_gestion: #{data[:numero_gestion]}) is not found. The observation with ID: #{data[:id_observation]} is not imported.")
     end
 
     it { is_expected.to be_success }

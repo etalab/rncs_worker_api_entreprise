@@ -119,16 +119,24 @@ describe TribunalCommerce::DailyUpdate::Task::NextQueuedUpdate do
 
   # Helper methods
   def add_queued_partial_stock(year:, month:, day:, **)
-    create(:daily_update_tribunal_commerce,
-      year: year, month: month, day: day,
+    create(
+      :daily_update_tribunal_commerce,
+      year: year,
+      month: month,
+      day: day,
       partial_stock: true,
-      proceeded: false)
+      proceeded: false
+    )
   end
 
   def add_queued_daily_update(year:, month:, day:, **)
-    create(:daily_update_tribunal_commerce,
-      year: year, month: month, day: day,
+    create(
+      :daily_update_tribunal_commerce,
+      year: year,
+      month: month,
+      day: day,
       partial_stock: false,
-      proceeded: false)
+      proceeded: false
+    )
   end
 end

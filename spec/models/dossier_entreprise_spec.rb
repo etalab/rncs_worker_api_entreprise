@@ -52,13 +52,8 @@ describe DossierEntreprise do
     end
 
     context 'with multiple immatriculations principales found in db' do
-      let!(:old_immat) do
-        create(:dossier_entreprise, siren: siren, type_inscription: 'P', date_immatriculation: '2018-01-01')
-      end
-
-      let!(:latest_immat) do
-        create(:dossier_entreprise, siren: siren, type_inscription: 'P', date_immatriculation: '2019-01-01')
-      end
+      let!(:old_immat) { create(:dossier_entreprise, siren: siren, type_inscription: 'P', date_immatriculation: '2018-01-01') }
+      let!(:latest_immat) { create(:dossier_entreprise, siren: siren, type_inscription: 'P', date_immatriculation: '2019-01-01') }
 
       it 'returns the latest' do
         expect(subject).to eq(latest_immat)
