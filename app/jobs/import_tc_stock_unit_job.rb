@@ -3,30 +3,23 @@ class ImportTCStockUnitJob < ApplicationJob
 
   attr_reader :unit
 
-  # TODO: should be refactored to remove Rubocop warnings
-  # rubocop:disable Metrics/AbcSize
   def perform(stock_unit_id)
-    import = nil
+    @import = nil
     @unit = StockUnit.find(stock_unit_id)
     # TODO: Move state update into the underlying operation ??!
     # stock_unit.update(status: 'LOADING')
 
     wrap_import_with_log_level(:fatal) do
-      import = TribunalCommerce::StockUnit::Operation::Load
+      @import = TribunalCommerce::StockUnit::Operation::Load
         .call(stock_unit: unit, logger: unit.logger_for_import)
 
-      raise(ActiveRecord::Rollback) if import.failure?
+      raise(ActiveRecord::Rollback) if @import.failure?
     end
 
-    if import.success?
-      unit.update(status: 'COMPLETED')
-      TribunalCommerce::Stock::Operation::PostImport
-        .call(stock_unit: unit)
-    else
-      unit.update(status: 'ERROR')
-    end
+    update_unit_status
+
+    TribunalCommerce::Stock::Operation::PostImport.call(stock_unit: unit) if @import.success?
   end
-  # rubocop:enable Metrics/AbcSize
 
   private
 
@@ -37,5 +30,13 @@ class ImportTCStockUnitJob < ApplicationJob
       yield
     end
     ActiveRecord::Base.logger.level = usual_log_level
+  end
+
+  def update_unit_status
+    if @import.success?
+      unit.update(status: 'COMPLETED')
+    else
+      unit.update(status: 'ERROR')
+    end
   end
 end

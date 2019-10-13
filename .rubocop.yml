@@ -77,7 +77,8 @@ Style/MethodCallWithArgsParentheses:
     - to_not
 
 Style/BlockComments:
-  Enabled: false
+  Exclude:
+    - 'spec/spec_helper.rb'
 
 Layout/AlignArguments:
   EnforcedStyle: with_fixed_indentation

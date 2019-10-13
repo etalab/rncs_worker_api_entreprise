@@ -3,29 +3,20 @@ class ImportTCDailyUpdateUnitJob < ApplicationJob
 
   attr_reader :unit
 
-  # TODO: should be refactored to remove Rubocop warnings
-  # rubocop:disable Metrics/AbcSize
   def perform(daily_update_id)
-    import = nil
+    @import = nil
     @unit = DailyUpdateUnit.find(daily_update_id)
 
     wrap_import_with_log_level(:fatal) do
-      import = unit_importer.call(daily_update_unit: unit, logger: import_logger)
+      @import = unit_importer.call(daily_update_unit: unit, logger: import_logger)
 
-      raise(ActiveRecord::Rollback) if import.failure?
+      raise(ActiveRecord::Rollback) if @import.failure?
     end
 
-    # Checking the import result a second time outside the transaction
-    # so the 'ERROR' status is persisted into DB and not rollback to 'PENDING'
-    if import.success?
-      unit.update(status: 'COMPLETED')
-      TribunalCommerce::DailyUpdateUnit::Operation::PostImport
-        .call(daily_update_unit: unit)
-    else
-      unit.update(status: 'ERROR')
-    end
+    update_unit_status
+
+    TribunalCommerce::DailyUpdateUnit::Operation::PostImport.call(daily_update_unit: unit) if @import.success?
   end
-  # rubocop:enable Metrics/AbcSize
 
   private
 
@@ -47,6 +38,16 @@ class ImportTCDailyUpdateUnitJob < ApplicationJob
       TribunalCommerce::PartialStockUnit::Operation::Load
     else
       TribunalCommerce::DailyUpdateUnit::Operation::Load
+    end
+  end
+
+  def update_unit_status
+    # Checking the import result a second time outside the transaction
+    # so the 'ERROR' status is persisted into DB and not rollback to 'PENDING'
+    if @import.success?
+      unit.update(status: 'COMPLETED')
+    else
+      unit.update(status: 'ERROR')
     end
   end
 end

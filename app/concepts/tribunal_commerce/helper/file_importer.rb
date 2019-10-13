@@ -1,3 +1,4 @@
+# rubocop:disable Metrics/ClassLength
 module TribunalCommerce
   module Helper
     class FileImporter
@@ -111,25 +112,18 @@ module TribunalCommerce
 
       private
 
-      # TODO: refactor to remove Rubocop warning
-      # rubocop:disable Metrics/AbcSize
       def import_line_by_line(file_path, file_header_mapping, line_processor)
         logger.info("Starting import of #{file_path} with #{line_processor} :")
+
         file_reader = file_reader_class.new(file_path, file_header_mapping, keep_nil: false)
         file_reader.line_processing do |line|
           line_import = line_processor.call(data: line)
-
-          if line_import.failure?
-            logger.error(line_import[:error])
-            logger.error("Fail to import file `#{file_path}`.")
-            return false
-          else
-            logger.warn(line_import[:warning]) unless line_import[:warning].nil?
-          end
+          log_import_error(line_import, file_path, logger)
+          return false if line_import.failure?
         end
+
         logger.info("Import of file #{file_path} is complete !")
       end
-      # rubocop:enable Metrics/AbcSize
 
       def bulk_import(file_path, file_header_mapping, imported_model)
         logger.info("Starting bulk import of #{imported_model} from `#{file_path}`:")
@@ -137,6 +131,16 @@ module TribunalCommerce
         file_reader.bulk_processing { |batch| imported_model.import(batch) }
         logger.info("Import of file #{file_path} is complete!")
       end
+
+      def log_import_error(line_import, file_path, logger)
+        if line_import.failure?
+          logger.error(line_import[:error])
+          logger.error("Fail to import file `#{file_path}`.")
+        else
+          logger.warn(line_import[:warning]) unless line_import[:warning].nil?
+        end
+      end
     end
   end
 end
+# rubocop:enable Metrics/ClassLength
