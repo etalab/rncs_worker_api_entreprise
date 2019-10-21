@@ -23,7 +23,7 @@ describe SectionRepresentants do
     pdf.section_representants params
 
     data = [
-      'Gestion, Direction, Adminisration, Contrôle, Associés ou Membres',
+      'Gestion, Direction, Administration, Contrôle, Associés ou Membres',
       'Qualité',                   'Président',
       'Nom, prénoms',              ', Georges Rémi',
       'Date et lieu de naissance', '1907-05-22 Etterbeek',
