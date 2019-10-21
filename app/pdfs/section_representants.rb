@@ -3,7 +3,7 @@ module SectionRepresentants
   include PdfHelper
 
   def section_representants(representants:, **)
-    display_section_title 'Gestion, Direction, Adminisration, Contrôle, Associés ou Membres'
+    display_section_title 'Gestion, Direction, Administration, Contrôle, Associés ou Membres'
 
     representants.each do |rep|
       @current_rep = rep

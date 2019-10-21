@@ -43,7 +43,7 @@ describe IdentiteEntreprisePdf do
       'Activités principales',                 'Mangeur de bananes professionnel',
       'Durée de la personne morale',           '99 ans à partir du 1968-05-02',
       'Date de clôture de l\'exercice social', '31 Décembre',
-      'Gestion, Direction, Adminisration, Contrôle, Associés ou Membres',
+      'Gestion, Direction, Administration, Contrôle, Associés ou Membres',
       'Qualité',                   'Contrôleur des comptes',
       'Dénomination',              'Grosse Entreprise de Télécom',
       'SIREN',                     '000 000 000',
@@ -96,7 +96,7 @@ describe IdentiteEntreprisePdf do
       'Date et lieu de naissance',  '1970-01-05 Marseille',
       'Nationalité',                'Française',
       'Domicile personnel',         '1 AV FOCH BEL HOTEL 75008 PARIS',
-      'Gestion, Direction, Adminisration, Contrôle, Associés ou Membres',
+      'Gestion, Direction, Administration, Contrôle, Associés ou Membres',
       'Qualité',                    'Contrôleur des comptes',
       'Dénomination',               'Grosse Entreprise de Télécom',
       'SIREN',                      '000 000 000',
@@ -139,6 +139,6 @@ describe IdentiteEntreprisePdf do
     nested_data[:observations] = []
 
     expect(subject).not_to include 'Observations'
-    expect(subject).not_to include 'Gestion, Direction, Adminisration, Contrôle, Associés ou Membres'
+    expect(subject).not_to include 'Gestion, Direction, Administration, Contrôle, Associés ou Membres'
   end
 end
