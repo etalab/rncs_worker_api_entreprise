@@ -36,7 +36,6 @@ module Entreprise
         ctx[:http_error] = { code: 404, message: 'Aucun établissement principal dans le dossier d\'immatriculation.' }
       end
 
-      # rubocop:disable Metrics/AbcSize
       def fetch_identity_data(ctx, dossier_principal:, etablissement_principal:, db_current_date:, **)
         data = { dossier_entreprise_greffe_principal: dossier_principal.attributes }
         nested_data = data[:dossier_entreprise_greffe_principal]
@@ -49,11 +48,10 @@ module Entreprise
         nested_data[:personne_physique] = dossier_principal&.personne_physique&.attributes
         ctx[:entreprise_identity] = data.deep_symbolize_keys!
       end
-      # rubocop:enable Metrics/AbcSize
 
       def empty_database(ctx, **)
         ctx[:http_error] = {
-          code: 501,
+          code:    501,
           message: 'Nothing load into the database yet: please import the last stock available.'
         }
       end

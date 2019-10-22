@@ -71,9 +71,9 @@ module TribunalInstance
 
               operation = MergeGreffeZero.call(
                 entreprise_code_greffe_0000: entreprise_code_greffe_0000,
-                entreprise_related: entreprise_related,
-                code_greffe: ctx[:code_greffe],
-                logger: ctx[:logger]
+                entreprise_related:          entreprise_related,
+                code_greffe:                 ctx[:code_greffe],
+                logger:                      ctx[:logger]
               )
 
               return false if operation.failure?

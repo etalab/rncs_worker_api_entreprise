@@ -31,8 +31,8 @@ module TribunalInstance
             extracted_files.each do |extracted_file_path|
               operation = Import.call(
                 code_greffe: code_greffe,
-                path: extracted_file_path,
-                logger: logger
+                path:        extracted_file_path,
+                logger:      logger
               )
 
               if operation.success?

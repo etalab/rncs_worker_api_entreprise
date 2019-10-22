@@ -18,7 +18,7 @@ module TribunalInstance
           def load_transmissions(_, transmissions:, logger:, **)
             transmissions.each do |path|
               operation = LoadTransmission.call(
-                path: path,
+                path:   path,
                 logger: logger
               )
 

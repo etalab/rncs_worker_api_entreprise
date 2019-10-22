@@ -10,18 +10,22 @@ module SectionTitle
     move_down(20)
     display_headline
 
-    text("en date du #{pretty_db_current_date}",
+    text(
+      "en date du #{pretty_db_current_date}",
       style: :italic,
-      align: :center)
+      align: :center
+    )
   end
 
   private
 
   def display_headline
-    text('Extrait d\'immatriculation principale au registre national du commerce et des sociétés',
+    text(
+      'Extrait d\'immatriculation principale au registre national du commerce et des sociétés',
       align: :center,
       style: :bold,
-      size: 12)
+      size:  12
+    )
   end
 
   def pretty_db_current_date

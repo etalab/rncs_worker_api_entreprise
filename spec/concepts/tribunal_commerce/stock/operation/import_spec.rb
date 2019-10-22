@@ -44,10 +44,10 @@ describe TribunalCommerce::Stock::Operation::Import do
       expect(new_stock).to be_persisted
       expect(new_stock).to be_an_instance_of(StockTribunalCommerce)
       expect(new_stock).to have_attributes(
-        year: '2017',
-        month: '01',
-        day: '28',
-        status: 'PENDING',
+        year:       '2017',
+        month:      '01',
+        day:        '28',
+        status:     'PENDING',
         files_path: a_string_ending_with('tc/stock/2017/01/28')
       )
     end

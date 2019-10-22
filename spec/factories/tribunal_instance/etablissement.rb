@@ -9,7 +9,7 @@ FactoryBot.define do
       after :create do |etab|
         create :adresse_etablissement,
           etablissement: etab,
-          code_greffe: etab.code_greffe
+          code_greffe:   etab.code_greffe
       end
     end
   end

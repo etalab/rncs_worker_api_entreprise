@@ -3,12 +3,12 @@ require 'rails_helper'
 describe Representant::Operation::NouveauModifie do
   let(:data) do
     {
-      code_greffe: '1234',
-      numero_gestion: '1A2B3C',
-      id_representant: '1',
-      qualite: 'Président',
-      denomination: 'Holding my beer',
-      siren_pm: '123456789',
+      code_greffe:                            '1234',
+      numero_gestion:                         '1A2B3C',
+      id_representant:                        '1',
+      qualite:                                'Président',
+      denomination:                           'Holding my beer',
+      siren_pm:                               '123456789',
       representant_permanent_adresse_ligne_1: '23 rue bidon'
     }
   end
@@ -19,7 +19,7 @@ describe Representant::Operation::NouveauModifie do
     let(:dossier) do
       create(
         :dossier_entreprise,
-        code_greffe: '1234',
+        code_greffe:    '1234',
         numero_gestion: '1A2B3C'
       )
     end
@@ -36,8 +36,8 @@ describe Representant::Operation::NouveauModifie do
         updated_rep = dossier.representants.find_by(id_representant: '1', qualite: 'Président')
 
         expect(updated_rep).to have_attributes(
-          denomination: 'Holding my beer',
-          siren_pm: '123456789',
+          denomination:                           'Holding my beer',
+          siren_pm:                               '123456789',
           representant_permanent_adresse_ligne_1: '23 rue bidon'
         )
       end

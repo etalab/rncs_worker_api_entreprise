@@ -71,11 +71,13 @@ describe TribunalCommerce::DailyUpdate::Operation::Import, :trb do
       before do
         # This partial stock will be selected for import before the daily update
         # with the same date
-        create(:daily_update_tribunal_commerce,
+        create(
+          :daily_update_tribunal_commerce,
           year: '2018', month: '04', day: '09',
           proceeded: false,
           partial_stock: true,
-          files_path: Rails.root.join('spec/fixtures/tc/partial_stock/2018/04/09'))
+          files_path: Rails.root.join('spec/fixtures/tc/partial_stock/2018/04/09')
+        )
       end
 
       it { is_expected.to be_success }

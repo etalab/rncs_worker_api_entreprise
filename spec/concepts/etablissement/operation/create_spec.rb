@@ -3,9 +3,9 @@ require 'rails_helper'
 describe Etablissement::Operation::Create do
   let(:ets_data) do
     {
-      code_greffe: '9001',
+      code_greffe:    '9001',
       numero_gestion: '2016A10937',
-      enseigne: 'Very office',
+      enseigne:       'Very office',
       nom_commercial: 'Much Building'
     }
   end
@@ -22,9 +22,9 @@ describe Etablissement::Operation::Create do
     it 'saves the etablissement' do
       expect(created_ets).to be_persisted
       expect(created_ets).to have_attributes(
-        code_greffe: '9001',
+        code_greffe:    '9001',
         numero_gestion: '2016A10937',
-        enseigne: 'Very office',
+        enseigne:       'Very office',
         nom_commercial: 'Much Building'
       )
     end

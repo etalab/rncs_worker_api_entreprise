@@ -13,7 +13,7 @@ class DossierEntreprise
 
       def find_dossier_entreprise(ctx, data:, **)
         ctx[:dossier] = DossierEntreprise.find_by(
-          code_greffe: data[:code_greffe],
+          code_greffe:    data[:code_greffe],
           numero_gestion: data[:numero_gestion]
         )
       end
@@ -25,7 +25,7 @@ class DossierEntreprise
       def find_dossier_with_same_siren(ctx, data:, **)
         dossier = DossierEntreprise.find_by(
           code_greffe: data[:code_greffe],
-          siren: data[:siren]
+          siren:       data[:siren]
         )
 
         ctx[:warning] = if !dossier.nil?

@@ -4,7 +4,7 @@ module TribunalCommerce
       class Load < Trailblazer::Operation
         include TribunalCommerce::Helper::DataFile
 
-        step lambda { |ctx, logger:, file_importer: nil, **|
+        step ->(ctx, logger:, file_importer: nil, **) {
           ctx[:file_importer] = TribunalCommerce::Helper::FileImporter.new(logger) if file_importer.nil?
           true
         }

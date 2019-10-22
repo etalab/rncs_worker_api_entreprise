@@ -13,34 +13,36 @@ describe SectionIdentitePM do
   let(:siren) { '123456789' }
   let(:params) do
     {
-      personne_morale: attributes_for(:personne_morale, siren: siren),
+      personne_morale:         attributes_for(:personne_morale, siren: siren),
       etablissement_principal: attributes_for(:etablissement_address_complete, siren: siren),
-      date_immatriculation: '2015-05-19'
+      date_immatriculation:    '2015-05-19'
     }
   end
 
   it 'works with complete address' do
     pdf.section_identite_pm(params)
 
-    data = ['Identification de la personne morale',
-            'SIREN',                                 '123 456 789',
-            'Date d\'immatriculation',               '2015-05-19',
-            'Dénomination',                          'Willy Wonka Candies Factory',
-            'Forme juridique',                       'Société de bonbons à responsabilité limitée',
-            'Capital',                               '1 000.00 Euros',
-            'Adresse',                               'C\'est ici Rue des cocotiers (Rhumerie) 97114 Trois-Rivières',
-            'Activités principales',                 'Mangeur de bananes professionnel',
-            'Durée de la personne morale',           '99 ans à partir du 2015-05-19',
-            'Date de clôture de l\'exercice social', '31 Décembre']
+    data = [
+      'Identification de la personne morale',
+      'SIREN',                                 '123 456 789',
+      'Date d\'immatriculation',               '2015-05-19',
+      'Dénomination',                          'Willy Wonka Candies Factory',
+      'Forme juridique',                       'Société de bonbons à responsabilité limitée',
+      'Capital',                               '1 000.00 Euros',
+      'Adresse',                               'C\'est ici Rue des cocotiers (Rhumerie) 97114 Trois-Rivières',
+      'Activités principales',                 'Mangeur de bananes professionnel',
+      'Durée de la personne morale',           '99 ans à partir du 2015-05-19',
+      'Date de clôture de l\'exercice social', '31 Décembre'
+    ]
 
     expect(subject).to eq(data)
   end
 
   it 'works with incomplete address' do
     pdf.section_identite_pm(
-      personne_morale: attributes_for(:personne_morale, siren: siren),
+      personne_morale:         attributes_for(:personne_morale, siren: siren),
       etablissement_principal: attributes_for(:etablissement_principal),
-      date_immatriculation: '2015-05-18'
+      date_immatriculation:    '2015-05-18'
     )
 
     expect(subject).to include('Rue des cocotiers 97114 Trois-Rivières')

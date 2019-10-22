@@ -23,10 +23,10 @@ module TribunalCommerce
 
             year, month, day = match.captures
             DailyUpdateTribunalCommerce.new(
-              year: year,
-              month: month,
-              day: day,
-              files_path: update_path,
+              year:          year,
+              month:         month,
+              day:           day,
+              files_path:    update_path,
               partial_stock: false
             )
           end

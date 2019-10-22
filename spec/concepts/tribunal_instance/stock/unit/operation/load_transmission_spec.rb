@@ -4,8 +4,8 @@ describe TribunalInstance::Stock::Unit::Operation::LoadTransmission, :trb do
   subject do
     described_class.call(
       code_greffe: '9712',
-      path: spec_path.to_s,
-      logger: logger
+      path:        spec_path.to_s,
+      logger:      logger
     )
   end
 

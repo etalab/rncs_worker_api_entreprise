@@ -23,9 +23,9 @@ module TribunalInstance
 
             year, month, day = match.captures
             DailyUpdateTribunalInstance.new(
-              year: year,
-              month: month,
-              day: day,
+              year:       year,
+              month:      month,
+              day:        day,
               files_path: update_path
             )
           end

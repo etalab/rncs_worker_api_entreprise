@@ -3,10 +3,10 @@ require 'rails_helper'
 describe Representant::Operation::Create do
   let(:rep_data) do
     {
-      code_greffe: '9001',
+      code_greffe:    '9001',
       numero_gestion: '2016A10937',
-      qualite: 'Bullshit analyst',
-      prenoms: 'Jean Peuplu'
+      qualite:        'Bullshit analyst',
+      prenoms:        'Jean Peuplu'
     }
   end
 
@@ -22,10 +22,10 @@ describe Representant::Operation::Create do
     it 'saves the representant' do
       expect(created_rep).to be_persisted
       expect(created_rep).to have_attributes(
-        code_greffe: '9001',
+        code_greffe:    '9001',
         numero_gestion: '2016A10937',
-        qualite: 'Bullshit analyst',
-        prenoms: 'Jean Peuplu'
+        qualite:        'Bullshit analyst',
+        prenoms:        'Jean Peuplu'
       )
     end
 

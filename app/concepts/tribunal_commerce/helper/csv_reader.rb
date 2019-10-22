@@ -32,10 +32,10 @@ module TribunalCommerce
 
       def default_options
         {
-          col_sep: ';',
-          chunk_size: Rails.configuration.rncs_sources['import_batch_size'],
-          force_simple_split: true,
-          hash_transformations: [:none, remove_surrounding_quotes_and_blank],
+          col_sep:                ';',
+          chunk_size:             Rails.configuration.rncs_sources['import_batch_size'],
+          force_simple_split:     true,
+          hash_transformations:   [:none, remove_surrounding_quotes_and_blank],
           header_transformations: [:none, harmonize_headers]
         }
       end

@@ -28,8 +28,8 @@ module TribunalInstance
             transmissions.each do |transmission_path|
               operation = LoadTransmission.call(
                 code_greffe: code_greffe,
-                path: transmission_path,
-                logger: logger
+                path:        transmission_path,
+                logger:      logger
               )
 
               if operation.failure?

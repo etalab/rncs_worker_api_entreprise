@@ -7,8 +7,8 @@ class Etablissement
 
       def find_etablissement(ctx, data:, **)
         ctx[:etablissement] = Etablissement.find_by(
-          code_greffe: data[:code_greffe],
-          numero_gestion: data[:numero_gestion],
+          code_greffe:      data[:code_greffe],
+          numero_gestion:   data[:numero_gestion],
           id_etablissement: data[:id_etablissement]
         )
       end

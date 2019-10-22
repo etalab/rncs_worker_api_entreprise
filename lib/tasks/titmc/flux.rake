@@ -8,7 +8,7 @@ namespace :titmc do
 
       operation = TribunalInstance::DailyUpdate::Operation::Load.call(
         import_until_date: args[:import_until_date],
-        logger: Logger.new(STDOUT)
+        logger:            Logger.new(STDOUT)
       )
       puts "Operation status: #{operation.success?}".blue
     end

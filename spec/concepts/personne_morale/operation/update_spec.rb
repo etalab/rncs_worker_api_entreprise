@@ -3,12 +3,12 @@ require 'rails_helper'
 describe PersonneMorale::Operation::Update do
   let(:data) do
     {
-      code_greffe: '1234',
-      numero_gestion: '1A2B3C',
-      denomination: 'Evil Corp',
-      devise: 'EUR',
+      code_greffe:     '1234',
+      numero_gestion:  '1A2B3C',
+      denomination:    'Evil Corp',
+      devise:          'EUR',
       forme_juridique: 'SAS',
-      capital: '1000'
+      capital:         '1000'
     }
   end
 
@@ -23,7 +23,7 @@ describe PersonneMorale::Operation::Update do
       before do
         create(
           :dossier_entreprise_with_pm,
-          code_greffe: data[:code_greffe],
+          code_greffe:    data[:code_greffe],
           numero_gestion: data[:numero_gestion]
         )
       end
@@ -36,12 +36,12 @@ describe PersonneMorale::Operation::Update do
         updated_pm = dossier.personne_morale
 
         expect(updated_pm).to have_attributes(
-          code_greffe: '1234',
-          numero_gestion: '1A2B3C',
-          denomination: 'Evil Corp',
-          devise: 'EUR',
+          code_greffe:     '1234',
+          numero_gestion:  '1A2B3C',
+          denomination:    'Evil Corp',
+          devise:          'EUR',
           forme_juridique: 'SAS',
-          capital: '1000'
+          capital:         '1000'
         )
       end
     end
@@ -51,7 +51,7 @@ describe PersonneMorale::Operation::Update do
     before do
       create(
         :dossier_entreprise,
-        code_greffe: data[:code_greffe],
+        code_greffe:    data[:code_greffe],
         numero_gestion: data[:numero_gestion]
       )
     end
@@ -63,12 +63,12 @@ describe PersonneMorale::Operation::Update do
 
       expect(created_pm).to be_persisted
       expect(created_pm).to have_attributes(
-        code_greffe: '1234',
-        numero_gestion: '1A2B3C',
-        denomination: 'Evil Corp',
-        devise: 'EUR',
+        code_greffe:     '1234',
+        numero_gestion:  '1A2B3C',
+        denomination:    'Evil Corp',
+        devise:          'EUR',
         forme_juridique: 'SAS',
-        capital: '1000'
+        capital:         '1000'
       )
     end
 

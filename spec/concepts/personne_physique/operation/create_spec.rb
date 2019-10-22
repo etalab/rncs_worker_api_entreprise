@@ -6,10 +6,10 @@ describe PersonnePhysique::Operation::Create do
   context 'when the related dossier entreprise exists' do
     let(:pp_data) do
       {
-        code_greffe: '0109',
+        code_greffe:    '0109',
         numero_gestion: '2016A10937',
-        nom_usage: 'Bon',
-        prenoms: 'Jean'
+        nom_usage:      'Bon',
+        prenoms:        'Jean'
       }
     end
     let(:created_pp) { subject[:created_pp] }
@@ -20,10 +20,10 @@ describe PersonnePhysique::Operation::Create do
     it 'saves the personne physique' do
       expect { subject }.to change(PersonnePhysique, :count).by(1)
       expect(created_pp).to have_attributes(
-        code_greffe: '0109',
+        code_greffe:    '0109',
         numero_gestion: '2016A10937',
-        nom_usage: 'Bon',
-        prenoms: 'Jean'
+        nom_usage:      'Bon',
+        prenoms:        'Jean'
       )
     end
 

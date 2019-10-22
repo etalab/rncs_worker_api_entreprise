@@ -6,7 +6,7 @@ class TribunalInstance::DossierEntrepriseRepresenter < Representable::Decorator
   property :numero_gestion, as: :num_gestion, attribute: true
 
   property :type_inscription, default: 'P'
-  property :nom_greffe, reader: lambda { |represented:, **|
+  property :nom_greffe, reader: ->(represented:, **) {
     TribunalInstance::DossierEntrepriseRepresenter
       .nom_greffe(represented.code_greffe)
   }

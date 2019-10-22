@@ -12,9 +12,9 @@ class TribunalInstance::RepresentantRepresenter < Representable::Decorator
   property :date_radiation, as: :dat_radiation
 
   property :adresse_representant,
-    as: :adr1,
+    as:        :adr1,
     decorator: TribunalInstance::AdresseRepresentantRepresenter,
-    class: TribunalInstance::AdresseRepresentant
+    class:     TribunalInstance::AdresseRepresentant
 
   nested :pers_physique do
     property :pseudonyme, as: :pseudo
@@ -41,8 +41,8 @@ class TribunalInstance::RepresentantRepresenter < Representable::Decorator
     end
 
     property :adresse_representant_permanent,
-      as: :rep_perm,
+      as:        :rep_perm,
       decorator: TribunalInstance::AdresseRepresentantPermanentRepresenter,
-      class: TribunalInstance::AdresseRepresentantPermanent
+      class:     TribunalInstance::AdresseRepresentantPermanent
   end
 end

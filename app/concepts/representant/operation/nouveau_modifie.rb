@@ -10,7 +10,7 @@ class Representant
 
       def find_dossier_entreprise(ctx, data:, **)
         ctx[:dossier] = DossierEntreprise.find_by(
-          code_greffe: data[:code_greffe],
+          code_greffe:    data[:code_greffe],
           numero_gestion: data[:numero_gestion]
         )
       end
@@ -18,7 +18,7 @@ class Representant
       def retrieve_representant(ctx, dossier:, data:, **)
         ctx[:representant] = dossier.representants.find_by(
           id_representant: data[:id_representant],
-          qualite: data[:qualite]
+          qualite:         data[:qualite]
         )
       end
 

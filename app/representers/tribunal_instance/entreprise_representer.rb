@@ -8,7 +8,7 @@ class TribunalInstance::EntrepriseRepresenter < Representable::Decorator
   nested :idt do
     property :denomination,
       as: :nom_raison_soc,
-      if: lambda { |doc:, **|
+      if: ->(doc:, **) {
         TribunalInstance::EntrepriseRepresenter
           .numero_rcs_from(doc)
           .first != 'A'
@@ -16,7 +16,7 @@ class TribunalInstance::EntrepriseRepresenter < Representable::Decorator
 
     property :nom_patronyme,
       as: :nom_raison_soc,
-      if: lambda { |doc:, **|
+      if: ->(doc:, **) {
         TribunalInstance::EntrepriseRepresenter
           .numero_rcs_from(doc)
           .first == 'A'
@@ -78,38 +78,38 @@ class TribunalInstance::EntrepriseRepresenter < Representable::Decorator
     end
 
     property :adresse_siege,
-      as: :siege,
+      as:        :siege,
       decorator: TribunalInstance::AdresseSiegeRepresenter,
-      class: TribunalInstance::AdresseSiege
+      class:     TribunalInstance::AdresseSiege
 
     property :adresse_domiciliataire,
-      as: :domicil,
+      as:        :domicil,
       decorator: TribunalInstance::AdresseDomiciliataireRepresenter,
-      class: TribunalInstance::AdresseDomiciliataire
+      class:     TribunalInstance::AdresseDomiciliataire
 
     property :adresse_dap,
-      as: :eirl,
+      as:        :eirl,
       decorator: TribunalInstance::AdresseDAPRepresenter,
-      class: TribunalInstance::AdresseDAP
+      class:     TribunalInstance::AdresseDAP
   end
 
   collection :etablissements,
-    as: :etab,
-    wrap: :etabs,
+    as:        :etab,
+    wrap:      :etabs,
     decorator: TribunalInstance::EtablissementRepresenter,
-    class: TribunalInstance::Etablissement
+    class:     TribunalInstance::Etablissement
 
   collection :representants,
-    as: :rep,
-    wrap: :reps,
+    as:        :rep,
+    wrap:      :reps,
     decorator: TribunalInstance::RepresentantRepresenter,
-    class: TribunalInstance::Representant
+    class:     TribunalInstance::Representant
 
   collection :observations,
-    as: :proc, # procedure collective are observations
-    wrap: :procs,
+    as:        :proc, # procedure collective are observations
+    wrap:      :procs,
     decorator: TribunalInstance::ObservationRepresenter,
-    class: TribunalInstance::Observation
+    class:     TribunalInstance::Observation
 
   def self.numero_rcs_from(xml)
     xml

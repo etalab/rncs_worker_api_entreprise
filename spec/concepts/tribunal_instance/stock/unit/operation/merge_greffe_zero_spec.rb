@@ -4,9 +4,9 @@ describe TribunalInstance::Stock::Unit::Operation::MergeGreffeZero do
   subject do
     described_class.call(
       entreprise_code_greffe_0000: entreprise_code_greffe_0000,
-      entreprise_related: entreprise_related,
-      code_greffe: code_greffe,
-      logger: logger
+      entreprise_related:          entreprise_related,
+      code_greffe:                 code_greffe,
+      logger:                      logger
     )
   end
 

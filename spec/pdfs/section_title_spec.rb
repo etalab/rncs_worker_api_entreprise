@@ -16,10 +16,12 @@ describe SectionTitle do
       attributes_for(:dossier_entreprise).merge(db_current_date: '2018/01/31')
     )
 
-    data = ['Somewhere in spacetime (code greffe: 1234)',
-            'Numéro de gestion: 1968A00666',
-            'Extrait d\'immatriculation principale au registre national du commerce et des sociétés',
-            'en date du 31 janvier 2018']
+    data = [
+      'Somewhere in spacetime (code greffe: 1234)',
+      'Numéro de gestion: 1968A00666',
+      'Extrait d\'immatriculation principale au registre national du commerce et des sociétés',
+      'en date du 31 janvier 2018'
+    ]
 
     expect(subject).to eq(data)
   end

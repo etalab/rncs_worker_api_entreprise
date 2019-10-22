@@ -31,9 +31,9 @@ class IdentiteEntreprisePdf < Prawn::Document
     font_path = 'public/fonts/Source_Sans_Pro'
     font_families.update(
       'Source Sans Pro' => {
-        normal: "#{font_path}/SourceSansPro-Regular.ttf",
-        italic: "#{font_path}/SourceSansPro-Italic.ttf",
-        bold: "#{font_path}/SourceSansPro-Bold.ttf",
+        normal:      "#{font_path}/SourceSansPro-Regular.ttf",
+        italic:      "#{font_path}/SourceSansPro-Italic.ttf",
+        bold:        "#{font_path}/SourceSansPro-Bold.ttf",
         bold_italic: "#{font_path}/SourceSansPro-BoldItalic.ttf"
       }
     )
@@ -41,7 +41,6 @@ class IdentiteEntreprisePdf < Prawn::Document
     font('Source Sans Pro')
   end
 
-  # rubocop:disable Metrics/AbcSize
   def build_pdf
     section_title(@dossier)
     move_down(20)
@@ -55,7 +54,6 @@ class IdentiteEntreprisePdf < Prawn::Document
     move_down(20)
     section_bodacc(@dossier)
   end
-  # rubocop:enable Metrics/AbcSize
 
   def section_identite
     if personne_morale?
@@ -79,7 +77,7 @@ class IdentiteEntreprisePdf < Prawn::Document
     height_position = -30
     width_page_numbering = 150
     options = {
-      at: [bounds.right - width_page_numbering, height_position],
+      at:    [bounds.right - width_page_numbering, height_position],
       width: width_page_numbering,
       align: :right
     }

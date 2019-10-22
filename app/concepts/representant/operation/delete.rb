@@ -7,10 +7,10 @@ class Representant
 
       def find_representant(ctx, data:, **)
         ctx[:representant] = Representant.find_by(
-          code_greffe: data[:code_greffe],
-          numero_gestion: data[:numero_gestion],
+          code_greffe:     data[:code_greffe],
+          numero_gestion:  data[:numero_gestion],
           id_representant: data[:id_representant],
-          qualite: data[:qualite]
+          qualite:         data[:qualite]
         )
       end
 

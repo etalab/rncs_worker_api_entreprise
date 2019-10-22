@@ -3,11 +3,11 @@ require 'rails_helper'
 describe Etablissement::Operation::NouveauModifie do
   let(:data) do
     {
-      code_greffe: '1234',
-      numero_gestion: '1A2B3C',
+      code_greffe:      '1234',
+      numero_gestion:   '1A2B3C',
       id_etablissement: '1',
-      nom_commercial: 'GG EASY',
-      enseigne: 'YOU SALTY'
+      nom_commercial:   'GG EASY',
+      enseigne:         'YOU SALTY'
     }
   end
 
@@ -17,7 +17,7 @@ describe Etablissement::Operation::NouveauModifie do
     let(:dossier) do
       create(
         :dossier_entreprise,
-        code_greffe: '1234',
+        code_greffe:    '1234',
         numero_gestion: '1A2B3C'
       )
     end
@@ -35,7 +35,7 @@ describe Etablissement::Operation::NouveauModifie do
 
         expect(updated_ets).to have_attributes(
           nom_commercial: 'GG EASY',
-          enseigne: 'YOU SALTY'
+          enseigne:       'YOU SALTY'
         )
       end
     end

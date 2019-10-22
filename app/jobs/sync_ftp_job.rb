@@ -24,7 +24,6 @@ class SyncFTPJob < ActiveJob::Base
     Rails.logger.error("WGET sync failed with: #{stderr}") unless status.success?
   end
 
-  # rubocop:disable Metrics/AbcSize
   def wget_command
     <<-ENDWGET
     wget -r --level=8 -m --reject "index.html" -c -N --secure-protocol=auto --no-proxy --ftp-user='#{ftp_login}' --ftp-password='#{ftp_password}' --directory-prefix=#{rncs_dir_prefix} --no-check-certificate ftps://opendata-rncs.inpi.fr/public/IMR_Donnees_Saisies/tc/flux/#{current_year}/#{current_month};
@@ -33,7 +32,6 @@ class SyncFTPJob < ActiveJob::Base
     wget -r --level=8 -m --reject "index.html" -c -N --secure-protocol=auto --no-proxy --ftp-user='#{ftp_login}' --ftp-password='#{ftp_password}' --directory-prefix=#{rncs_dir_prefix} --no-check-certificate ftps://opendata-rncs.inpi.fr/public/IMR_Donnees_Saisies/tc/stock/#{year_of_previous_month}/#{previous_month}
     ENDWGET
   end
-  # rubocop:enable Metrics/AbcSize
 
   def rncs_dir_prefix
     Rails.configuration.rncs_sources['local_path_prefix']

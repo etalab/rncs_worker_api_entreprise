@@ -3,11 +3,11 @@ require 'rails_helper'
 describe Observation::Operation::UpdateOrCreate do
   let(:data) do
     {
-      code_greffe: '9001',
+      code_greffe:    '9001',
       numero_gestion: '2016A10937',
       id_observation: '4000',
-      numero: '12A57',
-      texte: 'I can see you'
+      numero:         '12A57',
+      texte:          'I can see you'
     }
   end
 
@@ -17,7 +17,7 @@ describe Observation::Operation::UpdateOrCreate do
     let(:dossier) do
       create(
         :dossier_entreprise,
-        code_greffe: data[:code_greffe],
+        code_greffe:    data[:code_greffe],
         numero_gestion: data[:numero_gestion]
       )
     end
@@ -33,8 +33,8 @@ describe Observation::Operation::UpdateOrCreate do
 
         expect(updated_obs).to have_attributes(
           id_observation: '4000',
-          numero: '12A57',
-          texte: 'I can see you'
+          numero:         '12A57',
+          texte:          'I can see you'
         )
       end
 

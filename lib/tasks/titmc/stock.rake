@@ -62,14 +62,16 @@ namespace :titmc do
       units = current_stock.stock_units.sort_by(&:code_greffe)
       units.each do |unit|
         case unit.status
-        when 'PENDING'
-          unit_status = unit.status.yellow
-        when 'LOADING'
-          unit_status = unit.status.blue
-        when 'ERROR'
-          unit_status = unit.status.red
-        when 'COMPLETED'
-          unit_status = unit.status.green
+          when 'PENDING'
+            unit_status = unit.status.yellow
+          when 'LOADING'
+            unit_status = unit.status.blue
+          when 'ERROR'
+            unit_status = unit.status.red
+          when 'COMPLETED'
+            unit_status = unit.status.green
+          else
+            abort("Status #{unit.status} unknown")
         end
 
         puts "Unit: #{unit.code_greffe} is #{unit_status}"

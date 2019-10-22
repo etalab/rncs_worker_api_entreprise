@@ -3,11 +3,11 @@ require 'rails_helper'
 describe DossierEntreprise::Operation::Create do
   let(:data) do
     {
-      code_greffe: '2288',
-      numero_gestion: '1A2B3C',
-      siren: '111222333',
+      code_greffe:      '2288',
+      numero_gestion:   '1A2B3C',
+      siren:            '111222333',
       type_inscription: 'Very P',
-      sans_activite: 'OUI'
+      sans_activite:    'OUI'
     }
   end
 
@@ -37,9 +37,9 @@ describe DossierEntreprise::Operation::Create do
       new_dossier = DossierEntreprise.find_by(code_greffe: data[:code_greffe], numero_gestion: data[:numero_gestion])
 
       expect(new_dossier).to have_attributes(
-        siren: '111222333',
+        siren:            '111222333',
         type_inscription: 'Very P',
-        sans_activite: 'OUI'
+        sans_activite:    'OUI'
       )
     end
   end

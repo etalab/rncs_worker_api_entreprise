@@ -30,9 +30,9 @@ module TribunalCommerce
 
         def save_new_stock(ctx, stock_args:, stock_absolute_path:, **)
           ctx[:new_stock] = StockTribunalCommerce.create(
-            year: stock_args[:year],
-            month: stock_args[:month],
-            day: stock_args[:day],
+            year:       stock_args[:year],
+            month:      stock_args[:month],
+            day:        stock_args[:day],
             files_path: stock_absolute_path
           )
         end
@@ -45,9 +45,9 @@ module TribunalCommerce
 
               new_stock.stock_units.create(
                 code_greffe: code_greffe,
-                number: unit_number,
-                file_path: unit_path,
-                status: 'PENDING'
+                number:      unit_number,
+                file_path:   unit_path,
+                status:      'PENDING'
               )
             else
               logger.error("Unexpected stock unit found : `#{unit_path}`. Aborting...")

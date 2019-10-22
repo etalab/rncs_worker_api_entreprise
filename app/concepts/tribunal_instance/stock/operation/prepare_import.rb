@@ -40,9 +40,9 @@ module TribunalInstance
 
           {
             code_greffe: code_greffe,
-            number: unit_number,
-            file_path: unit_path.gsub(/lot\d{2}/, 'lot*'),
-            status: 'PENDING'
+            number:      unit_number,
+            file_path:   unit_path.gsub(/lot\d{2}/, 'lot*'),
+            status:      'PENDING'
           }
         end
       end

@@ -30,7 +30,7 @@ module SectionIdentitePM
 
     number_to_currency(
       @personne_morale[:capital].to_f,
-      unit: devise_capitalized,
+      unit:      devise_capitalized,
       separator: '.',
       delimiter: ' '
     )

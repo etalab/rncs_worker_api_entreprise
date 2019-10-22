@@ -64,9 +64,9 @@ describe Entreprise::Operation::Identity do
             dossier_attributes = entreprise_identity.fetch(:dossier_entreprise_greffe_principal)
 
             expect(dossier_attributes).to include(
-              code_greffe: 'code_test',
-              numero_gestion: 'numero_test',
-              siren: valid_siren,
+              code_greffe:      'code_test',
+              numero_gestion:   'numero_test',
+              siren:            valid_siren,
               type_inscription: 'P'
               # Ensure other keys are returned as well ? Here or inside the controller's spec ?
             )
@@ -177,7 +177,7 @@ describe Entreprise::Operation::Identity do
 
     it 'returns a HTTP error' do
       expect(http_error).to match(
-        code: 501,
+        code:    501,
         message: 'Nothing load into the database yet: please import the last stock available.'
       )
     end

@@ -19,9 +19,9 @@ module TribunalCommerce
 
           {
             code_greffe: code_greffe,
-            run_order: run_order.to_i,
-            label: label,
-            path: file_path
+            run_order:   run_order.to_i,
+            label:       label,
+            path:        file_path
           }
         end
 
@@ -38,9 +38,9 @@ module TribunalCommerce
 
           {
             code_greffe: code_greffe,
-            run_order: run_order.to_i,
-            label: label,
-            path: file_path
+            run_order:   run_order.to_i,
+            label:       label,
+            path:        file_path
           }
         end
 

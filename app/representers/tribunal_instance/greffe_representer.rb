@@ -4,14 +4,14 @@ class TribunalInstance::GreffeRepresenter < Representable::Decorator
   property :code_greffe, as: :cod, attribute: true
 
   collection :dossiers_entreprises,
-    as: :societe,
-    wrap: false,
+    as:        :societe,
+    wrap:      false,
     decorator: TribunalInstance::DossierEntrepriseRepresenter,
-    class: DossierEntreprise
+    class:     DossierEntreprise
 
   collection :entreprises,
-    as: :societe,
-    wrap: false,
+    as:        :societe,
+    wrap:      false,
     decorator: TribunalInstance::EntrepriseRepresenter,
-    class: TribunalInstance::Entreprise
+    class:     TribunalInstance::Entreprise
 end

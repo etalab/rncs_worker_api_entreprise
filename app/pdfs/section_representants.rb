@@ -18,12 +18,12 @@ module SectionRepresentants
     data_table = [['Qualité', "<b>#{@current_rep[:qualite]}</b>"]]
 
     case @current_rep[:type_representant]&.downcase
-    when /physique/
-      data_table += representant_pp
-    when /morale/
-      data_table += representant_pm
-    else
-      Raven.capture_message("Unhandled type_representant (#{@current_rep[:type_representant]})")
+      when /physique/
+        data_table += representant_pp
+      when /morale/
+        data_table += representant_pm
+      else
+        Raven.capture_message("Unhandled type_representant (#{@current_rep[:type_representant]})")
     end
 
     data_table << ['Adresse', adresse_representant]

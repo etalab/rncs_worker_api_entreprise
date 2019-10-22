@@ -24,68 +24,68 @@ describe TribunalCommerce::DailyUpdateUnit::Operation::ImportTransmission, :trb 
         expect(data).to contain_exactly(
           a_hash_including(
             code_greffe: '0101',
-            label: 'PM',
-            path: a_string_ending_with('0101_1_20170512_112544_1_PM.csv')
+            label:       'PM',
+            path:        a_string_ending_with('0101_1_20170512_112544_1_PM.csv')
           ),
           a_hash_including(
             code_greffe: '0101',
-            label: 'PM_EVT',
-            path: a_string_ending_with('0101_1_20170512_112544_2_PM_EVT.csv')
+            label:       'PM_EVT',
+            path:        a_string_ending_with('0101_1_20170512_112544_2_PM_EVT.csv')
           ),
           a_hash_including(
             code_greffe: '0101',
-            label: 'PP',
-            path: a_string_ending_with('0101_1_20170512_112544_3_PP.csv')
+            label:       'PP',
+            path:        a_string_ending_with('0101_1_20170512_112544_3_PP.csv')
           ),
           a_hash_including(
             code_greffe: '0101',
-            label: 'PP_EVT',
-            path: a_string_ending_with('0101_1_20170512_112544_4_PP_EVT.csv')
+            label:       'PP_EVT',
+            path:        a_string_ending_with('0101_1_20170512_112544_4_PP_EVT.csv')
           ),
           a_hash_including(
             code_greffe: '0101',
-            label: 'rep',
-            path: a_string_ending_with('0101_1_20170512_112544_5_rep.csv')
+            label:       'rep',
+            path:        a_string_ending_with('0101_1_20170512_112544_5_rep.csv')
           ),
           a_hash_including(
             code_greffe: '0101',
-            label: 'rep_nouveau_modifie_EVT',
-            path: a_string_ending_with('0101_1_20170512_112544_6_rep_nouveau_modifie_EVT.csv')
+            label:       'rep_nouveau_modifie_EVT',
+            path:        a_string_ending_with('0101_1_20170512_112544_6_rep_nouveau_modifie_EVT.csv')
           ),
           a_hash_including(
             code_greffe: '0101',
-            label: 'rep_partant_EVT',
-            path: a_string_ending_with('0101_1_20170512_112544_7_rep_partant_EVT.csv')
+            label:       'rep_partant_EVT',
+            path:        a_string_ending_with('0101_1_20170512_112544_7_rep_partant_EVT.csv')
           ),
           a_hash_including(
             code_greffe: '0101',
-            label: 'ets',
-            path: a_string_ending_with('0101_1_20170512_112544_8_ets.csv')
+            label:       'ets',
+            path:        a_string_ending_with('0101_1_20170512_112544_8_ets.csv')
           ),
           a_hash_including(
             code_greffe: '0101',
-            label: 'ets_nouveau_modifie_EVT',
-            path: a_string_ending_with('0101_1_20170512_112544_9_ets_nouveau_modifie_EVT.csv')
+            label:       'ets_nouveau_modifie_EVT',
+            path:        a_string_ending_with('0101_1_20170512_112544_9_ets_nouveau_modifie_EVT.csv')
           ),
           a_hash_including(
             code_greffe: '0101',
-            label: 'ets_supprime_EVT',
-            path: a_string_ending_with('0101_1_20170512_112544_10_ets_supprime_EVT.csv')
+            label:       'ets_supprime_EVT',
+            path:        a_string_ending_with('0101_1_20170512_112544_10_ets_supprime_EVT.csv')
           ),
           a_hash_including(
             code_greffe: '0101',
-            label: 'obs',
-            path: a_string_ending_with('0101_1_20170512_112544_11_obs.csv')
+            label:       'obs',
+            path:        a_string_ending_with('0101_1_20170512_112544_11_obs.csv')
           ),
           a_hash_including(
             code_greffe: '0101',
-            label: 'actes',
-            path: a_string_ending_with('0101_1_20170512_112544_12_actes.csv')
+            label:       'actes',
+            path:        a_string_ending_with('0101_1_20170512_112544_12_actes.csv')
           ),
           a_hash_including(
             code_greffe: '0101',
-            label: 'comptes_annuels',
-            path: a_string_ending_with('0101_1_20170512_112544_13_comptes_annuels.csv')
+            label:       'comptes_annuels',
+            path:        a_string_ending_with('0101_1_20170512_112544_13_comptes_annuels.csv')
           )
         )
       end

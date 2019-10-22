@@ -6,9 +6,9 @@ describe PersonneMorale::Operation::Create do
   context 'when the related dossier entreprise exists' do
     let(:pm_data) do
       {
-        code_greffe: '0109',
-        numero_gestion: '2016A10937',
-        denomination: 'Entreprise Test',
+        code_greffe:     '0109',
+        numero_gestion:  '2016A10937',
+        denomination:    'Entreprise Test',
         forme_juridique: 'SAS'
       }
     end
@@ -20,9 +20,9 @@ describe PersonneMorale::Operation::Create do
     it 'saves the personne morale' do
       expect { subject }.to change(PersonneMorale, :count).by(1)
       expect(created_pm).to have_attributes(
-        code_greffe: '0109',
-        numero_gestion: '2016A10937',
-        denomination: 'Entreprise Test',
+        code_greffe:     '0109',
+        numero_gestion:  '2016A10937',
+        denomination:    'Entreprise Test',
         forme_juridique: 'SAS'
       )
     end

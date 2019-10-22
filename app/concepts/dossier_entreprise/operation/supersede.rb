@@ -7,7 +7,7 @@ class DossierEntreprise
 
       def find_existing_dossier(ctx, data:, **)
         ctx[:old_dossier] = DossierEntreprise.find_by(
-          code_greffe: data[:code_greffe],
+          code_greffe:    data[:code_greffe],
           numero_gestion: data[:numero_gestion]
         )
       end

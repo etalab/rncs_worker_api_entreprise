@@ -1,7 +1,7 @@
 shared_examples 'related dossier not found' do
   let(:record_data) do
     {
-      code_greffe: '9001',
+      code_greffe:    '9001',
       numero_gestion: '2016A10937'
     }
   end

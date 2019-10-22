@@ -3,13 +3,13 @@ require 'rails_helper'
 describe DossierEntreprise::Operation::Update do
   let(:data) do
     {
-      code_greffe: '1234',
-      numero_gestion: '1A2B3C',
-      siren: '123456789',
+      code_greffe:          '1234',
+      numero_gestion:       '1A2B3C',
+      siren:                '123456789',
       date_immatriculation: 'hier',
-      date_transfert: 'demain',
-      sans_activite: 'OUI',
-      date_debut_activite: 'A PAS ACTIVITE'
+      date_transfert:       'demain',
+      sans_activite:        'OUI',
+      date_debut_activite:  'A PAS ACTIVITE'
     }
   end
 
@@ -40,8 +40,8 @@ describe DossierEntreprise::Operation::Update do
         create(
           :dossier_entreprise,
           numero_gestion: '123ZZZ',
-          code_greffe: data[:code_greffe],
-          siren: data[:siren]
+          code_greffe:    data[:code_greffe],
+          siren:          data[:siren]
         )
       end
 
@@ -72,7 +72,7 @@ describe DossierEntreprise::Operation::Update do
     before do
       create(
         :dossier_entreprise,
-        code_greffe: data[:code_greffe],
+        code_greffe:    data[:code_greffe],
         numero_gestion: data[:numero_gestion]
       )
     end
@@ -85,9 +85,9 @@ describe DossierEntreprise::Operation::Update do
 
       expect(updated_dossier).to have_attributes(
         date_immatriculation: 'hier',
-        date_transfert: 'demain',
-        sans_activite: 'OUI',
-        date_debut_activite: 'A PAS ACTIVITE'
+        date_transfert:       'demain',
+        sans_activite:        'OUI',
+        date_debut_activite:  'A PAS ACTIVITE'
       )
     end
 

@@ -8,7 +8,7 @@ class DossierEntreprise
 
       def dossier_exists?(ctx, data:, **)
         ctx[:existing_dossier] = DossierEntreprise.find_by(
-          code_greffe: data[:code_greffe],
+          code_greffe:    data[:code_greffe],
           numero_gestion: data[:numero_gestion]
         )
       end

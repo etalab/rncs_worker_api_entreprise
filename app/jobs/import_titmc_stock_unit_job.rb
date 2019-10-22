@@ -20,7 +20,7 @@ class ImportTitmcStockUnitJob < ApplicationJob
       operation = TribunalInstance::Stock::Unit::Operation::Load
         .call(stock_unit: @stock_unit, logger: @logger)
 
-      raise(ActiveRecord::Rollback) unless operation.success?
+      fail(ActiveRecord::Rollback) unless operation.success?
 
       @stock_unit.update(status: 'COMPLETED')
       TribunalInstance::Stock::Operation::PostImport

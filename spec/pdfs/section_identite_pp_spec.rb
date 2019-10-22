@@ -13,7 +13,7 @@ describe SectionIdentitePP do
   let(:siren) { '123456789' }
   let(:params) do
     {
-      personne_physique: attributes_for(:personne_physique_adresse_complete, siren: siren),
+      personne_physique:    attributes_for(:personne_physique_adresse_complete, siren: siren),
       date_immatriculation: '2015-05-19'
     }
   end
@@ -21,20 +21,22 @@ describe SectionIdentitePP do
   it 'works with valid params' do
     pdf.section_identite_pp(params)
 
-    data = ['Identification de la personne physique',
-            'SIREN',                     '123 456 789',
-            'Date d\'immatriculation',   '2015-05-19',
-            'Nom, prénoms',              'DUPONT François Philippe',
-            'Date et lieu de naissance', '1970-01-05 Marseille',
-            'Nationalité',               'Française',
-            'Domicile personnel',        'Chez Bébert 1 AV FOCH BEL HOTEL 75008 PARIS']
+    data = [
+      'Identification de la personne physique',
+      'SIREN',                     '123 456 789',
+      'Date d\'immatriculation',   '2015-05-19',
+      'Nom, prénoms',              'DUPONT François Philippe',
+      'Date et lieu de naissance', '1970-01-05 Marseille',
+      'Nationalité',               'Française',
+      'Domicile personnel',        'Chez Bébert 1 AV FOCH BEL HOTEL 75008 PARIS'
+    ]
 
     expect(subject).to eq(data)
   end
 
   it 'works with incomplete addresse' do
     incomplete_params = {
-      personne_physique: attributes_for(:personne_physique, siren: siren),
+      personne_physique:    attributes_for(:personne_physique, siren: siren),
       date_immatriculation: '2015-05-09'
     }
     pdf.section_identite_pp(incomplete_params)
@@ -44,7 +46,7 @@ describe SectionIdentitePP do
 
   it 'works with foreign address' do
     params = {
-      personne_physique: attributes_for(:personne_physique_etrangere, siren: siren),
+      personne_physique:    attributes_for(:personne_physique_etrangere, siren: siren),
       date_immatriculation: '1939-08-10'
     }
     pdf.section_identite_pp(params)

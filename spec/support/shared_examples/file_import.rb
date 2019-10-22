@@ -15,7 +15,7 @@ shared_examples 'bulk_import' do |import_method, imported_model, file_mapping|
 
   subject do
     importer = described_class.new(logger)
-    importer.send(import_method, file_path)
+    importer.public_send(import_method, file_path)
   end
 
   it 'logs the start of the file import' do
@@ -74,7 +74,7 @@ shared_examples 'import_line_by_line' do |import_method, line_processor, file_ma
 
   subject do
     importer = described_class.new(logger)
-    importer.send(import_method, file_path)
+    importer.public_send(import_method, file_path)
   end
 
   it 'logs the start of the file import' do

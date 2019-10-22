@@ -19,8 +19,8 @@ module TribunalInstance
             reference = match.captures.first
 
             daily_update.daily_update_units.create(
-              reference: reference,
-              status: 'PENDING',
+              reference:  reference,
+              status:     'PENDING',
               files_path: unit_path
             )
           end

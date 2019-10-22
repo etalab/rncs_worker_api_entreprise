@@ -6,18 +6,18 @@ class DossierEntreprise < ApplicationRecord
   has_many :observations, dependent: :destroy
 
   has_one :titmc_entreprise,
-    dependent: :destroy,
+    dependent:  :destroy,
     class_name: 'TribunalInstance::Entreprise'
 
   has_one :titmc_entreprise,
-    dependent: :destroy,
+    dependent:  :destroy,
     class_name: 'TribunalInstance::Entreprise'
 
   # TODO: Move this into a Trailblazer Task for the Entreprise concept
   def self.immatriculation_principale(siren)
     all_immat = where(siren: siren, type_inscription: 'P')
     return all_immat.first if all_immat.size < 2
-    return nil if all_immat.any? { |immat| immat.date_immatriculation.nil? }
+    return if all_immat.any? { |immat| immat.date_immatriculation.nil? }
 
     all_immat.max_by { |immat| Date.parse(immat.date_immatriculation) }
   end

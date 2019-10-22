@@ -31,7 +31,7 @@ class TribunalInstance::EtablissementRepresenter < Representable::Decorator
   end
 
   property :adresse,
-    as: :adr1,
+    as:        :adr1,
     decorator: TribunalInstance::AdresseEtablissementRepresenter,
-    class: TribunalInstance::AdresseEtablissement
+    class:     TribunalInstance::AdresseEtablissement
 end

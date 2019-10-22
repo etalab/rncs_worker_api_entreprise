@@ -4,8 +4,8 @@ class TribunalInstance::FichierRepresenter < Representable::Decorator
   remove_namespaces!
 
   collection :greffes,
-    as: :grf,
-    wrap: false,
+    as:        :grf,
+    wrap:      false,
     decorator: TribunalInstance::GreffeRepresenter,
-    class: Struct.new(:code_greffe, :dossiers_entreprises, :entreprises)
+    class:     Struct.new(:code_greffe, :dossiers_entreprises, :entreprises)
 end

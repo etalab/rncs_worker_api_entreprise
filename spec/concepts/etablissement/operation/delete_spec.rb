@@ -3,8 +3,8 @@ require 'rails_helper'
 describe Etablissement::Operation::Delete do
   let(:data) do
     {
-      code_greffe: '1234',
-      numero_gestion: '1A2B3C',
+      code_greffe:      '1234',
+      numero_gestion:   '1A2B3C',
       id_etablissement: '1'
     }
   end
@@ -15,8 +15,8 @@ describe Etablissement::Operation::Delete do
     before do
       create(
         :etablissement,
-        code_greffe: '1234',
-        numero_gestion: '1A2B3C',
+        code_greffe:      '1234',
+        numero_gestion:   '1A2B3C',
         id_etablissement: '1'
       )
     end

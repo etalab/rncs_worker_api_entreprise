@@ -23,9 +23,9 @@ module TribunalCommerce
             code_greffe = match.captures.first
 
             daily_update.daily_update_units.create(
-              reference: code_greffe,
+              reference:  code_greffe,
               files_path: unit_path,
-              status: 'PENDING'
+              status:     'PENDING'
             )
           end
           ctx[:partial_stock_units] = partial_stock_units
