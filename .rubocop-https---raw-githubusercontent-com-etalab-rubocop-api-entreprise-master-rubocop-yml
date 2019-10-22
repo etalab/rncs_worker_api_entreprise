@@ -1,0 +1,94 @@
+---
+inherit_from:
+  - https://raw.githubusercontent.com/trailblazer/meta/master/rubocop.yml
+
+AllCops:
+  Exclude:
+    - 'Gemfile'
+    - 'Guardfile'
+    - 'Rakefile'
+    - 'bin/**/*'
+    - 'db/**/*'
+    - 'config/**/*'
+    - 'vendor/**/*'
+
+Layout/AlignArguments:
+  EnforcedStyle: with_fixed_indentation
+
+Layout/IndentFirstArrayElement:
+  EnforcedStyle: consistent
+
+Layout/MultilineMethodCallIndentation:
+  EnforcedStyle: indented
+
+Layout/SpaceInsideHashLiteralBraces:
+  EnforcedStyle: space
+
+Lint/UnreachableCode:
+  Exclude:
+    - 'app/concepts/**/*'
+
+Metrics/BlockLength:
+  Exclude:
+    - 'spec/spec_helper.rb'
+    - 'spec/support/shared_examples/*'
+    - 'spec/factories/**/*'
+  ExcludedMethods:
+    - 'describe'
+    - 'context'
+    - 'namespace'
+
+Metrics/LineLength:
+  Enabled: false
+
+Metrics/MethodLength:
+  Max: 15
+
+Naming/UncommunicativeMethodParamName:
+  AllowedNames:
+    - '_'
+    - 'nb'
+
+Naming/VariableNumber:
+  EnforcedStyle: snake_case
+
+Style/AsciiComments:
+  Enabled: false
+
+Style/BlockComments:
+  Exclude:
+    - 'spec/spec_helper.rb'
+
+Style/BracesAroundHashParameters:
+  EnforcedStyle: context_dependent
+
+Style/ClassAndModuleChildren:
+  EnforcedStyle: compact
+  Exclude:
+    - 'app/channels/**/*'
+    - 'app/concepts/**/*'
+
+Style/Documentation:
+  Enabled: false
+
+Style/FrozenStringLiteralComment:
+  Enabled: false
+
+Style/MethodCallWithArgsParentheses:
+  Enabled: true
+  Exclude:
+    - 'config.ru'
+  IgnoredMethods:
+    - require
+    - to
+    - to_not
+
+Style/SignalException:
+  Exclude:
+    - 'app/concepts/**/*'
+
+Style/StringLiterals:
+  EnforcedStyle: single_quotes
+
+Style/StringLiteralsInInterpolation:
+  EnforcedStyle: single_quotes
