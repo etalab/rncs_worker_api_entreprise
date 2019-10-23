@@ -5,7 +5,7 @@ module Entreprise
         fail :empty_database, fail_fast: true
       step :verify_siren
         fail :invalid_siren, fail_fast: true
-      step :fetch_immatriculation_principale
+      step Nested(DossierEntreprise::Operation::FetchImmatriculationPrincipale)
         fail :no_immatriculation_principale, fail_fast: true
       step :fetch_etablissement_principal
         fail :no_etablissement_principal
@@ -20,12 +20,8 @@ module Entreprise
         ctx[:http_error] = { code: 422, message: 'Le numéro siren en paramètre est mal formaté.' }
       end
 
-      def fetch_immatriculation_principale(ctx, siren:, **)
-        ctx[:dossier_principal] = DossierEntreprise.immatriculation_principale(siren)
-      end
-
-      def no_immatriculation_principale(ctx, siren:, **)
-        ctx[:http_error] = { code: 404, message: "Immatriculation principale non trouvée pour le siren #{siren}." }
+      def no_immatriculation_principale(ctx, siren:, error:, **)
+        ctx[:http_error] = { code: 404, message: error }
       end
 
       def fetch_etablissement_principal(ctx, dossier_principal:, **)
