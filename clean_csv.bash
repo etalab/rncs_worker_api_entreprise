@@ -100,6 +100,7 @@ for file in "$@"; do
         $file =~ 5301_182_20180126_061912_9_ets_nouveau_modifie_EVT.csv ||
         $file =~ 2002_187_20180126_063640_9_ets_nouveau_modifie_EVT.csv ||
         $file =~ 0101_182_20180130_053127_9_ets_nouveau_modifie_EVT.csv ||
+        $file =~ 1305_218_20180315_054206_6_rep_nouveau_modifie_EVT.csv ||
         $file =~ 3802_188_20180127_055646_8_ets.csv ||
         $file =~ 3302_377_20180130_065947_8_ets.csv ]]; then
     sed -i -E 's/;([^";]+)"([^";]+)";/;"\1""\2""";/' "$file"
@@ -113,6 +114,11 @@ for file in "$@"; do
         $file =~ 4101_193_20180126_055813_8_ets.csv ||
         $file =~ 9301_404_20180130_061441_8_ets.csv ]]; then
      sed -i -E 's/;([^";]+)"([^";]+)"([^";]+);/;"\1""\2""\3";/' "$file"
+   fi
+
+   # special case: clean the /; ";/ in 3405_180_20180103_093457_11_obs.csv
+   if [[ $file =~ 3405_180_20180103_093457_11_obs.csv ]]; then
+     sed -i '23,24s/; ";/;;/' "$file"
    fi
 
    # special case: bogus file with wrong number of fields
