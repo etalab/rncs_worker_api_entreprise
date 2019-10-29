@@ -32,7 +32,7 @@ describe Entreprise::Operation::Identity do
       end
 
       it 'returns an error message' do
-        expect(http_error[:message]).to match("Le SIREN #{siren} n'est pas inscrit au RNCS")
+        expect(http_error[:message]).to match("Aucune immatriculation trouvée pour le siren #{siren}")
       end
     end
 
