@@ -15,19 +15,11 @@
 
 # Configuration for simplecov
 # Test coverage options (activated only if rspec is run without arguments)
+# Warnning: Simplecov does not work with Spring
 if ARGV.grep(/spec\.rb/).empty?
   require 'simplecov'
   require 'simplecov-console'
 
-  puts 'Simplecov does not work with Spring'.red if defined?(Spring)
-
-  # it will fail CI if:
-  SimpleCov.minimum_coverage 95
-  SimpleCov.minimum_coverage_by_file 80
-
-  # only SimpleCov in console
-  # SimpleCov.formatter = SimpleCov.formatter = SimpleCov::Formatter::Console
-  # or can be both console & files
   SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter.new(
     [
       SimpleCov::Formatter::HTMLFormatter,
