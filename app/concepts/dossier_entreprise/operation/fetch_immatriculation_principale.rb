@@ -1,49 +1,44 @@
 class DossierEntreprise
   module Operation
     class FetchImmatriculationPrincipale < Trailblazer::Operation
-      step :any_immatriculations_principales?
-      failure :any_immatriculations_secondaires?, Output(:success) => Track(:immatriculation_secondaire)
-      failure :log_not_registered_to_rncs, Output(:failure) => 'End.failure'
+      step :any_immatriculation?
+      failure :log_no_rncs_immatriculation, Output(:success) => 'End.failure'
+      step :any_immatriculation_principale?
+      failure :log_immat_secondaire_only, Output(:success) => 'End.failure'
+      step :possible_to_identify_immat_principale?
+      failure :log_cannot_identify_latest_immat, Output(:success) => 'End.failure'
+      step :return_only_or_latest_immat_principale
 
-      step :uniq?, Output(:success) => 'End.success'
-      failure :none_date_immatriculation_nil?, Output(:success) => Track(:success)
-      failure :log_failed_to_find_valid_immatriculation, Output(:failure) => 'End.failure'
-      step :choose_latest_immatriculation_principale
-
-      failure :log_registered_but_no_immatriculation_principale_found, magnetic_to: [:immatriculation_secondaire]
-
-      def any_immatriculations_principales?(ctx, siren:, **)
-        ctx[:dossiers] = DossierEntreprise.where(siren: siren, type_inscription: 'P')
+      def any_immatriculation?(ctx, siren:, **)
+        ctx[:dossiers] = DossierEntreprise.where(siren: siren)
         ctx[:dossiers].any?
       end
 
-      def any_immatriculations_secondaires?(ctx, siren:, **)
-        ctx[:dossiers] = DossierEntreprise.where(siren: siren, type_inscription: 'S')
-        ctx[:dossiers].any?
+      def any_immatriculation_principale?(ctx, dossiers:, **)
+        ctx[:immat_principales] = dossiers.select { |d| d.type_inscription == 'P' }
+        ctx[:immat_principales].any?
       end
 
-      def uniq?(ctx, dossiers:, **)
-        ctx[:dossier_principal] = dossiers.first if dossiers.size == 1
+      def possible_to_identify_immat_principale?(_, immat_principales:, **)
+        one_immat_only = immat_principales.count == 1
+        all_date_immat_filled = immat_principales.all? { |d| !d.date_immatriculation.nil? }
+        one_immat_only || all_date_immat_filled
       end
 
-      def none_date_immatriculation_nil?(_, dossiers:, **)
-        dossiers.none? { |immat| immat.date_immatriculation.nil? }
+      def return_only_or_latest_immat_principale(ctx, immat_principales:, **)
+        ctx[:dossier_principal] = immat_principales.max_by { |immat| Date.parse(immat.date_immatriculation) }
       end
 
-      def choose_latest_immatriculation_principale(ctx, dossiers:, **)
-        ctx[:dossier_principal] = dossiers.max_by { |immat| Date.parse(immat.date_immatriculation) }
+      def log_no_rncs_immatriculation(ctx, siren:, **)
+        ctx[:error] = "Aucune immatriculation trouvée pour le siren #{siren}"
       end
 
-      def log_failed_to_find_valid_immatriculation(ctx, siren:, **)
-        ctx[:error] = "Impossible de constituer la fiche pour le SIREN #{siren}."
-      end
-
-      def log_not_registered_to_rncs(ctx, siren:, **)
-        ctx[:error] = "Le SIREN #{siren} n'est pas inscrit au RNCS."
-      end
-
-      def log_registered_but_no_immatriculation_principale_found(ctx, siren:,**)
+      def log_immat_secondaire_only(ctx, siren:,**)
         ctx[:error] = "Immatriculation principale non trouvée pour le siren #{siren}."
+      end
+
+      def log_cannot_identify_latest_immat(ctx, siren:, **)
+        ctx[:error] = "Impossible de constituer la fiche pour le SIREN #{siren}."
       end
     end
   end
