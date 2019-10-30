@@ -141,6 +141,7 @@ commande suivante pour corriger les fichiers invalides :
 
 ```bash
 $ find <path_to_source_files> -name "*.csv" -print0 | xargs -0I{} clean_csv.bash {}
+$ find <path_to_source_files> -name "*.zip" -print0 | xargs -0I{} clean_csv.bash {}
 ```
 
 Pour vérifier que tous les fichiers respectent à présent le standard du format
