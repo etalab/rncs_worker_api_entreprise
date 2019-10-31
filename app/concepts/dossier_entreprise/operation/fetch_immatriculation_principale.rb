@@ -2,11 +2,11 @@ class DossierEntreprise
   module Operation
     class FetchImmatriculationPrincipale < Trailblazer::Operation
       step :any_immatriculation?
-      failure :log_no_rncs_immatriculation, Output(:success) => 'End.failure'
+      failure :log_no_rncs_immatriculation, fail_fast: true
       step :any_immatriculation_principale?
-      failure :log_immat_secondaire_only, Output(:success) => 'End.failure'
+      failure :log_immat_secondaire_only, fail_fast: true
       step :possible_to_identify_immat_principale?
-      failure :log_cannot_identify_latest_immat, Output(:success) => 'End.failure'
+      failure :log_cannot_identify_latest_immat, fail_fast: true
       step :return_only_or_latest_immat_principale
 
       def any_immatriculation?(ctx, siren:, **)
@@ -21,7 +21,7 @@ class DossierEntreprise
 
       def possible_to_identify_immat_principale?(_, immat_principales:, **)
         one_immat_only = immat_principales.count == 1
-        all_date_immat_filled = immat_principales.all? { |d| !d.date_immatriculation.nil? }
+        all_date_immat_filled = immat_principales.all? { |d| !d.date_immatriculation.blank? }
         one_immat_only || all_date_immat_filled
       end
 

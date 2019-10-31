@@ -5,7 +5,7 @@ module Entreprise
         fail :empty_database, fail_fast: true
       step :verify_siren
         fail :invalid_siren, fail_fast: true
-      step Nested(DossierEntreprise::Operation::FetchImmatriculationPrincipale)
+      step Nested(DossierEntreprise::Operation::FetchImmatriculationPrincipale), Output(:fail_fast) => Track(:failure)
         fail :no_immatriculation_principale, fail_fast: true
       step :fetch_etablissement_principal
         fail :no_etablissement_principal

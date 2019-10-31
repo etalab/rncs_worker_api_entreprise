@@ -39,8 +39,8 @@ describe DossierEntreprise::Operation::FetchImmatriculationPrincipale do
       its([:error]) { is_expected.to be_nil }
     end
 
-    describe 'fails when at least one nil date_immatriculation' do
-      let!(:old_dossier) { create(:dossier_entreprise, siren: siren, date_immatriculation: nil) }
+    describe 'fails when at least one nil/blank date_immatriculation' do
+      let!(:old_dossier) { create(:dossier_entreprise, siren: siren, date_immatriculation: '') }
 
       its(:success?) { is_expected.to eq(false) }
       its([:dossier_principal]) { is_expected.to be_nil }
