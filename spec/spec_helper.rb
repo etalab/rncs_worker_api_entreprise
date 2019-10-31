@@ -16,7 +16,7 @@
 # Configuration for simplecov
 # Test coverage options (activated only if rspec is run without arguments)
 # Warnning: Simplecov does not work with Spring
-if ARGV.grep(/spec\.rb/).empty?
+if ARGV.grep(/spec\.rb/).empty? && !defined?(Spring)
   require 'simplecov'
   require 'simplecov-console'
 
