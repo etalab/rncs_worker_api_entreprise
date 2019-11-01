@@ -2,7 +2,7 @@ class Etablissement
   module Operation
     class Create < Trailblazer::Operation
       step :find_dossier_entreprise
-        fail :dossier_not_found
+      fail :dossier_not_found, Output(:success) => 'End.success'
       step :save_etablissement
 
 
@@ -18,7 +18,7 @@ class Etablissement
       end
 
       def dossier_not_found(ctx, data:, **)
-        ctx[:error] = "The dossier (code_greffe: #{data[:code_greffe]}, numero_gestion: #{data[:numero_gestion]}) is not found. Aborting..."
+        ctx[:warning] = "The dossier (code_greffe: #{data[:code_greffe]}, numero_gestion: #{data[:numero_gestion]}) is not found. Aborting..."
       end
     end
   end

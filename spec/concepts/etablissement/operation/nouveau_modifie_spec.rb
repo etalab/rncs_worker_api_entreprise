@@ -56,7 +56,7 @@ describe Etablissement::Operation::NouveauModifie do
       it { is_expected.to be_success }
     end
   end
-  #
+
   # TODO https://github.com/etalab/rncs_worker_api_entreprise/issues/39
   context 'when the related dossier is not found' do
     it 'returns a warning message' do

@@ -8,10 +8,10 @@ shared_examples 'related dossier not found' do
 
   subject { described_class.call(data: record_data) }
 
-  it { is_expected.to be_failure }
+  it { is_expected.to be_success }
 
-  it 'returns an error message' do
-    error_msg = subject[:error]
+  it 'returns an warning message' do
+    error_msg = subject[:warning]
 
     expect(error_msg).to eq('The dossier (code_greffe: 9001, numero_gestion: 2016A10937) is not found. Aborting...')
   end
