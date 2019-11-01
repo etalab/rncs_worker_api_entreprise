@@ -36,7 +36,7 @@ class Representant
       end
 
       def warn_dossier_not_found(ctx, data:, **)
-        ctx[:warning] = "The dossier (code_greffe: #{data[:code_greffe]}, numero_gestion: #{data[:numero_gestion]}) is not found. The representant (id_representant: #{data[:id_representant]}, qualite: #{data[:qualite]}) is not imported."
+        ctx[:warning] = "The dossier (code_greffe: #{data[:code_greffe]}, numero_gestion: #{data[:numero_gestion]}) is not found. The line is ignored and not imported..."
       end
     end
   end

@@ -60,14 +60,7 @@ describe Representant::Operation::NouveauModifie do
     end
   end
 
-  # TODO https://github.com/etalab/rncs_worker_api_entreprise/issues/39
   context 'when the related dossier is not found' do
-    it 'returns a warning message' do
-      warning_msg = subject[:warning]
-
-      expect(warning_msg).to eq("The dossier (code_greffe: #{data[:code_greffe]}, numero_gestion: #{data[:numero_gestion]}) is not found. The representant (id_representant: #{data[:id_representant]}, qualite: #{data[:qualite]}) is not imported.")
-    end
-
-    it { is_expected.to be_success }
+    it_behaves_like 'related dossier not found'
   end
 end

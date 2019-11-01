@@ -33,7 +33,7 @@ class Etablissement
       end
 
       def warn_dossier_not_found(ctx, data:, **)
-        ctx[:warning] = "The dossier (code_greffe: #{data[:code_greffe]}, numero_gestion: #{data[:numero_gestion]}) is not found. The etablissement (id_etablissement: #{data[:id_etablissement]}) is not imported."
+        ctx[:warning] = "The dossier (code_greffe: #{data[:code_greffe]}, numero_gestion: #{data[:numero_gestion]}) is not found. The line is ignored and not imported..."
       end
     end
   end

@@ -1,3 +1,4 @@
+# https://github.com/etalab/rncs_worker_api_entreprise/issues/39
 shared_examples 'related dossier not found' do
   let(:record_data) do
     {

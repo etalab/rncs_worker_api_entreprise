@@ -66,12 +66,6 @@ describe Observation::Operation::UpdateOrCreate do
 
   # TODO https://github.com/etalab/rncs_worker_api_entreprise/issues/35
   context 'when associated dossier entreprise is not found' do
-    it 'returns a warning message' do
-      warning_msg = subject[:warning]
-
-      expect(warning_msg).to eq("The dossier (code_greffe: #{data[:code_greffe]}, numero_gestion: #{data[:numero_gestion]}) is not found. The observation with ID: #{data[:id_observation]} is not imported.")
-    end
-
-    it { is_expected.to be_success }
+    it_behaves_like 'related dossier not found'
   end
 end

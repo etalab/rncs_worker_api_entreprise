@@ -36,7 +36,7 @@ class Observation
       end
 
       def dossier_not_found(ctx, data:, **)
-        ctx[:warning] = "The dossier (code_greffe: #{data[:code_greffe]}, numero_gestion: #{data[:numero_gestion]}) is not found. The observation with ID: #{data[:id_observation]} is not imported."
+        ctx[:warning] = "The dossier (code_greffe: #{data[:code_greffe]}, numero_gestion: #{data[:numero_gestion]}) is not found. The line is ignored and not imported..."
       end
     end
   end
