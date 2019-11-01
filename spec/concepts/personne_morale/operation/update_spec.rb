@@ -15,7 +15,7 @@ describe PersonneMorale::Operation::Update do
   subject { described_class.call(data: data) }
 
   context 'when the dossier is not found' do
-    it_behaves_like 'related dossier not found'
+    it_behaves_like 'related dossier not found (for PM and PP)'
   end
 
   context 'when the dossier is found' do
