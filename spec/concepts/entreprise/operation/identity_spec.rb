@@ -25,12 +25,6 @@ describe Entreprise::Operation::Identity do
     context 'when no immatriculation principale is found' do
       let(:siren) { valid_siren }
 
-      before do
-        allow(DossierEntreprise).to receive(:immatriculation_principale)
-          .with(siren)
-          .and_return(nil)
-      end
-
       it { is_expected.to be_failure }
 
       it 'returns a 404 HTTP code' do
@@ -38,19 +32,13 @@ describe Entreprise::Operation::Identity do
       end
 
       it 'returns an error message' do
-        expect(http_error[:message]).to match("Immatriculation principale non trouvée pour le siren #{siren}.")
+        expect(http_error[:message]).to match("Aucune immatriculation trouvée pour le siren #{siren}")
       end
     end
 
     context 'when the immatriculation principale is found' do
       let(:siren) { valid_siren }
       let!(:dossier) { create(:dossier_entreprise, code_greffe: 'code_test', numero_gestion: 'numero_test', type_inscription: 'P', siren: siren) }
-
-      before do
-        allow(DossierEntreprise).to receive(:immatriculation_principale)
-          .with(siren)
-          .and_return(dossier)
-      end
 
       context 'when an etablissement principal is found in this dossier' do
         before { create(:etablissement_principal, dossier_entreprise: dossier, enseigne: 'do not forget me') }
