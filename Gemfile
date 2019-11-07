@@ -64,6 +64,8 @@ group :development, :test do
   gem 'pdf-inspector'
   gem 'pry'
   gem 'pry-byebug'
+  gem 'simplecov', require: false
+  gem 'simplecov-console', require: false
   gem 'timecop'
   gem 'mimemagic'
   gem 'unindent'

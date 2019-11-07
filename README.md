@@ -34,22 +34,13 @@ Run `bundle install`
 `rails db:migrate RAILS_ENV=test`
 
 
-## Data
-
-* Capital social de la forme euros.cents (cents peut etre en mono ou duo digits) ou alors vide
-
 ## Quelques commandes utiles
 
-### Récupération des fichiers depuis le serveur FTP de l'INPI
+### Pré-requis
 
-La commande utilisée pour se synchroniser avec le flux de fichiers disponibles
-sur le FTP de l'INPI :
-
-```zsh
-lftp -u 'login','password' -p 21 opendata-rncs.inpi.fr -e 'set
-ftp:use-mode-z true; mirror -c -P 4 --only-missing public/IMR_Donnees_Saisies
-~/rncs_data/IMR_Donnees_Saisies; quit'
-```
+Avant de lancer les commandes d'import des données en base, assurez-vous d'avoir
+corrigé les erreurs présentes dans les fichiers CSV comme décrit dans la partie
+[Pré-traitement](#pré-traitement-de-mise-en-conformité-à-la-rfc-4180).
 
 ### Import du stock
 
@@ -106,6 +97,65 @@ TribunalCommerce::DailyUpdate::Operation::Import.call
 
 ### Traitements des fichiers CSV avant import
 
+#### Pré-traitement de mise en conformité à la RFC 4180
+
+De nombreux fichiers CSV transmis les premières années ne sont pas conformes à la
+[RFC 4180](https://tools.ietf.org/html/rfc4180), ce qui complique l'analyse des
+fichiers CSV sources lors de l'import des données. Ces défauts dans les fichiers
+CSV transmis semblent disparaître avec le temps. En effet, en 2019, tous les
+fichiers disponibles sur le FTP de l'INPI sont conformes à la RFC 4180. Pour
+cause : l'INPI annonce ne plus diffuser de données sujettes à erreurs sur le
+FTP. Lorsque l'INPI rencontre une erreur ou une ambiguïté, elle ne la transmet
+plus aux utilisateurs et elle fait la demande d'un dossier correctif au greffes
+qui sera transmis ultérieurement sous la forme d'un stock partiel.
+
+Bien que les données semblent de meilleure qualité après deux ans de diffusion,
+il faut tout de même importer l'ensemble des fichiers transmis depuis le seul et
+unique stock du 4 mai 2017, y compris ceux qui sont mal formés... La solution
+implémentée consiste à utiliser un parser CSV conforme à la RFC - ce qui ne
+devrait soulever aucune erreur à partir de l'année 2019 - et donc d'appliquer un
+pré-traitement de mise en conformité sur les fichiers des années 2017 et 2018
+qui présentent des défauts.
+
+Pour cela, deux scripts bash sont disponibles dans ce répertoire de sources :
+* *clean_csv.bash* qui corrige les erreurs détectées dans les fichiers CSV ;
+* *check_rfc4180_compliant.bash* qui permet de vérifier, après coup, que tous
+  les fichiers CSV sont dorénavant bien conforme à la RFC.
+
+Le détails des modifications effectuées par le premier script *clean_csv.bash*
+n'est pas explicité ici car les corrections réalisées sont documentées en
+commentaire dans le script lui même.
+
+#### Exécuter les pré-traitements
+
+Il est nécessaire d'installer quelques dépendances Perl pour que les scripts
+puissent fonctionner :
+
+```bash
+$ sudo apt-get install libtext-csv-perl
+$ sudo cpan install  Text::CSV_XS
+```
+
+Ensuite, après avoir récupéré l'ensemble des fichiers de données, exécutez la
+commande suivante pour corriger les fichiers invalides :
+
+```bash
+$ find <path_to_source_files> -name "*.csv" -print0 | xargs -0I{} clean_csv.bash {}
+$ find <path_to_source_files> -name "*.zip" -print0 | xargs -0I{} clean_csv.bash {}
+```
+
+Pour vérifier que tous les fichiers respectent à présent le standard du format
+CSV vous pouvez lancer la commande ci-dessous :
+
+```bash
+$ find <path_to_source_files> -name "*.csv" -print0 | xargs -0I{} check_rfc4180_compliant.bash {}
+```
+
+Ce script log les noms de fichiers qui ne sont pas valides au sens de la RFC
+4180. Après avoir exécuter le premier script correctif, tous les fichiers de
+données devraient être valides. Vous pouvez maintenant [exécuter la tâche
+d'import](#import-du-stock) des données en base !
+
 #### Uniformisation des en-têtes de colonnes
 
 Les fichiers CSV transmis ne respectent pas toujours les en-têtes de colonne
@@ -128,8 +178,8 @@ les fichiers relatifs aux représentants avant import.
 #### Uniformisation de la donnée
 
 Toutes les données des fichiers CSV sont importées en base au format `String`.
-En effet, comme les conventions du format CSV ne sont pas respectés, de même
-que la procédure d'échange de la donnée entre les greffes et l'INPI, cela
+En effet, comme les conventions du format CSV ne sont pas toujours respectées,
+de même que la procédure d'échange de la donnée entre les greffes et l'INPI, cela
 permet d'importer toutes les données disponibles sans froisser les contraintes
 de typage (ou de format de date) de la base de données.
 
@@ -149,8 +199,8 @@ sont accessibles en lecture et en écriture, ce qui peut potentiellement changer
 d'un fichier à l'autre.
 
 ```zsh
-find flux -type d -exec chmod 755 {} +
-find flux -type f -exec chmod 644 {} +
+$ find flux -type d -exec chmod 755 {} +
+$ find flux -type f -exec chmod 644 {} +
 ```
 
 #### Défaut d'encodage des fichiers CSV
@@ -163,7 +213,7 @@ pas ajouter de complexité supplémentaire au script d'import, ces fichiers ont
 * IMR_Donnees_Saisies/tc/flux/2017/05/24/5601/5/5601_5_20170512_213441_11_obs.csv
 
 ```bash
-iconv -f iso-8859-1 -t utf-8 file.csv
+$ iconv -f iso-8859-1 -t utf-8 file.csv
 ```
 
 ### Les stocks partiels
@@ -209,101 +259,14 @@ attendant que les dossiers complets soient disponibles.
 
 ## Import des données des Greffes des Tribunaux d'Instance et de Commerce Mixte (TITMC)
 
-Le stock ne contient pas toutes les informations présentes dans les flux précédents.
-Des bilans sont présents dans les flux antérieurs au stock, mais aussi l'adresse du
-siège par exemple.
+Jusqu'ici, les données des Tribunaux d'Instance et des Tribunaux Mixtes de
+Commerce étaient transmises au format XML, différent de celui des Tribunaux de
+Commerce, et malheureusement inexploitables.
 
-C'est pour cela que l'import doit se faire de cette façon :
-
-1. Import des flux du 2017/05/18 au 2018/05/05 (inclu)
-2. Import du stock du 2018/05/05
-3. Import du reste des flux
-
-Ce qui se matérialise par les commandes suivantes (les différents scripts doivent
-être lancés manuellement avec les bons paramètres) :
-```
-bundle exec rake titmc:flux:load[2018/05/05]
-bundle exec rake titmc:stock:load
-bundle exec rake titmc:flux:load
-```
-
-### Stock
-
-Chaque stock pour un greffe donné est composé de une ou deux transissions, car
-une tramission ne peut contenir plus de 50 000 dossiers.
-
-L'import des fichiers contenant 50 000 dossiers prend 1h et consomme 6-8Go de mémoire.
-Cela est dû au nombre d'ojets crées ainsi que toutes les associations du modèle.
-
-#### En cours en date du 27/03/2019
-
-L'import par annule et remplace est fonctionnel mais fait perdre énormément de données.
-En effet il y a beaucoup plus de données dans les flux que dans le stock (dans le stock
-il n'y a aucune adresse de siège, aucun bilan, aucun acte et encore d'autres choses moins
-cruciales).
-
-L'import du stock doit donc être revu une fois l'opération d'import de flux fonctionnelle.
-
-#### Fusion des éléments du code greffe '0000'
-
-Chaque fichier XML de stock TITMC et composé de deux balises `<grf cod="1234">`.
-La première balise possède l'attribut "cod" qui est le même que le fichier en cours ;
-c'est le code du greffe actuellement traité. Par contre la seconde balise contient le
-cod='0000'.
-
-Cette seconde balise '0000' ne contient **que** les représentants, les actes,
-les bilans, les observations et *quelques* établissements. À l'inverse la première
-balise ne contiendra **jamais** de représentants, actes, ou bilans.
-
-Ainsi pour une entreprise donnée on se retrouve avec des informations dans la balise
-'1234' et dans la balise '0000'. Ce **ne sont pas** des informations provenant
-d'inscriptions secondaires dans d'autres greffes. En effet une entreprise peut avoir
-plusieurs inscriptions chez différents greffes.
-
-C'est pour cette raison qu'il faut rattacher ces informations associées au code greffe
-'0000' à l'entreprise qui est définie dans la première balise. Cela est fait par
-l'opération MergeGreffeZero. Cette entreprise est identifiée par son SIREN
-seule information d'identification présente dans la balise '0000'.
-
-P.S : Ceci est une exception des premiers stocks. Les flux suivants n'ont plus cette seconde
-balise et les prochains stocks (s'il y a) n'en n'auront pas non plus.
-
-### Flux
-
-Il y a 3 types de fichiers de flux :
-
-1. RCS: contient les données d'identité
-2. BIL: contient uniquement les bilans
-3. ACT: contient uniquement les actes
-
-#### Fichiers type RCS
-
-Contient toutes les données d'identité de l'entreprise et peut être intégré en annule
-et rempalce. La clef est le _numéro de gestion_, le _siren_ et le _code greffe_ (cela
-n'est pas pour autant facile de retrouver l'entreprise ; cf section suivante)
-
-#### Fichiers type BIL et ACT
-
-Ces fichiers ne contiennent que les actes ou les bilans. La clef pour identifier une
-entreprise est le _numéro de gestion_ et le _code greffe_.
-
-Cela génère deux problèmes :
-
-1. Il peut exister plusieurs sirens associés à au couple _numéro de gestion_ et _code greffe_
-il est impossible de savoir à quelle entreprise cette donnée fait référence
-2. Comme les fichiers BIL/ACT arrivent séparemment des fichiers RCS, il est possible d'avoir
-les bilans avant le dossier de l'entreprise et vice et versa. L'import. Ainsi lorsque la donnée
-d'identité arrive il faut retrouver les bilans déjà crées et les lier au nouveau dossier. Et
-inversement.
-
-#### En cours en date du 27/03/2019
-
-La solution technique pour importer simplement et efficacemment les flux n'a pas été décidé pour
-résoudre ces deux problèmes. Et l'import des flux n'est pas encore opérationnel.
-
-La solution actuellement à l'étude et d'importer tant qu'il n'y a pas deux dossiers en conflits
-et logger l'erreur précisement. Ainsi les blians et les actes peuvent exister _sans dossier_ (et
-non pas avec un dossier vide), cela implique quelques changement dans le modèle.
+Cette différence de format pour les TITMC ne devrait plus être à partir de la
+fin de l'année 2019, période à partir de laquelle les données de ces greffes
+seront normalement transmises en respectant le même protocole et le même format
+que les TC aujourd'hui.
 
 ## Constitution des fiches d'immatriculation au RNCS
 

@@ -1,13 +1,13 @@
 shared_examples 'bulk_import' do |import_method, imported_model, file_mapping|
   let(:file_path) { 'very path' }
   let(:logger) { instance_spy(Logger) }
-  let(:csv_reader) { instance_spy(TribunalCommerce::Helper::CSVReader) }
+  let(:csv_reader) { instance_spy(TribunalCommerce::Helper::StandardCSVReader) }
 
   # Mocking the CSVReader here for unit tests
   # This callback also ensure the import method call will initialize the
   # CSVReader correctly (with the right :keep_nil option)
   before do
-    allow(TribunalCommerce::Helper::CSVReader)
+    allow(TribunalCommerce::Helper::StandardCSVReader)
       .to receive(:new)
       .with(file_path, file_mapping, keep_nil: true)
       .and_return(csv_reader)
@@ -60,13 +60,13 @@ end
 shared_examples 'import_line_by_line' do |import_method, line_processor, file_mapping|
   let(:file_path) { 'im a path lol' }
   let(:logger) { instance_spy(Logger) }
-  let(:csv_reader) { instance_spy(TribunalCommerce::Helper::CSVReader) }
+  let(:csv_reader) { instance_spy(TribunalCommerce::Helper::StandardCSVReader) }
 
   # Mocking the CSVReader here for unit tests
   # This callback also ensure the import method call will initialize the
   # CSVReader correctly (with the right :keep_nil option)
   before do
-    allow(TribunalCommerce::Helper::CSVReader)
+    allow(TribunalCommerce::Helper::StandardCSVReader)
       .to receive(:new)
       .with(file_path, file_mapping, keep_nil: false)
       .and_return(csv_reader)
