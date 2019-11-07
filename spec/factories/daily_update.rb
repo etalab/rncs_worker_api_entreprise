@@ -30,6 +30,10 @@ FactoryBot.define do
     end
 
     factory :daily_update_tribunal_commerce, class: DailyUpdateTribunalCommerce do
+      trait :loaded do
+        proceeded { false }
+      end
+
       factory :daily_update_with_pending_units do
         after(:create) do |update|
           create_list(:daily_update_unit, 3, status: 'PENDING', daily_update: update)

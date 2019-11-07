@@ -90,8 +90,6 @@ describe TribunalCommerce::DailyUpdate::Operation::Load do
           )
         end
 
-        it 'logs new updates have been found'
-
         it 'ignores older updates' do
           expect(handled_updates).to_not include(
             an_object_having_attributes(year: '2018', month: '04', day: '09'),
@@ -104,6 +102,17 @@ describe TribunalCommerce::DailyUpdate::Operation::Load do
             an_object_having_attributes(year: '2016', month: '09', day: '28'),
             an_object_having_attributes(year: '2017', month: '01', day: '28'),
             an_object_having_attributes(year: '2017', month: '11', day: '08'),
+          )
+        end
+
+        it 'ignores already loaded updates' do
+          create(:daily_update_tribunal_commerce, :loaded, year: '2018', month: '04', day: '11')
+          create(:daily_update_tribunal_commerce, :loaded, year: '2018', month: '04', day: '12', partial_stock: false)
+          create(:daily_update_tribunal_commerce, :loaded, year: '2018', month: '04', day: '12', partial_stock: true)
+
+          expect(handled_updates).to_not include(
+            an_object_having_attributes(year: '2018', month: '04', day: '11'),
+            an_object_having_attributes(year: '2018', month: '04', day: '12'),
           )
         end
       end
