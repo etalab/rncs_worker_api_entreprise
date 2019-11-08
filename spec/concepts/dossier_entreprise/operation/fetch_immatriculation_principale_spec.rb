@@ -5,11 +5,19 @@ describe DossierEntreprise::Operation::FetchImmatriculationPrincipale do
   let(:siren) { '123456789' }
 
   context 'when only one immatriculation principale found' do
-    let!(:dossier) { create(:dossier_entreprise, siren: siren) }
+    context 'and is dated' do
+      let!(:dossier) { create(:dossier_entreprise, siren: siren) }
 
-    its(:success?) { is_expected.to eq(true) }
-    its([:dossier_principal]) { is_expected.to eq dossier }
-    its([:error]) { is_expected.to be_nil }
+      its(:success?) { is_expected.to eq(true) }
+      its([:dossier_principal]) { is_expected.to eq dossier }
+      its([:error]) { is_expected.to be_nil }
+    end
+    context 'and have no date' do
+      let!(:dossier) { create(:dossier_entreprise, siren: siren, date_immatriculation: "") }
+      its(:success?) { is_expected.to eq(true) }
+      its([:dossier_principal]) { is_expected.to eq dossier }
+      its([:error]) { is_expected.to be_nil }
+    end
   end
 
   context 'when no immatriculation principale found' do
@@ -28,7 +36,7 @@ describe DossierEntreprise::Operation::FetchImmatriculationPrincipale do
     end
   end
 
-  context 'when mutliple immatriculation principale found' do
+  context 'when multiple immatriculation principale found' do
     let!(:new_dossier) { create(:dossier_entreprise, siren: siren, date_immatriculation: '2000-01-01') }
 
     describe 'returns the latest' do
