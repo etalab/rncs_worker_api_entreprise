@@ -19,14 +19,14 @@ class DossierEntreprise
         ctx[:immat_principales].any?
       end
 
-      def possible_to_identify_immat_principale?(ctx, immat_principales:, **)
-        ctx[:one_immat_only] = immat_principales.count == 1
+      def possible_to_identify_immat_principale?(_, immat_principales:, **)
+        one_immat_only = immat_principales.count == 1
         all_date_immat_filled = immat_principales.all? { |d| !d.date_immatriculation.blank? }
-        ctx[:one_immat_only] || all_date_immat_filled
+        one_immat_only || all_date_immat_filled
       end
 
-      def return_only_or_latest_immat_principale(ctx, one_immat_only:, immat_principales:, **)
-        return ctx[:dossier_principal] = immat_principales.first if one_immat_only
+      def return_only_or_latest_immat_principale(ctx, immat_principales:, **)
+        return ctx[:dossier_principal] = immat_principales.first if immat_principales.count == 1
 
         ctx[:dossier_principal] = immat_principales.max_by { |immat| Date.parse(immat.date_immatriculation) }
       end
