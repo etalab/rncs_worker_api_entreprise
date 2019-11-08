@@ -19,13 +19,15 @@ class DossierEntreprise
         ctx[:immat_principales].any?
       end
 
-      def possible_to_identify_immat_principale?(_, immat_principales:, **)
-        one_immat_only = immat_principales.count == 1
+      def possible_to_identify_immat_principale?(ctx, immat_principales:, **)
+        ctx[:one_immat_only] = immat_principales.count == 1
         all_date_immat_filled = immat_principales.all? { |d| !d.date_immatriculation.blank? }
-        one_immat_only || all_date_immat_filled
+        ctx[:one_immat_only] || all_date_immat_filled
       end
 
-      def return_only_or_latest_immat_principale(ctx, immat_principales:, **)
+      def return_only_or_latest_immat_principale(ctx, one_immat_only:, immat_principales:, **)
+        return ctx[:dossier_principal] = immat_principales.first if one_immat_only
+
         ctx[:dossier_principal] = immat_principales.max_by { |immat| Date.parse(immat.date_immatriculation) }
       end
 
@@ -33,7 +35,7 @@ class DossierEntreprise
         ctx[:error] = "Aucune immatriculation trouvée pour le siren #{siren}"
       end
 
-      def log_immat_secondaire_only(ctx, siren:,**)
+      def log_immat_secondaire_only(ctx, siren:, **)
         ctx[:error] = "Immatriculation principale non trouvée pour le siren #{siren}."
       end
 
