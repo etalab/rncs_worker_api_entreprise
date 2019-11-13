@@ -5,7 +5,8 @@ describe DossierEntreprise::Operation::FetchImmatriculationPrincipale do
   let(:siren) { '123456789' }
 
   context 'when only one immatriculation principale found' do
-    let!(:dossier) { create(:dossier_entreprise, siren: siren) }
+    # Set a blank date_immatriculation to ensure everything is fine in this edge case
+    let!(:dossier) { create(:dossier_entreprise, siren: siren, date_immatriculation: '') }
 
     it { is_expected.to be_success }
     its([:dossier_principal]) { is_expected.to eq dossier }
