@@ -13,6 +13,7 @@ module TribunalCommerce
         step Nested(FetchPartialStocksInPipe)
         step :append_partial_stocks_to_daily_updates
         step :ignores_older_updates
+        step :ignores_already_loaded_update
         step :limit_update_to_keep
         step :delay_update
           fail :no_updates_to_import
@@ -25,6 +26,14 @@ module TribunalCommerce
 
         def ignores_older_updates(ctx, daily_updates:, db_current_date:, **)
           daily_updates.keep_if { |update| update.newer?(db_current_date) }
+        end
+
+        def ignores_already_loaded_update(ctx, daily_updates:, **)
+          # Nothing to do if all updates have been imported
+          return true unless DailyUpdateTribunalCommerce.queued_updates?
+
+          last_loaded_update = DailyUpdateTribunalCommerce.last_loaded
+          daily_updates.keep_if { |update| update.newer?(last_loaded_update.date) }
         end
 
         def limit_update_to_keep(ctx, daily_updates:, limit:nil, db_current_date:, **)
