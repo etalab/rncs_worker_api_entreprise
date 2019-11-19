@@ -119,6 +119,33 @@ describe DailyUpdate do
     end
   end
 
+  describe '.last_loaded' do
+    subject { described_class.last_loaded }
+
+    it 'returns nil if no daily updates are found in the database' do
+      expect(subject).to be_nil
+    end
+
+    it 'returns nil if all daily updates are imported already' do
+      create_list(:daily_update_tribunal_commerce, 4, proceeded: true)
+
+      expect(subject).to be_nil
+    end
+
+    it 'returns the latest loaded update if exists' do
+      create(:daily_update_tribunal_commerce, :loaded, year: '2018', month: '11', day: '04')
+      create(:daily_update_tribunal_commerce, :loaded, year: '2019', month: '03', day: '14')
+      create(:daily_update_tribunal_commerce, :loaded, year: '2019', month: '04', day: '13')
+
+      expect(subject).to have_attributes(
+        year: '2019',
+        month: '04',
+        day: '13',
+        proceeded: false,
+      )
+    end
+  end
+
   describe '#date' do
     subject { create(:daily_update, year: '2018', month: '05', day: '24') }
 

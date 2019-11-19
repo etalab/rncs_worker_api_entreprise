@@ -23,6 +23,13 @@ class DailyUpdate < ApplicationRecord
       collection = self.where(proceeded: false).order(year: :asc, month: :asc, day: :asc, partial_stock: :desc).limit(1)
       collection.first
     end
+
+    def last_loaded
+      where(proceeded: false)
+        .order(year: :desc, month: :desc, day: :desc)
+        .limit(1)
+        .first
+    end
   end
 
   def date
