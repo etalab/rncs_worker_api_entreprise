@@ -8,11 +8,11 @@ class StockUnit < ApplicationRecord
   private
 
   def log_file_path
-    Rails.root.join('log', 'stock', log_filename).to_s
+    Rails.root.join('log', log_filename).to_s
   end
 
   def log_filename
-    "#{stock_date}__#{code_greffe}__#{number}__#{formatted_current_datetime}.log"
+    "import_#{code_greffe}.log"
   end
 
   def stock_date
