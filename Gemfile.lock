@@ -182,7 +182,7 @@ GEM
     pry-byebug (3.7.0)
       byebug (~> 11.0)
       pry (~> 0.10)
-    puma (3.12.1)
+    puma (3.12.2)
     raabro (1.1.6)
     rack (2.0.7)
     rack-cors (1.0.5)
@@ -346,7 +346,7 @@ DEPENDENCIES
   prawn-table
   pry
   pry-byebug
-  puma (~> 3.11)
+  puma (~> 3.12)
   rack-cors
   rails (~> 6.0.0)
   rb-readline
