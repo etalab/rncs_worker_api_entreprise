@@ -327,6 +327,10 @@ d'activité et le type d'exploitation) ;
 * les observations du Tribunal de Commerce (numéro, date et contenu de l'observation) ;
 * la date de valeur de la fiche.
 
+Ces informations sont facultatives si non concerné :
+* date de radiation (si radiée) ;
+* date de transfert (si transféré de greffe).
+
 #### Détail des informations concernant les représentants
 
 Dans le cas d'une personne morale :
