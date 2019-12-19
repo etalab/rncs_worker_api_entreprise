@@ -291,21 +291,63 @@ ci-dessous.
 ### Contenu de la fiche d'immatriculation principale
 
 La fiche d'immatriculation principale au RNCS représente la carte d'identité à
-jour d'une entreprise et contient les informations suivantes :
+jour d'une entreprise. Une fiche complète contient les informations suivantes :
 
-* le nom du greffe d'immatriculation principale ;
-* la raison sociale, le sigle et l'enseigne ;
+Dans le cas d'une personne morale :
+
+* le nom et code du greffe d'immatriculation principale ;
+* le numéro de gestion du dossier ;
 * l'identifiant de l'entreprise (numéro siren) ;
+* la date d'immatriculation (ainsi que la date de première immatriculation si
+nécessaire) ;
+* la dénomination (i.e raison sociale) ;
 * la forme juridique ;
 * le capital social (montant et devise) ;
 * l'adresse du siège (avec les informations de domiciliation le cas échéant) ;
-* la durée de vie de la société ;
-* la date de création ;
 * l'activité (code NAF et détails) ;
-* l'adresse de l'établissement principal ;
+* la durée de vie de la société ;
+* la date de clôture de l'exercice social ;
+
+Dans le cas d'une personne physique :
+
+* le nom et code du greffe d'immatriculation principale ;
+* le numéro de gestion du dossier ;
+* l'identifiant de l'entreprise (numéro siren) ;
+* nom et prénoms ;
+* date et lieu de naissance ;
+* nationalité ;
+* adresse du domicile personnel
+
+Pour une personne morale et une personne physique les informations suivantes
+sont aussi transmises :
+
+* les informations relative à l'établissement principal (adresse, date de début
+d'activité et le type d'exploitation) ;
 * l'identité et la fonction des administrateurs et commissaires aux comptes ;
-* la date de valeur de la fiche ;
-* les observations du Tribunal de Commerce.
+* les observations du Tribunal de Commerce (numéro, date et contenu de l'observation) ;
+* la date de valeur de la fiche.
+
+Ces informations sont facultatives si non concerné :
+* date de radiation (si radiée) ;
+* date de transfert (si transféré de greffe).
+
+#### Détail des informations concernant les représentants
+
+Dans le cas d'une personne morale :
+
+* la qualité du représentant (président, commissaire aux comptes...) ;
+* le dénomination (i.e raison sociale) ;
+* l'identifiant de l'entreprise (numéro siren) ;
+* la forme juridique ;
+* l'adresse du siège
+
+Dans le cas d'une personne physique :
+
+* la qualité du représentant (président, commissaire aux comptes...) ;
+* nom et prénoms ;
+* date et lieu de naissance ;
+* nationalité ;
+* adresse du représentant
 
 ### Périmètre couvert par la délivrance d'une fiche d'identité
 
