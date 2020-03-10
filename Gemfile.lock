@@ -226,6 +226,9 @@ GEM
     reform (2.2.4)
       disposable (>= 0.4.1)
       representable (>= 2.4.0, < 3.1.0)
+    reform-rails (0.1.7)
+      activemodel (>= 3.2)
+      reform (>= 2.2.0)
     representable (3.0.4)
       declarative (< 0.1.0)
       declarative-option (< 0.2.0)
@@ -351,6 +354,7 @@ DEPENDENCIES
   rails (~> 6.0.0)
   rb-readline
   redis (~> 4.0.2)
+  reform-rails
   rspec-its
   rspec-json_expectations
   rspec-rails

@@ -12,7 +12,7 @@ class SirenFormatValidator < ActiveModel::EachValidator
 
   def validate_structure(record, attribute, value)
     unless value!= nil && valid_checksum(value)
-      record.errors.add(attribute, :checksum, message: 'must have luhn_checksum ok')
+      record.errors.add(attribute, :checksum, message: "must have luhn_checksum ok (#{value})")
     end
   end
 
