@@ -11,10 +11,10 @@ class DossierEntreprise < ApplicationRecord
   US_DATE_FORMAT = /\d{4}(-|\/)\d{2}(-|\/)\d{2}/
   DATE_FORMAT = /(#{FRENCH_DATE_FORMAT}|#{US_DATE_FORMAT})/
 
-  validates_associated :personne_morale
-  validates_associated :personne_physique
+  validates_associated :personne_morale, if: :en_activite?
+  validates_associated :personne_physique, if: :en_activite?
 
-  validates :code_greffe, presence: true
+  validates :code_greffe, presence: true, numericality: true
   validates :numero_gestion, presence: true
   validates :siren, presence: true, siren_format: true
   validates :nom_greffe, presence: true
@@ -80,6 +80,10 @@ class DossierEntreprise < ApplicationRecord
 
   def inscription_principale?
     type_inscription == 'P'
+  end
+
+  def en_activite?
+    !date_radiation.nil?
   end
 
   # this will not warn about multiple SIE/SEP on this dossier / siren

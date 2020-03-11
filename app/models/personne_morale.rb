@@ -6,7 +6,7 @@ class PersonneMorale < ApplicationRecord
   validates :activite_principale, presence: true
   validates :capital, numericality: true
   validates :devise, presence: true
-  validates :date_cloture, format: { with: /\d{2}\s.+/ }, presence: true
+  validates :date_cloture, presence: true, format: { with: /\d{2}\s.+/ }
   validates :duree_pm, numericality: true
   validate :un_seul_siege_ouvert,
            :adresse_siege_valide

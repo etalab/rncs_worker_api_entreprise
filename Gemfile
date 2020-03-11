@@ -48,6 +48,8 @@ gem 'logstasher'
 gem 'rack-cors', require: 'rack/cors'
 
 gem 'colorize'
+gem 'whirly'
+gem 'paint'
 
 group :development, :test do
   gem 'awesome_print'

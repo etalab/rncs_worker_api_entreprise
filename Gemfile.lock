@@ -161,6 +161,7 @@ GEM
       nenv (~> 0.1)
       shellany (~> 0.0)
     open4 (1.3.4)
+    paint (2.2.0)
     pdf-core (0.7.0)
     pdf-inspector (1.3.0)
       pdf-reader (>= 1.0, < 3.0.a)
@@ -326,6 +327,8 @@ GEM
     websocket-driver (0.7.1)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.4)
+    whirly (0.2.6)
+      unicode-display_width (~> 1.1)
     zeitwerk (2.1.9)
 
 PLATFORMS
@@ -343,6 +346,7 @@ DEPENDENCIES
   logstasher
   mimemagic
   mina (~> 1.2.3)
+  paint
   pdf-inspector
   pg (>= 0.18, < 2.0)
   prawn
@@ -374,6 +378,7 @@ DEPENDENCIES
   trailblazer-macro (= 2.1.0.rc1)
   trailblazer-operation (= 0.4.1)
   unindent
+  whirly
 
 BUNDLED WITH
    1.17.3
