@@ -1,8 +1,8 @@
 class ValidateDossierJob < ApplicationJob
   queue_as :analysis
 
-  DOSSIER_ENTREPRISE_HEADERS = %i[code_greffe numero_gestion siren checksum nom_greffe date_immatriculation type_inscription etablissement_principal]
-  PM_HEADERS = %i[pm_denomination pm_forme_juridique pm_activite_principale pm_capital pm_devise pm_adresse_siege pm_date_cloture pm_duree_pm]
+  DOSSIER_ENTREPRISE_HEADERS = %i[code_greffe numero_gestion siren siren_luhn_valid nom_greffe date_immatriculation type_inscription uniq_etablissement_principal adresse_etablissement_principal activite_etablissement_principal date_debut_etablissement_principal]
+  PM_HEADERS = %i[pm_denomination pm_forme_juridique pm_activite_principale pm_capital pm_devise pm_uniq_siege pm_adresse_siege pm_date_cloture pm_duree_pm]
   PP_HEADERS = %i[pp_nom_patronyme pp_prenoms pp_date_naissance pp_ville_naissance pp_nationalite pp_adresse_domicile]
   HEADERS = DOSSIER_ENTREPRISE_HEADERS + PM_HEADERS + PP_HEADERS
 
@@ -15,14 +15,31 @@ class ValidateDossierJob < ApplicationJob
       add_error unless @current_dossier.valid?
     end
 
-    append_errors_to_csv
+    append_errors_to_detailed_csv
+    append_errors_to_plain_csv
   end
 
   def add_error
     @errors << format_error
   end
 
-  def append_errors_to_csv
+  def append_errors_to_plain_csv
+    CSV.open('tmp/all_errors.csv', 'a') do |csv|
+      @errors.each do |errors_hash|
+        code_greffe = errors_hash[:code_greffe]
+        numero_gestion = errors_hash[:numero_gestion]
+        siren = errors_hash[:siren]
+
+        errors_hash.each do |key, value|
+          next if %i[code_greffe numero_gestion siren].include?(key)
+          next if value.blank?
+          csv << [code_greffe, numero_gestion, siren, key, value]
+        end
+      end
+    end
+  end
+
+  def append_errors_to_detailed_csv
     CSV.open(self.class.filename(@code_greffe), 'a') do |csv|
       @errors.each do |errors_hash|
         csv << errors_hash.values

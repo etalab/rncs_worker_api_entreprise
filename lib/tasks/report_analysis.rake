@@ -4,7 +4,9 @@ require 'csv'
 namespace :report do
   desc 'Generate a CSV report of invalid data'
   task analysis: :environment do
-    write_headers
+    puts 'Re-creating report files...'.yellow
+    write_headers_reports
+    write_headers_plain_errors
 
     puts "Loading jobs by batches #{BATCH_SIZE}".green
     Whirly.start spinner: 'random_dots', status: 'Enqueuing jobs' do
@@ -33,14 +35,19 @@ namespace :report do
     end
   end
 
-  def write_headers
-    puts 'Re-creating report files...'.yellow
+  def write_headers_reports
     codes_greffes = DossierEntreprise.distinct.pluck(:code_greffe)
 
     codes_greffes.each do |code_greffe|
       CSV.open(ValidateDossierJob::filename(code_greffe), 'w') do |csv|
         csv << ValidateDossierJob::HEADERS
       end
+    end
+  end
+
+  def write_headers_plain_errors
+    CSV.open('tmp/all_errors.csv', 'w') do |csv|
+      csv << %w[code_greffe numero_gestion siren type_erreur detail_erreur]
     end
   end
 end

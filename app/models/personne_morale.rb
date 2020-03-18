@@ -14,7 +14,7 @@ class PersonneMorale < ApplicationRecord
   def un_seul_siege_ouvert
     return if sieges.count == 1
 
-    errors.add(:adresse_siege, "#{sieges.count} siège(s) trouvé(s)")
+    errors.add(:uniq_siege, "#{sieges.count} siège(s) trouvé(s)")
   end
 
   def adresse_siege_valide

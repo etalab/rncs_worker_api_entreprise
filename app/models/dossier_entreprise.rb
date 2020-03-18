@@ -34,7 +34,7 @@ class DossierEntreprise < ApplicationRecord
       type_inscription: 'P',
       date_radiation: nil
     )
-    return if dossiers.count <= 1
+    return if dossiers.count == 1
 
     errors.add(:type_inscription, "#{dossiers.count} inscriptions principales trouvées non-radiées")
   end
@@ -42,7 +42,7 @@ class DossierEntreprise < ApplicationRecord
   def un_seul_etab_principal
     return if etabs_pri.count == 1
 
-    errors.add(:etablissement_principal, "#{etabs_pri.count} établissement(s) principal(aux) trouvé(s)")
+    errors.add(:uniq_etablissement_principal, "#{etabs_pri.count} établissement(s) principal(aux) trouvé(s)")
   end
 
   def adresse_etab_principal
@@ -51,7 +51,7 @@ class DossierEntreprise < ApplicationRecord
     return if (etab_pri.adresse_ligne_1 || etab_pri.adresse_ligne_2) &&
       etab_pri.adresse_code_postal
 
-    errors.add(:etablissement_principal, 'Adresse incomplète ligne 1, 2 ou code postal manquant')
+    errors.add(:adresse_etablissement_principal, 'Adresse incomplète ligne 1, 2 ou code postal manquant')
   end
 
   def activite_etab_principal
@@ -59,7 +59,7 @@ class DossierEntreprise < ApplicationRecord
     return if etab_pri.nil?
     return unless etab_pri.activite.nil? || etab_pri.activite.blank?
 
-    errors.add(:etablissement_principal, 'Activité non renseignée')
+    errors.add(:activite_etablissement_principal, 'Activité non renseignée')
   end
 
   def date_debut_activite_etab_principal
@@ -67,11 +67,17 @@ class DossierEntreprise < ApplicationRecord
     return if etab_pri.nil?
     return unless etab_pri.date_debut_activite.nil? || etab_pri.date_debut_activite.blank?
 
-    errors.add(:etablissement_principal, 'Date debut activité non renseigné')
+    errors.add(:date_debut_etablissement_principal, 'Date debut activité non renseigné')
   end
 
   def etabs_pri
-    @etabs_pri ||= etablissements.where(type_etablissement: 'PRI') + etablissements.where(type_etablissement: 'SEP')
+    @etabs_pri ||= etabs_with_type_etablissement('PRI') + etabs_with_type_etablissement('SEP')
+  end
+
+  def etabs_with_type_etablissement(type_etab)
+    Etablissement
+      .where(type_etablissement: type_etab, siren: siren)
+      .select { |e| e.dossier_entreprise.date_radiation.blank? }
   end
 
   def inscription_secondaire?
