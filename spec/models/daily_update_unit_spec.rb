@@ -14,10 +14,7 @@ describe DailyUpdateUnit do
   end
 
   describe '#logger_for_import' do
-    let(:unit) do
-      temp = create(:daily_update, year: '2020', month: '07', day: '29')
-      create(:daily_update_unit, reference: 'ref_doc', daily_update: temp)
-    end
+    let!(:unit) { create(:daily_update_unit) }
 
     subject { unit.logger_for_import }
 
@@ -25,20 +22,15 @@ describe DailyUpdateUnit do
       expect(subject).to be_an_instance_of(Logger)
     end
 
-    it 'has a valid filename : <code_greffe>__<current_date>.log' do
-      mock_logger = double(Logger)
-      current_time = Time.now
-      Timecop.freeze(current_time)
+    it 'has a valid filename : import_<code_greffe>.log' do
+      code_greffe = unit.reference
+      expected_log_filename = Rails.root.join("log/import_#{code_greffe}.log").to_s
 
-      format_time = current_time.strftime('%Y_%m_%d')
-      expected_log_filename = Rails.root.join("log/flux/ref_doc__#{format_time}.log").to_s
-      expect(Logger).to receive(:new).with(expected_log_filename).and_return(mock_logger)
+      expect(Logger).to receive(:new).with(expected_log_filename)
 
-      expect(subject).to eq(mock_logger)
-      Timecop.return
+      subject
     end
-  end
 
-  # TODO not sure I need this since the logger is mocked
-  after { FileUtils.rm_rf(Dir.glob(Rails.root.join('log/flux/*'))) }
+    after { FileUtils.rm_rf(Rails.root.join('log', "import_#{unit.reference}.log")) }
+  end
 end

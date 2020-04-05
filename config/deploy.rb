@@ -74,11 +74,6 @@ end
 # All paths in `shared_dirs` and `shared_paths` will be created on their own.
 task :setup do
   # command %{rbenv install 2.3.0 --skip-existing}
-
-  # add stock (tc/titmc) log subfolder
-  command %(mkdir -p "#{fetch(:deploy_to)}/shared/log/stock")
-  # add flux log subfolder
-  command %(mkdir -p "#{fetch(:deploy_to)}/shared/log/flux")
 end
 
 desc "Deploys the current version to the server."

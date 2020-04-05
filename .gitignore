@@ -13,15 +13,6 @@
 /log/*
 !/log/.keep
 
-# Keep track of log/tc_stock folder only
-!/log/flux
-/log/flux/*
-!/log/flux/.keep
-# same for stock
-!/log/stock
-/log/stock/*
-!/log/stock/.keep
-
 /tmp/*
 !/tmp/.keep
 

@@ -1,11 +1,8 @@
+---
 language: ruby
-rbenv:
-- 1.1.1
 cache: bundler
-service:
-  - postgresql
 addons:
-  postgresql: '9.6'
+  postgresql: 9.6
 before_script:
   - chmod +x setup_rncs_sources.sh
   - ./setup_rncs_sources.sh
