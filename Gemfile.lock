@@ -184,7 +184,7 @@ GEM
       pry (~> 0.10)
     puma (3.12.2)
     raabro (1.1.6)
-    rack (2.0.8)
+    rack (2.2.3)
     rack-cors (1.0.5)
       rack (>= 1.6.0)
     rack-protection (2.0.5)
