@@ -1,9 +1,9 @@
 class DossierEntreprise
   module Operation
     class Supersede < Trailblazer::Operation
-      step :find_existing_dossier, Output(:failure) => :save_new_dossier
+      step :find_existing_dossier, Output(:failure) => Id(:save_new_dossier)
       step :destroy_old_dossier
-      step :save_new_dossier, id: :save_new_dossier
+      step :save_new_dossier
 
 
       def find_existing_dossier(ctx, data:, **)

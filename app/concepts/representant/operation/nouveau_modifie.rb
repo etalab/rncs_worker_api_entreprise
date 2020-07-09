@@ -2,10 +2,10 @@ class Representant
   module Operation
     class NouveauModifie < Trailblazer::Operation
       step :find_dossier_entreprise
-      fail :warn_dossier_not_found, Output(:success) => 'End.success'
+      fail :warn_dossier_not_found, Output(:success) => End(:success)
       step :retrieve_representant
         fail :create_new_representant
-        fail :warning_message, Output(:success) => 'End.success'
+        fail :warning_message, Output(:success) => End(:success)
       step :update
 
 

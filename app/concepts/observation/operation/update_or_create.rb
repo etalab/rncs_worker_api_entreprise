@@ -2,9 +2,9 @@ class Observation
   module Operation
     class UpdateOrCreate < Trailblazer::Operation
       step :find_dossier_entreprise
-        fail :dossier_not_found, Output(:success) => 'End.success'
+        fail :dossier_not_found, Output(:success) => End(:success)
       step :retrieve_observation
-        fail :create_observation, Output(:success) => 'End.success'
+        fail :create_observation, Output(:success) => End(:success)
       step :update_observation
 
 

@@ -2,7 +2,7 @@ class Representant
   module Operation
     class Delete < Trailblazer::Operation
       step :find_representant
-        fail :warning_message, Output(:success) => 'End.success'
+        fail :warning_message, Output(:success) => End(:success)
       step :delete
 
 

@@ -4,7 +4,7 @@ class PersonnePhysique
       step :find_dossier_entreprise
         fail :dossier_not_found, fail_fast: true
       step :personne_physique_exists?
-        fail :create, Output(:success) => 'End.success'
+        fail :create, Output(:success) => End(:success)
       step :update
 
 

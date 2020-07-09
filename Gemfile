@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 6.0.0'
+gem 'rails', '~> 6.0'
 # Use postgresql as the database for Active Record
 gem 'pg', '>= 0.18', '< 2.0'
 # Use Puma as the app server
@@ -23,7 +23,7 @@ gem 'redis', '~> 4.0.2'
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.1.0', require: false
 
-gem 'sidekiq', '~> 5.2.1'
+gem 'sidekiq', '~> 5.2'
 gem 'sidekiq-cron', '~> 1.1'
 
 # gem 'smarter_csv', '~> 1.2.3'
@@ -31,10 +31,10 @@ gem 'smarter_csv', git: 'https://github.com/brindu/smarter_csv.git', branch: 'mu
 
 # Running `bundle update` to update to Rails 6 messed up with trailblazer dependencies
 # TODO Clean this when migrating to trailblazer 2.1.0 (few regressions to deal with e.g ClassDependencies removed in 2.1.0.rc13)
-gem 'trailblazer', '2.1.0.rc1'
-gem 'trailblazer-macro', '2.1.0.rc1'
-gem 'trailblazer-activity', '0.7.1'
-gem 'trailblazer-operation', '0.4.1'
+gem 'trailblazer', '2.1'
+gem 'trailblazer-macro', '2.1'
+#gem 'trailblazer-activity', '0.7.1'
+#gem 'trailblazer-operation', '0.4.1'
 
 gem 'prawn'
 gem 'prawn-table'

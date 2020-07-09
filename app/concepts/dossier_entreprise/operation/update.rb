@@ -2,14 +2,14 @@ class DossierEntreprise
   module Operation
     class Update < Trailblazer::Operation
       step :find_dossier_entreprise
-        fail :find_dossier_with_same_siren, Output(:success) => :create
-      step :update, Output(:success) => 'End.success'
+        fail :find_dossier_with_same_siren, Output(:success) => Id(:create)
+      step :update, Output(:success) => End(:success)
 
       # Because the previous step on the "right" track (:update) directly
       # points to an end event (thanks to the Output(:success) => 'End.success'
       # option) this step is not connected to the :success track so we need to
       # explicitly set the end event
-      step :create, id: :create, Output(:success) => 'End.success'
+      step :create, Output(:success) => End(:success)
 
 
       def find_dossier_entreprise(ctx, data:, **)
