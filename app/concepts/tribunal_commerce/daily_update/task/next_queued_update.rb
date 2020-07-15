@@ -8,7 +8,7 @@ module TribunalCommerce
         step :ensure_last_daily_import_is_completed
           fail :log_last_update_fail, fail_fast: true
         step :retrieve_next_queued_update
-          fail :log_empty_queue
+          fail :log_empty_queue, fail_fast: true
 
         def retrieve_last_update(ctx, **)
           ctx[:last_update] = DailyUpdateTribunalCommerce.current

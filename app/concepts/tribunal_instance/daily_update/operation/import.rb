@@ -3,9 +3,9 @@ module TribunalInstance
     module Operation
       class Import < Trailblazer::Operation
 
-        step Nested Task::NextQueuedUpdate
+        step Subprocess(Task::NextQueuedUpdate)
         step ->(ctx, daily_update:, **) { daily_update.update(proceeded: true) }
-        step Nested Task::FetchUnits
+        step Subprocess(Task::FetchUnits), Output(:fail_fast) => End(:fail_fast)
         step :create_jobs_for_import
 
         def create_jobs_for_import(ctx, daily_update:, **)

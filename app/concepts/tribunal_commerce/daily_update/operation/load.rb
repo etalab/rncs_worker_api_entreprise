@@ -7,10 +7,10 @@ module TribunalCommerce
         self[:logger] = Rails.logger
 
         pass ->(ctx, logger:, **) { logger.info('Fetching new daily updates to import...') }
-        step Nested(DBCurrentDate)
+        step Subprocess(DBCurrentDate), Output(:fail_fast) => End(:fail_fast)
         step ->(ctx, logger:, db_current_date:, **) { logger.info("The database is sync until the date #{db_current_date}.") }
-        step Nested(FetchInPipe)
-        step Nested(FetchPartialStocksInPipe)
+        step Subprocess(FetchInPipe)
+        step Subprocess(FetchPartialStocksInPipe)
         step :append_partial_stocks_to_daily_updates
         step :ignores_older_updates
         step :ignores_already_loaded_update

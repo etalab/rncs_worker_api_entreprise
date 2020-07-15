@@ -11,7 +11,7 @@ module TribunalInstance
 
         step :raw_daily_update_date, Output(:failure) => Track(:empty_database)
 
-        pass :log_no_daily_update, magnetic_to: [:empty_database]
+        pass :log_no_daily_update, magnetic_to: :empty_database
 
        def queued_updates?(ctx, **)
           !DailyUpdateTribunalInstance.queued_updates?

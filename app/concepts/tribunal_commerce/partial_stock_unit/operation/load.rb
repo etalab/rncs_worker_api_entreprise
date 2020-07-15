@@ -11,7 +11,7 @@ module TribunalCommerce
 
         step ->(ctx, logger:, **) { logger.info('Starting import of partial stock unit...') }
         step :prepare_zip_extraction
-        step Nested(ZIP::Operation::Extract)
+        step Subprocess(ZIP::Operation::Extract)
           fail :log_zip_extraction_error, fail_fast: true
 
         step :read_files_metadata

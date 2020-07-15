@@ -5,11 +5,11 @@ module TribunalCommerce
         step :find_latest_completed_update, Output(:failure) => Track(:no_daily_updates_yet)
         step :raw_daily_update_date
 
-        step :current_stock, magnetic_to: [:no_daily_updates_yet], Output(:success) => Track(:no_daily_updates_yet)
+        step :current_stock, magnetic_to: :no_daily_updates_yet, Output(:success) => Track(:no_daily_updates_yet)
         fail :log_empty_db, fail_fast: true
-        step :stock_completed?, magnetic_to: [:no_daily_updates_yet], Output(:success) => Track(:no_daily_updates_yet)
+        step :stock_completed?, magnetic_to: :no_daily_updates_yet, Output(:success) => Track(:no_daily_updates_yet)
         fail :log_incomplete_stock, fail_fast: true
-        step :raw_stock_date, magnetic_to: [:no_daily_updates_yet], Output(:success) => End(:success)
+        step :raw_stock_date, magnetic_to: :no_daily_updates_yet, Output(:success) => End(:success)
 
         def find_latest_completed_update(ctx, **)
           ctx[:current_daily_update] = DailyUpdateTribunalCommerce.last_completed

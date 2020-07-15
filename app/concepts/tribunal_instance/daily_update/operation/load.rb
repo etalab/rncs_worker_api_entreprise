@@ -3,17 +3,17 @@ module TribunalInstance
     module Operation
       class Load < Trailblazer::Operation
 
-        pass ->(ctx, logger:, **) { logger.info 'Fetching new daily updates' }
-        step Nested Task::DBCurrentDate
+        step ->(ctx, logger:, **) { logger.info 'Fetching new daily updates' }
+        step Subprocess(Task::DBCurrentDate), Output(:fail_fast) => End(:fail_fast)
         pass :log_sync_status
-        step Nested Task::FetchInPipe
+        step Subprocess(Task::FetchInPipe)
         step :set_default_db_current_date
         step :ignores_older_updates
         step :limit_update_to_keep
         fail :log_no_updates_to_import
         pass :log_how_many_updates_found
         step :save_handled_updates
-        step Import
+        step Subprocess(Import), Output(:fail_fast) => End(:fail_fast)
 
         def set_default_db_current_date(ctx, daily_updates:, **)
           unless ctx.key?(:db_current_date)

@@ -5,8 +5,8 @@ module TribunalInstance
         class LoadTransmission < Trailblazer::Operation
 
           pass :log_import_starts
-          step Nested(Files::Operation::CheckMD5)
-          step Nested(ZIP::Operation::Extract)
+          step Subprocess(Files::Operation::CheckMD5), Output(:fail_fast) => End(:fail_fast)
+          step Subprocess(ZIP::Operation::Extract)
             fail :log_zip_error, fail_fast: true
           pass :log_zip_info
           step :import
