@@ -1,3 +1,5 @@
+require 'csv'
+
 module TribunalCommerce
   module Helper
     class StandardCSVReader
