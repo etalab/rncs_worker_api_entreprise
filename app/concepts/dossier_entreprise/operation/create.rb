@@ -1,10 +1,10 @@
 class DossierEntreprise
   module Operation
     class Create < Trailblazer::Operation
-      step :dossier_exists?, Output(:failure) => :create
+      step :dossier_exists?, Output(:failure) => Id(:save_new_dossier)
       step :log_dossier_exists
       step :destroy_existing_dossier
-      step :save_new_dossier, id: :create
+      step :save_new_dossier
 
 
       def dossier_exists?(ctx, data:, **)

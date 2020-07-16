@@ -2,12 +2,12 @@ module TribunalCommerce
   module DailyUpdate
     module Operation
       class Import < Trailblazer::Operation
-        step Nested(Task::NextQueuedUpdate), fail_fast: true
+        step Subprocess(Task::NextQueuedUpdate), Output(:fail_fast) => End(:fail_fast)
         step ->(ctx, daily_update:, **) { daily_update.update(proceeded: true) }
 
         step :partial_stock?
-          step Nested(Task::FetchPartialStocks)
-          fail Nested(Task::FetchUnits), Output(:success) => Track(:success)
+          step Subprocess(Task::FetchPartialStocks)
+          fail Subprocess(Task::FetchUnits), Output(:success) => Track(:success)
 
         step :create_jobs_for_import
 

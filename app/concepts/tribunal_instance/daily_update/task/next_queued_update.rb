@@ -3,11 +3,11 @@ module TribunalInstance
     module Task
       class NextQueuedUpdate < Trailblazer::Operation
 
-        step :retrieve_last_update, Output(:failure) => Track(:no_previous_update)
+        step :retrieve_last_update, Output(:failure) => Id(:retrieve_next_queued_update)
         step :ensure_last_daily_import_is_completed
           fail :log_last_update_fail, fail_fast: true
 
-        step :retrieve_next_queued_update, magnetic_to: [:success, :no_previous_update]
+        step :retrieve_next_queued_update
           fail :log_empty_queue
 
         def retrieve_last_update(ctx, **)

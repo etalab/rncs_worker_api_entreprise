@@ -3,12 +3,12 @@ module TribunalCommerce
     module Task
       class NextQueuedUpdate < Trailblazer::Operation
         step :retrieve_last_update
-          fail :retrieve_last_stock, Output(:success) => :next_update
+          fail :retrieve_last_stock, Output(:success) => Id(:retrieve_next_queued_update)
           fail :no_stock_imported, fail_fast: true
         step :ensure_last_daily_import_is_completed
           fail :log_last_update_fail, fail_fast: true
-        step :retrieve_next_queued_update, id: :next_update
-          fail :log_empty_queue
+        step :retrieve_next_queued_update
+          fail :log_empty_queue, fail_fast: true
 
         def retrieve_last_update(ctx, **)
           ctx[:last_update] = DailyUpdateTribunalCommerce.current
