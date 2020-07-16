@@ -8,7 +8,7 @@ module TribunalInstance
           step :fetch_transmissions
           pass ->(ctx, logger:, **) { logger.info "#{ctx[:transmissions].count} transmissions found" }
           step ->(ctx, stock_unit:, **) { ctx[:code_greffe] = stock_unit.code_greffe }
-          step Nested(ResetDatabase)
+          step Subprocess(ResetDatabase)
             fail :log_reset_database_failure
           step :load_greffe_files
             fail :log_transmission_failure

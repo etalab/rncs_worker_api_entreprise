@@ -2,7 +2,7 @@ class Etablissement
   module Operation
     class Delete < Trailblazer::Operation
       step :find_etablissement
-        fail :warning_message, Output(:success) => 'End.success'
+        fail :warning_message, Output(:success) => End(:success)
       step :delete
 
 

@@ -7,7 +7,7 @@ module TribunalCommerce
           daily_update.status == 'COMPLETED'
         end
 
-        step Nested(TribunalCommerce::DailyUpdate::Operation::Import)
+        step Subprocess(TribunalCommerce::DailyUpdate::Operation::Import), Output(:fail_fast) => End(:fail_fast)
       end
     end
   end

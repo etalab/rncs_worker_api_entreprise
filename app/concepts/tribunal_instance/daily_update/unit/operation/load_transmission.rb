@@ -5,8 +5,8 @@ module TribunalInstance
         class LoadTransmission < Trailblazer::Operation
 
           pass :log_import_start
-          step Nested Files::Operation::CheckMD5
-          step Nested ZIP::Operation::Extract
+          step Subprocess(Files::Operation::CheckMD5), Output(:fail_fast) => End(:fail_fast)
+          step Subprocess(ZIP::Operation::Extract)
             fail :log_zip_error, fail_fast: true
           pass :log_files_unzipped
           step :import
@@ -16,7 +16,7 @@ module TribunalInstance
 
           def import(ctx, extracted_files:, logger:, **)
             extracted_files.each do |path|
-              operation = Import.call path: path, logger: logger
+              operation = Import.call(path: path, logger: logger)
 
               return false if operation.failure?
             end
