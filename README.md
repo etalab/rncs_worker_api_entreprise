@@ -1,5 +1,18 @@
 # Environment setup
 
+## Fichiers de données source
+
+Ce projet ne contient que le code source de l'application, il est nécessaire de
+demander un accès au serveur FTP de l'INPI afin de récupérer quotidiennent les
+fichiers des différents RCS. Vous trouverez
+[ici](https://www.inpi.fr/fr/immatriculations-modifications-radiations-des-societes-imr)
+le formulaire de demande d'accès à l'INPI.
+
+Une fois l'accès obtenu et les fichiers synchronisés, vous pouvez mettre à jour
+le fichier de configuration `config/rncs_sources.yml` avec le path vers ces
+fichiers renseigné dans la variable `local_path_prefix` comme indiqué
+ci-dessous.
+
 ## Configuration files
 
 You need the following configuration file as it is excluded from source control.
@@ -16,6 +29,12 @@ test:
   ftp_path_prefix: ''
   import_batch_size: 3
 ```
+
+* `local_path_prefix` path vers les fichiers synchronisés avec le FTP de l'INPI.
+* `ftp_path_prefix` laisser comme tel si vous gardez l'arborescence de fichiers
+  identique à celle sur le FTP (recommandé)
+* `import_batch_size` la taille des chunks lors de l'import du stock initial
+  (peut impacter les performances et la durée d'import).
 
 ## Run bundler
 
