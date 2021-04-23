@@ -61,6 +61,18 @@ Avant de lancer les commandes d'import des données en base, assurez-vous d'avoi
 corrigé les erreurs présentes dans les fichiers CSV comme décrit dans la partie
 [Pré-traitement](#pré-traitement-de-mise-en-conformité-à-la-rfc-4180).
 
+### Sidekiq
+
+Pour que l'import fonctionne il faut lancer un serveur Sidekiq avec la commande suivante : 
+
+```shell
+bundle exec exec sidekiq -e production -L /path/to/log/file/to/create.log -C config/sidekiq.yml
+```
+
+Il est possible de transformer cette commande en service Unix. La 
+[documentation Sidekiq](https://github.com/mperham/sidekiq/wiki/Deployment#running-your-own-process)
+contient tout ce qu'il faut.
+
 ### Import du stock
 
 Il s'agit ici de la commande pour importer un stock, au vrai sens du terme :
