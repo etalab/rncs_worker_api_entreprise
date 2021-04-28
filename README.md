@@ -66,7 +66,7 @@ corrigé les erreurs présentes dans les fichiers CSV comme décrit dans la part
 Pour que l'import fonctionne il faut lancer un serveur Sidekiq avec la commande suivante : 
 
 ```shell
-bundle exec exec sidekiq -e production -L /path/to/log/file/to/create.log -C config/sidekiq.yml
+bundle exec sidekiq -e production -L /path/to/log/file/to/create.log -C config/sidekiq.yml
 ```
 
 Il est possible de transformer cette commande en service Unix. La 
