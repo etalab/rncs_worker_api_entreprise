@@ -42,9 +42,11 @@ describe API::V1::FichesIdentiteController, type: :request do
 
       it 'has a binary PDF body' do
         subject
-        mime = MimeMagic.by_magic(response.body)
 
-        expect(mime.child_of?('application/pdf')).to be_truthy
+        pdf_magic_number = '25504446'
+        response_magic_number = response.body.unpack("H*").first[0..7]
+
+        expect(response_magic_number).to eq(pdf_magic_number)
       end
 
       it '[NOT A SPEC] generates a test PDF in /tmp' do

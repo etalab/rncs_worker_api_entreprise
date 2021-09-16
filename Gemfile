@@ -2,7 +2,25 @@ source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 6.0'
+version = '~> 6.0'
+
+[
+  # 'actioncable',
+  # 'actionmailbox',
+  'actionmailer',
+  'actionpack',
+  # 'actiontext',
+  'actionview',
+  'activejob',
+  'activemodel',
+  'activerecord',
+  # 'activestorage',
+  'activesupport',
+  'railties'
+].each do |rails_subgem|
+  gem rails_subgem, version
+end
+
 # Use postgresql as the database for Active Record
 gem 'pg', '>= 0.18', '< 2.0'
 # Use Puma as the app server
@@ -60,7 +78,6 @@ group :development, :test do
   gem 'simplecov', require: false
   gem 'simplecov-console', require: false
   gem 'timecop'
-  gem 'mimemagic'
   gem 'unindent'
 end
 
