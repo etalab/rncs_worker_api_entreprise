@@ -121,6 +121,7 @@ GEM
     msgpack (1.3.3)
     multipart-post (2.1.1)
     nenv (0.3.0)
+    nio4r (2.5.8)
     nokogiri (1.10.10)
       mini_portile2 (~> 2.4.0)
     notiffany (0.1.3)
@@ -148,7 +149,8 @@ GEM
     pry-byebug (3.9.0)
       byebug (~> 11.0)
       pry (~> 0.13.0)
-    puma (3.12.6)
+    puma (4.3.8)
+      nio4r (~> 2.0)
     raabro (1.3.1)
     rack (2.2.3)
     rack-cors (1.1.1)
@@ -300,7 +302,7 @@ DEPENDENCIES
   prawn-table
   pry
   pry-byebug
-  puma (~> 3.12)
+  puma (~> 4.3)
   rack-cors
   railties (~> 6.0)
   rb-readline
