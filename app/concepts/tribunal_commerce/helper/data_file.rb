@@ -56,7 +56,7 @@ module TribunalCommerce
       end
 
       def stock_filename_regex
-        /\A(\d{4})_(S\d)_(\d{8})_(\d{1,2})_(.+)\.csv\Z/
+        /\A(\d{4})_(S\d+)_(\d{8})_(\d{1,2})_(.+)\.csv\Z/
       end
     end
   end
