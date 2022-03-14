@@ -3,6 +3,11 @@ development:
   ftp_path_prefix: opendata-rncs.inpi.fr/public/IMR_Donnees_Saisies
   import_batch_size: 5000
 
+production:
+  local_path_prefix: .
+  ftp_path_prefix: opendata-rncs.inpi.fr/public/IMR_Donnees_Saisies
+  import_batch_size: 5000
+
 test:
   local_path_prefix: ./spec/fixtures
   ftp_path_prefix: ''
