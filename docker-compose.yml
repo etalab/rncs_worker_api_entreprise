@@ -1,0 +1,137 @@
+version: '3.8'
+services:
+  db:
+    image: postgres:latest
+    environment:
+      - POSTGRES_PASSWORD=password
+    ports:
+      - "5432:5432"
+    volumes:
+      - "dbdata:/var/lib/postgresql/data"
+  
+  redis:
+    image: redis:alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - .:/app
+
+  web:
+    build: .
+    # command: bin/rails s -e production -b '0.0.0.0'
+    ports:
+     - "3000:3000"
+    depends_on:
+      - db
+      - redis
+    environment:
+      - DATABASE_URL=postgres://postgres:password@db:5432/postgres
+      - REDIS_URL=redis://redis:6379
+      - TERM=dumb
+    volumes:
+      - .:/app
+
+volumes:
+  dbdata:
+
+
+
+
+
+#   Step 8/11 : RUN bundle exec sidekiq
+#  ---> Running in 4a2d5bad9780
+# [Declarative] Defaults#merge! and #call still accept arrays and automatically prepend those. This is now deprecated, you should replace `ary` with `Declarative::Variables::Append(ary)`.
+# 2022-03-11T13:56:52.418Z 1 TID-otuv7tz3x INFO: Booting Sidekiq 5.2.9 with redis options {:url=>nil, :id=>"Sidekiq-server-PID-1"}
+# Error connecting to Redis on 127.0.0.1:6379 (Errno::ECONNREFUSED)
+# /gems/ruby/2.6.0/gems/redis-4.0.3/lib/redis/client.rb:350:in `rescue in establish_connection'
+# /gems/ruby/2.6.0/gems/redis-4.0.3/lib/redis/client.rb:333:in `establish_connection'
+# /gems/ruby/2.6.0/gems/redis-4.0.3/lib/redis/client.rb:104:in `block in connect'
+# /gems/ruby/2.6.0/gems/redis-4.0.3/lib/redis/client.rb:296:in `with_reconnect'
+# /gems/ruby/2.6.0/gems/redis-4.0.3/lib/redis/client.rb:103:in `connect'
+# /gems/ruby/2.6.0/gems/redis-4.0.3/lib/redis/client.rb:369:in `ensure_connected'
+# /gems/ruby/2.6.0/gems/redis-4.0.3/lib/redis/client.rb:224:in `block in process'
+# /gems/ruby/2.6.0/gems/redis-4.0.3/lib/redis/client.rb:309:in `logging'
+# /gems/ruby/2.6.0/gems/redis-4.0.3/lib/redis/client.rb:223:in `process'
+# /gems/ruby/2.6.0/gems/redis-4.0.3/lib/redis/client.rb:123:in `call'
+# /gems/ruby/2.6.0/gems/redis-4.0.3/lib/redis.rb:2071:in `block in hget'
+# /gems/ruby/2.6.0/gems/redis-4.0.3/lib/redis.rb:50:in `block in synchronize'
+# /usr/local/lib/ruby/2.6.0/monitor.rb:235:in `mon_synchronize'
+# /gems/ruby/2.6.0/gems/redis-4.0.3/lib/redis.rb:50:in `synchronize'
+# /gems/ruby/2.6.0/gems/redis-4.0.3/lib/redis.rb:2070:in `hget'
+# /gems/ruby/2.6.0/gems/sidekiq-cron-1.2.0/lib/sidekiq/cron/job.rb:361:in `block in status_from_redis'
+# /gems/ruby/2.6.0/gems/sidekiq-5.2.9/lib/sidekiq.rb:97:in `block in redis'
+# /gems/ruby/2.6.0/gems/connection_pool-2.2.3/lib/connection_pool.rb:63:in `block (2 levels) in with'
+# /gems/ruby/2.6.0/gems/connection_pool-2.2.3/lib/connection_pool.rb:62:in `handle_interrupt'
+# /gems/ruby/2.6.0/gems/connection_pool-2.2.3/lib/connection_pool.rb:62:in `block in with'
+# /gems/ruby/2.6.0/gems/connection_pool-2.2.3/lib/connection_pool.rb:59:in `handle_interrupt'
+# /gems/ruby/2.6.0/gems/connection_pool-2.2.3/lib/connection_pool.rb:59:in `with'
+# /gems/ruby/2.6.0/gems/sidekiq-5.2.9/lib/sidekiq.rb:94:in `redis'
+# /gems/ruby/2.6.0/gems/sidekiq-cron-1.2.0/lib/sidekiq/cron/job.rb:360:in `status_from_redis'
+# /gems/ruby/2.6.0/gems/sidekiq-cron-1.2.0/lib/sidekiq/cron/job.rb:272:in `initialize'
+# /gems/ruby/2.6.0/gems/sidekiq-cron-1.2.0/lib/sidekiq/cron/job.rb:187:in `new'
+# /gems/ruby/2.6.0/gems/sidekiq-cron-1.2.0/lib/sidekiq/cron/job.rb:187:in `block in load_from_array'
+# /gems/ruby/2.6.0/gems/sidekiq-cron-1.2.0/lib/sidekiq/cron/job.rb:186:in `each'
+# /gems/ruby/2.6.0/gems/sidekiq-cron-1.2.0/lib/sidekiq/cron/job.rb:186:in `load_from_array'
+# /gems/ruby/2.6.0/gems/sidekiq-cron-1.2.0/lib/sidekiq/cron/job.rb:157:in `load_from_hash'
+# /app/config/initializers/sidekiq.rb:6:in `load_sidekiq_cron_jobs'
+# /app/config/initializers/sidekiq.rb:15:in `block in <main>'
+# /gems/ruby/2.6.0/gems/sidekiq-5.2.9/lib/sidekiq.rb:75:in `configure_server'
+# /app/config/initializers/sidekiq.rb:12:in `<main>'
+# /gems/ruby/2.6.0/gems/bootsnap-1.4.6/lib/bootsnap/load_path_cache/core_ext/kernel_require.rb:55:in `load'
+# /gems/ruby/2.6.0/gems/bootsnap-1.4.6/lib/bootsnap/load_path_cache/core_ext/kernel_require.rb:55:in `load'
+# /gems/ruby/2.6.0/gems/activesupport-6.0.3.2/lib/active_support/dependencies.rb:318:in `block in load'
+# /gems/ruby/2.6.0/gems/activesupport-6.0.3.2/lib/active_support/dependencies.rb:291:in `load_dependency'
+# /gems/ruby/2.6.0/gems/activesupport-6.0.3.2/lib/active_support/dependencies.rb:318:in `load'
+# /gems/ruby/2.6.0/gems/railties-6.0.3.2/lib/rails/engine.rb:666:in `block in load_config_initializer'
+# /gems/ruby/2.6.0/gems/activesupport-6.0.3.2/lib/active_support/notifications.rb:182:in `instrument'
+# /gems/ruby/2.6.0/gems/railties-6.0.3.2/lib/rails/engine.rb:665:in `load_config_initializer'
+# /gems/ruby/2.6.0/gems/railties-6.0.3.2/lib/rails/engine.rb:625:in `block (2 levels) in <class:Engine>'
+# /gems/ruby/2.6.0/gems/railties-6.0.3.2/lib/rails/engine.rb:624:in `each'
+# /gems/ruby/2.6.0/gems/railties-6.0.3.2/lib/rails/engine.rb:624:in `block in <class:Engine>'
+# /gems/ruby/2.6.0/gems/railties-6.0.3.2/lib/rails/initializable.rb:32:in `instance_exec'
+# /gems/ruby/2.6.0/gems/railties-6.0.3.2/lib/rails/initializable.rb:32:in `run'
+# /gems/ruby/2.6.0/gems/railties-6.0.3.2/lib/rails/initializable.rb:61:in `block in run_initializers'
+# /usr/local/lib/ruby/2.6.0/tsort.rb:228:in `block in tsort_each'
+# /usr/local/lib/ruby/2.6.0/tsort.rb:350:in `block (2 levels) in each_strongly_connected_component'
+# /usr/local/lib/ruby/2.6.0/tsort.rb:422:in `block (2 levels) in each_strongly_connected_component_from'
+# /usr/local/lib/ruby/2.6.0/tsort.rb:431:in `each_strongly_connected_component_from'
+# /usr/local/lib/ruby/2.6.0/tsort.rb:421:in `block in each_strongly_connected_component_from'
+# /gems/ruby/2.6.0/gems/railties-6.0.3.2/lib/rails/initializable.rb:50:in `each'
+# /gems/ruby/2.6.0/gems/railties-6.0.3.2/lib/rails/initializable.rb:50:in `tsort_each_child'
+# /usr/local/lib/ruby/2.6.0/tsort.rb:415:in `call'
+# /usr/local/lib/ruby/2.6.0/tsort.rb:415:in `each_strongly_connected_component_from'
+# /usr/local/lib/ruby/2.6.0/tsort.rb:349:in `block in each_strongly_connected_component'
+# /usr/local/lib/ruby/2.6.0/tsort.rb:347:in `each'
+# /usr/local/lib/ruby/2.6.0/tsort.rb:347:in `call'
+# /usr/local/lib/ruby/2.6.0/tsort.rb:347:in `each_strongly_connected_component'
+# /usr/local/lib/ruby/2.6.0/tsort.rb:226:in `tsort_each'
+# /usr/local/lib/ruby/2.6.0/tsort.rb:205:in `tsort_each'
+# /gems/ruby/2.6.0/gems/railties-6.0.3.2/lib/rails/initializable.rb:60:in `run_initializers'
+# /gems/ruby/2.6.0/gems/railties-6.0.3.2/lib/rails/application.rb:363:in `initialize!'
+# /app/config/environment.rb:5:in `<top (required)>'
+# /gems/ruby/2.6.0/gems/activesupport-6.0.3.2/lib/active_support/dependencies.rb:324:in `require'
+# /gems/ruby/2.6.0/gems/activesupport-6.0.3.2/lib/active_support/dependencies.rb:324:in `block in require'
+# /gems/ruby/2.6.0/gems/activesupport-6.0.3.2/lib/active_support/dependencies.rb:291:in `load_dependency'
+# /gems/ruby/2.6.0/gems/activesupport-6.0.3.2/lib/active_support/dependencies.rb:324:in `require'
+# /gems/ruby/2.6.0/gems/sidekiq-5.2.9/lib/sidekiq/cli.rb:288:in `boot_system'
+# /gems/ruby/2.6.0/gems/sidekiq-5.2.9/lib/sidekiq/cli.rb:46:in `run'
+# /gems/ruby/2.6.0/gems/sidekiq-5.2.9/bin/sidekiq:12:in `<top (required)>'
+# /gems/ruby/2.6.0/bin/sidekiq:23:in `load'
+# /gems/ruby/2.6.0/bin/sidekiq:23:in `<top (required)>'
+# /usr/local/bundle/gems/bundler-2.2.4/lib/bundler/cli/exec.rb:63:in `load'
+# /usr/local/bundle/gems/bundler-2.2.4/lib/bundler/cli/exec.rb:63:in `kernel_load'
+# /usr/local/bundle/gems/bundler-2.2.4/lib/bundler/cli/exec.rb:28:in `run'
+# /usr/local/bundle/gems/bundler-2.2.4/lib/bundler/cli.rb:494:in `exec'
+# /usr/local/bundle/gems/bundler-2.2.4/lib/bundler/vendor/thor/lib/thor/command.rb:27:in `run'
+# /usr/local/bundle/gems/bundler-2.2.4/lib/bundler/vendor/thor/lib/thor/invocation.rb:127:in `invoke_command'
+# /usr/local/bundle/gems/bundler-2.2.4/lib/bundler/vendor/thor/lib/thor.rb:392:in `dispatch'
+# /usr/local/bundle/gems/bundler-2.2.4/lib/bundler/cli.rb:30:in `dispatch'
+# /usr/local/bundle/gems/bundler-2.2.4/lib/bundler/vendor/thor/lib/thor/base.rb:485:in `start'
+# /usr/local/bundle/gems/bundler-2.2.4/lib/bundler/cli.rb:24:in `start'
+# /usr/local/bundle/gems/bundler-2.2.4/exe/bundle:49:in `block in <top (required)>'
+# /usr/local/bundle/gems/bundler-2.2.4/lib/bundler/friendly_errors.rb:130:in `with_friendly_errors'
+# /usr/local/bundle/gems/bundler-2.2.4/exe/bundle:37:in `<top (required)>'
+# /usr/local/bundle/bin/bundle:23:in `load'
+# /usr/local/bundle/bin/bundle:23:in `<main>'
+# The command '/bin/sh -c bundle exec sidekiq' returned a non-zero code: 1
+# ERROR: Service 'web' failed to build : Build failed
