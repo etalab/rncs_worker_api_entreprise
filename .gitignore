@@ -32,3 +32,5 @@
 
 # Ignore files from simplecov
 /coverage/*
+
+/opendata-rncs.inpi.fr/*
