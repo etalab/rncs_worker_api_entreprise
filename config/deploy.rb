@@ -34,7 +34,6 @@ set :branch, branch
 ensure!(:branch)
 
 # Optional settings:
-set :user, 'deploy'          # Username in the server to SSH to.
 set :port, 22                # SSH port number.
 set :forward_agent, true     # SSH forward_agent.
 
@@ -58,13 +57,8 @@ set :shared_files, fetch(:shared_files, []).push(
   'config/master.key'
 )
 
-def samhain_db_update                                                                                     
-  samhain_listfile = "/tmp/listfile-#{SecureRandom.hex(48)}"
-                                                                                                            
-  comment %{Updating Samhain signature database}                                                          
-  command %{find "/var/www/rncs_api_#{ENV['to']}" >#{samhain_listfile}}
-  command %{sudo /usr/local/sbin/update-samhain-db.sh #{samhain_listfile}}                                
-  command %{rm -f #{samhain_listfile}}       
+task :samhain_db_update do
+  command %{sudo /usr/local/sbin/update-samhain-db.sh "#{fetch(:deploy_to)}"}
 end 
 
 # This task is the environment that is loaded for all remote run commands, such as
@@ -83,7 +77,8 @@ end
 # All paths in `shared_dirs` and `shared_paths` will be created on their own.
 task :setup do
   # command %{rbenv install 2.3.0 --skip-existing}
-  samhain_db_update
+  invoke :'ownership'
+  invoke :'samhain_db_update'
 end
 
 desc "Deploys the current version to the server."
@@ -98,11 +93,13 @@ task :deploy do
     invoke :'bundle:install'
     invoke :'rails:db_migrate'
     invoke :'deploy:cleanup'
+    invoke :'ownership'
 
     on :launch do
       in_path(fetch(:current_path)) do
         command %{mkdir -p tmp/}
         command %{touch tmp/restart.txt}
+        invoke :'ownership'
         invoke :sidekiq
         invoke :passenger
       end
@@ -111,7 +108,7 @@ task :deploy do
 
   # you can use `run :local` to run tasks on local machine before of after the deploy scripts
   # run(:local){ say 'done' }
-  samhain_db_update
+  invoke :'samhain_db_update'
 end
 
 task :sidekiq do
@@ -126,8 +123,12 @@ task :passenger do
   command %{
     if (sudo passenger-status | grep rncs_api_#{ENV['to']}) > /dev/null
     then
-      passenger-config restart-app /var/www/rncs_api_#{ENV['to']}/current
+      sudo passenger-config restart-app /var/www/rncs_api_#{ENV['to']}/current
     else
       echo 'Skipping: no Passenger app found (will be automatically loaded)'
     fi}
+end
+
+task :ownership do
+  command %{sudo chown -R deploy "#{fetch(:deploy_to)}"}
 end
