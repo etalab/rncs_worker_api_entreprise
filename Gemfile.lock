@@ -268,7 +268,7 @@ GEM
       trailblazer-activity-dsl-linear (>= 0.2.6, < 1.0.0)
       trailblazer-developer (>= 0.0.8)
     ttfunk (1.6.2.1)
-    tzinfo (1.2.7)
+    tzinfo (1.2.10)
       thread_safe (~> 0.1)
     uber (0.1.0)
     unicode-display_width (1.7.0)
